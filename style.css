@@ -6,7 +6,12 @@
 }
 
 body {
-  background-color: #4f81bd; /* Ocean blue color */
+  background-image: url('https://64.media.tumblr.com/7288fb9c5a568fc033a233b1b5862886/27bd7103dd700c5a-de/s500x750/8e8261cf6e76222c6ca0ab275a5dcae5e2fbd7cb.gifv');
+  background-size: cover; /* Cover the entire screen */
+  background-position: center; /* Center the background image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  height: 100vh; /* Full height of the viewport */
+  margin: 0; /* Remove default margin */
 }
 
 .container {
