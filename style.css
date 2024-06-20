@@ -93,7 +93,7 @@ body {
 }
 
 .new-game-popup {
-  background-color: #ffffff;
+  background-color: #f0f0f0;
   position: relative;
   width: 100%;
   display: flex;
@@ -101,7 +101,8 @@ body {
   justify-content: center;
   flex-direction: column;
   border-radius: 0.6em;
-  margin-top: -228px;
+  margin-top: -30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow */
 }
 
 #user-input-section {
@@ -212,12 +213,11 @@ body {
   overflow-y: auto; /* Enable vertical scrolling */
   margin-top: -20px; /* Move up by 10px */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+  border-radius: 10px; /* Rounded corners */
   
   /* Styles to hide scrollbar but allow scrolling */
   -ms-overflow-style: none;  /* Internet Explorer 10+ */
   scrollbar-width: none;  /* Firefox */
-
-  border-radius: 10px; /* Rounded edges */
 }
 
 .correct-words-container::-webkit-scrollbar {
@@ -262,10 +262,4 @@ button {
 
 button:hover {
   background-color: #e0e0e0;
-}
-
-.word-was {
-  font-size: 0.8em; /* Smaller font size */
-  display: block; /* Makes the text go on a new line */
-  margin-top: -10px; /* Moves the text up */
 }
