@@ -3437,13 +3437,22 @@ let count = 0;
 let chosenWord = "";
 let chosenDefinition = "";
 
-//Display option buttons
+// Display option buttons
 const displayOptions = () => {
   optionsContainer.innerHTML = ""; // Clear previous options
   let buttonCon = document.createElement("div");
+
   for (let value in options) {
-    buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;
+    let button = document.createElement("button");
+    button.className = "options";
+    button.textContent = value;
+    button.addEventListener("click", () => {
+      generateWord(value);
+      optionsContainer.innerHTML = ""; // Clear options after click
+    });
+    buttonCon.appendChild(button);
   }
+
   optionsContainer.appendChild(buttonCon);
 };
 
@@ -3512,7 +3521,7 @@ const initializer = () => {
     letterContainer.append(button);
   }
 
-  const additionalChars = ["'", "-", "ã", "ṽ", "ñ", "é", "á", "í", "ó", "ú", "ü"];
+  const additionalChars = ["'", "-", "ã", "ṽ", "ñ", "é", "á", "í", "ó", "ú",];
   additionalChars.forEach(char => {
     let button = document.createElement("button");
     button.classList.add("letters");
