@@ -108,6 +108,7 @@ body {
   justify-content: center;
   font-size: 1.8em;
   width: 100%;
+  margin-top: -27px; /* Move up by 20px */
 }
 
 .hide {
@@ -208,7 +209,7 @@ body {
   min-height: 200px;
   max-height: 550px;
   overflow-y: auto; /* Enable vertical scrolling */
-  margin-top: 20px; /* Reduced margin for less spacing */
+  margin-top: -10px; /* Move up by 10px */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
   
   /* Styles to hide scrollbar but allow scrolling */
