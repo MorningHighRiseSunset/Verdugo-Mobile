@@ -209,6 +209,17 @@ body {
   max-height: 550px;
   overflow-y: auto;
   margin-top: 20px; /* Reduced margin for less spacing */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
+}
+
+.correct-words-container::before {
+  content: "definiciones(Definitions)";
+  display: block;
+  font-size: 1.25em; /* Adjust font size as needed */
+  text-align: center;
+  padding: 10px;
+  width: 100%;
+  color: #333; /* Text color */
 }
 
 #streak, #showHighestScore {
