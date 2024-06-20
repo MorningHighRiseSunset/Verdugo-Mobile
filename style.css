@@ -101,6 +101,7 @@ body {
   justify-content: center;
   flex-direction: column;
   border-radius: 0.6em;
+  margin-top: -30px;
 }
 
 #user-input-section {
