@@ -223,7 +223,7 @@ body {
 .correct-words-container::before {
   content: "definiciones(Definitions)";
   display: block;
-  font-size: 1.25em; /* Adjust font size as needed */
+  font-size: 1.0em; /* Adjust font size as needed */
   text-align: center;
   padding: 10px;
   width: 100%;
