@@ -2878,7 +2878,7 @@ let options = {
       pronunciation: "/dɪsˈkʌmfət/"
     },
     {
-      word: "lugares comunes",
+      word: "lugares_comunes",
       definition: "Definition of commonplaces: A platitude or cliché. - (Un tópico o cliché.)",
       pronunciation: "/No pronunciation available/"
     },
@@ -3497,7 +3497,8 @@ const generateWord = (optionValue) => {
   chosenWord = randomWordObject.word.toUpperCase();
   chosenDefinition = randomWordObject.definition;
 
-  let displayItem = chosenWord.replace(/./g, '<span class="dashes">_</span>');
+  // Create display item with spaces handled correctly
+  let displayItem = chosenWord.split('').map(char => char === ' ' ? '<span class="space"> </span>' : '<span class="dashes">_</span>').join('');
   userInputSection.innerHTML = displayItem;
 };
 
@@ -3521,7 +3522,7 @@ const initializer = () => {
     letterContainer.append(button);
   }
 
-  const additionalChars = ["'", "-", "ã", "ṽ", "ñ", "é", "á", "í", "ó", "ú",];
+  const additionalChars = ["'", "-", "ã", "ṽ", "ñ", "é", "á", "í", "ó", "ú", "_"];
   additionalChars.forEach(char => {
     let button = document.createElement("button");
     button.classList.add("letters");
@@ -3572,7 +3573,9 @@ function showDefinitionPopup(word, definition, isWin) {
   const color = isWin ? "green" : "red";
   const newListItem = document.createElement("li");
   newListItem.innerHTML = `<strong style="color: ${color};">${word}</strong>: ${definition}`;
-  correctWordsList.appendChild(newListItem);
+  const list = document.getElementById("correct-words-list") || createCorrectWordsList();
+  // Prepend the new word to the list so it appears at the top
+  list.prepend(newListItem);
 }
 
 // Canvas drawing functions
@@ -3583,43 +3586,43 @@ const canvasCreator = () => {
   context.lineWidth = 5;
 
   const drawLine = (fromX, fromY, toX, toY) => {
-    context.moveTo(fromX, fromY);
-    context.lineTo(toX, toY);
+    context.moveTo(fromX, fromY - 5); // Moved up by 5 pixels (less than before)
+    context.lineTo(toX, toY - 5); // Moved up by 5 pixels (less than before)
     context.stroke();
   };
 
   const head = () => {
     context.beginPath();
-    context.arc(70, 30, 10, 0, Math.PI * 2, true);
+    context.arc(70, 25, 10, 0, Math.PI * 2, true); // Moved up by 5 pixels (less than before)
     context.stroke();
   };
 
   const body = () => {
-    drawLine(70, 40, 70, 80);
+    drawLine(70, 35, 70, 75); // Adjusted coordinates (less upward shift)
   };
 
   const leftArm = () => {
-    drawLine(70, 50, 50, 70);
+    drawLine(70, 45, 50, 65); // Adjusted coordinates (less upward shift)
   };
 
   const rightArm = () => {
-    drawLine(70, 50, 90, 70);
+    drawLine(70, 45, 90, 65); // Adjusted coordinates (less upward shift)
   };
 
   const leftLeg = () => {
-    drawLine(70, 80, 50, 110);
+    drawLine(70, 75, 50, 105); // Adjusted coordinates (less upward shift)
   };
 
   const rightLeg = () => {
-    drawLine(70, 80, 90, 110);
+    drawLine(70, 75, 90, 105); // Adjusted coordinates (less upward shift)
   };
 
   const initialDrawing = () => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    drawLine(10, 130, 130, 130);
-    drawLine(10, 10, 10, 131);
-    drawLine(10, 10, 70, 10);
-    drawLine(70, 10, 70, 20);
+    drawLine(10, 125, 130, 125); // Moved up by 5 pixels (less than before)
+    drawLine(10, 15, 10, 126); // Adjusted coordinates (less upward shift)
+    drawLine(10, 15, 70, 15); // Same as before, less upward shift
+    drawLine(70, 15, 70, 15); // Moved up by 5 pixels (less than before)
   };
 
   return { initialDrawing, head, body, leftArm, rightArm, leftLeg, rightLeg };
