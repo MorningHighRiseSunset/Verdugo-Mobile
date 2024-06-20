@@ -205,8 +205,8 @@ body {
   width: 100%;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
-  min-height: 50px;
-  max-height: 100px;
+  min-height: 200px;
+  max-height: 550px;
   overflow-y: auto;
   margin-top: 20px; /* Reduced margin for less spacing */
 }
