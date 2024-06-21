@@ -76,7 +76,7 @@ body {
 }
 
 .letter-container {
-  width: 100%;
+  width: 120%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
