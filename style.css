@@ -119,13 +119,15 @@ body {
 }
 
 #result-text h2 {
-  font-size: 1.8em;
+  font-size: 1.1em; /* Reduced from 1.8em to make it smaller */
   text-align: center;
+  margin-top: -5px; /* Move up by reducing the top margin */
 }
 
 #result-text p {
-  font-size: 1.25em;
-  margin: 1em 0;
+  font-size: 1.0em; /* Reduced from 1.25em to make it smaller */
+  margin: 0.5em 0; /* Adjusted margin for closer spacing */
+  margin-top: -10px; /* Move up by reducing the top margin */
 }
 
 #result-text span {
@@ -140,6 +142,7 @@ body {
   color: #fff;
   border-radius: 0.2em;
   cursor: pointer;
+  margin-top: -12px; /* Move up by reducing the top margin */
 }
 
 .win-msg {
@@ -209,8 +212,8 @@ body {
   width: 100%;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
-  min-height: 200px;
-  max-height: 550px;
+  min-height: 150px;
+  max-height: 450px;
   overflow-y: auto; /* Enable vertical scrolling */
   margin-top: -20px; /* Move up by 10px */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
