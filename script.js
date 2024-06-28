@@ -2828,11 +2828,6 @@ let options = {
       pronunciation: "/ˈwɔːkɪŋ/"
     },
     {
-      word: "viragos",
-      definition: "Definition of viragos: A woman given to undue belligerence or ill manner at the slightest provocation. - (Una mujer entregada a la beligerancia indebida o a los malos modales a la menor provocación.)",
-      pronunciation: "/No pronunciation available/"
-    },
-    {
       word: "caprina",
       definition: "Definition of Goat: A mammal, Capra aegagrus hircus, and similar species of the genus Capra. - (Un mamífero, Capra aegagrus hircus, y especies similares del género Capra.)",
       pronunciation: "/ɡɐ̟ʉt/"
