@@ -76,17 +76,17 @@ body {
 }
 
 .letter-container {
-  width: 125%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  width: 100%; /* Change width to 100% for a rectangle shape */
+  display: grid; /* Use grid for better control */
+  grid-template-columns: repeat(auto-fill, minmax(2em, 1fr)); /* Arrange buttons in columns */
   gap: 0.2em;
-  margin-top: -60px; /* Move up by 10px */
+  justify-content: center;
+  margin-top: -60px;
 }
 
 #letter-container button {
-  height: 2.0em;
-  width: 1.0em;
+  height: 2.5em;
+  width: 2.5em; /* Make width equal to height for a square shape */
   border-radius: 0.3em;
   background-color: #ffffff;
   cursor: pointer;
