@@ -3564,14 +3564,33 @@ function letterButtonClickHandler() {
   this.disabled = true;
 }
 
+function playRandomSound(sounds, duration) {
+  const randomIndex = Math.floor(Math.random() * sounds.length);
+  const audio = new Audio(sounds[randomIndex]);
+  audio.play();
+  audio.addEventListener('timeupdate', function() {
+    if (audio.currentTime > duration) { // Change duration to the desired duration in seconds
+      audio.pause();
+    }
+  });
+}
+
 function showDefinitionPopup(word, definition, isWin) {
   const color = isWin ? "green" : "red";
   const newListItem = document.createElement("li");
   newListItem.innerHTML = `<strong style="color: ${color};">${word}</strong>: ${definition}`;
   const list = document.getElementById("correct-words-list") || createCorrectWordsList();
-  // Prepend the new word to the list so it appears at the top
   list.prepend(newListItem);
+
+  if (isWin) {
+    const winSounds = ['yeehaw-4-203840.mp3', '050612_wild-west-1-36194.mp3', 'tada-fanfare-a-6313.mp3', 'correct-6033.mp3']; // Add your win sound file names
+    playRandomSound(winSounds, 4); // Adjust the duration here
+  } else {
+    const loseSounds = ['buzzer-or-wrong-answer-20582.mp3', 'the-only-harmonica-in-the-west-33942.mp3', 'lose-sound3.mp3']; // Add your lose sound file names
+    playRandomSound(loseSounds, 7); // Adjust the duration here
+  }
 }
+
 
 // Canvas drawing functions
 const canvasCreator = () => {
