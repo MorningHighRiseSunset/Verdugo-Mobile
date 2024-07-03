@@ -2858,7 +2858,7 @@ let options = {
           pronunciation: "/səˈsɛʃən/"
         },
         {
-          word: "liftings faciales",
+          word: "levantamiento facial",
           definition: "Definition of facelifts: Plastic surgery to the face to remove wrinkles, fat or various signs of aging. - (Cirugía plástica en la cara para eliminar arrugas, grasa o varios signos de envejecimiento.)",
           pronunciation: "/No pronunciation available/"
         },
