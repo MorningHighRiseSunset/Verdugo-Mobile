@@ -76,17 +76,19 @@ body {
 }
 
 .letter-container {
-  width: 100%; /* Change width to 100% for a rectangle shape */
-  display: grid; /* Use grid for better control */
-  grid-template-columns: repeat(auto-fill, minmax(2em, 1fr)); /* Arrange buttons in columns */
+  width: 90%; /* Adjust width as needed */
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* Set 8 columns for 32 blocks */
+  grid-template-rows: repeat(4, 1fr); /* Set 4 rows for 32 blocks */
   gap: 0.2em;
   justify-content: center;
+  align-content: end; /* Align items to the bottom */
   margin-top: -60px;
 }
 
 #letter-container button {
-  height: 2.5em;
-  width: 2.5em; /* Make width equal to height for a square shape */
+  height: 3em; /* Increased height for a rectangular key */
+  width: calc(90% / 8); /* Adjusted width to evenly distribute keys */
   border-radius: 0.3em;
   background-color: #ffffff;
   cursor: pointer;
