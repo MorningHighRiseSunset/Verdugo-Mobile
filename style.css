@@ -80,16 +80,16 @@ body {
   display: grid;
   grid-template-columns: repeat(8, 1fr); /* Set 8 columns for 32 blocks */
   grid-template-rows: repeat(4, 1fr); /* Set 4 rows for 32 blocks */
-  gap: 0.2em;
+  gap: 0.1em; /* Reduced gap for closer spacing */
   justify-content: center;
   align-content: end; /* Align items to the bottom */
   margin-top: -60px;
 }
 
 #letter-container button {
-  height: 3em; /* Increased height for a rectangular key */
-  width: calc(90% / 8); /* Adjusted width to evenly distribute keys */
-  border-radius: 0.3em;
+  height: 2em; /* Further reduced height for a smaller key */
+  width: calc((90% - 3.2em) / 8); /* Further adjusted width for closer keys */
+  border-radius: 0.1em; /* Smaller border radius */
   background-color: #ffffff;
   cursor: pointer;
   border: 1px solid black;
