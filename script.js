@@ -3509,7 +3509,7 @@ const initializer = () => {
   newGameContainer.classList.add("hide");
   letterContainer.innerHTML = "";
 
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚ"; // English characters only initially
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ"; // English characters only initially
   for (let char of alphabet) {
     let button = document.createElement("button");
     button.classList.add("letters");
