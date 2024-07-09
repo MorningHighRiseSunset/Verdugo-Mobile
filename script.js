@@ -3741,3 +3741,23 @@ document.addEventListener('keyup', function(event) {
     keysPressed[event.key] = false;
   }
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+  const instructionsButton = document.getElementById("instructions-button");
+  const instructionsPopup = document.getElementById("instructions-popup");
+  const closePopup = document.getElementById("close-popup");
+
+  instructionsButton.addEventListener("click", function() {
+      instructionsPopup.style.display = "block";
+  });
+
+  closePopup.addEventListener("click", function() {
+      instructionsPopup.style.display = "none";
+  });
+
+  window.addEventListener("click", function(event) {
+      if (event.target == instructionsPopup) {
+          instructionsPopup.style.display = "none";
+      }
+  });
+});
