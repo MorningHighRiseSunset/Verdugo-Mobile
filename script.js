@@ -3233,7 +3233,7 @@ let options = {
   pronunciation: "/flændʒ/"
 },
 {
-  word: "Foulest",
+  word: "asqueroso",
   definition: "Definition of Foulest: Covered with, or containing unclean matter; dirty. - (Cubierto con, o que contiene materia sucia; sucio.)",
   pronunciation: "/No pronunciation available/"
 },
