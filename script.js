@@ -3434,7 +3434,6 @@ let options = {
 },
       ],
     };
-    
 //count
 let winCount = 0;
 let count = 0;
@@ -3505,8 +3504,27 @@ const generateWord = (optionValue) => {
   // Create display item with spaces handled correctly
   let displayItem = chosenWord.split('').map(char => char === ' ' ? '<span class="space"> </span>' : '<span class="dashes">_</span>').join('');
   userInputSection.innerHTML = displayItem;
+
+  // Update the alphabet and create letter buttons
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ";
+  let characters = alphabet.split('');
+  
+  // Check if the chosen word contains a hyphen
+  if (chosenWord.includes('-')) {
+    characters.push('-');
+  }
+
+  letterContainer.innerHTML = ""; // Clear previous letters
+  for (let char of characters) {
+    let button = document.createElement("button");
+    button.classList.add("letters");
+    button.innerText = char;
+    button.addEventListener("click", letterButtonClickHandler);
+    letterContainer.append(button);
+  }
 };
 
+//Initial Function (Called when page loads/user presses new game)
 //Initial Function (Called when page loads/user presses new game)
 const initializer = () => {
   winCount = 0;
@@ -3519,8 +3537,15 @@ const initializer = () => {
   newGameContainer.classList.add("hide");
   letterContainer.innerHTML = "";
 
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ"; // English characters only initially
-  for (let char of alphabet) {
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ";
+  let characters = alphabet.split('');
+  
+  // Check if the chosen word contains a hyphen
+  if (chosenWord.includes('-')) {
+    characters.push('-');
+  }
+
+  for (let char of characters) {
     let button = document.createElement("button");
     button.classList.add("letters");
     button.innerText = char;
