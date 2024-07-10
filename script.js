@@ -2753,676 +2753,686 @@ let options = {
       ],
       "Verdugo": [
         {
-          word: "Lanneret",
-          definition: "Definition of Lanneret: A male lanner, smaller than the female. - (Un lanner macho, más pequeño que la hembra.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "amargos",
-          definition: "Definition of bitters: (usually in the plural bitters) A liquid or powder, made from bitter herbs, used in mixed drinks or as a tonic. - ((generalmente en los amargos plurales) Un líquido o polvo, hecho de hierbas amargas, utilizado en bebidas mixtas o como tónico.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "leotardos",
-          definition: "Definition of Leotard: A one-piece skintight garment with or without sleeves and without legs (often worn by gymnasts, acrobats, wrestlers, female swimmers, etc.) - (Una prenda ajustada de una sola pieza con o sin mangas y sin piernas (a menudo usada por gimnastas, acróbatas, luchadoras, nadadoras, etc.))",
-          pronunciation: "/ˈliː.ə.tɑːd/"
-        },
-        {
-          word: "Ghastly",
-          definition: "Definition of Ghastly: Like a ghost in appearance; death-like; pale; pallid; dismal. - (Como un fantasma en apariencia; como la muerte; pálido; pálido; lúgubre.)",
-          pronunciation: "/ˈɡɑːs(t).li/"
-        },
-        {
-          word: "jamones",
-          definition: "Definition of ham: The region back of the knee joint; the popliteal space; the hock. - (La región posterior de la articulación de la rodilla; el espacio poplíteo; el corvejón.)",
-          pronunciation: "/ˈhæːm/"
-        },
-        {
-          word: "sarpullidos",
-          definition: "Definition of hives: Itchy, swollen, red areas of the skin which can appear quickly in response to an allergen or due to other conditions. - (Zonas de la piel con picazón, hinchazón y enrojecimiento que pueden aparecer rápidamente en respuesta a un alérgeno o debido a otras afecciones.)",
-          pronunciation: "/haɪvz/"
-        },
-        {
-          word: "robustez",
-          definition: "Definition of strength: The quality or degree of being strong. - (La calidad o el grado de ser fuerte.)",
-          pronunciation: "/stɹɛŋkθ/"
-        },
-        {
-          word: "diseños",
-          definition: "Definition of layouts: A structured arrangement of items within certain limits. - (Una disposición estructurada de elementos dentro de ciertos límites.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "dispersos",
-          definition: "Definition of Scattered: To (cause to) separate and go in different directions; to disperse. - (Para (hacer que) se separe e vaya en diferentes direcciones; para dispersarse.)",
-          pronunciation: "/ˈskætəd/"
-        },
-        {
-          word: "estrangulos",
-          definition: "Definition of strangles: A disease of horses caused by an infection by the bacterium Streptococcus equi. - (Una enfermedad de los caballos causada por una infección por la bacteria Streptococcus equi.)",
-          pronunciation: "/ˈstɹæŋɡ(ə)lz/"
-        },
-        {
-          word: "dogmatismo",
-          definition: "Definition of dogmatism: The manner or character of a dogmatist; arrogance or positiveness in stating opinion. - (La manera o el carácter de un dogmático; arrogancia o positividad al expresar una opinión.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "extravagante",
-          definition: "Definition of extravagant: Exceeding the bounds of something; roving; hence, foreign. - (Exceder los límites de algo; errante; por lo tanto, extraño.)",
-          pronunciation: "/ɪkˈstɹævəɡənt/"
-        },
-        {
-          word: "germen",
-          definition: "Definition of germ: The small mass of cells from which a new organism develops; a seed, bud or spore. - (La pequeña masa de células a partir de la cual se desarrolla un nuevo organismo; una semilla, un brote o una espora.)",
-          pronunciation: "/d͡ʒɜːm/"
-        },
-        {
-          word: "interminable",
-          definition: "Definition of xxx: An abbreviation for kisses, usually placed at the end of a letter, often placed alongside ooo, or in a text message. - (Una abreviatura para besos, generalmente colocada al final de una letra, a menudo colocada junto a ooo, o en un mensaje de texto.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "andando",
-          definition: "Definition of Walking: To move on the feet by alternately setting each foot (or pair or group of feet, in the case of animals with four or more feet) forward, with at least one foot on the ground at all times. Compare run. - (Para moverse sobre las patas, coloque alternativamente cada pata (o par o grupo de patas, en el caso de animales con cuatro o más patas) hacia adelante, con al menos una pata en el suelo en todo momento. Compare la carrera.)",
-          pronunciation: "/ˈwɔːkɪŋ/"
-        },
-        {
-          word: "caprina",
-          definition: "Definition of Goat: A mammal, Capra aegagrus hircus, and similar species of the genus Capra. - (Un mamífero, Capra aegagrus hircus, y especies similares del género Capra.)",
-          pronunciation: "/ɡɐ̟ʉt/"
-        },
-        {
-          word: "pretendiente",
-          definition: "Definition of suitor: One who pursues someone, especially a woman, for marriage; a wooer; one who courts someone. - (Uno que persigue a alguien, especialmente a una mujer, para casarse; un cortejador; uno que corteja a alguien.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Abstruse",
-          definition: "Definition of Abstruse: Difficult to comprehend or understand. - (Difícil de comprender o entender.)",
-          pronunciation: "/əbˈstɹuːs/"
-        },
-        {
-          word: "Monickers",
-          definition: "Definition of Monickers: A personal name or nickname; an informal label, often drawing attention to a particular attribute. - (Un nombre o apodo personal; una etiqueta informal, que a menudo llama la atención sobre un atributo en particular.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "pesaje",
-          definition: "Definition of Weighing: To determine the weight of an object. - (Para determinar el peso de un objeto.)",
-          pronunciation: "/ˈweɪ.ɪŋ/"
-        },
-        {
-          word: "secesionista",
-          definition: "Definition of Secession: The act of seceding. - (El acto de la secesión.)",
-          pronunciation: "/səˈsɛʃən/"
-        },
-        {
-          word: "levantamiento facial",
-          definition: "Definition of facelifts: Plastic surgery to the face to remove wrinkles, fat or various signs of aging. - (Cirugía plástica en la cara para eliminar arrugas, grasa o varios signos de envejecimiento.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Horas",
-          definition: "Definition of Hours: A time period of sixty minutes; one twenty-fourth of a day. - (Un periodo de tiempo de sesenta minutos; un veinticuatroavo de un día.)",
-          pronunciation: "/ˈaʊɚz/"
-        },
-        {
-          word: "malestar",
-          definition: "Definition of DISCOMFORT: Mental or bodily distress. - (Angustia mental o corporal.)",
-          pronunciation: "/dɪsˈkʌmfət/"
-        },
-        {
-          word: "lugares_comunes",
-          definition: "Definition of commonplaces: A platitude or cliché. - (Un tópico o cliché.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Felicitaciones",
-          definition: "Definition of Congratulations: The act of congratulating. - (El acto de felicitar.)",
-          pronunciation: "/kənˌɡɹad͡ʒəˈleɪʃ(ə)nz/"
-        },
-        {
-          word: "gruñidos",
-          definition: "Definition of snarls: A knot or complication of hair, thread, or the like, difficult to disentangle. - (Un nudo o complicación de cabello, hilo o similar, difícil de desenredar.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "marina",
-          definition: "Definition of marina: A harbour for small boats. - (Un puerto para pequeñas embarcaciones.)",
-          pronunciation: "/məˈɹinə/"
-        },
-        {
-          word: "fuera de servicio",
-          definition: "Definition of disabled: To render unable; to take away an ability of, as by crippling. - (Impedir; quitar una habilidad de, como paralizando.)",
-          pronunciation: "/[dɪsˈeɪbəɫd]/"
-        },
-        {
-          word: "glucosaico",
-          definition: "Definition of glucose: A simple monosaccharide (sugar) with a molecular formula of C6H12O6; it is a principle source of energy for cellular metabolism. - (Un monosacárido simple (azúcar) con una fórmula molecular de C6H12O6; es una fuente principal de energía para el metabolismo celular.)",
-          pronunciation: "/ˈɡluːkoʊz/"
-        },
-        {
-          word: "Filas",
-          definition: "Definition of Rows: A line of objects, often regularly spaced, such as seats in a theatre, vegetable plants in a garden etc. - (Una línea de objetos, a menudo espaciados regularmente, como asientos en un teatro, plantas vegetales en un jardín, etc.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "bancos",
-          definition: "Definition of banks: An institution where one can place and borrow money and take care of financial affairs. - (Una institución donde uno puede colocar y pedir dinero prestado y ocuparse de los asuntos financieros.)",
-          pronunciation: "/bæŋks/"
-        },
-        {
-          word: "percepción",
-          definition: "Definition of perception: The organisation, identification and interpretation of sensory information. - (La organización, identificación e interpretación de la información sensorial.)",
-          pronunciation: "/pəˈsɛpʃ(ə)n/"
-        },
-        {
-          word: "cristales",
-          definition: "Definition of crystals: A solid composed of an array of atoms or molecules possessing long-range order and arranged in a pattern which is periodic in three dimensions. - (Un sólido compuesto por una matriz de átomos o moléculas que poseen un orden de largo alcance y están dispuestos en un patrón que es periódico en tres dimensiones.)",
-          pronunciation: "/ˈkɹɪstəlz/"
-        },
-        {
-          word: "asimilados",
-          definition: "Definition of ASSIMILATED: To incorporate nutrients into the body, especially after digestion. - (Incorporar nutrientes en el cuerpo, especialmente después de la digestión.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "diámetro",
-          definition: "Definition of diameter: Any straight line between two points on the circumference of a circle that passes through the centre/center of the circle. - (Cualquier línea recta entre dos puntos en la circunferencia de un círculo que pasa por el centro/centro del círculo.)",
-          pronunciation: "/daɪˈæmɪtə(ɹ)/"
-        },
-        {
-          word: "más raro",
-          definition: "Definition of rarer: Very uncommon; scarce. - (Muy infrecuente; escaso.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Gastos",
-          definition: "Definition of Costs: To incur a charge of; to require payment of a (specified) price. - (Para incurrir en un cargo de; para exigir el pago de un precio (especificado).)",
-          pronunciation: "/ˈkɑsts/"
-        },
-        {
-          word: "locomotora",
-          definition: "Definition of locomotive: The power unit of a train that pulls the coaches or wagons. - (La unidad de potencia de un tren que tira de los vagones o vagones.)",
-          pronunciation: "/ˌləʊkəʊˈməʊtiv/"
-        },
-        {
-          word: "aflictivo",
-          definition: "Definition of afflictive: That causes physical or mental pain. - (Eso causa dolor físico o mental.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "no",
-          definition: "Definition of No: A negating expression; an answer that shows disagreement or disapproval - (Una expresión negadora; una respuesta que muestra desacuerdo o desaprobación)",
-          pronunciation: "/nəʊ/"
-        },
-        {
-          word: "armeros",
-          definition: "Definition of gunsmiths: A person skilled in the repair and servicing of firearms. - (Una persona experta en la reparación y servicio de armas de fuego.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "disente",
-          definition: "Definition of dissenting: To disagree; to withhold assent. Construed with from (or, formerly, to). - (No estar de acuerdo; retener el asentimiento. Construido con from (o, anteriormente, to).)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "fontanería",
-          definition: "Definition of plumbing: The pipes, together with the joints, tanks, stopcocks, taps and other fixtures of a water, gas or sewage system in a house or other building. - (Las tuberías, junto con las juntas, tanques, llaves de paso, grifos y otros accesorios de un sistema de agua, gas o alcantarillado en una casa u otro edificio.)",
-          pronunciation: "/ˈplʌmɪŋ/"
-        },
-        {
-          word: "sin problemas",
-          definition: "Definition of Running: To move swiftly. - (Moverse con rapidez.)",
-          pronunciation: "/ˈɹʌnɪŋ/"
-        },
-        {
-          word: "Fantasma",
-          definition: "Definition of Ghost: The spirit; the soul of man. - (El espíritu; el alma del hombre.)",
-          pronunciation: "/ɡəʊst/"
-        },
-        {
-          word: "vacante",
-          definition: "Definition of vacant: Not occupied; empty. - (No ocupado; vacío.)",
-          pronunciation: "/ˈveɪkənt/"
-        },
-        {
-          word: "Redención",
-          definition: "Definition of Redemption: The act of redeeming or something redeemed. - (El acto de redimir o algo redimido.)",
-          pronunciation: "/ɹɪˈdɛmpʃən/"
-        },
-        {
-          word: "reinhabitados",
-          definition: "Definition of reinhabited: To inhabit again (after living elsewhere) - (Habitar de nuevo (después de vivir en otro lugar))",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "conservatorio",
-          definition: "Definition of conservatory: That which preserves from injury. - (Aquello que preserva de lesiones.)",
-          pronunciation: "/kənˈsɜː.və.tɹi/"
-        },
-        {
-          word: "grasas",
-          definition: "Definition of fats: A specialized animal tissue with a high oil content, used for long-term storage of energy. - (Un tejido animal especializado con un alto contenido de aceite, utilizado para el almacenamiento de energía a largo plazo.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "pestañas",
-          definition: "Definition of tabs: A small flap or strip of material attached to something, for holding, manipulation, identification, opening etc. - (Una pequeña solapa o tira de material unida a algo, para su sujeción, manipulación, identificación, apertura, etc.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "pedagogía",
-          definition: "Definition of pedagogy: The profession of teaching. - (La profesión de docente.)",
-          pronunciation: "/ˈpɛdəˌɡoʊdʒi/"
-        },
-        {
-          word: "profesado",
-          definition: "Definition of professed: To administer the vows of a religious order to (someone); to admit to a religious order. (Chiefly in passive.) - (Administrar los votos de una orden religiosa a (alguien); admitir en una orden religiosa. (Principalmente en pasivo.))",
-          pronunciation: "/pɹəˈfɛst/"
-        },
-        {
-          word: "matemáticas",
-          definition: "Definition of Mathematics: An abstract representational system used in the study of numbers, shapes, structure, change and the relationships between these concepts. - (Un sistema de representación abstracto utilizado en el estudio de los números, las formas, la estructura, el cambio y las relaciones entre estos conceptos.)",
-          pronunciation: "/mæθ(ə)ˈmætɪks/"
-        },
-        {
-          word: "vagamente",
-          definition: "Definition of vaguely: In a vague manner. - (De manera vaga.)",
-          pronunciation: "/ˈveɪɡli/"
-        },
-        {
-          word: "abetos",
-          definition: "Definition of firs: A conifer of the genus Abies. - (Conífera del género Abies.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "blanco",
-          definition: "Definition of White: The color/colour of snow or milk; the colour of light containing equal amounts of all visible wavelengths. - (El color/color de la nieve o la leche; el color de la luz que contiene cantidades iguales de todas las longitudes de onda visibles.)",
-          pronunciation: "/waɪt/"
-        },
-        {
-          word: "exagerando",
-          definition: "Definition of Overdoing: To do too much; to exceed what is proper or true in doing; to carry too far. - (Hacer demasiado; exceder lo que es correcto o verdadero al hacer; llevar demasiado lejos.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "incompetente",
-          definition: "Definition of incompetent: A person who is incompetent. - (Una persona que es incompetente.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Headlong",
-          definition: "Definition of Headlong: To precipitate. - (Para precipitar.)",
-          pronunciation: "/ˈhɛdlɑŋ/"
-        },
-        {
-          word: "No.",
-          definition: "Definition of No.: An abstract entity used to describe quantity. - (Una entidad abstracta utilizada para describir la cantidad.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "utilitarios",
-          definition: "Definition of Utility: The state or condition of being useful; usefulness. - (El estado o condición de ser útil; utilidad.)",
-          pronunciation: "/juːˈtɪl.ɪ.ti/"
-        },
-        {
-          word: "Cunas",
-          definition: "Definition of Cots: A simple bed, especially one for portable or temporary purposes. - (Una cama simple, especialmente una para fines portátiles o temporales.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Cuff",
-          definition: "Definition of Cuff: Glove; mitten - (Guante; manopla)",
-          pronunciation: "/kʌf/"
-        },
-        {
-          word: "discrasia",
-          definition: "Definition of dyscrasia: (ancient usage) Imbalance of the four bodily humors (blood, black and yellow bile, phlegm) that was thought to cause disease. - ((uso antiguo) Desequilibrio de los cuatro humores corporales (sangre, bilis negra y amarilla, flema) que se pensaba que causaba enfermedades.)",
-          pronunciation: "/dɪsˈkɹeɪzɪə/"
-        },
-        {
-          word: "sin tacto",
-          definition: "Definition of Tactless: Having no tact; unaware or intentionally inconsiderate of someone else's feelings - (No tener tacto; inconsciente o intencionalmente desconsiderado de los sentimientos de otra persona)",
-          pronunciation: "/ˈtæktləs/"
-        },
-        {
-          word: "bronquio",
-          definition: "Definition of bronchus: Either of two airways, which are primary branches of the trachea, leading directly into the lungs. - (Cualquiera de las dos vías respiratorias, que son las ramas principales de la tráquea, que conducen directamente a los pulmones.)",
-          pronunciation: "/ˈbɹɒŋkəs/"
-        },
-        {
-          word: "bardo",
-          definition: "Definition of Bard: A professional poet and singer, like among the ancient Celts, whose occupation was to compose and sing verses in honor of the heroic achievements of princes and brave men. - (Poeta y cantante profesional, como entre los antiguos celtas, cuya ocupación era componer y cantar versos en honor a los logros heroicos de príncipes y hombres valientes.)",
-          pronunciation: "/bɑːd/"
-        },
-        {
-          word: "Titlark",
-          definition: "Definition of Titlark: Anthus pratensis, the meadow pipit, a songbird. - (Anthus pratensis, el pipit del prado, un pájaro cantor.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "cystoscopio",
-          definition: "Definition of cystoscope: A form of endoscope used to examine the ureter and the bladder. - (Forma de endoscopio que se utiliza para examinar el uréter y la vejiga.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "echo",
-          definition: "Definition of made: A grub or maggot. - (Una larva o gusano.)",
-          pronunciation: "/meɪd/"
-        },
-        {
-          word: "deducible",
-          definition: "Definition of deductible: An amount of expenses that must be paid out of pocket before an insurer will pay further expenses. - (Una cantidad de gastos que debe pagarse de su bolsillo antes de que una aseguradora pague más gastos.)",
-          pronunciation: "/[dɪˈdʊktəbəɫ]/"
-        },
-        {
-          word: "reflexión",
-          definition: "Definition of reflection: The act of reflecting or the state of being reflected. - (El acto de reflexionar o el estado de ser reflejado.)",
-          pronunciation: "/ɹɪˈflɛkʃən/"
-        },
-        {
-          word: "impunes",
-          definition: "Definition of unpunished: Not punished - (No castigado)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "numerable",
-          definition: "Definition of countable: Capable of being counted; having a quantity. - (Capaz de ser contado; tener una cantidad.)",
-          pronunciation: "/[ˈkʰaʊn(ɾ)əbɫ̩]/"
-        },
-        {
-          word: "microondas",
-          definition: "Definition of microwaves: An electromagnetic wave with wavelength between that of infrared light and radio waves. - (Una onda electromagnética con longitud de onda entre la de la luz infrarroja y las ondas de radio.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "riego",
-          definition: "Definition of irrigation: The act or process of irrigating, or the state of being irrigated; especially, the operation of causing water to flow over lands, for nourishing plants. - (El acto o proceso de riego, o el estado de regadío; especialmente, la operación de hacer que el agua fluya sobre las tierras, para nutrir las plantas.)",
-          pronunciation: "/ˌɪɹəˈɡeɪʃən/"
-        },
-        {
-          word: "Shedded",
-          definition: "Definition of Shedded: To place or allocate a vehicle, such as a locomotive, in or to a depot or shed. - (Colocar o asignar un vehículo, como una locomotora, en un depósito o cobertizo.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "obituarios",
-          definition: "Definition of Obituaries: A brief notice of a person’s death, as published in a newspaper. - (Un breve aviso de la muerte de una persona, tal como se publica en un periódico.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Borks",
-          definition: "Definition of Borks: (US politics) To defeat a person's appointment or election, judicial nomination, etc., through a concerted attack on the person's character, background, and philosophy. - ((Política de EE. UU.) Derrotar el nombramiento o la elección de una persona, la nominación judicial, etc., a través de un ataque concertado contra el carácter, los antecedentes y la filosofía de la persona.)",
-          pronunciation: "/bɔːks/"
-        },
-        {
-          word: "Jerry",
-          definition: "Definition of Jerry: A chamber pot. - (Una olla de cámara.)",
-          pronunciation: "/ˈdʒɛɹi/"
-        },
-        {
-          word: "asombroso",
-          definition: "Definition of amazing: To fill with wonder and surprise; to astonish, astound, surprise or perplex. - (Llenar de asombro y sorpresa; asombrar, asombrar, sorprender o perplejar.)",
-          pronunciation: "/əˈmeɪzɪŋ/"
-        },
-        {
-          word: "necesitado",
-          definition: "Definition of needful: Ready money; wherewithal. - (Dinero listo; con qué medios.)",
-          pronunciation: "/ˈniːdfəl/"
-        },
-        {
-          word: "definitivamente",
-          definition: "Definition of definitely: Without question and beyond doubt. - (Sin duda y más allá de toda duda.)",
-          pronunciation: "/ˈdɛf.nɪt.li/"
-        },
-        {
-          word: "amortiguación",
-          definition: "Definition of cushioning: To furnish with cushions. - (Para amueblar con cojines.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Simitar",
-          definition: "Definition of Simulate: To model, replicate, duplicate the behavior, appearance or properties of. - (Modelar, replicar, duplicar el comportamiento, apariencia o propiedades de.)",
-          pronunciation: "/-jə-/"
-        },
-        {
-          word: "autonomista",
-          definition: "Definition of Autonomy: Self-government; freedom to act or function independently. - (Autogobierno; libertad para actuar o funcionar de forma independiente.)",
-          pronunciation: "/ɑˈtɑnəmi/"
-        },
-        {
-          word: "Estiércol",
-          definition: "Definition of Manure: Animal excrement, especially that of common domestic farm animals and when used as fertilizer. Generally speaking, from cows, horses, sheep, pigs and chickens. - (Excremento animal, especialmente el de animales domésticos comunes y cuando se utiliza como fertilizante. En general, de vacas, caballos, ovejas, cerdos y pollos.)",
-          pronunciation: "/məˈnjɔː/"
-        },
-        {
-          word: "perversa",
-          definition: "Definition of perverse: Turned aside; hence, specifically, turned away from the (morally) right; willfully erring; wicked; perverted. - (Se apartó; por lo tanto, específicamente, se apartó de lo (moralmente) correcto; deliberadamente errando; malvado; pervertido.)",
-          pronunciation: "/pəˈvɜːs/"
-        },
-        {
-          word: "Jube",
-          definition: "Definition of Jube: A type of gelatine-based confection; its ingredients and consistency vary between countries. - (Un tipo de confitería a base de gelatina; sus ingredientes y consistencia varían entre países.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "rubio",
-          definition: "Definition of gurnard: Any of various marine fish of the family Triglidae that have a large armored head and fingerlike pectoral fins used for crawling along the sea bottom. - (Cualquiera de los diversos peces marinos de la familia Triglidae que tienen una gran cabeza blindada y aletas pectorales en forma de dedo utilizadas para arrastrarse por el fondo del mar.)",
-          pronunciation: "/ˈɡɵːnɘd/"
-        },
-        {
-          word: "nieve",
-          definition: "Definition of snow: The frozen, crystalline state of water that falls as precipitation. - (El estado congelado y cristalino del agua que cae como precipitación.)",
-          pronunciation: "/snəʊ/"
-        },
-        {
-          word: "preordenaciones",
-          definition: "Definition of pre-orders: An order for goods or services placed in advance. - (Un pedido de bienes o servicios realizado con antelación.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "pasantías",
-          definition: "Definition of Internships: A job taken by a student in order to learn a profession or trade. - (Un trabajo realizado por un estudiante con el fin de aprender una profesión u oficio.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "operaciones",
-          definition: "Definition of operations: The method by which a device performs its function. - (El método por el cual un dispositivo realiza su función.)",
-          pronunciation: "/ˌɒpəˈɹeɪʃənz/"
-        },
-        {
-          word: "aves",
-          definition: "Definition of bird: A member of the class of animals Aves in the phylum Chordata, characterized by being warm-blooded, having feathers and wings usually capable of flight, and laying eggs. - (Un miembro de la clase de animales Aves en el filo Chordata, caracterizado por ser de sangre caliente, tener plumas y alas generalmente capaces de volar y poner huevos.)",
-          pronunciation: "/bɜd/"
-        },
-        {
-          word: "recreación",
-          definition: "Definition of recreation: Any activity, such as play, that amuses, diverts or stimulates. - (Cualquier actividad, como el juego, que divierta, desvíe o estimule.)",
-          pronunciation: "/ɹɛkɹiˈeɪʃən/"
-        },
-        {
-          word: "cisne",
-          definition: "Definition of swan: Any of various species of large, long-necked waterfowl, of genus Cygnus (bird family: Anatidae), most of which have white plumage. - (Cualquiera de varias especies de aves acuáticas grandes y de cuello largo, del género Cygnus (familia de aves: Anatidae), la mayoría de las cuales tienen plumaje blanco.)",
-          pronunciation: "/swɒn/"
-        },
-        {
-          word: "norte",
-          definition: "Definition of north: One of the four major compass points, specifically 0°, directed toward the North Pole, and conventionally upwards on a map, abbreviated as N. - (Uno de los cuatro puntos cardinales principales, específicamente 0°, dirigido hacia el Polo Norte, y convencionalmente hacia arriba en un mapa, abreviado como N.)",
-          pronunciation: "/noːθ/"
-        },
-        {
-          word: "regulariza",
-          definition: "Definition of regularizes: To make regular. - (Para hacer regular.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Supplicar",
-          definition: "Definition of Beg: The act of begging; an imploring request. - (El acto de mendigar; una petición implorante.)",
-          pronunciation: "/bɛɡ/"
-        },
-        {
-          word: "hodoscopios",
-          definition: "Definition of hodoscopes: A device, consisting of multiple detectors, that is used to track the path of cosmic rays and other subatomic particles - (Un dispositivo, que consta de múltiples detectores, que se utiliza para rastrear la trayectoria de los rayos cósmicos y otras partículas subatómicas)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Lotería",
-          definition: "Definition of Lottery: A scheme for the distribution of prizes by lot or chance, especially a gaming scheme in which one or more tickets bearing particular numbers draw prizes, the other tickets are blanks. - (Un esquema para la distribución de premios por sorteo o azar, especialmente un esquema de juego en el que uno o más boletos con números particulares sortean premios, los otros boletos son espacios en blanco.)",
-          pronunciation: "/ˈlɒtəɹi/"
-        },
-        {
-          word: "claraboyas",
-          definition: "Definition of SKYLIGHTS: A window, dome, or opening in the roof or ceiling, to admit natural light. - (Una ventana, cúpula o abertura en el techo o techo, para admitir luz natural.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "hoja de ruta",
-          definition: "Definition of roadmap: A map with a visual representation of roads used for automobile travel and navigation. A road map may contain other relevant data, such as terrain or rail roads. - (Un mapa con una representación visual de las carreteras utilizadas para viajar y navegar en automóvil. Una hoja de ruta puede contener otros datos relevantes, como el terreno o las carreteras ferroviarias.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "simbiotas",
-          definition: "Definition of symbiotes: An organism in a partnership with another such that each profits from their being together; a symbiont - (Un organismo en asociación con otro de tal manera que cada uno se beneficia de estar juntos; un simbionte)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "foros",
-          definition: "Definition of forums: A place for discussion. - (Un lugar para el debate.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "delocalizaciones",
-          definition: "Definition of relocations: The act of moving from one place to another. - (EL ARTE DE MOVERDATOS DE UN LADO A OTRO)",
-          pronunciation: "/ˌɹiːləʊˈkeɪʃənz/"
-        },
-        {
-          word: "rodeados",
-          definition: "Definition of Surrounded: To encircle something or simultaneously extend in all directions. - (Rodear algo o extenderse simultáneamente en todas las direcciones.)",
-          pronunciation: "/səˈɹaʊndɪd/"
-        },
-        {
-          word: "insolvencias",
-          definition: "Definition of Insolvencies: The condition of being insolvent; the state or condition of a person who is insolvent; the condition of one who is unable to pay his debts as they fall due, or in the usual course of trade and business. - (La condición de ser insolvente; el estado o condición de una persona que es insolvente; la condición de alguien que no puede pagar sus deudas a su vencimiento, o en el curso habitual del comercio y los negocios.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Loo",
-          definition: "Definition of Loo: (used with at, upon or infinitive) To urge on with cries of loo or by other shouting or outcry. - ((usado con at, upon o infinitivo) Para instar con gritos de loo o por otros gritos o protestas.)",
-          pronunciation: "/luː/"
-        },
-        {
-          word: "Rejoinder",
-          definition: "Definition of Rejoinder: The defendant's answer to the replication. - (La respuesta del demandado a la réplica.)",
-          pronunciation: "/ɹɪd͡ʒˈɔ͡ɪndɚ/"
-        },
-        {
-          word: "fuera de lugar",
-          definition: "Definition of off-site: Away from a particular site - (Lejos de un sitio en particular)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "cuarteles",
-          definition: "Definition of Quarters: A fourth part of something. - (Una cuarta parte de algo.)",
-          pronunciation: "/ˈkwɔːtəz/"
-        },
-        {
-          word: "sectores",
-          definition: "Definition of sectors: Section - (Sección)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "contrarrestados",
-          definition: "Definition of counterbalanced: To apply weight in order to balance an opposing weight. - (Aplicar peso para equilibrar un peso opuesto.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "Rollback",
-          definition: "Definition of Rollback: A return to a prior state by undoing some operation. - (Un retorno a un estado anterior deshaciendo alguna operación.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "pareja",
-          definition: "Definition of partner: Someone who is associated with another in a common activity or interest. - (Alguien que está asociado con otra persona en una actividad o interés común.)",
-          pronunciation: "/ˈpɐːtnə/"
-        },
-        {
-          word: "sobrecarga",
-          definition: "Definition of overcharging: The act or process of charging excessively - (El acto o proceso de cobrar excesivamente)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "biociencias",
-          definition: "Definition of biosciences: Any of several sciences that deal with living organisms - (Cualquiera de las varias ciencias que se ocupan de los organismos vivos)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "inoculantes",
-          definition: "Definition of INOCULANTS: The active material used in an inoculation; an inoculum - (El material activo utilizado en una inoculación; un inóculo)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "vitalidad",
-          definition: "Definition of vitality: The capacity to live and develop. - (La capacidad de vivir y desarrollarse.)",
-          pronunciation: "/vaɪˈtæləti/"
-        },
-        {
-          word: "abstruso",
-          definition: "Definition of abstruse: Difficult to comprehend or understand. - (Difícil de comprender o entender.)",
-          pronunciation: "/əbˈstɹuːs/"
-        },
-        {
-          word: "sequía",
-          definition: "Definition of drought: A period of unusually low rainfall, longer and more severe than a dry spell. - (Un periodo de precipitaciones inusualmente bajas, más largo y severo que un periodo seco.)",
-          pronunciation: "/[dɹʌʊt]/"
-        },
-        {
-          word: "Harpoon",
-          definition: "Definition of Harpoon: A spearlike weapon with a barbed head used in hunting whales and large fish. - (Un arma similar a una lanza con una cabeza de púas utilizada en la caza de ballenas y peces grandes.)",
-          pronunciation: "/hɑːˈpuːn/"
-        },
-        {
-          word: "Queridos",
-          definition: "Definition of ones: The digit or figure 1. - (El dígito o figura 1.)",
-          pronunciation: "/wʌnz/"
-        },
-        {
-          word: "decimantes",
-          definition: "Definition of decimals: A number expressed in the base-ten system, a fractional numeral written in this system. - (Un número expresado en el sistema de base diez, un número fraccionario escrito en este sistema.)",
-          pronunciation: "/No pronunciation available/"
-        },
-        {
-          word: "cegador",
-          definition: "Definition of blinder: (of a person or animal) Unable to see, due to physiological or neurological factors. - ((de una persona o animal) Incapaz de ver, debido a factores fisiológicos o neurológicos.)",
-          pronunciation: "/ˈblaɪndə/"
-        },
-        {
-          word: "Noisome",
-          definition: "Definition of Noisome: Morally hurtful or noxious. - (Moralmente hiriente o nocivo.)",
-          pronunciation: "/ˈnɔɪ.səm/"
-        },
-        {
-          word: "mora",
-          definition: "Definition of mulberry: Any of several trees, of the genus Morus, having edible fruits. - (Cualquiera de varios árboles, del género Morus, que tengan frutos comestibles.)",
-          pronunciation: "/ˈmʌlbəɹi/"
-        },
-        {
-          word: "frágil",
-          definition: "Definition of fragile: Easily broken or destroyed, and thus often of subtle or intricate structure. - (Se rompe o destruye fácilmente y, por lo tanto, a menudo tiene una estructura sutil o intrincada.)",
-          pronunciation: "/ˈfɹædʒaɪl/"
-        },
-        {
-          word: "bucólicos",
-          definition: "Definition of bucolic: Rustic, pastoral, country-styled. - (Rústico, pastoral, de estilo campestre.)",
-          pronunciation: "/bjuːˈkɒlɪk/"
-        },
-        {
-          word: "optimista",
-          definition: "Definition of optimistic: Expecting the best in all possible ways. - (Esperar lo mejor en todas las formas posibles.)",
-          pronunciation: "/ˌɒptɪˈmɪstɪk/"
-        },
-      ]
+  word: "alarmas",
+  definition: "Definition of alarms: A summons to arms, as on the approach of an enemy. - (Una convocatoria a las armas, como ante la aproximación de un enemigo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "octuplas",
+  definition: "Definition of octuples: An eightfold amount or number - (Una cantidad o número multiplicado por ocho)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "eclecticismos",
+  definition: "Definition of eclecticism: The quality of being eclectic - (La cualidad de ser ecléctico)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Rakehell",
+  definition: "Definition of Rakehell: A lewd or wanton person; a debauchee; a rake. - (Una persona lasciva o sin sentido; un libertino; un rastrillo.)",
+  pronunciation: "/ˈɹeɪkhɛl/"
+},
+{
+  word: "Lobelias",
+  definition: "Definition of Lobelias: A member of the genus Lobelia, flowering plants in the Lobelioideae subfamily pf family Campanulaceae, containing many species, some of which are garden plants. - (Un miembro del género Lobelia, plantas con flores de la subfamilia Lobelioideae de la familia Campanulaceae, que contiene muchas especies, algunas de las cuales son plantas de jardín.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Canniest",
+  definition: "Definition of Canniest: Careful, prudent, cautious. - (Cuidadoso, prudente, cauteloso.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "conyugal",
+  definition: "Definition of conjugal: Of or relating to marriage, or the relationship of spouses; connubial. - (De o relacionado con el matrimonio, o la relación de los cónyuges; conyugal.)",
+  pronunciation: "/ˈkɒndʒʊɡəl/"
+},
+{
+  word: "teclados",
+  definition: "Definition of KEYBOARDS: (etc.) A set of keys used to operate a typewriter, computer etc. - ((etc.) Un conjunto de teclas utilizadas para operar una máquina de escribir, un ordenador, etc.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "estadísticamente",
+  definition: "Definition of statistically: In a statistical way. - (De forma estadística.)",
+  pronunciation: "/stəˈtɪstɪkl̩i/"
+},
+{
+  word: "Japes",
+  definition: "Definition of Japes: A joke or quip. - (Una broma o un chiste.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Gritando",
+  definition: "Definition of Screaming: To cry out with a shrill voice; to utter a sudden, sharp outcry, or shrill, loud cry, as in fright or extreme pain; to shriek; to screech. - (Gritar con una voz estridente; pronunciar un grito repentino y agudo, o un grito fuerte y agudo, como en el miedo o el dolor extremo; gritar; chillar.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "poligonal",
+  definition: "Definition of Polygon: A plane figure bounded by edges that are all straight lines. - (Una figura plana delimitada por aristas que son todas líneas rectas.)",
+  pronunciation: "/ˈpɒliɡɒn/"
+},
+{
+  word: "decritas",
+  definition: "Definition of decried: To denounce as harmful. - (Denunciar como perjudicial.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "recreativa",
+  definition: "Definition of Recreational: For, or relating to, recreation. - (Para, o en relación con, la recreación.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "peces-de-arena",
+  definition: "Definition of sandfish: Genus Gonorynchus spp. (also called beaked sandfish), long, thin ray-finned fishes (family Gonorychidae) - (Género Gonorynchus spp. (también llamado pez arena picudo), peces de aletas radiales largas y delgadas (familia Gonorychidae))",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "decomiso",
+  definition: "Definition of confiscation: The act or process of confiscating. - (El acto o proceso de decomiso.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "superestrellano",
+  definition: "Definition of superstar: Someone who has accumulated a vast amount of fame; a high-level celebrity. - (Alguien que ha acumulado una gran cantidad de fama; una celebridad de alto nivel.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "pentaclo",
+  definition: "Definition of pentacle: A flat talisman, almost always disk-shaped, made of parchment, sheet metal, or other substance, marked with a magic symbol or symbols, used in magical evocation. - (Un talismán plano, casi siempre en forma de disco, hecho de pergamino, chapa u otra sustancia, marcado con un símbolo o símbolos mágicos, utilizado en la evocación mágica.)",
+  pronunciation: "/ˈpɛnt.ə.kl̩/"
+},
+{
+  word: "significativamente",
+  definition: "Definition of significantly: In a significant manner or to a significant extent. - (De manera significativa o en una medida significativa.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "bulto",
+  definition: "Definition of package: Something which is packed, a parcel, a box, an envelope. - (Algo que está empacado, un paquete, una caja, un sobre.)",
+  pronunciation: "/ˈpækɪdʒ/"
+},
+{
+  word: "de-barro",
+  definition: "Definition of Earthenware: An opaque, semi-porous ceramic made from clay and other compounds. - (Cerámica opaca, semi-porosa, de arcilla y otros compuestos.)",
+  pronunciation: "/ˈəːθ(ə)nwɛː/"
+},
+{
+  word: "hierbas",
+  definition: "Definition of herbs: Any green, leafy plant, or parts thereof, used to flavour or season food. - (Cualquier planta verde, frondosa o partes de la misma, utilizada para aromatizar o sazonar los alimentos.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "honores",
+  definition: "Definition of Honors: Recognition of importance or value; respect; veneration (of someone, usually for being morally upright or successful) - (Reconocimiento de importancia o valor; respeto; veneración (de alguien, generalmente por ser moralmente recto o exitoso))",
+  pronunciation: "/ˈɒn.əz/"
+},
+{
+  word: "cereales",
+  definition: "Definition of cereals: A type of grass (such as wheat, rice or oats) cultivated for its edible grains. - (Un tipo de hierba (como trigo, arroz o avena) cultivada por sus granos comestibles.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "combustión",
+  definition: "Definition of combustion: The act or process of burning. - (El acto o proceso de quemar.)",
+  pronunciation: "/kəmˈbʌs.tʃən/"
+},
+{
+  word: "óvulos",
+  definition: "Definition of Egg: An approximately spherical or ellipsoidal body produced by birds, reptiles, insects and other animals, housing the embryo during its development. - (Cuerpo aproximadamente esférico o elipsoidal producido por aves, reptiles, insectos y otros animales, que aloja al embrión durante su desarrollo.)",
+  pronunciation: "/eɪɡ/"
+},
+{
+  word: "gestión",
+  definition: "Definition of Software: Encoded computer instructions, usually modifiable (unless stored in some form of unalterable memory such as ROM). - (Instrucciones informáticas codificadas, generalmente modificables (a menos que se almacenen en alguna forma de memoria inalterable, como la Rom).)",
+  pronunciation: "/ˈsɑftˌwɛɹ/"
+},
+{
+  word: "Precipitarse",
+  definition: "Definition of Precipitate: To make something happen suddenly and quickly. - (Hacer que algo suceda de repente y rápidamente.)",
+  pronunciation: "/pɹəˈsɪpɪteɪt/"
+},
+{
+  word: "Patria",
+  definition: "Definition of Homeland: The country that one regards as home. - (El país que uno considera como su hogar.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "calidez",
+  definition: "Definition of warmth: A moderate degree of heat; the sensation of being warm. - (Un grado moderado de calor; la sensación de estar caliente.)",
+  pronunciation: "/wɔːmθ/"
+},
+{
+  word: "Trudge",
+  definition: "Definition of Trudge: A tramp, i.e. a long and tiring walk. - (Un vagabundo, es decir, una caminata larga y agotadora.)",
+  pronunciation: "/tɹʌdʒ/"
+},
+{
+  word: "folletos",
+  definition: "Definition of brochures: A booklet of printed informational matter, like a pamphlet, often for promotional purposes. - (Un folleto de material informativo impreso, como un folleto, a menudo con fines promocionales.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "aspirantes",
+  definition: "Definition of CANDIDATES: A person who is running in an election. - (Una persona que se postula en una elección.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Frypans",
+  definition: "Definition of Frypans: A frying pan. - (¿Un sartén?)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "satrapes",
+  definition: "Definition of satraps: A governor of a Persian province. - (Un gobernador de una provincia persa.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "atrevido",
+  definition: "Definition of bold: A dwelling; habitation; building. - (Una vivienda; habitación; edificio.)",
+  pronunciation: "/bəʊld/"
+},
+{
+  word: "homogamias",
+  definition: "Definition of homogamy: Fertilization of a flower by pollen from the same plant. - (Fertilización de una flor por polen de la misma planta.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Harden",
+  definition: "Definition of Harden: To become hard (tough, resistant to pressure). - (Para volverse duro (duro, resistente a la presión).)",
+  pronunciation: "/ˈhɑːdn̩/"
+},
+{
+  word: "superando",
+  definition: "Definition of Overcoming: To surmount (a physical or abstract obstacle); to prevail over, to get the better of. - (Superar (un obstáculo físico o abstracto); prevalecer sobre, sacar lo mejor de.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "entre",
+  definition: "Definition of between: A kind of needle, shorter than a sharp, with a small rounded eye, used for making fine stitches on heavy fabrics. - (Una especie de aguja, más corta que afilada, con un pequeño ojo redondeado, utilizada para hacer puntadas finas en telas gruesas.)",
+  pronunciation: "/bɪˈtwiːn/"
+},
+{
+  word: "Elusory",
+  definition: "Definition of Elusory: That tends to elude - (Eso tiende a eludir)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "zorros",
+  definition: "Definition of FOXES: A red fox, small carnivore (Vulpes vulpes), related to dogs and wolves, with red or silver fur and a bushy tail. - (Un zorro rojo, pequeño carnívoro (Vulpes vulpes), emparentado con perros y lobos, con pelaje rojo o plateado y una cola tupida.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "extorsión",
+  definition: "Definition of extortion: The practice of extorting money or other property by the use of force or threats. - (La práctica de extorsionar dinero u otros bienes mediante el uso de la fuerza o amenazas.)",
+  pronunciation: "/ɪkˈstɔːʃn/"
+},
+{
+  word: "Yummiest",
+  definition: "Definition of Yummiest: (lighthearted) Delicious. - ((despreocupado) Delicioso.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "disminución",
+  definition: "Definition of decrease: An amount by which a quantity is decreased. - (Una cantidad en la que se disminuye una cantidad.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "militariza",
+  definition: "Definition of militarizes: To give a military character to something, such as government or organization. - (Dar un carácter militar a algo, como el gobierno o la organización.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "comprobantes",
+  definition: "Definition of vouchers: A piece of paper that entitles the holder to a discount, or that can be exchanged for goods and services. - (Una hoja de papel que da derecho al titular a un descuento, o que se puede cambiar por bienes y servicios.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Wedgies",
+  definition: "Definition of Weddings: Marriage ceremony; ritual officially celebrating the beginning of a marriage. - (Ceremonia de matrimonio; ritual que celebra oficialmente el comienzo de un matrimonio.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Nitpick",
+  definition: "Definition of Nitpick: To correct minutiae or find fault in unimportant details. - (Para corregir minucias o encontrar fallas en detalles sin importancia.)",
+  pronunciation: "/ˈnɪt.pɪk/"
+},
+{
+  word: "Inacción",
+  definition: "Definition of Inaction: Lack of action or activity or labor - (Falta de acción o actividad o mano de obra)",
+  pronunciation: "/ɪnˈækʃən/"
+},
+{
+  word: "los-sentidos",
+  definition: "Definition of Senses: Any of the manners by which living beings perceive the physical world: for humans sight, smell, hearing, touch, taste. - (Cualquiera de las formas en que los seres vivos perciben el mundo físico: para los humanos, la vista, el olfato, el oído, el tacto, el gusto.)",
+  pronunciation: "/ˈsɛnsɪz/"
+},
+{
+  word: "cimetidina",
+  definition: "Definition of cimetidine: A histamine H2-receptor antagonist that inhibits the production of acid in the stomach, mainly used to treat heartburn and peptic ulcers, but notorious for causing male impotence. - (Un antagonista del receptor H2 de la histamina que inhibe la producción de ácido en el estómago, utilizado principalmente para tratar la acidez estomacal y las úlceras pépticas, pero notorio por causar impotencia masculina.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "modificaciones",
+  definition: "Definition of modifications: The form of existence belonging to a particular object, entity etc.; a mode of being. - (La forma de existencia que pertenece a un objeto, entidad, etc. en particular; un modo de ser.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "incestuosa",
+  definition: "Definition of Incest: Sexual relations between close relatives, especially immediate family members and first cousins, usually considered taboo; in many jurisdictions, close relatives are not allowed to marry, and incest is a crime. - (Las relaciones sexuales entre parientes cercanos, especialmente familiares inmediatos y primos hermanos, generalmente se consideran tabú; en muchas jurisdicciones, a los parientes cercanos no se les permite casarse, y el incesto es un delito.)",
+  pronunciation: "/ˈɪnsɛst/"
+},
+{
+  word: "explosiones",
+  definition: "Definition of Explosions : A violent release of energy (sometimes mechanical, nuclear, or chemical.) - (Una liberación violenta de energía (a veces mecánica, nuclear o química).)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "líquido",
+  definition: "Definition of liquid: A substance that is flowing, and keeping no shape, such as water; a substance of which the molecules, while not tending to separate from one another like those of a gas, readily change their relative position, and which therefore retains no definite shape, except that determined by the containing receptacle; an inelastic fluid. - (Una sustancia que fluye y no mantiene forma, como el agua; una sustancia cuyas moléculas, aunque no tienden a separarse entre sí como las de un gas, cambian fácilmente su posición relativa y que, por lo tanto, no conserva una forma definida, excepto la determinada por el receptáculo que la contiene; un fluido inelástico.)",
+  pronunciation: "/ˈlɪkwɪd/"
+},
+{
+  word: "estrella",
+  definition: "Definition of star: Any small luminous dot appearing in the cloudless portion of the night sky, especially with a fixed location relative to other such dots. - (Cualquier pequeño punto luminoso que aparezca en la parte sin nubes del cielo nocturno, especialmente con una ubicación fija en relación con otros puntos similares.)",
+  pronunciation: "/stɑː(ɹ)/"
+},
+{
+  word: "Jerrycans",
+  definition: "Definition of Jerrycans: A robust fuel container made from pressed steel. - (Un contenedor de combustible robusto hecho de acero prensado.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "gorila",
+  definition: "Definition of Gorilla: The largest of the apes, native to the forests of central Africa, and known for their trait of knuckle-walking. - (El más grande de los simios, nativo de los bosques de África central, y conocido por su característica de caminar con los nudillos.)",
+  pronunciation: "/ɡəˈɹɪl.ə/"
+},
+{
+  word: "fuera-de-casa",
+  definition: "Definition of away: To depart; to go to another place. - (Para partir; para ir a otro lugar.)",
+  pronunciation: "/əˈweɪ/"
+},
+{
+  word: "bronce",
+  definition: "Definition of bronze: A naturally occurring or man-made alloy of copper, usually in combination with tin, but also with one or more other metals. - (Una aleación de cobre de origen natural o artificial, generalmente en combinación con estaño, pero también con uno o más metales.)",
+  pronunciation: "/bɹɒnz/"
+},
+{
+  word: "naufragio",
+  definition: "Definition of shipwreck: A ship that has sunk or run aground so that it is no longer seaworthy. - (Un barco que se ha hundido o encallado para que ya no esté en condiciones de navegar.)",
+  pronunciation: "/ˈʃɪpɹɛk/"
+},
+{
+  word: "indefenso",
+  definition: "Definition of defenseless: Lacking any form of defense; vulnerable; open to attack. - (Falta de cualquier forma de defensa; vulnerable; abierto al ataque.)",
+  pronunciation: "/dɪˈfɛnsləs/"
+},
+{
+  word: "colgando",
+  definition: "Definition of Hangup: An emotional difficulty or a psychological inhibition; a complex. - (Una dificultad emocional o una inhibición psicológica; un complejo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "alimentador",
+  definition: "Definition of feeder: One who feeds, or gives food to another. - (Uno que alimenta o da de comer a otro.)",
+  pronunciation: "/ˈfidɚ/"
+},
+{
+  word: "esculpida",
+  definition: "Definition of sculpted: To form by sculpture. - (Formar por escultura.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Cambio",
+  definition: "Definition of Change: The process of becoming different. - (El proceso de volverse diferente.)",
+  pronunciation: "/tʃeɪndʒ/"
+},
+{
+  word: "Bikeway",
+  definition: "Definition of Bikeway: A bicycle lane or path. - (Un carril o sendero para bicicletas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "carrera",
+  definition: "Definition of career: One's calling in life; a person's occupation; one's profession. - (La vocación de uno en la vida; la ocupación de una persona; la profesión de uno.)",
+  pronunciation: "/kəˈɹɪə/"
+},
+{
+  word: "Watercraft",
+  definition: "Definition of Watercraft: Any vessel with implements designed to move it in arbitrary direction through one or various bodies of water – a boat, ship, sea scooter, or similar vehicle. - (Cualquier embarcación con implementos diseñados para moverla en dirección arbitraria a través de uno o varios cuerpos de agua: un bote, barco, scooter de mar o vehículo similar.)",
+  pronunciation: "/ˈwɔtɚkɹæft/"
+},
+{
+  word: "promisores",
+  definition: "Definition of promises: An oath or affirmation; a vow - (Un juramento o afirmación; un voto)",
+  pronunciation: "/ˈpɹɒmɪsɪz/"
+},
+{
+  word: "yate",
+  definition: "Definition of yacht: A slick and light ship for making pleasure trips or racing on water, having sails but often motor-powered. At times used as a residence offshore on a dock. - (Un barco liso y ligero para hacer viajes de placer o carreras en el agua, con velas pero a menudo con motor. A veces se utiliza como residencia en alta mar en un muelle.)",
+  pronunciation: "/jɒt/"
+},
+{
+  word: "ruptura",
+  definition: "Definition of breakdown: A failure, particularly mechanical; something that has failed - (Una falla, particularmente mecánica; algo que ha fallado)",
+  pronunciation: "/ˈbɹeɪkdaʊn/"
+},
+{
+  word: "Swishing",
+  definition: "Definition of Swishing: To make a rustling sound while moving. - (Para hacer un sonido crujiente mientras se mueve.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "invalidaciones",
+  definition: "Definition of Overrides: A mechanism, device or procedure used to counteract an automatic control. - (Un mecanismo, dispositivo o procedimiento utilizado para contrarrestar un control automático.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "sintagmática",
+  definition: "Definition of syntagmatic: Of or pertaining to a syntagma. - (Perteneciente o perteneciente a un sintagma.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "barrote",
+  definition: "Definition of bar: A solid, more or less rigid object of metal or wood with a uniform cross-section smaller than its length. - (Un objeto sólido, más o menos rígido, de metal o madera con una sección transversal uniforme menor que su longitud.)",
+  pronunciation: "/bɑː/"
+},
+{
+  word: "sin-pelo",
+  definition: "Definition of Hairless: Destitute of hair. - (Pobres de pelo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "jubilaria",
+  definition: "Definition of retirement: An act of retiring; withdrawal. - (Un acto de retiro; retiro.)",
+  pronunciation: "/ɹəˈtaɪə(ɹ).mənt/"
+},
+{
+  word: "capuchas",
+  definition: "Definition of hoods: A covering for the head attached to a larger garment such as a jacket or cloak. - (Una cubierta para la cabeza unida a una prenda más grande, como una chaqueta o una capa.)",
+  pronunciation: "/hʊdz/"
+},
+{
+  word: "estratos",
+  definition: "Definition of stratus: A principal, low-level cloud type in the form of a gray layer with a rather uniform base, usually not associated with precipitation, and capable of producing corona phenomena and a weak, uniform luminance; abbreviated St. - (Un tipo de nube principal de bajo nivel en forma de una capa gris con una base bastante uniforme, generalmente no asociada con la precipitación, y capaz de producir fenómenos de corona y una luminancia débil y uniforme; abreviado ST.)",
+  pronunciation: "/ˈstɹeɪtəs/"
+},
+{
+  word: "estudios",
+  definition: "Definition of studios: An artist’s or photographer’s workshop or the room in which an artist works. - (El taller de un artista o fotógrafo o la sala en la que trabaja un artista.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "concertada",
+  definition: "Definition of Concerted: To plan together; to settle or adjust by conference, agreement, or consultation. - (Para planificar juntos; para resolver o ajustar por conferencia, acuerdo o consulta.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "calidez",
+  definition: "Definition of warmth: A moderate degree of heat; the sensation of being warm. - (Un grado moderado de calor; la sensación de estar caliente.)",
+  pronunciation: "/wɔːmθ/"
+},
+{
+  word: "merecidamente",
+  definition: "Definition of deservedly: (degree, manner) In a way or to a degree that is deserved or merited. - ((grado, manera) De una manera o en un grado que sea merecido o merecido.)",
+  pronunciation: "/dɪˈzɜːvɪdli/"
+},
+{
+  word: "subgenusos",
+  definition: "Definition of subgenus: A subdivision of a genus. - (Subdivisión de un género.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "sinapsid",
+  definition: "Definition of synapsid: Any animal (including all mammals) of the class Synapsida. - (Cualquier animal (incluidos todos los mamíferos) de la clase Synapsida.)",
+  pronunciation: "/sɪˈnapsɪd/"
+},
+{
+  word: "telecomunicaciones",
+  definition: "Definition of telecommunication: The science and technology of the communication of messages over a distance using electric, electronic or electromagnetic impulses. - (La ciencia y tecnología de la comunicación de mensajes a distancia mediante impulsos eléctricos, electrónicos o electromagnéticos.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "más",
+  definition: "Definition of more: To a greater degree or extent. - (En mayor grado o extensión.)",
+  pronunciation: "/ˈmɔː/"
+},
+{
+  word: "descendientes",
+  definition: "Definition of descendants: One who is the progeny of a specified person, at any distance of time or through any number of generations. - (Aquel que es la progenie de una persona específica, a cualquier distancia de tiempo o a través de cualquier número de generaciones.)",
+  pronunciation: "/dɪˈsɛndənts/"
+},
+{
+  word: "globos",
+  definition: "Definition of Balloons: An inflatable buoyant object, often (but not necessarily) round and flexible. - (Un objeto flotante inflable, a menudo (pero no necesariamente) redondo y flexible.)",
+  pronunciation: "/bəˈluːnz/"
+},
+{
+  word: "culto",
+  definition: "Definition of cult: A group or sect of people with a deviant religious, philosophical or cultural identity, often existing on the margins of society or exploitative towards its members. - (Un grupo o secta de personas con una identidad religiosa, filosófica o cultural desviada, a menudo existente en los márgenes de la sociedad o explotadora hacia sus miembros.)",
+  pronunciation: "/kʌlt/"
+},
+{
+  word: "reasignaciones",
+  definition: "Definition of Redeployments: The act of redeploying. - (El acto de redistribuir.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "flamantes",
+  definition: "Definition of brand new: Utterly new, as new as possible. - (Totalmente nuevo, lo más nuevo posible.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "más-grande",
+  definition: "Definition of bigger: Of great size, large. - (De gran tamaño, grande.)",
+  pronunciation: "/ˈbɪɡə/"
+},
+{
+  word: "ala",
+  definition: "Definition of flange: An external or internal rib or rim, used either to add strength or to hold something in place. - (Una nervadura o borde externo o interno, utilizado ya sea para añadir fuerza o para mantener algo en su lugar.)",
+  pronunciation: "/flændʒ/"
+},
+{
+  word: "Foulest",
+  definition: "Definition of Foulest: Covered with, or containing unclean matter; dirty. - (Cubierto con, o que contiene materia sucia; sucio.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "rifles",
+  definition: "Definition of Rifle: A shouldered firearm with a long, rifled barrel to improve range and accuracy. - (Un arma de fuego con hombros y un cañón largo y estriado para mejorar el alcance y la precisión.)",
+  pronunciation: "/ˈɹaɪfəl/"
+},
+{
+  word: "susurrando",
+  definition: "Definition of whispering: To speak softly, or under the breath, so as to be heard only by one near at hand; to utter words without sonant breath; to talk without that vibration in the larynx which gives sonorous, or vocal, sound. - (Hablar suavemente, o bajo la respiración, para ser escuchado solo por uno cercano; pronunciar palabras sin respiración sonora; hablar sin esa vibración en la laringe que da sonido sonoro o vocal.)",
+  pronunciation: "/ˈ(h)wɪspəɹɪŋ/"
+},
+{
+  word: "cistrones",
+  definition: "Definition of cistrons: The unit of hereditary material (e.g. DNA) that encodes one protein; sometimes used interchangeably with the word gene. - (La unidad de material hereditario (por ejemplo, ADN) que codifica una proteína; a veces se usa indistintamente con la palabra gen.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "lujurias",
+  definition: "Definition of lusts: (usually in the phrase 'lust after') To look at or watch with a strong desire, especially of a sexual nature. - ((generalmente en la frase 'lujuria') Mirar o mirar con un fuerte deseo, especialmente de naturaleza sexual.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "cero",
+  definition: "Definition of zero: The numeric symbol that represents the cardinal number zero. - (El símbolo numérico que representa el número cardinal cero.)",
+  pronunciation: "/ˈzɪəɹəʊ/"
+},
+{
+  word: "Swapping",
+  definition: "Definition of Swapping: To exchange or give (something) in an exchange (for something else). - (Intercambiar o dar (algo) en un intercambio (por otra cosa).)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Gunwale",
+  definition: "Definition of Gunwale: The top edge of the hull of a nautical vessel, where it meets the deck. - (El borde superior del casco de una embarcación náutica, donde se encuentra con la cubierta.)",
+  pronunciation: "/ˈɡʌnəl/"
+},
+{
+  word: "desarraigados",
+  definition: "Definition of Uprooted: To root up; to tear up by the roots, or as if by the roots; to extirpate. - (Desarraigar; desgarrar por las raíces, o como por las raíces; extirpar.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "mensajeros",
+  definition: "Definition of Messengers: One who brings messages. - (Aquel que trae mensajes.)",
+  pronunciation: "/ˈmɛs.n̩.d͡ʒəz/"
+},
+{
+  word: "último",
+  definition: "Definition of last: Final, ultimate, coming after all others of its kind. - (Final, definitivo, después de todos los demás de su tipo.)",
+  pronunciation: "/last/"
+},
+{
+  word: "árido",
+  definition: "Definition of arid: Very dry. - (Muy seco.)",
+  pronunciation: "/ˈæ.ɹɪd/"
+},
+{
+  word: "equivalentes",
+  definition: "Definition of equivalents: Anything that is virtually equal to something else, or has the same value, force, etc. - (Cualquier cosa que sea prácticamente igual a otra cosa, o que tenga el mismo valor, fuerza, etc.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "secciones",
+  definition: "Definition of office: A ceremonial duty or service, particularly: - (Un deber o servicio ceremonial, en particular:)",
+  pronunciation: "/ˈɑfɪs/"
+},
+{
+  word: "más",
+  definition: "Definition of more: To a greater degree or extent. - (En mayor grado o extensión.)",
+  pronunciation: "/ˈmɔː/"
+},
+{
+  word: "circunvolución",
+  definition: "Definition of Gyrus: A ridge or fold on the cerebral cortex. - (Una cresta o pliegue en la corteza cerebral.)",
+  pronunciation: "/ˈdʒaɪɹəs/"
+},
+{
+  word: "matrimonio",
+  definition: "Definition of marriage: The state of being married. - (El estado de estar casado.)",
+  pronunciation: "/ˈmæɹɪdʒ/"
+},
+{
+  word: "gemelos",
+  definition: "Definition of binocular: A pair of binoculars. - (par de prismáticos)",
+  pronunciation: "/bɪˈnɒkjʊlə(ɹ)/"
+},
+{
+  word: "Swineherd",
+  definition: "Definition of Swineherd: A person who herds and tends swine, a keeper of swine (pigs). - (Una persona que pastorea y cuida cerdos, un guardián de cerdos (cerdos).)",
+  pronunciation: "/ˈswɑɪnˌhɜːd/"
+},
+{
+  word: "rurales",
+  definition: "Definition of Rural: A person from the countryside; a rustic. - (Una persona del campo; un rústico.)",
+  pronunciation: "/ˈɹɔːɹəl/"
+},
+{
+  word: "despidos",
+  definition: "Definition of Dismissals: The act of sending someone away. - (El acto de enviar a alguien lejos.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "puede",
+  definition: "Definition of can: (auxiliary verb, defective) To know how to; to be able to. - ((verbo auxiliar, defectuoso) Saber; poder.)",
+  pronunciation: "/ˈkæn/"
+},
+{
+  word: "presentadores",
+  definition: "Definition of Hosts: One which receives or entertains a guest, socially, commercially, or officially. - (Una que recibe o entretiene a un huésped, social, comercial u oficialmente.)",
+  pronunciation: "/həʊsts/"
+},
+{
+  word: "tetas",
+  definition: "Definition of boobs: Idiot, fool. - (Idiota, idiota.)",
+  pronunciation: "/buːbz/"
+},
+{
+  word: "Boho",
+  definition: "Definition of Boho: A bohemian. - (A: Bohémica)",
+  pronunciation: "/ˈbəʊhəʊ/"
+},
+{
+  word: "montajes",
+  definition: "Definition of assemblies: A set of pieces that work together in unison as a mechanism or device. - (Un conjunto de piezas que trabajan juntas al unísono como un mecanismo o dispositivo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "abundancia",
+  definition: "Definition of abundance: A large quantity; many. - (Una gran cantidad; muchos.)",
+  pronunciation: "/əˈbʌn.dn̩s/"
+},
+{
+  word: "reconquistas",
+  definition: "Definition of reconquests: The act or process of conquering something again, such as a territory. - (El acto o proceso de conquistar algo de nuevo, como un territorio.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Harkening",
+  definition: "Definition of Harkening: To hark back, to return or revert (to a subject, etc.), to allude to, to evoke, to long or pine for (a past event or era). - (Rememorar, regresar o revertir (a un tema, etc.), aludir, evocar, anhelar o añorar (un evento o época pasada).)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Higos",
+  definition: "Definition of Figs: A fruit-bearing tree or shrub of the genus Ficus that is native mainly to the tropics. - (Un árbol o arbusto frutal del género Ficus que es nativo principalmente de los trópicos.)",
+  pronunciation: "/fɪɡz/"
+},
+{
+  word: "desviaciones",
+  definition: "Definition of Deviations: The act of deviating; wandering off the correct or true path or road - (El acto de desviarse; desviarse del camino o camino correcto o verdadero)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "despidos",
+  definition: "Definition of Dismissals: The act of sending someone away. - (El acto de enviar a alguien lejos.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "bajo",
+  definition: "Definition of value: The quality (positive or negative) that renders something desirable or valuable. - (La cualidad (positiva o negativa) que hace que algo sea deseable o valioso.)",
+  pronunciation: "/ˈvæljuː/"
+},
+{
+  word: "perpetradores",
+  definition: "Definition of Perpetrators: One who perpetrates; especially, one who commits an offence or crime. - (Aquel que comete; especialmente, aquel que comete un delito o delito.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "transcripción",
+  definition: "Definition of transcription: The act or process of transcribing. - (El acto o proceso de transcripción.)",
+  pronunciation: "/tɹænˈskɹɪpʃən/"
+},
+{
+  word: "ceguera",
+  definition: "Definition of blindness: The condition of being blind; unable to see. - (La condición de ser ciego; incapaz de ver.)",
+  pronunciation: "/ˈblaɪndnəs/"
+},
+{
+  word: "montañismos",
+  definition: "Definition of mountaineering: The sport of climbing mountains. - (El deporte de escalar montañas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "dinero",
+  definition: "Definition of money: A legally or socially binding conceptual contract of entitlement to wealth, void of intrinsic value, payable for all debts and taxes, and regulated in supply. - (Un contrato conceptual legal o socialmente vinculante de derecho a la riqueza, sin valor intrínseco, pagadero por todas las deudas e impuestos, y regulado en la oferta.)",
+  pronunciation: "/ˈmʌni/"
+},
+{
+  word: "Scrutineer",
+  definition: "Definition of Scrutineer: A person who scrutinises; a person responsible for scrutineering. - (Una persona que escruta; una persona responsable del escrutinio.)",
+  pronunciation: "/ˈskɹuː.tɪn.ɪə(ɹ)/"
+},
+{
+  word: "lubricantes",
+  definition: "Definition of lubricants: A substance used to reduce friction between objects or surfaces. - (Sustancia utilizada para reducir la fricción entre objetos o superficies.)",
+  pronunciation: "/No pronunciation available/"
+},
+      ],
     };
     
 //count
