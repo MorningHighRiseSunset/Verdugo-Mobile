@@ -2903,7 +2903,7 @@ let options = {
   pronunciation: "/wɔːmθ/"
 },
 {
-  word: "Trudge",
+  word: "caminar-penosamente",
   definition: "Definition of Trudge: A tramp, i.e. a long and tiring walk. - (Un vagabundo, es decir, una caminata larga y agotadora.)",
   pronunciation: "/tɹʌdʒ/"
 },
