@@ -3244,7 +3244,7 @@ let options = {
   pronunciation: "/No pronunciation available/"
 },
 {
-  word: "rifles",
+  word: "fusil",
   definition: "Definition of Rifle: A shouldered firearm with a long, rifled barrel to improve range and accuracy. - (Un arma de fuego con hombros y un cañón largo y estriado para mejorar el alcance y la precisión.)",
   pronunciation: "/ˈɹaɪfəl/"
 },
