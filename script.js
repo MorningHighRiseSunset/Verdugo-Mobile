@@ -3149,7 +3149,7 @@ let options = {
   pronunciation: "/No pronunciation available/"
 },
 {
-  word: "jubilaria",
+  word: "jubilaría",
   definition: "Definition of retirement: An act of retiring; withdrawal. - (Un acto de retiro; retiro.)",
   pronunciation: "/ɹəˈtaɪə(ɹ).mənt/"
 },
