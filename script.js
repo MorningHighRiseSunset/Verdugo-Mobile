@@ -2778,7 +2778,7 @@ let options = {
   pronunciation: "/No pronunciation available/"
 },
 {
-  word: "Canniest",
+  word: "más-astuto",
   definition: "Definition of Canniest: Careful, prudent, cautious. - (Cuidadoso, prudente, cauteloso.)",
   pronunciation: "/No pronunciation available/"
 },
@@ -2798,7 +2798,7 @@ let options = {
   pronunciation: "/stəˈtɪstɪkl̩i/"
 },
 {
-  word: "Japes",
+  word: "bromas",
   definition: "Definition of Japes: A joke or quip. - (Una broma o un chiste.)",
   pronunciation: "/No pronunciation available/"
 },
@@ -2938,7 +2938,7 @@ let options = {
   pronunciation: "/No pronunciation available/"
 },
 {
-  word: "Harden",
+  word: "Endurecer",
   definition: "Definition of Harden: To become hard (tough, resistant to pressure). - (Para volverse duro (duro, resistente a la presión).)",
   pronunciation: "/ˈhɑːdn̩/"
 },
@@ -2968,7 +2968,7 @@ let options = {
   pronunciation: "/ɪkˈstɔːʃn/"
 },
 {
-  word: "Yummiest",
+  word: "delicioso",
   definition: "Definition of Yummiest: (lighthearted) Delicious. - ((despreocupado) Delicioso.)",
   pronunciation: "/No pronunciation available/"
 },
@@ -2988,12 +2988,12 @@ let options = {
   pronunciation: "/No pronunciation available/"
 },
 {
-  word: "Wedgies",
+  word: "bodas",
   definition: "Definition of Weddings: Marriage ceremony; ritual officially celebrating the beginning of a marriage. - (Ceremonia de matrimonio; ritual que celebra oficialmente el comienzo de un matrimonio.)",
   pronunciation: "/No pronunciation available/"
 },
 {
-  word: "Nitpick",
+  word: "quisquilloso",
   definition: "Definition of Nitpick: To correct minutiae or find fault in unimportant details. - (Para corregir minucias o encontrar fallas en detalles sin importancia.)",
   pronunciation: "/ˈnɪt.pɪk/"
 },
@@ -3038,7 +3038,7 @@ let options = {
   pronunciation: "/stɑː(ɹ)/"
 },
 {
-  word: "Jerrycans",
+  word: "Jerry-puede",
   definition: "Definition of Jerrycans: A robust fuel container made from pressed steel. - (Un contenedor de combustible robusto hecho de acero prensado.)",
   pronunciation: "/No pronunciation available/"
 },
@@ -3098,7 +3098,7 @@ let options = {
   pronunciation: "/kəˈɹɪə/"
 },
 {
-  word: "Watercraft",
+  word: "embarcación",
   definition: "Definition of Watercraft: Any vessel with implements designed to move it in arbitrary direction through one or various bodies of water – a boat, ship, sea scooter, or similar vehicle. - (Cualquier embarcación con implementos diseñados para moverla en dirección arbitraria a través de uno o varios cuerpos de agua: un bote, barco, scooter de mar o vehículo similar.)",
   pronunciation: "/ˈwɔtɚkɹæft/"
 },
@@ -3118,7 +3118,7 @@ let options = {
   pronunciation: "/ˈbɹeɪkdaʊn/"
 },
 {
-  word: "Swishing",
+  word: "silbando",
   definition: "Definition of Swishing: To make a rustling sound while moving. - (Para hacer un sonido crujiente mientras se mueve.)",
   pronunciation: "/No pronunciation available/"
 },
@@ -3263,7 +3263,7 @@ let options = {
   pronunciation: "/ˈzɪəɹəʊ/"
 },
 {
-  word: "Swapping",
+  word: "intercambiando",
   definition: "Definition of Swapping: To exchange or give (something) in an exchange (for something else). - (Intercambiar o dar (algo) en un intercambio (por otra cosa).)",
   pronunciation: "/No pronunciation available/"
 },
