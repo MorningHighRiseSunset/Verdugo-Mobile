@@ -2993,6 +2993,12 @@ let options = {
   pronunciation: "/No pronunciation available/"
 },
 {
+  word: "cuñas",
+  definition: "Definition of Wedgie: an uncomfortable tightening of the underpants between the buttocks - (un incómodo ajuste de los calzoncillos entre las nalgas)",
+  pronunciation: "/No pronunciation available/"
+},
+
+{
   word: "quisquilloso",
   definition: "Definition of Nitpick: To correct minutiae or find fault in unimportant details. - (Para corregir minucias o encontrar fallas en detalles sin importancia.)",
   pronunciation: "/ˈnɪt.pɪk/"
