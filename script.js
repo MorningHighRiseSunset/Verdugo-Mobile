@@ -3495,7 +3495,7 @@ let options = {
 },
 {
   word: "Hoist",
-  definition: "Definition of Hello: "Hello!" or an equivalent greeting. - ("¡Hola!" o un saludo equivalente.)",
+  definition: "Definition of Hello: 'Hello!' or an equivalent greeting. - ('¡Hola!' o un saludo equivalente.)",
   pronunciation: "/həˈləʊ/"
 },
 {
@@ -3640,7 +3640,7 @@ let options = {
 },
 {
   word: "antídotos",
-  definition: "Definition of Antidote: A remedy to counteract the effects of poison (often followed by "against," "for," or "to"). - (Un remedio para contrarrestar los efectos del veneno (a menudo seguido de "en contra", "a favor" o "para").)",
+  definition: "Definition of Antidote: A remedy to counteract the effects of poison (often followed by 'against,' 'for,' or 'to'). - (Un remedio para contrarrestar los efectos del veneno (a menudo seguido de 'en contra', 'a favor' o 'para').)",
   pronunciation: "/ˈæn.tə.dot/"
 },
 {
@@ -3695,7 +3695,7 @@ let options = {
 },
 {
   word: "muerto",
-  definition: "Definition of dead: (with "the", a demonstrative, or a possessive) Those who have died. - ((con "el", un demostrativo o un posesivo) Aquellos que han muerto.)",
+  definition: "Definition of dead: (with 'the', a demonstrative, or a possessive) Those who have died. - ((con 'el', un demostrativo o un posesivo) Aquellos que han muerto.)",
   pronunciation: "/diːd/"
 },
 {
@@ -3705,7 +3705,7 @@ let options = {
 },
 {
   word: "él",
-  definition: "Definition of he: The game of tag, or it, in which the player attempting to catch the others is called "he". - (El juego de etiqueta, o it, en el que el jugador que intenta atrapar a los demás se llama "él".)",
+  definition: "Definition of he: The game of tag, or it, in which the player attempting to catch the others is called 'he'. - (El juego de etiqueta, o it, en el que el jugador que intenta atrapar a los demás se llama 'él'.)",
   pronunciation: "/hi/"
 },
 {
