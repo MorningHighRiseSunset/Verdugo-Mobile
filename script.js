@@ -3438,6 +3438,796 @@ let options = {
   definition: "Definition of lubricants: A substance used to reduce friction between objects or surfaces. - (Sustancia utilizada para reducir la fricción entre objetos o superficies.)",
   pronunciation: "/No pronunciation available/"
 },
+{
+  word: "incentros",
+  definition: "Definition of centers: The point in the interior of a circle that is equidistant from all points on the circumference. - (El punto en el interior de un círculo que es equidistante de todos los puntos de la circunferencia.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "colmillos",
+  definition: "Definition of Fangs: A long, pointed canine tooth used for biting and tearing flesh - (Un diente canino largo y puntiagudo utilizado para morder y desgarrar la carne)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "aritmias",
+  definition: "Definition of arrhythmias: An irregular heartbeat. - (Latido cardíaco acelerado)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "actualización",
+  definition: "Definition of updated: To bring (a thing) up to date. - (Para poner (una cosa) al día.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "tacos",
+  definition: "Definition of wadding: Wads collectively - (Wads colectivamente)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "mami",
+  definition: "Definition of mother: A (human) female who has given birth to a baby - (Una mujer (humana) que ha dado a luz a un bebé)",
+  pronunciation: "/ˈmʌðə(ɹ)/"
+},
+{
+  word: "jeringa",
+  definition: "Definition of Syringe: A device used for injecting or drawing fluids through a membrane. - (Un dispositivo utilizado para inyectar o extraer fluidos a través de una membrana.)",
+  pronunciation: "/səˈɹɪndʒ/"
+},
+{
+  word: "precesos",
+  definition: "Definition of precesses: (of an axis of rotation) To have an angle that varies cyclically. - ((de un eje de rotación) Tener un ángulo que varía cíclicamente.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "flaco",
+  definition: "Definition of narrow: (chiefly in the plural) A narrow passage, especially a contracted part of a stream, lake, or sea; a strait connecting two bodies of water. - ((principalmente en plural) Un pasaje estrecho, especialmente una parte contraída de un arroyo, lago o mar; un estrecho que conecta dos cuerpos de agua.)",
+  pronunciation: "/ˈnæɹəʊ/"
+},
+{
+  word: "colgante",
+  definition: "Definition of pendant: A supporting post attached to the main rafter. - (Un poste de soporte unido a la viga principal.)",
+  pronunciation: "/ˈpɛnd(ə)nt/"
+},
+{
+  word: "Persecución",
+  definition: "Definition of Prosecution: The act of prosecuting a scheme or endeavor. - (El acto de perseguir un plan o esfuerzo.)",
+  pronunciation: "/ˌpɹɑ.səˈkju.ʃən/"
+},
+{
+  word: "Hoist",
+  definition: "Definition of Hello: "Hello!" or an equivalent greeting. - ("¡Hola!" o un saludo equivalente.)",
+  pronunciation: "/həˈləʊ/"
+},
+{
+  word: "ejecutado",
+  definition: "Definition of executed: To kill as punishment for capital crimes. - (Matar como castigo por delitos capitales.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "perigeos",
+  definition: "Definition of perigee: The point, in an orbit about the Earth, that is closest to the Earth: the periapsis of an Earth orbiter. - (El punto, en una órbita alrededor de la Tierra, que está más cerca de la Tierra: la periapsis de un orbitador terrestre.)",
+  pronunciation: "/ˈpɛɹɪdʒiː/"
+},
+{
+  word: "Oído",
+  definition: "Definition of Hearing: (stative) To perceive sounds through the ear. - ((estático) Percibir sonidos a través del oído.)",
+  pronunciation: "/ˈhiːɹ.ɪŋ/"
+},
+{
+  word: "laguna",
+  definition: "Definition of gap: An opening in anything made by breaking or parting. - (Una abertura en cualquier cosa hecha por rotura o separación.)",
+  pronunciation: "/ɡæp/"
+},
+{
+  word: "sectarismo",
+  definition: "Definition of Sectarianism: Rigid adherence to a particular sect, denomination, ideology, or party. - (Adhesión rígida a una secta, denominación, ideología o partido en particular.)",
+  pronunciation: "/sekˈteəɹi.ənɪzəm/"
+},
+{
+  word: "lealtades",
+  definition: "Definition of loyalties: The state of being loyal; fidelity. - (El estado de ser leal; fidelidad.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "promesas-de-contribuciones",
+  definition: "Definition of Pledges: A solemn promise to do something. - (Una promesa solemne de hacer algo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "dispensados",
+  definition: "Definition of dispensed: To issue, distribute, or give out. - (Para emitir, distribuir o repartir.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "basalto",
+  definition: "Definition of basalt: A hard mafic igneous rock of varied mineral content; volcanic in origin, which makes up much of the Earth's oceanic crust. - (Una dura roca ígnea máfica de variado contenido mineral; de origen volcánico, que conforma gran parte de la corteza oceánica de la Tierra.)",
+  pronunciation: "/ˈbæsɒlt/"
+},
+{
+  word: "reprobable",
+  definition: "Definition of reprehensible: A reprehensible person; a villain. - (Una persona reprensible; un villano.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "fustigaciones",
+  definition: "Definition of whippings: The punishment of being whipped. - (El castigo de ser azotado.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "vistos",
+  definition: "Definition of citations: An official summons or notice given to a person to appear. - (Una citación o aviso oficial dado a una persona para que comparezca.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "vida-nocturna",
+  definition: "Definition of NIGHTLIFE: Nocturnal activities, especially visiting nightclubs. - (Actividades nocturnas, especialmente visitas a discotecas.)",
+  pronunciation: "/ˈnaɪtˌlaɪf/"
+},
+{
+  word: "detribalizar",
+  definition: "Definition of detribalize: To cause (the members of a tribe) to lose their tribal culture. - (Hacer que (los miembros de una tribu) pierdan su cultura tribal.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "supercalentado",
+  definition: "Definition of superheated: To heat a liquid above its boiling point - (Para calentar un líquido por encima de su punto de ebullición)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "delimitado",
+  definition: "Definition of Time-Bound: Attached to a certain moment or era in time. - (Apegado a un determinado momento o época en el tiempo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "ventilación",
+  definition: "Definition of ventilation: The replacement of stale or noxious air with fresh. - (La sustitución del aire viciado o nocivo por aire fresco.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "no-vacía",
+  definition: "Definition of Non-empty: Of a set, containing at least one element; not the empty set. - (De un conjunto, que contiene al menos un elemento; no el conjunto vacío.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "suministros",
+  definition: "Definition of deliveries: The act of conveying something. - (El acto de transmitir algo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "reposición",
+  definition: "Definition of reclamation: The act of reclaiming or the state of being reclaimed. - (El acto de reclamar o el estado de ser reclamado.)",
+  pronunciation: "/(ˌ)ɹɛkləˈmeɪʃn̩/"
+},
+{
+  word: "hernia",
+  definition: "Definition of clubroot: A common disease of cabbages, radishes, turnips and other plants of the Cruciferae, caused by Plasmodiophora brassicae, in which galls form on latent roots, rendering them clublike. - (Una enfermedad común de las coles, rábanos, nabos y otras plantas de la Cruciferae, causada por Plasmodiophora brassicae, en la que se forman agallas en las raíces latentes, haciéndolas clublike.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "sonante",
+  definition: "Definition of Sonorant: A speech sound that is produced without turbulent airflow in the vocal tract; the generic term of vowel, approximant, nasal consonant, etc. - (Un sonido del habla que se produce sin flujo de aire turbulento en el tracto vocal; el término genérico de vocal, aproximante, consonante nasal, etc.)",
+  pronunciation: "/səˈnɔːr(ə)nt/"
+},
+{
+  word: "batiendo",
+  definition: "Definition of Beating: To hit; strike - (Para golpear; golpear)",
+  pronunciation: "/ˈbiːtɪŋ/"
+},
+{
+  word: "Corrección",
+  definition: "Definition of Correction: The act of correcting. - (El acto de corregir.)",
+  pronunciation: "/kəˈɹɛkʃən/"
+},
+{
+  word: "amoroso",
+  definition: "Definition of amorous: Inclined or having a propensity to love, or to sexual enjoyment. - (Inclinado o con propensión al amor o al disfrute sexual.)",
+  pronunciation: "/ˈæ.mə.ɹəs/"
+},
+{
+  word: "promedio",
+  definition: "Definition of average: The arithmetic mean. - (La media aritmética.)",
+  pronunciation: "/ˈævəɹɪd͡ʒ/"
+},
+{
+  word: "hito",
+  definition: "Definition of milestone: A stone milepost (or by extension in other materials), one of a series of numbered markers placed along a road at regular intervals, typically at the side of the road or in a median. - (Un poste de piedra (o por extensión en otros materiales), uno de una serie de marcadores numerados colocados a lo largo de una carretera a intervalos regulares, generalmente al lado de la carretera o en una mediana.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "aquí",
+  definition: "Definition of here: (abstract) This place; this location. - ((resumen) Este lugar; esta ubicación.)",
+  pronunciation: "/hiːɹ/"
+},
+{
+  word: "antídotos",
+  definition: "Definition of Antidote: A remedy to counteract the effects of poison (often followed by "against," "for," or "to"). - (Un remedio para contrarrestar los efectos del veneno (a menudo seguido de "en contra", "a favor" o "para").)",
+  pronunciation: "/ˈæn.tə.dot/"
+},
+{
+  word: "tripulantes",
+  definition: "Definition of Crew: To make the shrill sound characteristic of a rooster; to make a sound in this manner, either in gaiety, joy, pleasure, or defiance. - (Hacer el sonido agudo característico de un gallo; hacer un sonido de esta manera, ya sea en alegría, gozo, placer o desafío.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "gobernantes",
+  definition: "Definition of Rulers: A (usually rigid), flat, rectangular measuring or drawing device with graduations in units of measurement; a straightedge with markings. - (Un dispositivo de medida o dibujo (generalmente rígido), plano, rectangular con graduaciones en unidades de medida; una regla con marcas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "ineficaz",
+  definition: "Definition of Inefficient: A person who cannot or does not work efficiently. - (Una persona que no puede o no trabaja eficientemente.)",
+  pronunciation: "/ɪnɪˈfɪʃənt/"
+},
+{
+  word: "prologuismo",
+  definition: "Definition of prologue: A speech or section used as an introduction, especially to a play or novel. - (Un discurso o sección utilizado como introducción, especialmente a una obra de teatro o novela.)",
+  pronunciation: "/ˈpɹəʊlɒɡ/"
+},
+{
+  word: "heroico",
+  definition: "Definition of heroic: A heroic verse. - (Un verso heroico.)",
+  pronunciation: "/hɪˈɹəʊ.ɪk/"
+},
+{
+  word: "constructores",
+  definition: "Definition of builders: A person who builds or constructs things. - (Una persona que construye o construye cosas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "flores",
+  definition: "Definition of flowers: A colorful, conspicuous structure associated with angiosperms, frequently scented and attracting various insects, and which may or may not be used for sexual reproduction. - (Una estructura colorida y conspicua asociada con angiospermas, frecuentemente perfumada y que atrae a varios insectos, y que puede o no usarse para la reproducción sexual.)",
+  pronunciation: "/ˈflaʊ.əz/"
+},
+{
+  word: "exploraciones",
+  definition: "Definition of Explorations: The process of exploring. - (El proceso de exploración.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "fuerapunches",
+  definition: "Definition of outpunches: To punch harder or better than. - (Para golpear más fuerte o mejor que.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "caprichoso",
+  definition: "Definition of whimsical: Given to whimsy. - (Dada a la caprichosidad.)",
+  pronunciation: "/ˈwɪmzɪkəl/"
+},
+{
+  word: "muerto",
+  definition: "Definition of dead: (with "the", a demonstrative, or a possessive) Those who have died. - ((con "el", un demostrativo o un posesivo) Aquellos que han muerto.)",
+  pronunciation: "/diːd/"
+},
+{
+  word: "servilidades",
+  definition: "Definition of servility: The condition of being servile. - (La condición de ser servil.)",
+  pronunciation: "/sə.ˈvɪ.lɪ.ti/"
+},
+{
+  word: "él",
+  definition: "Definition of he: The game of tag, or it, in which the player attempting to catch the others is called "he". - (El juego de etiqueta, o it, en el que el jugador que intenta atrapar a los demás se llama "él".)",
+  pronunciation: "/hi/"
+},
+{
+  word: "utilización",
+  definition: "Definition of use: The act of using. - (El acto de usar.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "paladar",
+  definition: "Definition of palate: The roof of the mouth; the uraniscus. - (El techo de la boca; el uranisco.)",
+  pronunciation: "/ˈpælət/"
+},
+{
+  word: "miembros",
+  definition: "Definition of members: One who officially belongs to a group. - (Aquel que oficialmente pertenece a un grupo.)",
+  pronunciation: "/ˈmɛmbəz/"
+},
+{
+  word: "ladrones",
+  definition: "Definition of thieves: One who carries out a theft. - (Aquel que lleva a cabo un robo.)",
+  pronunciation: "/θiːvz/"
+},
+{
+  word: "amabilidad",
+  definition: "Definition of gentleness: The state of being gentle. - (El estado de ser gentil.)",
+  pronunciation: "/ˈd͡ʒɛntl̩nəs/"
+},
+{
+  word: "sin-trabas",
+  definition: "Definition of unfettered: To release from fetters; to unchain; to let loose; to free. - (Liberarse de las cadenas; desencadenar; soltar; liberar.)",
+  pronunciation: "/ʌnˈfɛtəd/"
+},
+{
+  word: "secuenciado",
+  definition: "Definition of sequenced: To arrange in an order - (Para organizar un pedido)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "sinergia",
+  definition: "Definition of synergy: (systems theory) A synonym of binding energy. - ((teoría de sistemas) Sinónimo de energía de enlace.)",
+  pronunciation: "/ˈsɪnədʒi/"
+},
+{
+  word: "aceite",
+  definition: "Definition of oil: Liquid fat. - (Grasa líquida.)",
+  pronunciation: "/ɔɪl/"
+},
+{
+  word: "Levantamiento",
+  definition: "Definition of Documentation: Something transposed from a thought to a document; the written account of an idea. - (Algo transpuesto de un pensamiento a un documento; el relato escrito de una idea.)",
+  pronunciation: "/ˌdɒkjʊmənˈteɪʃən/"
+},
+{
+  word: "transecto",
+  definition: "Definition of Transect: A path along which a researcher moves to count and record observations or collect data. - (Un camino a lo largo del cual un investigador se mueve para contar y registrar observaciones o recopilar datos.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Ratitas",
+  definition: "Definition of Rats: A medium-sized rodent belonging to the genus Rattus. - (Roedor de tamaño mediano perteneciente al género Rattus.)",
+  pronunciation: "/ɹæts/"
+},
+{
+  word: "monedas",
+  definition: "Definition of coins: (money) A piece of currency, usually metallic and in the shape of a disc, but sometimes polygonal, or with a hole in the middle. - ((dinero) Una moneda, generalmente metálica y en forma de disco, pero a veces poligonal, o con un agujero en el medio.)",
+  pronunciation: "/kɔɪnz/"
+},
+{
+  word: "flamencos",
+  definition: "Definition of flamingos: A wading bird of the family Phoenicopteridae. - (Ave zancuda de la familia Phoenicopteridae.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "tres",
+  definition: "Definition of three: The digit/figure 3. - (El dígito/figura 3.)",
+  pronunciation: "/θɹiː/"
+},
+{
+  word: "hermano",
+  definition: "Definition of brother: Son of the same parents as another person. - (Hijo de los mismos padres que otra persona.)",
+  pronunciation: "/ˈbɹɐðɘ(ɹ)/"
+},
+{
+  word: "subvención",
+  definition: "Definition of grant: The act of granting; a bestowing or conferring; concession; allowance; permission. - (El acto de otorgar; un otorgamiento o conferir; concesión; asignación; permiso.)",
+  pronunciation: "/ɡɹɑːnt/"
+},
+{
+  word: "jugadores",
+  definition: "Definition of players: One that plays - (Uno que juega)",
+  pronunciation: "/ˈpleɪəz/"
+},
+{
+  word: "malos",
+  definition: "Definition of bad: Error, mistake. - (error)",
+  pronunciation: "/bæːd/"
+},
+{
+  word: "incompleta",
+  definition: "Definition of incomplete: Something incomplete. - (Algo incompleto.)",
+  pronunciation: "/ɪn.kəm.ˈpliːt/"
+},
+{
+  word: "tetas",
+  definition: "Definition of boobs: Idiot, fool. - (Idiota, idiota.)",
+  pronunciation: "/buːbz/"
+},
+{
+  word: "equitativo",
+  definition: "Definition of equitable: Marked by or having equity. - (Marcado por o con equidad.)",
+  pronunciation: "/ˈɛk.wɪ.tə.bəl/"
+},
+{
+  word: "capacitación",
+  definition: "Definition of training: To practice an ability. - (Para practicar una habilidad.)",
+  pronunciation: "/ˈtɹeɪnɪŋ/"
+},
+{
+  word: "convincente",
+  definition: "Definition of convincing: To make someone believe, or feel sure about something, especially by using logic, argument or evidence. - (Hacer que alguien crea o se sienta seguro de algo, especialmente mediante el uso de la lógica, el argumento o la evidencia.)",
+  pronunciation: "/kənˈvɪnsɪŋ/"
+},
+{
+  word: "precipito",
+  definition: "Definition of precipitate: To make something happen suddenly and quickly. - (Hacer que algo suceda de repente y rápidamente.)",
+  pronunciation: "/pɹəˈsɪpɪteɪt/"
+},
+{
+  word: "cascadas",
+  definition: "Definition of CASCADES: A waterfall or series of small waterfalls. - (Una cascada o una serie de pequeñas cascadas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "renovado",
+  definition: "Definition of renewed: To make (something) new again; to restore to freshness or original condition. - (Volver a hacer (algo) nuevo; restaurar la frescura o la condición original.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "grado",
+  definition: "Definition of grade: A rating. - (A: riesgo muy bajo)",
+  pronunciation: "/ɡɹeɪd/"
+},
+{
+  word: "sumergido",
+  definition: "Definition of submerged: To sink out of sight. - (Para hundirse fuera de la vista.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "embajada",
+  definition: "Definition of embassy: The function or duty of an ambassador. - (La función o el deber de un embajador.)",
+  pronunciation: "/ˈɛmbəsi/"
+},
+{
+  word: "arqueadores",
+  definition: "Definition of archers: One who shoots an arrow from a bow or a bolt from a crossbow. - (Aquel que dispara una flecha desde un arco o un perno desde una ballesta.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "exuberante",
+  definition: "Definition of exuberant: (of people) Very high-spirited; extremely energetic and enthusiastic. - ((de personas) Muy animado; extremadamente enérgico y entusiasta.)",
+  pronunciation: "/ɪɡˈzuːbəɹənt/"
+},
+{
+  word: "exógeno",
+  definition: "Definition of exogenous: Having an external cause. - (Tener una causa externa.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "tristeza",
+  definition: "Definition of sadness: The state or emotion of being sad. - (El estado o la emoción de estar triste.)",
+  pronunciation: "/ˈsædnəs/"
+},
+{
+  word: "cabecera",
+  definition: "Definition of Director: One who directs; the person in charge of managing a department or directorate (e.g., director of engineering), project, or production (as in a show or film, e.g., film director). - (Quien dirige; la persona a cargo de administrar un departamento o dirección (por ejemplo, director de ingeniería), proyecto o producción (como en un espectáculo o película, por ejemplo, director de cine).)",
+  pronunciation: "/daɪˈɹɛktə(ɹ)/"
+},
+{
+  word: "cosmogonía",
+  definition: "Definition of Cosmogony: The study of the origin, and sometimes the development, of the universe or the solar system, in astrophysics, religion, and other fields. - (El estudio del origen, y a veces el desarrollo, del universo o del sistema solar, en astrofísica, religión y otros campos.)",
+  pronunciation: "/kɒzˈmɒɡəni/"
+},
+{
+  word: "obstrucción",
+  definition: "Definition of blocking: To fill (something) so that it is not possible to pass. - (Para llenar (algo) para que no sea posible pasar.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "jeringa",
+  definition: "Definition of Syringe: A device used for injecting or drawing fluids through a membrane. - (Un dispositivo utilizado para inyectar o extraer fluidos a través de una membrana.)",
+  pronunciation: "/səˈɹɪndʒ/"
+},
+{
+  word: "emergencias",
+  definition: "Definition of emergencies: A situation which poses an immediate risk and which requires urgent attention. - (Situación que supone un riesgo inmediato y que requiere atención urgente.)",
+  pronunciation: "/iˈmɜː.dʒən.siːz/"
+},
+{
+  word: "obsoletos",
+  definition: "Definition of Deprecated: To belittle or express disapproval of. - (Para menospreciar o expresar desaprobación.)",
+  pronunciation: "/ˈdɛp.ɹə.keɪt.ɪd/"
+},
+{
+  word: "intrínsecamente",
+  definition: "Definition of inherently: In an inherent way; naturally, innately. - (De forma inherente; naturalmente, de forma innata.)",
+  pronunciation: "/ɪnˈhɛɹəntli/"
+},
+{
+  word: "alquilare",
+  definition: "Definition of rent: A payment made by a tenant at intervals in order to occupy a property. - (Un pago realizado por un inquilino a intervalos para ocupar una propiedad.)",
+  pronunciation: "/ɹɛnt/"
+},
+{
+  word: "delimitaciones",
+  definition: "Definition of Delimitations: The act of delimiting something. - (El acto de delimitar algo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Cardioides",
+  definition: "Definition of Cardioids: An epicycloid with exactly one cusp; the plane curve with polar equation \rho = 1 + \cos\,\theta - approximately heart-shaped - (Un epicicloide con exactamente una cúspide; la curva plana con ecuación polar\rho = 1 + \cos\,\theta - aproximadamente en forma de corazón)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "horneado",
+  definition: "Definition of BAKED: (with person as subject) To cook (something) in an oven. - ((con persona como sujeto) Para cocinar (algo) en un horno.)",
+  pronunciation: "/beɪkt/"
+},
+{
+  word: "divulgación",
+  definition: "Definition of disclosure: The act of revealing something. - (El acto de revelar algo.)",
+  pronunciation: "/dɪsˈkləʊʒə(ɹ)/"
+},
+{
+  word: "casero",
+  definition: "Definition of HOMEMADE: Made at home. - (Hecho en casa.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "estuario",
+  definition: "Definition of estuary: Coastal water body where ocean tides and river water merge, resulting in a brackish water zone. - (Cuerpo de agua costero donde las mareas oceánicas y el agua del río se fusionan, lo que resulta en una zona de agua salobre.)",
+  pronunciation: "/ˈɛstjʊəɹi/"
+},
+{
+  word: "insensato",
+  definition: "Definition of senseless: Without feeling or consciousness; deprived of sensation - (Sin sentimiento ni conciencia; privado de sensación)",
+  pronunciation: "/ˈsɛnsləs/"
+},
+{
+  word: "motociclistas",
+  definition: "Definition of Motorcycling: To ride a motorcycle. - (Conducir una motocicleta.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "motocicletas",
+  definition: "Definition of motorcycles: An open-seated motor vehicle with handlebars instead of a steering wheel, and having two (or sometimes three) wheels. - (Un vehículo de motor de asiento abierto con manillar en lugar de un volante, y que tiene dos (o a veces tres) ruedas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "sacerdotes",
+  definition: "Definition of priests: A religious clergyman (clergywoman, clergyperson) who is trained to perform services or sacrifices at a church or temple - (Un clérigo religioso (clérigo, clérigo) que está capacitado para realizar servicios o sacrificios en una iglesia o templo)",
+  pronunciation: "/ˈpɹiːsts/"
+},
+{
+  word: "horquillas",
+  definition: "Definition of forks: A pronged tool having a long straight handle, used for digging, lifting, throwing etc. - (Una herramienta dentada que tiene un mango largo y recto, que se utiliza para cavar, levantar, lanzar, etc.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "literato",
+  definition: "Definition of Literature: The body of all written works. - (El cuerpo de todas las obras escritas.)",
+  pronunciation: "/ˈlɪ.tə.ɹɪ.tʃə(ɹ)/"
+},
+{
+  word: "masacres",
+  definition: "Definition of Massacres: The killing of a considerable number (usually limited to people) where little or no resistance can be made, with indiscriminate violence, without necessity, and contrary to civilized norms. - (El asesinato de un número considerable (generalmente limitado a personas) donde se puede hacer poca o ninguna resistencia, con violencia indiscriminada, sin necesidad y en contra de las normas civilizadas.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "térmica",
+  definition: "Definition of Thermal: A column of rising air in the lower atmosphere created by uneven heating of Earth's surface. - (Una columna de aire ascendente en la atmósfera inferior creada por el calentamiento desigual de la superficie de la Tierra.)",
+  pronunciation: "/ˈθɝməl/"
+},
+{
+  word: "filas",
+  definition: "Definition of rows: A line of objects, often regularly spaced, such as seats in a theatre, vegetable plants in a garden etc. - (Una línea de objetos, a menudo espaciados regularmente, como asientos en un teatro, plantas vegetales en un jardín, etc.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "engañosa",
+  definition: "Definition of Misleading: To lead astray, in a false direction. - (Llevar por mal camino, en una dirección falsa.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "empatía",
+  definition: "Definition of Empathy: Identification with or understanding of the thoughts, feelings, or emotional state of another person. - (Identificación o comprensión de los pensamientos, sentimientos o estado emocional de otra persona.)",
+  pronunciation: "/ˈɛmpəθi/"
+},
+{
+  word: "sueños",
+  definition: "Definition of Dreaming: To see imaginary events in one's mind while sleeping. - (Ver eventos imaginarios en la mente mientras se duerme.)",
+  pronunciation: "/ˈdɹiː.mɪŋ/"
+},
+{
+  word: "emanante",
+  definition: "Definition of emanating: To come from a source; issue from. - (Provenir de una fuente; emitir desde.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "incorrecta",
+  definition: "Definition of incorrect: Not correct; erroneous or wrong. - (Incorrecto; erróneo o incorrecto.)",
+  pronunciation: "/ˌɪnkəˈɹɛkt/"
+},
+{
+  word: "infarto",
+  definition: "Definition of infarct: An area of dead tissue caused by a loss of blood supply; a localized necrosis. - (Un área de tejido muerto causada por una pérdida de suministro de sangre; una necrosis localizada.)",
+  pronunciation: "/ɪnˈfɑrkt/"
+},
+{
+  word: "cegueras",
+  definition: "Definition of blinders: Something that blinds. - (Algo que ciega.)",
+  pronunciation: "/ˈblaɪndəz/"
+},
+{
+  word: "reproducciones",
+  definition: "Definition of views: (physical) Visual perception. - (Percepción visual (física).)",
+  pronunciation: "/vjuːz/"
+},
+{
+  word: "Fecha-límite",
+  definition: "Definition of Deadline: A time limit in the form of a date on or before which something must be completed. - (Un límite de tiempo en forma de una fecha en o antes de la cual se debe completar algo.)",
+  pronunciation: "/ˈdɛdˌlaɪn/"
+},
+{
+  word: "rivales",
+  definition: "Definition of Opponents: One who opposes another; one who works or takes a position against someone or something; one who attempts to stop the progress of someone or something. - (Uno que se opone a otro; uno que trabaja o toma una posición en contra de alguien o algo; uno que intenta detener el progreso de alguien o algo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "más",
+  definition: "Definition of more: To a greater degree or extent. - (En mayor grado o extensión.)",
+  pronunciation: "/ˈmɔː/"
+},
+{
+  word: "tripuladas",
+  definition: "Definition of manned: To supply (something) with staff or crew (of either sex). - (Suministrar (algo) con personal o tripulación (de cualquier sexo).)",
+  pronunciation: "/mænd/"
+},
+{
+  word: "subyacente",
+  definition: "Definition of underlying: To lie in a position directly beneath. - (Acostarse en una posición directamente debajo.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "boletines",
+  definition: "Definition of newsletter: A periodically sent publication containing current events or the like, generally on a particular topic or geared toward a limited audience. - (Una publicación enviada periódicamente que contiene eventos actuales o similares, generalmente sobre un tema en particular o dirigida a un público limitado.)",
+  pronunciation: "/ˈnjuːzˌlɛtə/"
+},
+{
+  word: "confianza",
+  definition: "Definition of trust: Confidence in or reliance on some person or quality. - (Confianza o dependencia en alguna persona o cualidad.)",
+  pronunciation: "/trʊst/"
+},
+{
+  word: "sede",
+  definition: "Definition of website: A collection of interlinked web pages on the World Wide Web that are typically accessible from the same base URL and reside on the same server. - (Una colección de páginas web interconectadas en la World Wide Web a las que normalmente se puede acceder desde la misma URL base y que residen en el mismo servidor.)",
+  pronunciation: "/ˈwɛbˌsaɪt/"
+},
+{
+  word: "sermónica",
+  definition: "Definition of sermon: Religious discourse; a written or spoken address on a religious or moral matter. - (Discurso religioso; un discurso escrito o hablado sobre un asunto religioso o moral.)",
+  pronunciation: "/ˈsɜː.mən/"
+},
+{
+  word: "monoplanos",
+  definition: "Definition of monoplanes: An airplane that has a single pair of wings - (Un avión que tiene un solo par de alas)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "indultos",
+  definition: "Definition of Pardons: Forgiveness for an offence. - (Perdón por una ofensa.)",
+  pronunciation: "/ˈpɑɹ.dənz/"
+},
+{
+  word: "oro",
+  definition: "Definition of gold: A heavy yellow elemental metal of great value, with atomic number 79 and symbol Au. - (Un metal elemental amarillo pesado de gran valor, con número atómico 79 y símbolo Au.)",
+  pronunciation: "/ɡɒʊld/"
+},
+{
+  word: "arcos",
+  definition: "Definition of Arches: An inverted U shape. - (Una forma de U invertida.)",
+  pronunciation: "/ˈɑːt͡ʃɪz/"
+},
+{
+  word: "gruesos",
+  definition: "Definition of Thick : The thickest, or most active or intense, part of something. - (La parte más gruesa, o más activa o intensa, de algo.)",
+  pronunciation: "/θɪk/"
+},
+{
+  word: "musicales",
+  definition: "Definition of musicals: A stage performance, show or film that involves singing, dancing and musical numbers performed by the cast as well as acting. - (Una representación teatral, espectáculo o película que implica cantar, bailar y números musicales interpretados por el elenco, así como actuar.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "nieve",
+  definition: "Definition of snow: The frozen, crystalline state of water that falls as precipitation. - (El estado congelado y cristalino del agua que cae como precipitación.)",
+  pronunciation: "/snəʊ/"
+},
+{
+  word: "de-referencia",
+  definition: "Definition of reference: A relationship or relation (to something). - (Una relación o relación (con algo).)",
+  pronunciation: "/ˈɹɛf.(ə)ɹəns/"
+},
+{
+  word: "precio",
+  definition: "Definition of price: The cost required to gain possession of something. - (El coste requerido para obtener la posesión de algo.)",
+  pronunciation: "/pɹaɪs/"
+},
+{
+  word: "no-gubernamental",
+  definition: "Definition of non-governmental: Not belonging to, associated with or operated by a particular government. - (No pertenece, está asociado ni es operado por un gobierno en particular.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "arrestado",
+  definition: "Definition of Arrest: A check, stop, an act or instance of arresting something. - (Un control, una detención, un acto o una instancia de arresto de algo.)",
+  pronunciation: "/əˈɹɛst/"
+},
+{
+  word: "poliamidas",
+  definition: "Definition of polyamides: Any of a range of polymers containing amide (or peptide) repeat units; examples include proteins and nylon. - (Cualquiera de una gama de polímeros que contienen unidades de repetición de amida (o péptido); los ejemplos incluyen proteínas y nylon.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "motoriza",
+  definition: "Definition of motorized: To fit something with a motor. - (Para montar algo con un motor.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "base",
+  definition: "Definition of concentration: The act, process or ability of concentrating; the process of becoming concentrated, or the state of being concentrated. - (El acto, proceso o capacidad de concentración; el proceso de volverse concentrado, o el estado de estar concentrado.)",
+  pronunciation: "/ˌkɒnsənˈtɹeɪʃən/"
+},
+{
+  word: "hermética",
+  definition: "Definition of Airtight: Impermeable to air or other gases. - (Impermeable al aire u otros gases.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Ganancias",
+  definition: "Definition of Profits: Total income or cash flow minus expenditures. The money or other benefit a non-governmental organization or individual receives in exchange for products and services sold at an advertised price. - (Ingresos totales o flujo de efectivo menos gastos. El dinero u otro beneficio que una organización no gubernamental o individuo recibe a cambio de productos y servicios vendidos a un precio anunciado.)",
+  pronunciation: "/ˈpɹɒfɪts/"
+},
+{
+  word: "sonido",
+  definition: "Definition of sound: Healthy. - (Saludable)",
+  pronunciation: "/saʊnd/"
+},
+{
+  word: "guerra",
+  definition: "Definition of war: Organized, large-scale, armed conflict between countries or between national, ethnic, or other sizeable groups, usually involving the engagement of military forces. - (Conflicto armado organizado, a gran escala, entre países o entre grupos nacionales, étnicos u otros grupos importantes, que generalmente involucra la participación de fuerzas militares.)",
+  pronunciation: "/wɔː/"
+},
+{
+  word: "infligidas",
+  definition: "Definition of inflicted: To thrust upon; to impose. - (Empujar; imponer.)",
+  pronunciation: "/ɪnˈflɪktɪd/"
+},
+{
+  word: "parodias",
+  definition: "Definition of parodies: A work or performance that imitates another work or performance with ridicule or irony. - (Una obra o performance que imita otra obra o performance con ridículo o ironía.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "Fruto",
+  definition: "Definition of Fruit: (often in the plural) In general, a product of plant growth useful to man or animals. - ((a menudo en plural) En general, un producto del crecimiento vegetal útil para el hombre o los animales.)",
+  pronunciation: "/fɹuːt/"
+},
+{
+  word: "necesidad",
+  definition: "Definition of need: A requirement for something; something needed. - (Un requisito para algo; algo necesario.)",
+  pronunciation: "/niːd/"
+},
+{
+  word: "amonio",
+  definition: "Definition of ammonium: The univalent NH4+ cation, derived by the protonation of ammonia - (El catión NH4+ univalente, derivado de la protonación del amoníaco)",
+  pronunciation: "/əˈmoʊni.əm/"
+},
+{
+  word: "colateral",
+  definition: "Definition of collateral: A security or guarantee (usually an asset) pledged for the repayment of a loan if one cannot procure enough funds to repay. - (Un valor o garantía (generalmente un activo) pignorado para el reembolso de un préstamo si no se pueden obtener fondos suficientes para reembolsarlo.)",
+  pronunciation: "/kəˈlætəɹəl/"
+},
+{
+  word: "fresado",
+  definition: "Definition of filing: To commit (official papers) to some office. - (Para comprometerse (documentos oficiales) a alguna oficina.)",
+  pronunciation: "/faɪ.lɪŋ/"
+},
+{
+  word: "liderazgos",
+  definition: "Definition of leaderships: The capacity of someone to lead others. - (La capacidad de alguien para liderar a otros.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "pastoreo",
+  definition: "Definition of grazing: To feed or supply (cattle, sheep, etc.) with grass; to furnish pasture for. - (Para alimentar o abastecer (ganado, ovejas, etc.) con pasto; para proporcionar pastos para.)",
+  pronunciation: "/ˈɡɹeɪzɪŋ/"
+},
+{
+  word: "engañosa",
+  definition: "Definition of Misleading: To lead astray, in a false direction. - (Llevar por mal camino, en una dirección falsa.)",
+  pronunciation: "/No pronunciation available/"
+},
+{
+  word: "recreación",
+  definition: "Definition of recreation: Any activity, such as play, that amuses, diverts or stimulates. - (Cualquier actividad, como el juego, que divierta, desvíe o estimule.)",
+  pronunciation: "/ɹɛkɹiˈeɪʃən/"
+},
+{
+  word: "legales",
+  definition: "Definition of liabilities: An obligation, debt or responsibility owed to someone. - (Una obligación, deuda o responsabilidad contraída con alguien.)",
+  pronunciation: "/No pronunciation available/"
+},
       ],
     };
 //count
