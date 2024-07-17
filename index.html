@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hangman</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-    <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech to Text Hangman</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <div id="options-container"></div>
-        <div id="letter-container" class="letter-container hide"></div>
-        <div id="user-input-section"></div>
-        <canvas id="canvas"></canvas>
-        <div id="new-game-container" class="new-game-popup hide">
-            <div id="result-text"></div>
-            <button id="new-game-button">New Game</button>
-        </div>
-
-        <div id="correct-words-list" class="correct-words-container"></div>
-        <div id="streak">Current Streak: 0</div>
-        <div id="instructions-popup" class="popup hide">
-            <div class="popup-content">
-                <span id="close-popup" class="close">&times;</span>
-                <h2>Instructions (instrucciones)</h2>
-                <p>Follow these steps to play Hangman:</p>
-                               <ol>
-                    <li>Choose a category to start the game. (Elige una categoría para comenzar el juego.)</li>
-                    <li>A word related to the chosen category will be selected randomly. (Se seleccionará una palabra relacionada con la categoría elegida al azar.)</li>
-                    <li>Guess the word by selecting letters one at a time. (Adivina la palabra seleccionando letras una a la vez.)</li>
-                    <li>If the letter is in the word, it will be revealed in its correct position(s). (Si la letra está en la palabra, se revelará en su(s) posición(es) correcta(s).)</li>
-                    <li>If the letter is not in the word, a part of the hangman will be drawn. (Si la letra no está en la palabra, se dibujará una parte del ahorcado.)</li>
-                    <li>You win if you guess the word before the hangman is fully drawn. (Ganas si adivinas la palabra antes de que el ahorcado esté completamente dibujado.)</li>
-                    <li>You lose if the hangman is fully drawn before you guess the word. (Pierdes si el ahorcado está completamente dibujado antes de que adivines la palabra.)</li>
-                    <li>Click "New Game" to start a new round. (Haz clic en "Nuevo Juego" para comenzar una nueva ronda.)</li>
-                    <li>In the video chat, there's a chat option available for communication. (En el chat de video, hay una opción de chat disponible para la comunicación.)</li>
-                    <li>Click the Video icon (📷) to activate video chat. (Haz clic en el ícono de video (📷) para activar el chat de video.)</li>
-                    <li>To deactivate video chat, click the Video icon (📷) again. (Para desactivar el chat de video, haz clic en el ícono de video (📷) nuevamente.)</li>
-                    <li>Please ensure camera & mic access is on in your site's settings (⚙️). (Asegúrate de que el acceso a la cámara y el micrófono esté activado en la configuración de tu sitio (⚙️).)</li>
-                </ol>
+        <div class="game-container">
+            <button id="start-btn">Start Speaking</button>
+            <button id="stop-btn" disabled>Stop Speaking</button>
+            <p id="status"></p>
+            <p id="result"></p>
+            <p id="word-display" class="word-display"></p>
+            <canvas id="hangman-canvas" width="150" height="150"></canvas>
+            <div id="letter-container" class="letter-container"></div>
+            <div id="options-container" class="options-container"></div>
+            <div id="letter-container"></div>
+            <div id="log-container" style="margin-top: 20px;"></div>
+            <div id="new-game-container" class="hide">
+                <button id="new-game-button">New Game</button>
+            </div>
+            <button id="instructions-button">Instructions</button> <!-- Added button to open instructions -->
+            <div id="instructions-popup" class="popup hide">
+                <div class="popup-content">
+                    <span id="close-popup" class="close">&times;</span>
+                    <h2>Instructions (instrucciones)</h2>
+                    <p>Follow these steps to play Hangman:</p>
+                    <ol>
+                        <li>Choose a category to start the game. (Elige una categoría para comenzar el juego.)</li>
+                        <li>A word related to the chosen category will be selected randomly. (Se seleccionará una palabra relacionada con la categoría elegida al azar.)</li>
+                        <li>Guess the word by selecting letters one at a time. (Adivina la palabra seleccionando letras una a la vez.)</li>
+                        <li>If the letter is in the word, it will be revealed in its correct position(s). (Si la letra está en la palabra, se revelará en su(s) posición(es) correcta(s).)</li>
+                        <li>If the letter is not in the word, a part of the hangman will be drawn. (Si la letra no está en la palabra, se dibujará una parte del ahorcado.)</li>
+                        <li>You win if you guess the word before the hangman is fully drawn. (Ganas si adivinas la palabra antes de que el ahorcado esté completamente dibujado.)</li>
+                        <li>You lose if the hangman is fully drawn before you guess the word. (Pierdes si el ahorcado está completamente dibujado antes de que adivines la palabra.)</li>
+                        <li>Click "New Game" to start a new round. (Haz clic en "Nuevo Juego" para comenzar una nueva ronda.)</li>
+                    </ol>
+                </div>
             </div>
         </div>
-        <button id="instructions-button">Instructions</button>
-        <iframe id="video-chat" src="https://brie.fi/ng/single-frame-18?audio=1&video=1&fs=0&invite=0&prefs=0&share=0&chat=1" 
-            allow="camera; microphone; fullscreen; speaker; display-capture">
-        </iframe>
     </div>
-    <!-- Script -->
-    <script src="script.js"></script>
+    <script src="script.js"></script> <!-- Ensure this path is correct -->
 </body>
 </html>
