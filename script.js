@@ -15,7 +15,7 @@ if ('webkitSpeechRecognition' in window) {
         'x': 'X', 'ex': 'X', 'y': 'Y', 'why': 'Y', 'z': 'Z', 'zee': 'Z', 'zed': 'Z'
     };
 
-    //Options values for buttons
+        //Options values for buttons
 let options = {
     "Normal Mode": [
       { word: "loop", definition: "A length of thread, line or rope that is doubled over to make an opening." },
@@ -4234,13 +4234,13 @@ let options = {
         if (selectedWord.includes('-')) {
             const hyphenButton = document.createElement('button');
             hyphenButton.innerText = '-';
-            hyphenButton.classList.add('letter-button', 'hyphen-button');
+            hyphenButton.classList.add('letter-button', 'hyphen-button', 'flashing-slow');
             hyphenButton.onclick = () => {
                 handleGuess('-');
-                hyphenButton.classList.add('flashing');
+                hyphenButton.classList.add('guessed');
                 setTimeout(() => {
-                    hyphenButton.classList.remove('flashing');
-                }, 1000); // Flashing duration
+                    hyphenButton.classList.remove('guessed');
+                }, 500); // Light blue briefly
             };
             letterContainer.appendChild(hyphenButton);
         }
@@ -4581,14 +4581,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Add CSS for flashing effect
 const style = document.createElement('style');
 style.innerHTML = `
     .flashing {
         animation: flash 1s infinite;
     }
 
+    .flashing-slow {
+        animation: flash-slow 2s infinite;
+    }
+
     @keyframes flash {
+        0%, 100% { background-color: lightblue; }
+        50% { background-color: white; }
+    }
+
+    @keyframes flash-slow {
         0%, 100% { background-color: lightblue; }
         50% { background-color: white; }
     }
