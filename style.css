@@ -1,334 +1,160 @@
-* {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-
-body {
-  background-image: url('https://64.media.tumblr.com/7288fb9c5a568fc033a233b1b5862886/27bd7103dd700c5a-de/s500x750/8e8261cf6e76222c6ca0ab275a5dcae5e2fbd7cb.gifv');
-  background-size: cover; /* Cover the entire screen */
-  background-position: center; /* Center the background image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  height: 100vh; /* Full height of the viewport */
-  margin: 0; /* Remove default margin */
-}
-
 .container {
-  font-size: 16px;
-  background-color: rgba(255, 255, 255, 0.5); /* 50% opacity */
-  width: 90vw;
-  max-width: 34em;
-  height: 80vh; /* Fixed height */
-  overflow-y: auto; /* Enable vertical scrolling */
-  position: absolute;
-  transform: translate(-50%, -50%);
-  top: 50%; /* Centered vertically */
-  left: 50%; /* Centered horizontally */
-  padding: 3em;
-  border-radius: 0.6em;
-  box-shadow: 0 1.2em 2.4em rgba(111, 85, 0, 0.25);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px; /* Added gap between child elements */
-  
-  /* Styles to hide scrollbar but allow scrolling */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+    text-align: center;
+    margin-top: 50px;
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
 }
 
-.container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
+.game-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: inline-block; /* Center the container */
 }
 
-#options-container {
-  text-align: center;
-  width: 100%;
+#start-btn, #stop-btn, #new-game-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
 }
 
-#options-container div {
-  display: flex;
-  justify-content: space-between;
-  margin: 1.2em 0;
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
 }
 
-#options-container button {
-  padding: 0.6em 1.2em;
-  border: 3px solid #000000;
-  background-color: #ffffff;
-  color: #000000;
-  border-radius: 0.3em;
-  text-transform: capitalize;
-  cursor: pointer;
+.word-display {
+    font-size: 24px;
+    margin-top: 20px;
+    letter-spacing: 0.1em;
 }
 
-#options-container button:disabled {
-  border: 3px solid #808080;
-  color: #808080;
-  background-color: #efefef;
-}
-
-#options-container button.active {
-  background-color: rgba(255, 255, 255, 0.5);
-  border: 3px solid #000000;
-  color: #fff;
+#hangman-canvas {
+    margin-top: 20px;
+    border: 1px solid #ccc;
 }
 
 .letter-container {
-  width: 90%; /* Adjust width as needed */
-  display: grid;
-  grid-template-columns: repeat(8, 1fr); /* Set 8 columns for 32 blocks */
-  grid-template-rows: repeat(4, 1fr); /* Set 4 rows for 32 blocks */
-  gap: 0.1em; /* Reduced gap for closer spacing */
-  justify-content: center;
-  align-content: end; /* Align items to the bottom */
-  margin-top: -60px;
+    width: 70%; /* Adjust width to make it smaller */
+    display: grid;
+    grid-template-columns: repeat(8, 1fr); /* Set 8 columns */
+    gap: 0.3em; /* Reduce gap for closer spacing */
+    justify-content: center;
+    margin: 20px auto; /* Center the container */
 }
 
 #letter-container button {
-  height: 2em; /* Further reduced height for a smaller key */
-  width: calc((90% - 3.2em) / 8); /* Further adjusted width for closer keys */
-  border-radius: 0.1em; /* Smaller border radius */
-  background-color: #ffffff;
-  cursor: pointer;
-  border: 1px solid black;
+    height: 35px; /* Reduce height for smaller keys */
+    width: 100%; /* Full width of the grid cell */
+    border-radius: 0.2em; /* Slightly larger border radius */
+    background-color: #ffffff;
+    cursor: pointer;
+    border: 1px solid black;
+    font-size: 14px; /* Reduce font size for better readability */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.new-game-popup {
-  background-color: #f0f0f0;
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border-radius: 0.6em;
-  margin-top: -40px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Added shadow */
+#letter-container button.active {
+    background-color: yellow; /* Change background color to indicate activation */
 }
 
-#user-input-section {
-  display: flex;
-  justify-content: center;
-  font-size: 1.8em;
-  width: 100%;
-  margin-top: -30px; /* Move up by 20px */
+#letter-container button.hyphen-button {
+    background-color: blue;
+    color: white;
 }
 
-.hide {
-  display: none;
+#letter-container button.guessed {
+    background-color: lightblue;
+    color: white;
 }
 
-#result-text h2 {
-  font-size: 1.1em; /* Reduced from 1.8em to make it smaller */
-  text-align: center;
-  margin-top: -5px; /* Move up by reducing the top margin */
-}
-
-#result-text p {
-  font-size: 1.0em; /* Reduced from 1.25em to make it smaller */
-  margin: 0.5em 0; /* Adjusted margin for closer spacing */
-  margin-top: -10px; /* Move up by reducing the top margin */
-}
-
-#result-text span {
-  font-weight: 600;
-}
-
-#new-game-button {
-  font-size: 0.8em; /* Further reduced font size */
-  padding: 0.3em 0.6em; /* Further reduced padding for a tighter fit */
-  background-color: #66636d;
-  border: 2px solid #000000; /* Maintain thinner border */
-  color: #fff;
-  border-radius: 0.1em; /* Smaller border radius for less rounded corners */
-  cursor: pointer;
-  margin-top: -12px;
-}
-
-.win-msg {
-  color: #39d78d;
-}
-
-.lose-msg {
-  color: #fe5152;
-}
-
-#changeBackground {
-  position: fixed;
-  right: 10px;
-  bottom: 90px;
-  padding: 5px 20px;
-  font-size: 16px;
-  cursor: pointer;
-  z-index: 2;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-.visually-hidden {
-  position: absolute;
-  left: -10000px;
-  top: auto;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-#instructionsPopup {
-  position: fixed;
-  left: 10px;
-  bottom: 60px;
-  width: 600px;
-  padding: 20px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.2);
-  background-color: white;
-  border-radius: 8px;
-  display: none;
-}
-
-#toggle:checked + #instructionsButton + #instructionsPopup {
-  display: block;
-}
-
-#instructionsButton, #closeInstructions {
-  cursor: pointer;
-  display: inline-block;
-  margin: 10px;
-  padding: 5px 80px;
-  background-color: rgba(240, 240, 240);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-#instructionsButton {
-  position: fixed;
-  left: 10px;
-  bottom: 10px;
-  z-index: 1000; /* Ensures it is above other elements */
-}
-
-.correct-words-container {
-  padding: 10px;
-  position: relative;
-  width: 100%;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  min-height: 200px;
-  max-height: 450px;
-  overflow-y: auto; /* Enable vertical scrolling */
-  margin-top: -20px; /* Move up by 10px */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow */
-  border-radius: 10px; /* Rounded corners */
-  
-  /* Styles to hide scrollbar but allow scrolling */
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
-}
-
-.correct-words-container::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera */
-}
-
-.correct-words-container::before {
-  display: block;
-  font-size: 1.0em; /* Adjust font size as needed */
-  text-align: center;
-  padding: 10px;
-  width: 100%;
-  color: #333; /* Text color */
-}
-
-#streak, #showHighestScore {
-  position: relative; /* Changed to relative for stacking */
-  width: 100%; /* Full width to center align */
-  background-color: #f9f9f9;
-  border: 2px solid #ccc;
-  padding: 6px 12px;
-  font-size: 14px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
-  margin-top: 20px; /* Added margin for spacing */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin-top: 50px;
+    background-color: #f0f0f0;
 }
 
 button {
-  background-color: #ffffff;
-  border: none;
-  color: black;
-  padding: 8px 16px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-  margin: 2px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
 }
 
-button:hover {
-  background-color: #e0e0e0;
+p {
+    margin-top: 20px;
+    font-size: 18px;
 }
 
-/* Add this CSS to your existing style.css file or create a new CSS file */
-
-#speech-recognition-button {
-  background-color: #007bff; /* Blue background color */
-  color: white; /* White text color */
-  padding: 10px 20px; /* Padding around the text */
-  border: none; /* Remove border */
-  border-radius: 5px; /* Rounded corners */
-  cursor: pointer; /* Show pointer cursor on hover */
-  margin-top: 10px; /* Add some top margin */
+.hide {
+    display: none;
 }
 
-#speech-recognition-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+.options-container {
+    margin-top: 20px;
+}
+
+#log-container {
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    width: 550px;
+    height: 150px;
+    overflow-y: auto;
+    word-wrap: break-word;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#log-container div {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+/* Hide scrollbar but allow scrolling */
+#log-container::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
+
+#log-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
 }
 
 .popup {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255); /* Semi-transparent background */
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
 }
 
 .popup-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 80%;
+    position: relative;
 }
 
 .close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-#video-chat {
-  position: absolute;
-  bottom: -75%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80%; /* Adjust width as needed */
-  height: 50%; /* Adjust height as needed */
-  z-index: 9999;
-  border-radius: 15px; /* Adjust the radius as needed */
-  overflow: hidden; /* Ensure content inside the iframe respects the border radius */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px;
+    cursor: pointer;
 }
