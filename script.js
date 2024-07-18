@@ -18,13 +18,13 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   };
 
   const spanishPhoneticMap = {
-      'a': 'A', 'á': 'Á', 'be': 'B', 'be larga': 'B', 'be alta': 'B', 'be grande': 'B', 'be de burro': 'B',
-      'ce': 'C', 'de': 'D', 'e': 'E', 'é': 'É', 'efe': 'F', 'ge': 'G', 'hache': 'H',
-      'i': 'I', 'í': 'Í', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O', 'ó': 'Ó', 
-      'pe': 'P', 'cu': 'Q', 'erre': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'ú': 'Ú', 'uve': 'V', 've': 'V', 've corta': 'V', 
-      've chica': 'V', 've pequeña': 'V', 'doble ve': 'W', 'doble u': 'W', 'equis': 'X', 'i griega': 'Y', 'ye': 'Y', 'zeta': 'Z',
-      'ch': 'CH', 'll': 'LL', 'rr': 'RR'
-  };
+    'a': 'A', 'ah': 'A', 'á': 'Á', 'be': 'B', 'b': 'B', 'ce': 'C', 'c': 'C', 'che': 'CH', 'ch': 'CH',
+    'de': 'D', 'd': 'D', 'e': 'E', 'é': 'É', 'efe': 'F', 'f': 'F', 'ge': 'G', 'g': 'G', 'hache': 'H', 'h': 'H',
+    'i': 'I', 'í': 'Í', 'jota': 'J', 'j': 'J', 'ka': 'K', 'k': 'K', 'ele': 'L', 'l': 'L', 'elle': 'LL', 'll': 'LL',
+    'eme': 'M', 'm': 'M', 'ene': 'N', 'n': 'N', 'eñe': 'Ñ', 'ñ': 'Ñ', 'o': 'O', 'ó': 'Ó', 'pe': 'P', 'p': 'P',
+    'cu': 'Q', 'q': 'Q', 'erre': 'R', 'r': 'R', 'ese': 'S', 's': 'S', 'te': 'T', 't': 'T', 'u': 'U', 'ú': 'Ú',
+    'uve': 'V', 'v': 'V', 'doble ve': 'W', 'w': 'W', 'equis': 'X', 'x': 'X', 'i griega': 'Y', 'y': 'Y', 'zeta': 'Z', 'z': 'Z'
+};
 
                 //Options values for buttons
                 let options = {
