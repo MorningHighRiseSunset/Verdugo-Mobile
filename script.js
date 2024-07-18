@@ -4,7 +4,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   const recognition = new SpeechRecognition();
   recognition.continuous = true;
   recognition.interimResults = true;
-  recognition.lang = 'en-US'; // Default to English, can be changed dynamically
+  recognition.lang = 'en-US'; // Default to English
 
   const phoneticMap = {
       'a': 'A', 'ay': 'A', 'b': 'B', 'bee': 'B', 'c': 'C', 'see': 'C', 'sea': 'C',
@@ -4371,6 +4371,13 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
               drawHangman();
               createKeyboard();
               optionsContainer.innerHTML = ''; // Clear options after selection
+
+              // Switch recognition language based on category
+              if (mode === 'Verdugo') {
+                  recognition.lang = 'es-ES';
+              } else {
+                  recognition.lang = 'en-US';
+              }
           };
           optionsContainer.appendChild(button);
       }
