@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hangman</title>
+    <title>Speech to Text Hangman</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,6 +13,7 @@
             <button id="stop-btn" disabled>Stop Speaking</button>
             <p id="status"></p>
             <p id="result"></p>
+            <p id="suggestion" style="margin-top: 10px; font-style: italic;"></p> <!-- Added suggestion element -->
             <p id="word-display" class="word-display"></p>
             <canvas id="hangman-canvas" width="150" height="150"></canvas>
             <div id="letter-container" class="letter-container"></div>
@@ -37,11 +38,17 @@
                         <li>You win if you guess the word before the hangman is fully drawn. (Ganas si adivinas la palabra antes de que el ahorcado esté completamente dibujado.)</li>
                         <li>You lose if the hangman is fully drawn before you guess the word. (Pierdes si el ahorcado está completamente dibujado antes de que adivines la palabra.)</li>
                         <li>Click "New Game" to start a new round. (Haz clic en "Nuevo Juego" para comenzar una nueva ronda.)</li>
+                        <l1>Steps to access mobile microphone</l1>
+                        <l1></l1>
+                        <l1></l1>
+                        <l1></l1>
+                        <l1></l1>
+                        <l1></l1>
                     </ol>
                 </div>
             </div>
         </div>
     </div>
-    <script src="script.js"></script> <!-- Ensure this path is correct -->
+    <script src="index.js"></script> <!-- Ensure this path is correct -->
 </body>
 </html>
