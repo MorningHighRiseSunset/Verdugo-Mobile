@@ -1,64 +1,64 @@
 // Check if the browser supports the Web Speech API
 if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const recognition = new SpeechRecognition();
-  recognition.continuous = true;
-  recognition.interimResults = true;
-  recognition.lang = 'en-US'; // Default to English
-
-  // Increase microphone input volume
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const source = audioContext.createMediaStreamSource(stream);
-    const gainNode = audioContext.createGain();
-    gainNode.gain.value = 2; // Increase volume
-    source.connect(gainNode).connect(audioContext.destination);
-  });
-
-  const phoneticMap = {
-      'a': 'A', 'ay': 'A', 'b': 'B', 'bee': 'B', 'c': 'C', 'see': 'C', 'sea': 'C',
-      'd': 'D', 'dee': 'D', 'e': 'E', 'ee': 'E', 'f': 'F', 'ef': 'F', 'g': 'G', 'gee': 'G',
-      'h': 'H', 'aitch': 'H', 'i': 'I', 'eye': 'I', 'j': 'J', 'jay': 'J', 'k': 'K', 'kay': 'K',
-      'l': 'L', 'el': 'L', 'm': 'M', 'em': 'M', 'n': 'N', 'en': 'N', 'o': 'O', 'oh': 'O',
-      'p': 'P', 'pee': 'P', 'q': 'Q', 'cue': 'Q', 'r': 'R', 'ar': 'R', 's': 'S', 'es': 'S',
-      't': 'T', 'tee': 'T', 'u': 'U', 'you': 'U', 'v': 'V', 'vee': 'V', 'w': 'W', 'double-u': 'W',
-      'x': 'X', 'ex': 'X', 'y': 'Y', 'why': 'Y', 'z': 'Z', 'zee': 'Z', 'zed': 'Z',
-      'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ñ': 'Ñ', 'ene': 'Ñ'
-  };
-
-  const spanishPhoneticMap = {
-      'a': 'A', 'ah': 'A', 'á': 'Á', 'aa': 'A', 'aaa': 'A',
-      'be': 'B', 'b': 'B', 'bay': 'B', 'beh': 'B', 'bee': 'B', 'bey': 'B',
-      'ce': 'C', 'c': 'C', 'say': 'C', 'seh': 'C', 'see': 'C', 'cee': 'C',
-      'che': 'CH', 'ch': 'CH', 'cheh': 'CH', 'chay': 'CH',
-      'de': 'D', 'd': 'D', 'day': 'D', 'deh': 'D', 'dee': 'D', 'dah': 'D',
-      'e': 'E', 'é': 'É', 'eh': 'E', 'ay': 'E', 'ee': 'E', 'ehh': 'E',
-      'efe': 'F', 'f': 'F', 'effe': 'F', 'ef': 'F', 'eff': 'F',
-      'ge': 'G', 'g': 'G', 'hey': 'G', 'geh': 'G', 'gee': 'G', 'guh': 'G',
-      'hache': 'H', 'h': 'H', 'ahche': 'H', 'ache': 'H', 'hatch': 'H',
-      'i': 'I', 'í': 'Í', 'ee': 'I', 'e': 'I', 'eye': 'I', 'aye': 'I',
-      'jota': 'J', 'j': 'J', 'hotah': 'J', 'hoh': 'J', 'joh': 'J', 'jay': 'J',
-      'ka': 'K', 'k': 'K', 'kah': 'K', 'kay': 'K', 'kaa': 'K',
-      'ele': 'L', 'l': 'L', 'elle': 'L', 'el': 'L', 'ell': 'L', 'ellay': 'L',
-      'elle': 'LL', 'll': 'LL', 'ehyeh': 'LL', 'elye': 'LL', 'yay': 'LL', 'yey': 'LL',
-      'eme': 'M', 'm': 'M', 'emme': 'M', 'em': 'M', 'emm': 'M', 'meh': 'M',
-      'ene': 'N', 'n': 'N', 'enne': 'N', 'en': 'N', 'enn': 'N', 'neh': 'N',
-      'eñe': 'Ñ', 'ñ': 'Ñ', 'enye': 'Ñ', 'enyeh': 'Ñ', 'ny': 'Ñ', 'nyah': 'Ñ',
-      'o': 'O', 'ó': 'Ó', 'oh': 'O', 'oo': 'O', 'owe': 'O', 'aw': 'O',
-      'pe': 'P', 'p': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P',
-      'cu': 'Q', 'q': 'Q', 'koo': 'Q', 'ku': 'Q', 'cue': 'Q', 'qu': 'Q',
-      'erre': 'R', 'r': 'R', 'erreh': 'R', 'er': 'R', 'err': 'R', 'air': 'R',
-      'ese': 'S', 's': 'S', 'esse': 'S', 'es': 'S', 'ess': 'S', 'seh': 'S',
-      'te': 'T', 't': 'T', 'tay': 'T', 'teh': 'T', 'tee': 'T', 'tuh': 'T',
-      'u': 'U', 'ú': 'Ú', 'oo': 'U', 'uh': 'U', 'you': 'U', 'yoo': 'U',
-      'uve': 'V', 'v': 'V', 'vay': 'V', 'veh': 'V', 'vee': 'V', 'vuh': 'V',
-      'doble ve': 'W', 'w': 'W', 'doble u': 'W', 'doble v': 'W', 'double ve': 'W', 'double u': 'W',
-      'equis': 'X', 'x': 'X', 'ehkees': 'X', 'eks': 'X', 'ex': 'X', 'ecks': 'X',
-      'i griega': 'Y', 'y': 'Y', 'yeh': 'Y', 'ee griega': 'Y', 'yay': 'Y', 'yuh': 'Y',
-      'zeta': 'Z', 'z': 'Z', 'seta': 'Z', 'zeh': 'Z', 'zee': 'Z', 'zed': 'Z'
-  };
-
-                    //Options values for buttons
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US'; // Default to English
+  
+    // Increase microphone input volume
+    navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const source = audioContext.createMediaStreamSource(stream);
+      const gainNode = audioContext.createGain();
+      gainNode.gain.value = 2; // Increase volume
+      source.connect(gainNode).connect(audioContext.destination);
+    });
+  
+    const phoneticMap = {
+        'a': 'A', 'ay': 'A', 'b': 'B', 'bee': 'B', 'c': 'C', 'see': 'C', 'sea': 'C',
+        'd': 'D', 'dee': 'D', 'e': 'E', 'ee': 'E', 'f': 'F', 'ef': 'F', 'g': 'G', 'gee': 'G',
+        'h': 'H', 'aitch': 'H', 'i': 'I', 'eye': 'I', 'j': 'J', 'jay': 'J', 'k': 'K', 'kay': 'K',
+        'l': 'L', 'el': 'L', 'm': 'M', 'em': 'M', 'n': 'N', 'en': 'N', 'o': 'O', 'oh': 'O',
+        'p': 'P', 'pee': 'P', 'q': 'Q', 'cue': 'Q', 'r': 'R', 'ar': 'R', 's': 'S', 'es': 'S',
+        't': 'T', 'tee': 'T', 'u': 'U', 'you': 'U', 'v': 'V', 'vee': 'V', 'w': 'W', 'double-u': 'W',
+        'x': 'X', 'ex': 'X', 'y': 'Y', 'why': 'Y', 'z': 'Z', 'zee': 'Z', 'zed': 'Z',
+        'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ñ': 'Ñ', 'ene': 'Ñ'
+    };
+  
+    const spanishPhoneticMap = {
+        'a': 'A', 'ah': 'A', 'á': 'Á', 'aa': 'A', 'aaa': 'A',
+        'be': 'B', 'b': 'B', 'bay': 'B', 'beh': 'B', 'bee': 'B', 'bey': 'B',
+        'ce': 'C', 'c': 'C', 'say': 'C', 'seh': 'C', 'see': 'C', 'cee': 'C',
+        'che': 'CH', 'ch': 'CH', 'cheh': 'CH', 'chay': 'CH',
+        'de': 'D', 'd': 'D', 'day': 'D', 'deh': 'D', 'dee': 'D', 'dah': 'D',
+        'e': 'E', 'é': 'É', 'eh': 'E', 'ay': 'E', 'ee': 'E', 'ehh': 'E',
+        'efe': 'F', 'f': 'F', 'effe': 'F', 'ef': 'F', 'eff': 'F',
+        'ge': 'G', 'g': 'G', 'hey': 'G', 'geh': 'G', 'gee': 'G', 'guh': 'G',
+        'hache': 'H', 'h': 'H', 'ahche': 'H', 'ache': 'H', 'hatch': 'H',
+        'i': 'I', 'í': 'Í', 'ee': 'I', 'e': 'I', 'eye': 'I', 'aye': 'I',
+        'jota': 'J', 'j': 'J', 'hotah': 'J', 'hoh': 'J', 'joh': 'J', 'jay': 'J',
+        'ka': 'K', 'k': 'K', 'kah': 'K', 'kay': 'K', 'kaa': 'K',
+        'ele': 'L', 'l': 'L', 'elle': 'L', 'el': 'L', 'ell': 'L', 'ellay': 'L',
+        'elle': 'LL', 'll': 'LL', 'ehyeh': 'LL', 'elye': 'LL', 'yay': 'LL', 'yey': 'LL',
+        'eme': 'M', 'm': 'M', 'emme': 'M', 'em': 'M', 'emm': 'M', 'meh': 'M',
+        'ene': 'N', 'n': 'N', 'enne': 'N', 'en': 'N', 'enn': 'N', 'neh': 'N',
+        'eñe': 'Ñ', 'ñ': 'Ñ', 'enye': 'Ñ', 'enyeh': 'Ñ', 'ny': 'Ñ', 'nyah': 'Ñ',
+        'o': 'O', 'ó': 'Ó', 'oh': 'O', 'oo': 'O', 'owe': 'O', 'aw': 'O',
+        'pe': 'P', 'p': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P',
+        'cu': 'Q', 'q': 'Q', 'koo': 'Q', 'ku': 'Q', 'cue': 'Q', 'qu': 'Q',
+        'erre': 'R', 'r': 'R', 'erreh': 'R', 'er': 'R', 'err': 'R', 'air': 'R',
+        'ese': 'S', 's': 'S', 'esse': 'S', 'es': 'S', 'ess': 'S', 'seh': 'S',
+        'te': 'T', 't': 'T', 'tay': 'T', 'teh': 'T', 'tee': 'T', 'tuh': 'T',
+        'u': 'U', 'ú': 'Ú', 'oo': 'U', 'uh': 'U', 'you': 'U', 'yoo': 'U',
+        'uve': 'V', 'v': 'V', 'vay': 'V', 'veh': 'V', 'vee': 'V', 'vuh': 'V',
+        'doble ve': 'W', 'w': 'W', 'doble u': 'W', 'doble v': 'W', 'double ve': 'W', 'double u': 'W',
+        'equis': 'X', 'x': 'X', 'ehkees': 'X', 'eks': 'X', 'ex': 'X', 'ecks': 'X',
+        'i griega': 'Y', 'y': 'Y', 'yeh': 'Y', 'ee griega': 'Y', 'yay': 'Y', 'yuh': 'Y',
+        'zeta': 'Z', 'z': 'Z', 'seta': 'Z', 'zeh': 'Z', 'zee': 'Z', 'zed': 'Z'
+    };
+  
+                        //Options values for buttons
                     let options = {
                       "Normal Mode": [
                         { word: "loop", definition: "A length of thread, line or rope that is doubled over to make an opening." },
@@ -4261,424 +4261,433 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     },
                           ],
                         };
-
-  let selectedWord = '';
-  let guessedLetters = [];
-  let wrongGuesses = 0;
-  const maxWrongGuesses = 6;
-  let animationFrameId;
-
-  function createKeyboard() {
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ'.split('');
-      const letterContainer = document.getElementById('letter-container');
-      letterContainer.innerHTML = ''; // Clear previous keyboard
-
-      // Add hyphen button if the selected word contains a hyphen
-      if (selectedWord.includes('-')) {
-          const hyphenButton = document.createElement('button');
-          hyphenButton.innerText = '-';
-          hyphenButton.classList.add('letter-button', 'hyphen-button', 'flashing-slow');
-          hyphenButton.onclick = () => {
-              handleGuess('-');
-              hyphenButton.classList.add('guessed');
-              setTimeout(() => {
-                  hyphenButton.classList.remove('guessed');
-                  hyphenButton.style.display = 'none'; // Hide the hyphen button
-              }, 500); // Light blue briefly
-          };
-          letterContainer.appendChild(hyphenButton);
-      }
-
-      letters.forEach(letter => {
-          const button = document.createElement('button');
-          button.innerText = letter;
-          button.classList.add('letter-button');
-          button.onclick = () => {
-              handleGuess(letter);
-              button.classList.add('guessed');
-              setTimeout(() => {
-                  button.classList.remove('guessed');
-              }, 500); // Light blue briefly
-          };
-          letterContainer.appendChild(button);
-      });
-
-      // Create the log container for correct and incorrect words
-      const logContainer = document.getElementById('log-container');
-      if (!logContainer) {
-          const newLogContainer = document.createElement('div');
-          newLogContainer.id = 'log-container';
-          newLogContainer.style.marginTop = '20px';
-          letterContainer.parentNode.appendChild(newLogContainer);
-      }
-  }
-
-  function handleGuess(letter) {
-      if (!guessedLetters.includes(letter)) {
-          if (selectedWord.includes(letter)) {
-              guessedLetters.push(letter);
-          } else {
-              wrongGuesses++;
-              if (wrongGuesses === maxWrongGuesses) {
-                  animateHangman();
-              }
-          }
-          updateWordDisplay();
-          drawHangman();
-          checkGameStatus();
-      }
-  }
-
-  function logWordResult(word, definition, isCorrect) {
-      const logContainer = document.getElementById('log-container');
-      const logEntry = document.createElement('div');
-      logEntry.innerHTML = `<strong>${word}</strong>: ${definition}`;
-      logEntry.style.color = isCorrect ? 'green' : 'red';
-      logContainer.appendChild(logEntry);
-  }
-
-  function showTemporaryPopup(message, isCorrect) {
-      const popup = document.createElement('div');
-      popup.innerText = message;
-      popup.style.position = 'fixed';
-      popup.style.top = '50%';
-      popup.style.left = '50%';
-      popup.style.transform = 'translate(-50%, -50%)';
-      popup.style.padding = '20px';
-      popup.style.backgroundColor = isCorrect ? 'green' : 'red';
-      popup.style.color = 'white';
-      popup.style.borderRadius = '5px';
-      document.body.appendChild(popup);
-
-      setTimeout(() => {
-          document.body.removeChild(popup);
-      }, 2000);
-  }
-
-  function checkGameStatus() {
-      if (selectedWord && wrongGuesses >= maxWrongGuesses) {
-          cancelAnimationFrame(animationFrameId);
-          showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
-          logWordResult(selectedWord, getWordDefinition(selectedWord), false);
-          resetGame();
-      } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
-          cancelAnimationFrame(animationFrameId);
-          showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
-          logWordResult(selectedWord, getWordDefinition(selectedWord), true);
-          resetGame();
-      }
-  }
-
-  function getWordDefinition(word) {
-      for (const mode in options) {
-          for (const wordObj of options[mode]) {
-              if (wordObj.word.toUpperCase() === word) {
-                  return wordObj.definition;
-              }
-          }
-      }
-      return '';
-  }
-
-  function resetGame() {
-      selectedWord = '';
-      guessedLetters = [];
-      wrongGuesses = 0;
-      updateWordDisplay();
-      drawHangman();
-      displayOptions(); // Show options again for a new game
-  }
-
-  function displayOptions() {
-      const optionsContainer = document.getElementById('options-container');
-      optionsContainer.innerHTML = ''; // Clear previous options
-      for (const mode in options) {
-          const button = document.createElement('button');
-          button.innerText = mode;
-          button.classList.add('option-button');
-          button.onclick = () => {
-              const wordObj = options[mode][Math.floor(Math.random() * options[mode].length)];
-              selectedWord = wordObj.word.toUpperCase();
-              guessedLetters = [];
-              wrongGuesses = 0;
-              updateWordDisplay();
-              drawHangman();
-              createKeyboard();
-              optionsContainer.innerHTML = ''; // Clear options after selection
-
-              // Switch recognition language based on category
-              if (mode === 'Verdugo') {
-                  recognition.lang = 'es-ES';
-              } else {
-                  recognition.lang = 'en-US';
-              }
-          };
-          optionsContainer.appendChild(button);
-      }
-  }
-
-  function updateWordDisplay() {
-      const wordDisplay = document.getElementById('word-display');
-      wordDisplay.innerText = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
-  }
-
-  function drawHangman() {
-      const canvas = document.getElementById('hangman-canvas');
-      const context = canvas.getContext('2d');
-      context.clearRect(0, 0, canvas.width, canvas.height);
-
-      // Draw the base, pole, and beam
-      context.beginPath();
-      context.moveTo(10, 140);
-      context.lineTo(190, 140);
-      context.moveTo(30, 140);
-      context.lineTo(30, 10);
-      context.lineTo(110, 10);
-      context.lineTo(110, 20);
-      context.stroke();
-
-      // Draw the hanging man parts based on the number of wrong guesses
-      if (wrongGuesses > 0) {
-          // Draw head
-          context.beginPath();
-          context.arc(110, 30, 10, 0, Math.PI * 2);
-          context.stroke();
-      }
-      if (wrongGuesses > 1) {
-          // Draw body
-          context.beginPath();
-          context.moveTo(110, 40);
-          context.lineTo(110, 90);
-          context.stroke();
-      }
-      if (wrongGuesses > 2) {
-          // Draw left arm
-          context.beginPath();
-          context.moveTo(110, 50);
-          context.lineTo(90, 70);
-          context.stroke();
-      }
-      if (wrongGuesses > 3) {
-          // Draw right arm
-          context.beginPath();
-          context.moveTo(110, 50);
-          context.lineTo(130, 70);
-          context.stroke();
-      }
-      if (wrongGuesses > 4) {
-          // Draw left leg
-          context.beginPath();
-          context.moveTo(110, 90);
-          context.lineTo(90, 110);
-          context.stroke();
-      }
-      if (wrongGuesses > 5) {
-          // Draw right leg
-          context.beginPath();
-          context.moveTo(110, 90);
-          context.lineTo(130, 110);
-          context.stroke();
-      }
-  }
-
-  function animateHangman() {
-      const canvas = document.getElementById('hangman-canvas');
-      const context = canvas.getContext('2d');
-      let shakeCount = 0;
-      const maxShakes = 10;
-      const shake = () => {
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context.save();
-          context.translate(Math.random() * 5, Math.random() * 5);
-          drawHangman();
-          context.restore();
-          shakeCount++;
-          if (shakeCount < maxShakes) {
-              requestAnimationFrame(shake);
-          } else {
-              strugglingAnimation();
-          }
-      };
-      shake();
-  }
-
-  function strugglingAnimation() {
-      const canvas = document.getElementById('hangman-canvas');
-      const context = canvas.getContext('2d');
-      let frame = 0;
-      const maxFrames = 20;
-      const animate = () => {
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          context.save();
-          context.translate(Math.sin(frame / 10) * 5, 0); // Slow horizontal movement
-          drawHangman();
-          context.restore();
-          frame++;
-          if (frame < maxFrames) {
-              requestAnimationFrame(animate);
-          }
-      };
-      animate();
-  }
-
-  recognition.onstart = function() {
-      console.log('Speech recognition started');
-      document.getElementById('status').innerText = 'Listening...';
-      document.getElementById('start-btn').disabled = true;
-      document.getElementById('stop-btn').disabled = false;
-  };
-
-  recognition.onresult = function(event) {
-      let interimTranscript = '';
-      let finalTranscript = '';
-
-      for (let i = event.resultIndex; i < event.results.length; ++i) {
-          let transcript = event.results[i][0].transcript.trim().toLowerCase();
-
-          // Check if the transcript is a single letter or a phonetic equivalent
-          if (transcript.length === 1 || phoneticMap[transcript] || spanishPhoneticMap[transcript]) {
-              transcript = phoneticMap[transcript] || spanishPhoneticMap[transcript] || transcript.toUpperCase();
-          } else {
-              continue; // Skip non-letter inputs
-          }
-
-          if (event.results[i].isFinal) {
-              finalTranscript += transcript;
-          } else {
-              interimTranscript += transcript;
-          }
-      }
-
-      // Display the results
-      document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
-
-      // Process the final transcript for the Hangman game
-      if (finalTranscript) {
-          const guessedLetter = finalTranscript.toUpperCase();
-          handleGuess(guessedLetter);
-      }
-
-      // Suggest the letter
-      if (interimTranscript) {
-          suggestLetter(interimTranscript);
-      }
-  };
-
-  function suggestLetter(interimTranscript) {
-      const suggestion = phoneticMap[interimTranscript] || spanishPhoneticMap[interimTranscript] || null;
-      const letterButtons = document.querySelectorAll('.letter-button');
-      if (suggestion) {
-          letterButtons.forEach(button       => {
-            if (button.innerText === suggestion) {
-                button.style.backgroundColor = 'lightgreen';
+  
+    let selectedWord = '';
+    let guessedLetters = [];
+    let wrongGuesses = 0;
+    const maxWrongGuesses = 6;
+    let animationFrameId;
+  
+    function createKeyboard() {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ'.split('');
+        const letterContainer = document.getElementById('letter-container');
+        letterContainer.innerHTML = ''; // Clear previous keyboard
+  
+        // Add hyphen button if the selected word contains a hyphen
+        if (selectedWord.includes('-')) {
+            const hyphenButton = document.createElement('button');
+            hyphenButton.innerText = '-';
+            hyphenButton.classList.add('letter-button', 'hyphen-button', 'flashing-slow');
+            hyphenButton.onclick = () => {
+                handleGuess('-');
+                hyphenButton.classList.add('guessed');
                 setTimeout(() => {
-                    button.style.backgroundColor = '';
-                    button.click(); // Simulate a click on the suggested button
-                }, 500); // Highlight the suggestion for 500ms
-            }
+                    hyphenButton.classList.remove('guessed');
+                    hyphenButton.style.display = 'none'; // Hide the hyphen button
+                }, 500); // Light blue briefly
+            };
+            letterContainer.appendChild(hyphenButton);
+        }
+  
+        letters.forEach(letter => {
+            const button = document.createElement('button');
+            button.innerText = letter;
+            button.classList.add('letter-button');
+            button.onclick = () => {
+                handleGuess(letter);
+                button.classList.add('guessed');
+                setTimeout(() => {
+                    button.classList.remove('guessed');
+                }, 500); // Light blue briefly
+            };
+            letterContainer.appendChild(button);
         });
-    } else {
-        // If no valid suggestion, show what was said and ask for confirmation
-        const resultElement = document.getElementById('result');
-        resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${interimTranscript.toUpperCase()}</span>?`;
+  
+        // Create the log container for correct and incorrect words
+        const logContainer = document.getElementById('log-container');
+        if (!logContainer) {
+            const newLogContainer = document.createElement('div');
+            newLogContainer.id = 'log-container';
+            newLogContainer.style.marginTop = '20px';
+            letterContainer.parentNode.appendChild(newLogContainer);
+        }
     }
-}
-
-recognition.onerror = function(event) {
-    if (event.error === 'no-speech') {
-        console.error('No speech was detected. Please try again.');
-        alert('No speech was detected. Please try again.');
-    } else if (event.error === 'network') {
-        console.error('Network error occurred. Please check your internet connection.');
-        alert('Network error occurred. Please check your internet connection.');
-    } else if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        console.error('Microphone access was denied. Please allow microphone access.');
-        alert('Microphone access was denied. Please allow microphone access.');
-    } else {
-        console.error('Speech recognition error', event);
-    }
-};
-
-recognition.onend = function() {
-    console.log('Speech recognition ended');
-    document.getElementById('status').innerText = '';
-    document.getElementById('start-btn').disabled = false;
-    document.getElementById('stop-btn').disabled = true;
-};
-
-document.getElementById('start-btn').onclick = function() {
-    recognition.start();
-};
-
-document.getElementById('stop-btn').onclick = function() {
-    recognition.stop();
-};
-
-// Initialize the game
-displayOptions(); // Show options at the start
-
-// Add event listener for Ctrl + Q to auto-finish the word
-document.addEventListener('keydown', function(event) {
-    if (event.ctrlKey && event.key === 'q') {
-        autoFinishWord();
-    }
-});
-
-function autoFinishWord() {
-    selectedWord.split('').forEach(letter => {
+  
+    function handleGuess(letter) {
         if (!guessedLetters.includes(letter)) {
-            guessedLetters.push(letter);
+            if (selectedWord.includes(letter)) {
+                guessedLetters.push(letter);
+            } else {
+                wrongGuesses++;
+                if (wrongGuesses === maxWrongGuesses) {
+                    animateHangman();
+                }
+            }
+            updateWordDisplay();
+            drawHangman();
+            checkGameStatus();
+        }
+    }
+  
+    function logWordResult(word, definition, isCorrect) {
+        const logContainer = document.getElementById('log-container');
+        const logEntry = document.createElement('div');
+        logEntry.innerHTML = `<strong>${word}</strong>: ${definition}`;
+        logEntry.style.color = isCorrect ? 'green' : 'red';
+        logContainer.appendChild(logEntry);
+    }
+  
+    function showTemporaryPopup(message, isCorrect) {
+        const popup = document.createElement('div');
+        popup.innerText = message;
+        popup.style.position = 'fixed';
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        popup.style.padding = '20px';
+        popup.style.backgroundColor = isCorrect ? 'green' : 'red';
+        popup.style.color = 'white';
+        popup.style.borderRadius = '5px';
+        document.body.appendChild(popup);
+  
+        setTimeout(() => {
+            document.body.removeChild(popup);
+        }, 2000);
+    }
+  
+    function checkGameStatus() {
+        if (selectedWord && wrongGuesses >= maxWrongGuesses) {
+            cancelAnimationFrame(animationFrameId);
+            showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
+            logWordResult(selectedWord, getWordDefinition(selectedWord), false);
+            resetGame();
+        } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
+            cancelAnimationFrame(animationFrameId);
+            showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
+            logWordResult(selectedWord, getWordDefinition(selectedWord), true);
+            resetGame();
+        }
+    }
+  
+    function getWordDefinition(word) {
+        for (const mode in options) {
+            for (const wordObj of options[mode]) {
+                if (wordObj.word.toUpperCase() === word) {
+                    return wordObj.definition;
+                }
+            }
+        }
+        return '';
+    }
+  
+    function resetGame() {
+        selectedWord = '';
+        guessedLetters = [];
+        wrongGuesses = 0;
+        updateWordDisplay();
+        drawHangman();
+        displayOptions(); // Show options again for a new game
+    }
+  
+    function displayOptions() {
+        const optionsContainer = document.getElementById('options-container');
+        optionsContainer.innerHTML = ''; // Clear previous options
+        for (const mode in options) {
+            const button = document.createElement('button');
+            button.innerText = mode;
+            button.classList.add('option-button');
+            button.onclick = () => {
+                const wordObj = options[mode][Math.floor(Math.random() * options[mode].length)];
+                selectedWord = wordObj.word.toUpperCase();
+                guessedLetters = [];
+                wrongGuesses = 0;
+                updateWordDisplay();
+                drawHangman();
+                createKeyboard();
+                optionsContainer.innerHTML = ''; // Clear options after selection
+  
+                // Switch recognition language based on category
+                if (mode === 'Verdugo') {
+                    recognition.lang = 'es-ES';
+                } else {
+                    recognition.lang = 'en-US';
+                }
+            };
+            optionsContainer.appendChild(button);
+        }
+    }
+  
+    function updateWordDisplay() {
+        const wordDisplay = document.getElementById('word-display');
+        wordDisplay.innerText = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
+    }
+  
+    function drawHangman() {
+        const canvas = document.getElementById('hangman-canvas');
+        const context = canvas.getContext('2d');
+        context.clearRect(0, 0, canvas.width, canvas.height);
+  
+        // Draw the base, pole, and beam
+        context.beginPath();
+        context.moveTo(10, 140);
+        context.lineTo(190, 140);
+        context.moveTo(30, 140);
+        context.lineTo(30, 10);
+        context.lineTo(110, 10);
+        context.lineTo(110, 20);
+        context.stroke();
+  
+        // Draw the hanging man parts based on the number of wrong guesses
+        if (wrongGuesses > 0) {
+            // Draw head
+            context.beginPath();
+            context.arc(110, 30, 10, 0, Math.PI * 2);
+            context.stroke();
+        }
+        if (wrongGuesses > 1) {
+            // Draw body
+            context.beginPath();
+            context.moveTo(110, 40);
+            context.lineTo(110, 90);
+            context.stroke();
+        }
+        if (wrongGuesses > 2) {
+            // Draw left arm
+            context.beginPath();
+            context.moveTo(110, 50);
+            context.lineTo(90, 70);
+            context.stroke();
+        }
+        if (wrongGuesses > 3) {
+            // Draw right arm
+            context.beginPath();
+            context.moveTo(110, 50);
+            context.lineTo(130, 70);
+            context.stroke();
+        }
+        if (wrongGuesses > 4) {
+            // Draw left leg
+            context.beginPath();
+            context.moveTo(110, 90);
+            context.lineTo(90, 110);
+            context.stroke();
+        }
+        if (wrongGuesses > 5) {
+            // Draw right leg
+            context.beginPath();
+            context.moveTo(110, 90);
+            context.lineTo(130, 110);
+            context.stroke();
+        }
+    }
+  
+    function animateHangman() {
+        const canvas = document.getElementById('hangman-canvas');
+        const context = canvas.getContext('2d');
+        let shakeCount = 0;
+        const maxShakes = 10;
+        const shake = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.save();
+            context.translate(Math.random() * 5, Math.random() * 5);
+            drawHangman();
+            context.restore();
+            shakeCount++;
+            if (shakeCount < maxShakes) {
+                requestAnimationFrame(shake);
+            } else {
+                strugglingAnimation();
+            }
+        };
+        shake();
+    }
+  
+    function strugglingAnimation() {
+        const canvas = document.getElementById('hangman-canvas');
+        const context = canvas.getContext('2d');
+        let frame = 0;
+        const maxFrames = 20;
+        const animate = () => {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.save();
+            context.translate(Math.sin(frame / 10) * 5, 0); // Slow horizontal movement
+            drawHangman();
+            context.restore();
+            frame++;
+            if (frame < maxFrames) {
+                requestAnimationFrame(animate);
+            }
+        };
+        animate();
+    }
+  
+    recognition.onstart = function() {
+        console.log('Speech recognition started');
+        document.getElementById('status').innerText = 'Listening...';
+        document.getElementById('start-btn').disabled = true;
+        document.getElementById('stop-btn').disabled = false;
+    };
+  
+    recognition.onresult = function(event) {
+        let interimTranscript = '';
+        let finalTranscript = '';
+  
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+            let transcript = event.results[i][0].transcript.trim().toLowerCase();
+  
+            // Check if the transcript is a single letter or a phonetic equivalent
+            if (transcript.length === 1 || phoneticMap[transcript] || spanishPhoneticMap[transcript]) {
+                transcript = phoneticMap[transcript] || spanishPhoneticMap[transcript] || transcript.toUpperCase();
+            } else {
+                continue; // Skip non-letter inputs
+            }
+  
+            if (event.results[i].isFinal) {
+                finalTranscript += transcript;
+            } else {
+                interimTranscript += transcript;
+            }
+        }
+  
+        // Display the results
+        document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
+  
+        // Process the final transcript for the Hangman game
+        if (finalTranscript) {
+            const guessedLetter = finalTranscript.toUpperCase();
+            handleGuess(guessedLetter);
+        }
+  
+        // Suggest the letter
+        if (interimTranscript) {
+            suggestLetter(interimTranscript);
+        }
+    };
+  
+    function suggestLetter(interimTranscript) {
+        const suggestion = phoneticMap[interimTranscript] || spanishPhoneticMap[interimTranscript] || null;
+        const letterButtons = document.querySelectorAll('.letter-button');
+        const resultElement = document.getElementById('result');
+        
+        if (suggestion) {
+            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${suggestion}</span>? <button id="yes-btn">Yes</button> <button id="no-btn">No</button>`;
+        
+            document.getElementById('yes-btn').onclick = () => {
+                letterButtons.forEach(button => {
+                    if (button.innerText === suggestion) {
+                        button.style.backgroundColor = 'lightgreen';
+                        setTimeout(() => {
+                            button.style.backgroundColor = '';
+                            button.click(); // Simulate a click on the suggested button
+                        }, 500); // Highlight the suggestion for 500ms
+                    }
+                });
+            };
+            
+            document.getElementById('no-btn').onclick = () => {
+                resultElement.innerHTML = '';
+            };
+        } else {
+            // If no valid suggestion, show what was said and ask for confirmation
+            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${interimTranscript.toUpperCase()}</span>?`;
+        }
+    }
+    
+    recognition.onerror = function(event) {
+        if (event.error === 'no-speech') {
+            console.error('No speech was detected. Please try again.');
+            alert('No speech was detected. Please try again.');
+        } else if (event.error === 'network') {
+            console.error('Network error occurred. Please check your internet connection.');
+            alert('Network error occurred. Please check your internet connection.');
+        } else if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+            console.error('Microphone access was denied. Please allow microphone access.');
+            alert('Microphone access was denied. Please allow microphone access.');
+        } else {
+            console.error('Speech recognition error', event);
+        }
+    };
+    
+    recognition.onend = function() {
+        console.log('Speech recognition ended');
+        document.getElementById('status').innerText = '';
+        document.getElementById('start-btn').disabled = false;
+        document.getElementById('stop-btn').disabled = true;
+    };
+    
+    document.getElementById('start-btn').onclick = function() {
+        recognition.start();
+    };
+    
+    document.getElementById('stop-btn').onclick = function() {
+        recognition.stop();
+    };
+    
+    // Initialize the game
+    displayOptions(); // Show options at the start
+    
+    // Add event listener for Ctrl + Q to auto-finish the word
+    document.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'q') {
+            autoFinishWord();
         }
     });
-    updateWordDisplay();
-    checkGameStatus();
-}
-} else {
-console.error('Web Speech API is not supported in this browser.');
-alert('Web Speech API is not supported in this browser. Please use a supported browser.');
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-const instructionsPopup = document.getElementById('instructions-popup');
-const closePopup = document.getElementById('close-popup');
-const instructionsButton = document.getElementById('instructions-button'); // Assuming you have a button to open the instructions
-
-// Open the instructions popup
-instructionsButton.addEventListener('click', () => {
-    instructionsPopup.classList.remove('hide');
-});
-
-// Close the instructions popup
-closePopup.addEventListener('click', () => {
-    instructionsPopup.classList.add('hide');
-});
-
-// Close the popup when clicking outside of it
-window.addEventListener('click', (event) => {
-    if (event.target === instructionsPopup) {
-        instructionsPopup.classList.add('hide');
+    
+    function autoFinishWord() {
+        selectedWord.split('').forEach(letter => {
+            if (!guessedLetters.includes(letter)) {
+                guessedLetters.push(letter);
+            }
+        });
+        updateWordDisplay();
+        checkGameStatus();
     }
-});
-});
-
-const style = document.createElement('style');
-style.innerHTML = `
-.flashing {
-    animation: flash 1s infinite;
-}
-
-.flashing-slow {
-    animation: flash-slow 2s infinite;
-}
-
-@keyframes flash {
-    0%, 100% { background-color: lightblue; }
-    50% { background-color: white; }
-}
-
-@keyframes flash-slow {
-    0%, 100% { background-color: lightblue; }
-    50% { background-color: white; }
-}
-`;
-document.head.appendChild(style);
+    } else {
+    console.error('Web Speech API is not supported in this browser.');
+    alert('Web Speech API is not supported in this browser. Please use a supported browser.');
+    }
+    
+    document.addEventListener('DOMContentLoaded', () => {
+    const instructionsPopup = document.getElementById('instructions-popup');
+    const closePopup = document.getElementById('close-popup');
+    const instructionsButton = document.getElementById('instructions-button'); // Assuming you have a button to open the instructions
+    
+    // Open the instructions popup
+    instructionsButton.addEventListener('click', () => {
+        instructionsPopup.classList.remove('hide');
+    });
+    
+    // Close the instructions popup
+    closePopup.addEventListener('click', () => {
+        instructionsPopup.classList.add('hide');
+    });
+    
+    // Close the popup when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === instructionsPopup) {
+            instructionsPopup.classList.add('hide');
+        }
+    });
+    });
+    
+    const style = document.createElement('style');
+    style.innerHTML = `
+    .flashing {
+        animation: flash 1s infinite;
+    }
+    
+    .flashing-slow {
+        animation: flash-slow 2s infinite;
+    }
+    
+    @keyframes flash {
+        0%, 100% { background-color: lightblue; }
+        50% { background-color: white; }
+    }
+    
+    @keyframes flash-slow {
+        0%, 100% { background-color: lightblue; }
+        50% { background-color: white; }
+    }
+    `;
+    document.head.appendChild(style);
