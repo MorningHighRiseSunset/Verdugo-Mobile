@@ -4353,7 +4353,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             document.body.removeChild(popup);
         }, 2000);
     }
-  
+    
     const winSounds = ['correct-6033.mp3', 'sound-effect-twinklesparkle-115095.mp3']; // Add paths to win sound files
     const loseSounds = ['fail-144746.mp3', 'no-luck-too-bad-disappointing-sound-effect-112943.mp3', '050612_wild-west-1-36194.mp3']; // Add paths to lose sound files
 
@@ -4658,26 +4658,34 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
     
     document.addEventListener('DOMContentLoaded', () => {
-    const instructionsPopup = document.getElementById('instructions-popup');
-    const closePopup = document.getElementById('close-popup');
-    const instructionsButton = document.getElementById('instructions-button'); // Assuming you have a button to open the instructions
-    
-    // Open the instructions popup
-    instructionsButton.addEventListener('click', () => {
-        instructionsPopup.classList.remove('hide');
-    });
-    
-    // Close the instructions popup
-    closePopup.addEventListener('click', () => {
-        instructionsPopup.classList.add('hide');
-    });
-    
-    // Close the popup when clicking outside of it
-    window.addEventListener('click', (event) => {
-        if (event.target === instructionsPopup) {
+        const instructionsPopup = document.getElementById('instructions-popup');
+        const closePopup = document.getElementById('close-popup');
+        const instructionsButton = document.getElementById('instructions-button'); // Assuming you have a button to open the instructions
+        
+        // Open the instructions popup
+        instructionsButton.addEventListener('click', () => {
+            instructionsPopup.classList.remove('hide');
+        });
+        
+        // Close the instructions popup
+        closePopup.addEventListener('click', () => {
             instructionsPopup.classList.add('hide');
-        }
-    });
+        });
+        
+        // Close the popup when clicking outside of it
+        window.addEventListener('click', (event) => {
+            if (event.target === instructionsPopup) {
+                instructionsPopup.classList.add('hide');
+            }
+        });
+        
+        // Set the background GIF
+        // Set the background GIF
+document.body.style.backgroundImage = "url('https://64.media.tumblr.com/43891cae5450425ccd1f06c610b731b3/27bd7103dd700c5a-8e/s500x750/5d2563ae1f3a14bf6864b088a06c17b46c205e86.gif')";
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundRepeat = "no-repeat";
+document.body.style.backgroundPosition = "center 20%"; // Shift down by 20%
+document.body.style.backgroundAttachment = "fixed";
     });
     
     const style = document.createElement('style');
@@ -4698,6 +4706,12 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     @keyframes flash-slow {
         0%, 100% { background-color: lightblue; }
         50% { background-color: white; }
+    }
+    
+    /* Add styles to ensure content is readable over the background */
+    body {
+        color: white;
+        text-shadow: 1px 1px 2px black;
     }
     `;
     document.head.appendChild(style);
