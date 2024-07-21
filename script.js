@@ -4580,7 +4580,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         const resultElement = document.getElementById('result');
         
         if (suggestion) {
-            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${suggestion}</span>? <button id="yes-btn">Yes</button> <button id="no-btn">No</button>`;
+            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${suggestion}</span>?`;
         
             document.getElementById('yes-btn').onclick = () => {
                 letterButtons.forEach(button => {
@@ -4660,7 +4660,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     document.addEventListener('DOMContentLoaded', () => {
         const instructionsPopup = document.getElementById('instructions-popup');
         const closePopup = document.getElementById('close-popup');
-        const instructionsButton = document.getElementById('instructions-button'); // Assuming you have a button to open the instructions
+        const instructionsButton = document.getElementById('instructions-button');
         
         // Open the instructions popup
         instructionsButton.addEventListener('click', () => {
