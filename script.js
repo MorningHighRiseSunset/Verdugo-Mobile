@@ -3835,7 +3835,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
       },
       {
         word: "incompleta",
-        definition: "Definition of incomplete: Something incomplete. - (Algo incompleto.)",
+        definition: "Definition of incomplete: not complete; lacking some part. - (Algo incompleto.)",
         pronunciation: "/ɪn.kəm.ˈpliːt/"
       },
       {
