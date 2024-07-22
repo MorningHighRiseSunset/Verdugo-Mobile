@@ -16,13 +16,32 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     });
   
     const phoneticMap = {
-        'a': 'A', 'ay': 'A', 'b': 'B', 'bee': 'B', 'c': 'C', 'see': 'C', 'sea': 'C',
-        'd': 'D', 'dee': 'D', 'e': 'E', 'ee': 'E', 'f': 'F', 'ef': 'F', 'g': 'G', 'gee': 'G',
-        'h': 'H', 'aitch': 'H', 'i': 'I', 'eye': 'I', 'j': 'J', 'jay': 'J', 'k': 'K', 'kay': 'K',
-        'l': 'L', 'el': 'L', 'm': 'M', 'em': 'M', 'n': 'N', 'en': 'N', 'o': 'O', 'oh': 'O',
-        'p': 'P', 'pee': 'P', 'q': 'Q', 'cue': 'Q', 'r': 'R', 'ar': 'R', 's': 'S', 'es': 'S',
-        't': 'T', 'tee': 'T', 'u': 'U', 'you': 'U', 'v': 'V', 'vee': 'V', 'w': 'W', 'double-u': 'W',
-        'x': 'X', 'ex': 'X', 'y': 'Y', 'why': 'Y', 'z': 'Z', 'zee': 'Z', 'zed': 'Z',
+        'a': 'A', 'ay': 'A', 'ah': 'A', 'alpha': 'A',
+        'b': 'B', 'bee': 'B', 'bravo': 'B',
+        'c': 'C', 'see': 'C', 'charlie': 'C',
+        'd': 'D', 'dee': 'D', 'delta': 'D',
+        'e': 'E', 'ee': 'E', 'echo': 'E',
+        'f': 'F', 'ef': 'F', 'foxtrot': 'F',
+        'g': 'G', 'gee': 'G', 'golf': 'G',
+        'h': 'H', 'aitch': 'H', 'hotel': 'H',
+        'i': 'I', 'eye': 'I', 'india': 'I',
+        'j': 'J', 'jay': 'J', 'juliet': 'J',
+        'k': 'K', 'kay': 'K', 'kilo': 'K',
+        'l': 'L', 'el': 'L', 'lima': 'L',
+        'm': 'M', 'em': 'M', 'mike': 'M',
+        'n': 'N', 'en': 'N', 'november': 'N',
+        'o': 'O', 'oh': 'O', 'oscar': 'O',
+        'p': 'P', 'pee': 'P', 'papa': 'P',
+        'q': 'Q', 'cue': 'Q', 'quebec': 'Q',
+        'r': 'R', 'ar': 'R', 'romeo': 'R',
+        's': 'S', 'es': 'S', 'sierra': 'S',
+        't': 'T', 'tee': 'T', 'tango': 'T',
+        'u': 'U', 'you': 'U', 'uniform': 'U',
+        'v': 'V', 'vee': 'V', 'victor': 'V',
+        'w': 'W', 'double-u': 'W', 'whiskey': 'W',
+        'x': 'X', 'ex': 'X', 'x-ray': 'X',
+        'y': 'Y', 'why': 'Y', 'yankee': 'Y',
+        'z': 'Z', 'zee': 'Z', 'zulu': 'Z',
         'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ñ': 'Ñ', 'ene': 'Ñ'
     };
   
@@ -45,7 +64,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         'ene': 'N', 'n': 'N', 'enne': 'N', 'en': 'N', 'enn': 'N', 'neh': 'N',
         'eñe': 'Ñ', 'ñ': 'Ñ', 'enye': 'Ñ', 'enyeh': 'Ñ', 'ny': 'Ñ', 'nyah': 'Ñ',
         'o': 'O', 'ó': 'Ó', 'oh': 'O', 'oo': 'O', 'owe': 'O', 'aw': 'O',
-        'pe': 'P', 'p': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P', 'p': 'P',
+        'pe': 'P', 'p': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P', 'p': 'P', 'papa': 'P',
         'cu': 'Q', 'q': 'Q', 'koo': 'Q', 'ku': 'Q', 'cue': 'Q', 'qu': 'Q',
         'erre': 'R', 'r': 'R', 'erreh': 'R', 'er': 'R', 'err': 'R', 'air': 'R',
         'ese': 'S', 's': 'S', 'esse': 'S', 'es': 'S', 'ess': 'S', 'seh': 'S',
@@ -4358,25 +4377,25 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     const loseSounds = ['fail-144746.mp3', 'no-luck-too-bad-disappointing-sound-effect-112943.mp3', '050612_wild-west-1-36194.mp3']; // Add paths to lose sound files
 
     function playRandomSound(sounds) {
-    const randomIndex = Math.floor(Math.random() * sounds.length);
-    const audio = new Audio(sounds[randomIndex]);
-    audio.play();
+        const randomIndex = Math.floor(Math.random() * sounds.length);
+        const audio = new Audio(sounds[randomIndex]);
+        audio.play();
     }
 
     function checkGameStatus() {
         if (selectedWord && wrongGuesses >= maxWrongGuesses) {
             cancelAnimationFrame(animationFrameId);
-        showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
-        logWordResult(selectedWord, getWordDefinition(selectedWord), false);
-        playRandomSound(loseSounds); // Play a random lose sound
-        resetGame();
-    } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
-        cancelAnimationFrame(animationFrameId);
-        showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
-        logWordResult(selectedWord, getWordDefinition(selectedWord), true);
-        playRandomSound(winSounds); // Play a random win sound
-        resetGame();
-    }
+            showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
+            logWordResult(selectedWord, getWordDefinition(selectedWord), false);
+            playRandomSound(loseSounds); // Play a random lose sound
+            resetGame();
+        } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
+            cancelAnimationFrame(animationFrameId);
+            showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
+            logWordResult(selectedWord, getWordDefinition(selectedWord), true);
+            playRandomSound(winSounds); // Play a random win sound
+            resetGame();
+        }
     }
   
     function getWordDefinition(word) {
@@ -4398,7 +4417,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         drawHangman();
         displayOptions(); // Show options again for a new game
     }
-  
+    
     function displayOptions() {
         const optionsContainer = document.getElementById('options-container');
         optionsContainer.innerHTML = ''; // Clear previous options
@@ -4541,46 +4560,47 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     recognition.onresult = function(event) {
         let interimTranscript = '';
         let finalTranscript = '';
-  
+    
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             let transcript = event.results[i][0].transcript.trim().toLowerCase();
-  
+            console.log(`Recognized: ${transcript}`); // Log the recognized speech
+    
             // Check if the transcript is a single letter or a phonetic equivalent
             if (transcript.length === 1 || phoneticMap[transcript] || spanishPhoneticMap[transcript]) {
                 transcript = phoneticMap[transcript] || spanishPhoneticMap[transcript] || transcript.toUpperCase();
             } else {
                 continue; // Skip non-letter inputs
             }
-  
+    
             if (event.results[i].isFinal) {
                 finalTranscript += transcript;
             } else {
                 interimTranscript += transcript;
             }
         }
-  
+    
         // Display the results
         document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
-  
+    
         // Process the final transcript for the Hangman game
         if (finalTranscript) {
             const guessedLetter = finalTranscript.toUpperCase();
             handleGuess(guessedLetter);
         }
-  
+    
         // Suggest the letter
         if (interimTranscript) {
             suggestLetter(interimTranscript);
         }
     };
-  
+    
     function suggestLetter(interimTranscript) {
         const suggestion = phoneticMap[interimTranscript] || spanishPhoneticMap[interimTranscript] || null;
         const letterButtons = document.querySelectorAll('.letter-button');
         const resultElement = document.getElementById('result');
         
         if (suggestion) {
-            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${suggestion}</span>?`;
+            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${suggestion}</span>? <button id="yes-btn">Yes</button> <button id="no-btn">No</button>`;
         
             document.getElementById('yes-btn').onclick = () => {
                 letterButtons.forEach(button => {
@@ -4592,6 +4612,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                         }, 500); // Highlight the suggestion for 500ms
                     }
                 });
+                handleGuess(suggestion); // Ensure the guessed letter is processed
+                resultElement.innerHTML = ''; // Clear the suggestion after confirmation
             };
             
             document.getElementById('no-btn').onclick = () => {
@@ -4602,7 +4624,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${interimTranscript.toUpperCase()}</span>?`;
         }
     }
-    
+
     recognition.onerror = function(event) {
         if (event.error === 'no-speech') {
             console.error('No speech was detected. Please try again.');
@@ -4652,66 +4674,65 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         updateWordDisplay();
         checkGameStatus();
     }
-    } else {
+} else {
     console.error('Web Speech API is not supported in this browser.');
     alert('Web Speech API is not supported in this browser. Please use a supported browser.');
-    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const instructionsPopup = document.getElementById('instructions-popup');
+    const closePopup = document.getElementById('close-popup');
+    const instructionsButton = document.getElementById('instructions-button');
     
-    document.addEventListener('DOMContentLoaded', () => {
-        const instructionsPopup = document.getElementById('instructions-popup');
-        const closePopup = document.getElementById('close-popup');
-        const instructionsButton = document.getElementById('instructions-button');
-        
-        // Open the instructions popup
-        instructionsButton.addEventListener('click', () => {
-            instructionsPopup.classList.remove('hide');
-        });
-        
-        // Close the instructions popup
-        closePopup.addEventListener('click', () => {
-            instructionsPopup.classList.add('hide');
-        });
-        
-        // Close the popup when clicking outside of it
-        window.addEventListener('click', (event) => {
-            if (event.target === instructionsPopup) {
-                instructionsPopup.classList.add('hide');
-            }
-        });
-        
-        // Set the background GIF
-        // Set the background GIF
-document.body.style.backgroundImage = "url('https://64.media.tumblr.com/43891cae5450425ccd1f06c610b731b3/27bd7103dd700c5a-8e/s500x750/5d2563ae1f3a14bf6864b088a06c17b46c205e86.gif')";
-document.body.style.backgroundSize = "cover";
-document.body.style.backgroundRepeat = "no-repeat";
-document.body.style.backgroundPosition = "center 20%"; // Shift down by 20%
-document.body.style.backgroundAttachment = "fixed";
+    // Open the instructions popup
+    instructionsButton.addEventListener('click', () => {
+        instructionsPopup.classList.remove('hide');
     });
     
-    const style = document.createElement('style');
-    style.innerHTML = `
-    .flashing {
-        animation: flash 1s infinite;
-    }
+    // Close the instructions popup
+    closePopup.addEventListener('click', () => {
+        instructionsPopup.classList.add('hide');
+    });
     
-    .flashing-slow {
-        animation: flash-slow 2s infinite;
-    }
+    // Close the popup when clicking outside of it
+    window.addEventListener('click', (event) => {
+        if (event.target === instructionsPopup) {
+            instructionsPopup.classList.add('hide');
+        }
+    });
     
-    @keyframes flash {
-        0%, 100% { background-color: lightblue; }
-        50% { background-color: white; }
-    }
-    
-    @keyframes flash-slow {
-        0%, 100% { background-color: lightblue; }
-        50% { background-color: white; }
-    }
-    
-    /* Add styles to ensure content is readable over the background */
-    body {
-        color: white;
-        text-shadow: 1px 1px 2px black;
-    }
-    `;
-    document.head.appendChild(style);
+    // Set the background GIF
+    document.body.style.backgroundImage = "url('https://64.media.tumblr.com/43891cae5450425ccd1f06c610b731b3/27bd7103dd700c5a-8e/s500x750/5d2563ae1f3a14bf6864b088a06c17b46c205e86.gif')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundPosition = "center 20%"; // Shift down by 20%
+    document.body.style.backgroundAttachment = "fixed";
+});
+
+const style = document.createElement('style');
+style.innerHTML = `
+.flashing {
+    animation: flash 1s infinite;
+}
+
+.flashing-slow {
+    animation: flash-slow 2s infinite;
+}
+
+@keyframes flash {
+    0%, 100% { background-color: lightblue; }
+    50% { background-color: white; }
+}
+
+@keyframes flash-slow {
+    0%, 100% { background-color: lightblue; }
+    50% { background-color: white; }
+}
+
+/* Add styles to ensure content is readable over the background */
+body {
+    color: white;
+    text-shadow: 1px 1px 2px black;
+}
+`;
+document.head.appendChild(style);
