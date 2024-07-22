@@ -29,110 +29,33 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     const spanishPhoneticMap = {
         'a': 'A', 'ah': 'A', 'á': 'Á', 'aa': 'A', 'aaa': 'A',
         'be': 'B', 'b': 'B', 'bay': 'B', 'beh': 'B', 'bee': 'B', 'bey': 'B',
-
         'ce': 'C', 'c': 'C', 'say': 'C', 'seh': 'C', 'see': 'C', 'cee': 'C',
-
         'che': 'CH', 'ch': 'CH', 'cheh': 'CH', 'chay': 'CH',
-
         'de': 'D', 'd': 'D', 'day': 'D', 'deh': 'D', 'dee': 'D', 'dah': 'D',
-
         'e': 'E', 'é': 'É', 'eh': 'E', 'ay': 'E', 'ee': 'E', 'ehh': 'E',
-
         'efe': 'F', 'f': 'F', 'effe': 'F', 'ef': 'F', 'eff': 'F',
-
-        'ge': 'G', 'g': 'G', 'hey': 'G', 'geh': 'G', 'gee': 'G', 'guh': 'G', 'gay': 'G',
-
+        'ge': 'G', 'g': 'G', 'hey': 'G', 'geh': 'G', 'gee': 'G', 'guh': 'G',
         'hache': 'H', 'h': 'H', 'ahche': 'H', 'ache': 'H', 'hatch': 'H',
         'i': 'I', 'í': 'Í', 'ee': 'I', 'e': 'I', 'eye': 'I', 'aye': 'I',
-
         'jota': 'J', 'j': 'J', 'hotah': 'J', 'hoh': 'J', 'joh': 'J', 'jay': 'J',
-
         'ka': 'K', 'k': 'K', 'kah': 'K', 'kay': 'K', 'kaa': 'K',
-
         'ele': 'L', 'l': 'L', 'elle': 'L', 'el': 'L', 'ell': 'L', 'ellay': 'L',
         'elle': 'LL', 'll': 'LL', 'ehyeh': 'LL', 'elye': 'LL', 'yay': 'LL', 'yey': 'LL',
-
         'eme': 'M', 'm': 'M', 'emme': 'M', 'em': 'M', 'emm': 'M', 'meh': 'M',
-
         'ene': 'N', 'n': 'N', 'enne': 'N', 'en': 'N', 'enn': 'N', 'neh': 'N',
-
         'eñe': 'Ñ', 'ñ': 'Ñ', 'enye': 'Ñ', 'enyeh': 'Ñ', 'ny': 'Ñ', 'nyah': 'Ñ',
-
         'o': 'O', 'ó': 'Ó', 'oh': 'O', 'oo': 'O', 'owe': 'O', 'aw': 'O',
-
-        'pe': 'P', 'p': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P', 'paper': 'P',
-
+        'pe': 'P', 'p': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P', 'p': 'P',
         'cu': 'Q', 'q': 'Q', 'koo': 'Q', 'ku': 'Q', 'cue': 'Q', 'qu': 'Q',
-
         'erre': 'R', 'r': 'R', 'erreh': 'R', 'er': 'R', 'err': 'R', 'air': 'R',
-
         'ese': 'S', 's': 'S', 'esse': 'S', 'es': 'S', 'ess': 'S', 'seh': 'S',
-
         'te': 'T', 't': 'T', 'tay': 'T', 'teh': 'T', 'tee': 'T', 'tuh': 'T',
-
         'u': 'U', 'ú': 'Ú', 'oo': 'U', 'uh': 'U', 'you': 'U', 'yoo': 'U',
-
         'uve': 'V', 'v': 'V', 'vay': 'V', 'veh': 'V', 'vee': 'V', 'vuh': 'V',
-
         'doble ve': 'W', 'w': 'W', 'doble u': 'W', 'doble v': 'W', 'double ve': 'W', 'double u': 'W',
-
         'equis': 'X', 'x': 'X', 'ehkees': 'X', 'eks': 'X', 'ex': 'X', 'ecks': 'X',
-
         'i griega': 'Y', 'y': 'Y', 'yeh': 'Y', 'ee griega': 'Y', 'yay': 'Y', 'yuh': 'Y',
-
-        'zeta': 'Z', 'z': 'Z', 'seta': 'Z', 'zeh': 'Z', 'zee': 'Z', 'zed': 'Z',
-
-        'a': 'A', 'á': 'Á', 'aa': 'A', 'aaa': 'A', 'ah': 'A', 'aah': 'A', 'aay': 'A',
-        'b': 'B', 'be': 'B', 'bee': 'B', 'bay': 'B', 'beh': 'B', 'bey': 'B',
-
-        'c': 'C', 'ce': 'C', 'see': 'C', 'say': 'C', 'seh': 'C', 'cee': 'C',
-
-        'ch': 'CH', 'che': 'CH', 'cheh': 'CH', 'chay': 'CH',
-
-        'd': 'D', 'de': 'D', 'dee': 'D', 'day': 'D', 'deh': 'D', 'dah': 'D',
-
-        'e': 'E', 'é': 'É', 'ee': 'E', 'eh': 'E', 'ay': 'E', 'ehh': 'E',
-        'f': 'F', 'efe': 'F', 'effe': 'F', 'ef': 'F', 'eff': 'F',
-
-        'g': 'G', 'ge': 'G', 'gee': 'G', 'hey': 'G', 'geh': 'G', 'guh': 'G', 'gay': 'G',
-
-        'h': 'H', 'hache': 'H', 'ahche': 'H', 'ache': 'H', 'hatch': 'H',
-        'i': 'I', 'í': 'Í', 'ee': 'I', 'e': 'I', 'eye': 'I', 'aye': 'I',
-
-        'j': 'J', 'jota': 'J', 'hotah': 'J', 'hoh': 'J', 'joh': 'J', 'jay': 'J',
-
-        'k': 'K', 'ka': 'K', 'kah': 'K', 'kay': 'K', 'kaa': 'K',
-
-        'l': 'L', 'ele': 'L', 'elle': 'L', 'el': 'L', 'ell': 'L', 'ellay': 'L',
-
-        'll': 'LL', 'elle': 'LL', 'ehyeh': 'LL', 'elye': 'LL', 'yay': 'LL', 'yey': 'LL',
-        'm': 'M', 'eme': 'M', 'emme': 'M', 'em': 'M', 'emm': 'M', 'meh': 'M',
-
-        'n': 'N', 'ene': 'N', 'enne': 'N', 'en': 'N', 'enn': 'N', 'neh': 'N',
-
-        'ñ': 'Ñ', 'eñe': 'Ñ', 'enye': 'Ñ', 'enyeh': 'Ñ', 'ny': 'Ñ', 'nyah': 'Ñ',
-        'o': 'O', 'ó': 'Ó', 'oh': 'O', 'oo': 'O', 'owe': 'O', 'aw': 'O',
-
-        'p': 'P', 'pe': 'P', 'pay': 'P', 'peh': 'P', 'pee': 'P', 'puh': 'P', 'paper': 'P',
-        'q': 'Q', 'cu': 'Q', 'koo': 'Q', 'ku': 'Q', 'cue': 'Q', 'qu': 'Q',
-
-        'r': 'R', 'erre': 'R', 'erreh': 'R', 'er': 'R', 'err': 'R', 'air': 'R',
-
-        's': 'S', 'ese': 'S', 'esse': 'S', 'es': 'S', 'ess': 'S', 'seh': 'S',
-
-        't': 'T', 'te': 'T', 'tay': 'T', 'teh': 'T', 'tee': 'T', 'tuh': 'T',
-
-        'u': 'U', 'ú': 'Ú', 'oo': 'U', 'uh': 'U', 'you': 'U', 'yoo': 'U',
-
-        'v': 'V', 'uve': 'V', 'vay': 'V', 'veh': 'V', 'vee': 'V', 'vuh': 'V',
-        'w': 'W', 'doble ve': 'W', 'doble u': 'W', 'doble v': 'W', 'double ve': 'W', 'double u': 'W',
-
-        'x': 'X', 'equis': 'X', 'ehkees': 'X', 'eks': 'X', 'ex': 'X', 'ecks': 'X',
-
-        'y': 'Y', 'i griega': 'Y', 'yeh': 'Y', 'ee griega': 'Y', 'yay': 'Y', 'yuh': 'Y',
-
-        'z': 'Z', 'zeta': 'Z', 'seta': 'Z', 'zeh': 'Z', 'zee': 'Z', 'zed': 'Z'
-
+        'zeta': 'Z', 'z': 'Z', 'seta': 'Z', 'zeh': 'Z', 'zee': 'Z', 'zed': 'Z'
     };
   
     let options = {
