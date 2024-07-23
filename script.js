@@ -76,8 +76,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         'i griega': 'Y', 'y': 'Y', 'yeh': 'Y', 'ee griega': 'Y', 'yay': 'Y', 'yuh': 'Y',
         'zeta': 'Z', 'z': 'Z', 'seta': 'Z', 'zeh': 'Z', 'zee': 'Z', 'zed': 'Z'
     };
-  
-    let options = {
+
+        let options = {
         "Normal Mode": [
           { word: "loop", definition: "A length of thread, line or rope that is doubled over to make an opening." },
           { word: "grana", definition: "A stack-like structure in plant chloroplasts that contain chlorophyll; the site of photosynthesis." },
@@ -4277,6 +4277,462 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         definition: "Definition of liabilities: An obligation, debt or responsibility owed to someone. - (Una obligación, deuda o responsabilidad contraída con alguien.)",
         pronunciation: "/No pronunciation available/"
       },
+      {
+        word: "disueltos",
+        definition: "Definition of Dissolved: To terminate a union of multiple members actively, as by disbanding. - (Terminar una unión de múltiples miembros activamente, como por disolución.)"
+      },
+      {
+        word: "tarde",
+        definition: "Definition of afternoon: The part of the day from noon or lunchtime until sunset, evening, or suppertime or 6pm. - (La parte del día desde el mediodía o la hora del almuerzo hasta el atardecer, la noche o la hora de la cena o las 6 p. m.)"
+      },
+      {
+        word: "próximamente",
+        definition: "Definition of soon: Short in length of time from the present. - (Poco tiempo desde el presente.)"
+      },
+      {
+        word: "daga",
+        definition: "Definition of dagger: A stabbing weapon, similar to a sword but with a short, double-edged blade. - (Un arma punzante, similar a una espada pero con una hoja corta de doble filo.)"
+      },
+      {
+        word: "excavación",
+        definition: "Definition of crowding: To press forward; to advance by pushing. - (Para avanzar; para avanzar empujando.)"
+      },
+      {
+        word: "errores",
+        definition: "Definition of Errors: The state, quality, or condition of being wrong. - (El estado, la calidad o la condición de estar equivocado.)"
+      },
+      {
+        word: "codificación",
+        definition: "Definition of codification: The process of precisely formulating a statement, such as a code of laws. - (El proceso de formular con precisión una declaración, como un código de leyes.)"
+      },
+      {
+        word: "sobres",
+        definition: "Definition of suitcases: A large (usually rectangular) piece of luggage used for carrying clothes, and sometimes suits, when travelling. - (Una pieza de equipaje grande (generalmente rectangular) utilizada para llevar ropa, y a veces trajes, cuando se viaja.)"
+      },
+      {
+        word: "vientos",
+        definition: "Definition of Wind: Real or perceived movement of atmospheric air usually caused by convection or differences in air pressure. - (Movimiento real o percibido del aire atmosférico generalmente causado por convección o diferencias en la presión del aire.)"
+      },
+      {
+        word: "algodón",
+        definition: "Definition of cotton: Gossypium, a genus of plant used as a source of cotton fiber. - (Gossypium, un género de planta utilizada como fuente de fibra de algodón.)"
+      },
+      {
+        word: "prediscarga",
+        definition: "Definition of preload: The end diastolic pressure that stretches the right or left ventricle of the heart to its greatest geometric dimensions under variable physiologic demand. - (La presión diastólica final que estira el ventrículo derecho o izquierdo del corazón a sus mayores dimensiones geométricas bajo demanda fisiológica variable.)"
+      },
+      {
+        word: "colina",
+        definition: "Definition of choline: A hydroxy quaternary ammonium compound with formula (CH3)3N+CH2CH2OHX−. It is an essential nutrient for cardiovascular and brain health and for cell membrane formation. - (Un compuesto de amonio cuaternario hidroxilado con fórmula (CH3)3N+CH2CH2OHX-. Es un nutriente esencial para la salud cardiovascular y cerebral y para la formación de la membrana celular.)"
+      },
+      {
+        word: "cadetes",
+        definition: "Definition of cadets: A student at a military school who is training to be an officer. - (Un estudiante en una escuela militar que se está entrenando para ser oficial.)"
+      },
+      {
+        word: "Caber",
+        definition: "Definition of Fit: The degree to which something fits. - (El grado en que algo encaja.)"
+      },
+      {
+        word: "amanecer",
+        definition: "Definition of dawn: The morning twilight period immediately before sunrise. - (El crepúsculo matutino inmediatamente antes del amanecer.)"
+      },
+      {
+        word: "departamentos",
+        definition: "Definition of departments: A part, portion, or subdivision. - (Una parte, porción o subdivisión.)"
+      },
+      {
+        word: "quemaduras",
+        definition: "Definition of burns: A physical injury caused by heat, cold, electricity, radiation or caustic chemicals. - (Una lesión física causada por calor, frío, electricidad, radiación o productos químicos cáusticos.)"
+      },
+      {
+        word: "predicaciones",
+        definition: "Definition of Sermons: Religious discourse; a written or spoken address on a religious or moral matter. - (Discurso religioso; un discurso escrito o hablado sobre un asunto religioso o moral.)"
+      },
+      {
+        word: "presentado",
+        definition: "Definition of submitted: To yield or give way to another. - (Ceder o ceder el paso a otro.)"
+      },
+      {
+        word: "expectativa",
+        definition: "Definition of expectation: The act or state of expecting or looking forward to an event as about to happen. - (El acto o estado de esperar o esperar un evento a punto de suceder.)"
+      },
+      {
+        word: "rosado",
+        definition: "Definition of pink: The common minnow, Phoxinus phoxinus. - (El pececillo común, Phoxinus phoxinus.)"
+      },
+      {
+        word: "afirmaciones",
+        definition: "Definition of CLAIMS: A demand of ownership made for something. - (Una demanda de propiedad hecha para algo.)"
+      },
+      {
+        word: "rehabilitación",
+        definition: "Definition of recovery: The act or process of regaining or repossession of something lost. - (El acto o proceso de recuperar o recuperar algo perdido.)"
+      },
+      {
+        word: "triturado",
+        definition: "Definition of Crushed: To press between two hard objects; to squeeze so as to alter the natural shape or integrity of it, or to force together into a mass. - (Para presionar entre dos objetos duros; para apretar con el fin de alterar la forma natural o la integridad de la misma, o para forzar juntos en una masa.)"
+      },
+      {
+        word: "mítico",
+        definition: "Definition of mythical: Existing in myth. - (Existente en el mito.)"
+      },
+      {
+        word: "recapitulación",
+        definition: "Definition of Recapitulation: A subsequent brief recitement or enumeration of the major points in a narrative, article, or book. - (Un breve recitado o enumeración posterior de los puntos principales en una narrativa, artículo o libro.)"
+      },
+      {
+        word: "impresora",
+        definition: "Definition of printer: One who makes prints. - (Uno que hace impresiones.)"
+      },
+      {
+        word: "cebolla",
+        definition: "Definition of onion: A monocotyledonous plant (Allium cepa), allied to garlic, used as vegetable and spice. - (Una planta monocotiledónea (Allium cepa), aliada al ajo, utilizada como verdura y especia.)"
+      },
+      {
+        word: "Tierna",
+        definition: "Definition of Tender: Care, kind concern, regard. - (Cuidado, amable preocupación, consideración.)"
+      },
+      {
+        word: "transmisión",
+        definition: "Definition of coefficient: A constant by which an algebraic term is multiplied. - (Constante por la que se multiplica un término algebraico.)"
+      },
+      {
+        word: "manchas-de-sol",
+        definition: "Definition of sunspots: A region on the sun's surface with a lower temperature than its surroundings and intense magnetic activity. - (Una región en la superficie del sol con una temperatura más baja que su entorno y una intensa actividad magnética.)"
+      },
+      {
+        word: "Piloto",
+        definition: "Definition of Pilot: A person who steers a ship, a helmsman. - (Una persona que dirige un barco, un timonel.)"
+      },
+      {
+        word: "sonante",
+        definition: "Definition of Sonorant: A speech sound that is produced without turbulent airflow in the vocal tract; the generic term of vowel, approximant, nasal consonant, etc. - (Un sonido del habla que se produce sin flujo de aire turbulento en el tracto vocal; el término genérico de vocal, aproximante, consonante nasal, etc.)"
+      },
+      {
+        word: "tubo",
+        definition: "Definition of tube: Anything that is hollow and cylindrical in shape. - (Cualquier cosa que sea hueca y de forma cilíndrica.)"
+      },
+      {
+        word: "verdes",
+        definition: "Definition of green: Having green as its color. - (Tener el verde como color.)"
+      },
+      {
+        word: "tantalizante",
+        definition: "Definition of tantalizing: To tease (someone) by offering something desirable but keeping it out of reach - (Para burlarse de (alguien) ofreciéndole algo deseable pero manteniéndolo fuera de su alcance)"
+      },
+      {
+        word: "proverbio",
+        definition: "Definition of Proverb: A phrase expressing a basic truth which may be applied to common situations. - (Una frase que expresa una verdad básica que puede aplicarse a situaciones comunes.)"
+      },
+      {
+        word: "sincytium",
+        definition: "Definition of syncytium: A mass of cytoplasm containing many nuclei - (Una masa de citoplasma que contiene muchos núcleos)"
+      },
+      {
+        word: "sobrio",
+        definition: "Definition of sober: (often with up) To make or become sober. - ((a menudo con hasta) Para hacer o estar sobrio.)"
+      },
+      {
+        word: "voceros",
+        definition: "Definition of Spokesmen: One who speaks as the voice of a group of people. - (Aquel que habla como la voz de un grupo de personas.)"
+      },
+      {
+        word: "embriones",
+        definition: "Definition of embryos: In the reproductive cycle, the stage after the fertilization of the egg that precedes the development into a fetus. - (En el ciclo reproductivo, la etapa posterior a la fertilización del óvulo que precede al desarrollo en un feto.)"
+      },
+      {
+        word: "piscina",
+        definition: "Definition of pool: A small and rather deep collection of (usually) fresh water, as one supplied by a spring, or occurring in the course of a stream; a reservoir for water. - (Una colección pequeña y bastante profunda de agua dulce (generalmente), como la suministrada por un manantial, o que se produce en el curso de un arroyo; un depósito de agua.)"
+      },
+      {
+        word: "ropa-interior",
+        definition: "Definition of underwear: Clothes worn next to the skin, underneath outer clothing. - (Ropa usada junto a la piel, debajo de la ropa exterior.)"
+      },
+      {
+        word: "valiente",
+        definition: "Definition of brave: A Native American warrior. - (Un guerrero nativo americano.)"
+      },
+      {
+        word: "procedimientos",
+        definition: "Definition of procedures: A particular method for performing a task. - (Un método particular para realizar una tarea.)"
+      },
+      {
+        word: "pandillas",
+        definition: "Definition of Gangbangs: Sexual intercourse involving more than two persons, especially with a high proportion of men. - (Relaciones sexuales que involucran a más de dos personas, especialmente con una alta proporción de hombres.)"
+      },
+      {
+        word: "exterminio",
+        definition: "Definition of extermination: The act of exterminating; total destruction or eradication - (El acto de exterminar; destrucción total o erradicación)"
+      },
+      {
+        word: "moretones",
+        definition: "Definition of bruising: To strike (a person), originally with something flat or heavy, but now specifically in such a way as to discolour the skin without breaking it. - (Golpear (a una persona), originalmente con algo plano o pesado, pero ahora específicamente de tal manera que decolore la piel sin romperla.)"
+      },
+      {
+        word: "pruebas",
+        definition: "Definition of evidence: Facts or observations presented in support of an assertion. - (Hechos o comentarios presentados en apoyo de una afirmación.)"
+      },
+      {
+        word: "relúcido",
+        definition: "Definition of glossy: A glossy magazine. - (Una revista brillante.)"
+      },
+      {
+        word: "con-sede",
+        definition: "Definition of Headquartered: To provide (an organization) with headquarters. - (Proporcionarle a (una organización) la sede central.)"
+      },
+      {
+        word: "Cabeza-de-lanza",
+        definition: "Definition of Spearhead: The pointed head, or end, of a spear. - (La cabeza puntiaguda, o extremo, de una lanza.)"
+      },
+      {
+        word: "coco",
+        definition: "Definition of coconut: A fruit of the coconut palm (not a true nut), Cocos nucifera, having a fibrous husk surrounding a large seed. - (Un fruto de la palma de coco (no una verdadera nuez), Cocos nucifera, que tiene una cáscara fibrosa que rodea una semilla grande.)"
+      },
+      {
+        word: "seda",
+        definition: "Definition of silk: A fine fiber excreted by the silkworm or other arthropod (such as a spider). - (Una fibra fina excretada por el gusano de seda u otro artrópodo (como una araña).)"
+      },
+      {
+        word: "sin-dudar",
+        definition: "Definition of No doubt: Without a doubt; probably. - (Sin lugar a dudas; probablemente.)"
+      },
+      {
+        word: "Frutas",
+        definition: "Definition of Fruit: (often in the plural) In general, a product of plant growth useful to man or animals. - ((a menudo en plural) En general, un producto del crecimiento vegetal útil para el hombre o los animales.)"
+      },
+      {
+        word: "Oscuros",
+        definition: "Definition of Dark: Having an absolute or (more often) relative lack of light. - (Tener una falta absoluta o (más a menudo) relativa de luz.)"
+      },
+      {
+        word: "sudor",
+        definition: "Definition of sweat: Fluid that exits the body through pores in the skin usually due to physical stress and/or high temperature for the purpose of regulating body temperature and removing certain compounds from the circulation. - (Líquido que sale del cuerpo a través de los poros de la piel, generalmente debido al estrés físico y/o a la alta temperatura, con el fin de regular la temperatura corporal y eliminar ciertos compuestos de la circulación.)"
+      },
+      {
+        word: "plateado",
+        definition: "Definition of silvering: To acquire a silvery colour. - (Adquirir un color plateado.)"
+      },
+      {
+        word: "sinusoides",
+        definition: "Definition of Sinusoids: A curve having the shape of a sine wave. - (Una curva que tiene la forma de una onda sinusoidal.)"
+      },
+      {
+        word: "antioxidantes",
+        definition: "Definition of antioxidants: Any substance that acts to slow or prevent the oxidation of another chemical. - (Cualquier sustancia que actúa para ralentizar o prevenir la oxidación de otro producto químico.)"
+      },
+      {
+        word: "celebrar",
+        definition: "Definition of celebrate: To extol or honour in a solemn manner. - (Enaltecer u honrar de manera solemne.)"
+      },
+      {
+        word: "transfiguración",
+        definition: "Definition of transfiguration: A major change in appearance or form; a metamorphosis. - (Un cambio importante en la apariencia o la forma; una metamorfosis.)"
+      },
+      {
+        word: "anulación",
+        definition: "Definition of avoidance: The act of annulling; annulment. - (El acto de anulación; anulación.)"
+      },
+      {
+        word: "motivada",
+        definition: "Definition of motivated: To provide someone with an incentive to do something; to encourage. - (Para proporcionar a alguien un incentivo para hacer algo; para alentar.)"
+      },
+      {
+        word: "absoluto",
+        definition: "Definition of absolute: That which is independent of context-dependent interpretation, inviolate, fundamental. - (Aquello que es independiente de la interpretación dependiente del contexto, inviolable, fundamental.)"
+      },
+      {
+        word: "racionalización",
+        definition: "Definition of rationalisation: The process, or result of rationalizing. - (El proceso o resultado de la racionalización.)"
+      },
+      {
+        word: "microbuses",
+        definition: "Definition of Minibus: A small bus, especially one used as transport for small groups. - (Un autobús pequeño, especialmente uno utilizado como transporte para grupos pequeños.)"
+      },
+      {
+        word: "cinematografía",
+        definition: "Definition of cinematography: The art, process, or job of filming movies. - (El arte, el proceso o el trabajo de filmar películas.)"
+      },
+      {
+        word: "infravalorados",
+        definition: "Definition of undervalued: To underestimate, or assign too low a value to. - (Subestimar o asignar un valor demasiado bajo a.)"
+      },
+      {
+        word: "Modificación",
+        definition: "Definition of Modification: The form of existence belonging to a particular object, entity etc.; a mode of being. - (La forma de existencia que pertenece a un objeto, entidad, etc. en particular; un modo de ser.)"
+      },
+      {
+        word: "villancicos",
+        definition: "Definition of carols: A small closet or enclosure built against a window on the inner side, to sit in for study. - (Un pequeño armario o recinto construido contra una ventana en el lado interior, para sentarse a estudiar.)"
+      },
+      {
+        word: "sonriendo",
+        definition: "Definition of smiling: To have (a smile) on one's face. - (Tener (una sonrisa) en la cara.)"
+      },
+      {
+        word: "imanes",
+        definition: "Definition of magnets: A piece of material that attracts some metals by magnetism. - (Una pieza de material que atrae algunos metales por magnetismo.)"
+      },
+      {
+        word: "expuestos",
+        definition: "Definition of exposed: To reveal, uncover, make visible, bring to light, introduce to. - (Revelar, descubrir, hacer visible, sacar a la luz, presentar.)"
+      },
+      {
+        word: "cavernas",
+        definition: "Definition of CAVES: A large, naturally-occurring cavity formed underground or in the face of a cliff or a hillside. - (Una gran cavidad natural formada bajo tierra o en la cara de un acantilado o una ladera.)"
+      },
+      {
+        word: "mordientes",
+        definition: "Definition of mordants: Any substance used to facilitate the fixing of a dye to a fibre; usually a metallic compound which reacts with the dye using chelation. - (Cualquier sustancia utilizada para facilitar la fijación de un colorante a una fibra; generalmente un compuesto metálico que reacciona con el colorante mediante quelación.)"
+      },
+      {
+        word: "farmacología",
+        definition: "Definition of pharmacology: The science of drugs including their origin, composition, pharmacokinetics, therapeutic use, and toxicology. - (La ciencia de los medicamentos, incluyendo su origen, composición, farmacocinética, uso terapéutico y toxicología.)"
+      },
+      {
+        word: "ambiental",
+        definition: "Definition of sustainability: The ability to sustain something. - (La capacidad de sostener algo.)"
+      },
+      {
+        word: "aeromagnético",
+        definition: "Definition of aeromagnetic: Of or pertaining to aeromagnetics - (Perteneciente o perteneciente a aeromagnetismo)"
+      },
+      {
+        word: "Fruto",
+        definition: "Definition of Fruit: (often in the plural) In general, a product of plant growth useful to man or animals. - ((a menudo en plural) En general, un producto del crecimiento vegetal útil para el hombre o los animales.)"
+      },
+      {
+        word: "monolingües",
+        definition: "Definition of monolingual: A person who knows or uses only a single language; a monoglot - (Una persona que sabe o usa solo un idioma; un monoglot)"
+      },
+      {
+        word: "potasio",
+        definition: "Definition of potassium: A soft, waxy, silvery reactive metal that is never found unbound in nature; an element (symbol K) with an atomic number of 19 and atomic weight of 39.0983. The symbol is derived from the Latin kalium. - (Un metal reactivo blando, ceroso y plateado que nunca se encuentra libre en la naturaleza; un elemento (símbolo K) con un número atómico de 19 y un peso atómico de 39.0983. El símbolo se deriva del latín kalium.)"
+      },
+      {
+        word: "ventilación",
+        definition: "Definition of ventilation: The replacement of stale or noxious air with fresh. - (La sustitución del aire viciado o nocivo por aire fresco.)"
+      },
+      {
+        word: "ligandos",
+        definition: "Definition of ligands: An ion, molecule, or functional group that binds to another chemical entity to form a larger complex. - (Un ion, molécula o grupo funcional que se une a otra entidad química para formar un complejo más grande.)"
+      },
+      {
+        word: "infectos",
+        definition: "Definition of infected: To bring into contact with a substance that causes illness (a pathogen). - (Poner en contacto con una sustancia que causa enfermedad (un patógeno).)"
+      },
+      {
+        word: "Adoraciones",
+        definition: "Definition of Worship: The condition of being worthy; honour, distinction. - (La condición de ser digno; honor, distinción.)"
+      },
+      {
+        word: "intuición",
+        definition: "Definition of intuition: Immediate cognition without the use of conscious rational processes. - (Cognición inmediata sin el uso de procesos racionales conscientes.)"
+      },
+      {
+        word: "lecturas",
+        definition: "Definition of sermons: Religious discourse; a written or spoken address on a religious or moral matter. - (Discurso religioso; un discurso escrito o hablado sobre un asunto religioso o moral.)"
+      },
+      {
+        word: "detestado",
+        definition: "Definition of detested: To dislike intensely; to loathe. - (A disgustar intensamente; a aborrecer.)"
+      },
+      {
+        word: "#-Golpeando-#",
+        definition: "Definition of Knocking: To strike for admittance; to rap upon, as a door. - (Golpear para ser admitido; golpear, como una puerta.)"
+      },
+      {
+        word: "limusina",
+        definition: "Definition of limousine: An automobile body with seats and permanent top like a coupe, and with the top projecting over the driver and a projecting front. - (Una carrocería de automóvil con asientos y parte superior permanente como un coupé, y con la parte superior que se proyecta sobre el conductor y una parte delantera que se proyecta.)"
+      },
+      {
+        word: "partos",
+        definition: "Definition of delivery: The act of conveying something. - (El acto de transmitir algo.)"
+      },
+      {
+        word: "alteraciones",
+        definition: "Definition of visual: Any element of something that depends on sight. - (Cualquier elemento de algo que depende de la vista.)"
+      },
+      {
+        word: "ovinas",
+        definition: "Definition of sheep: A woolly ruminant of the genus Ovis. - (Rumiante lanudo del género Ovis.)"
+      },
+      {
+        word: "anecoica",
+        definition: "Definition of anechoic: (acoustics) lacking echoes; that absorbs sound - ((acústica) que carece de ecos; que absorbe el sonido)"
+      },
+      {
+        word: "galerías",
+        definition: "Definition of galleries: An institution, building, or room for the exhibition and conservation of works of art. - (Una institución, edificio o sala para la exposición y conservación de obras de arte.)"
+      },
+      {
+        word: "indeseables",
+        definition: "Definition of Undesirable: An undesirable person - (Una persona indeseable)"
+      },
+      {
+        word: "alambres",
+        definition: "Definition of wires: Metal formed into a thin, even thread, now usually by being drawn through a hole in a steel die. - (El metal se transforma en un hilo delgado y uniforme, que ahora generalmente se extrae a través de un orificio en un troquel de acero.)"
+      },
+      {
+        word: "algodón",
+        definition: "Definition of cotton: Gossypium, a genus of plant used as a source of cotton fiber. - (Gossypium, un género de planta utilizada como fuente de fibra de algodón.)"
+      },
+      {
+        word: "sobrebajo",
+        definition: "Definition of overabundance: An excess of what is needed or is appropriate. - (Un exceso de lo que se necesita o es apropiado.)"
+      },
+      {
+        word: "vigilancia",
+        definition: "Definition of methods: A process by which a task is completed; a way of doing something (followed by the adposition of, to or for before the purpose of the process): - (Un proceso por el cual se completa una tarea; una forma de hacer algo (seguida de la adición de, a o para antes del propósito del proceso):)"
+      },
+      {
+        word: "tetas",
+        definition: "Definition of boobs: Idiot, fool. - (Idiota, idiota.)"
+      },
+      {
+        word: "nutrición",
+        definition: "Definition of nutrition: The organic process by which an organism assimilates food and uses it for growth and maintenance. - (Proceso orgánico mediante el cual un organismo asimila los alimentos y los utiliza para su crecimiento y mantenimiento.)"
+      },
+      {
+        word: "conservada",
+        definition: "Definition of Conservation: The act of preserving, guarding, or protecting; the keeping (of a thing) in a safe or entire state; preservation. - (El acto de preservar, custodiar o proteger; el mantenimiento (de una cosa) en un estado seguro o completo; preservar.)"
+      },
+      {
+        word: "sensibilización",
+        definition: "Definition of awareness: The state or level of consciousness where sense data can be confirmed by an observer. - (El estado o nivel de conciencia donde los datos sensoriales pueden ser confirmados por un observador.)"
+      },
+      {
+        word: "metatesis",
+        definition: "Definition of metathesis: The transposition of letters, syllables or sounds within a word, such as in ask as /æks/. - (La transposición de letras, sílabas o sonidos dentro de una palabra, como en preguntar como /æks/.)"
+      },
+      {
+        word: "cefalinas",
+        definition: "Definition of Cephalin: A phospholipid found particularly in the cells of nervous tissue; it is also the primary phospholipid in bacteria. - (Un fosfolípido que se encuentra particularmente en las células del tejido nervioso; también es el fosfolípido primario en las bacterias.)"
+      },
+      {
+        word: "individuos",
+        definition: "Definition of Individuals: A person considered alone, rather than as belonging to a group of people. - (Una persona considerada sola, en lugar de pertenecer a un grupo de personas.)"
+      },
+      {
+        word: "delincuentes",
+        definition: "Definition of Criminals: A person who is guilty of a crime, notably breaking the law. - (Una persona que es culpable de un delito, en particular de infringir la ley.)"
+      },
+      {
+        word: "celibatos",
+        definition: "Definition of celibacy: Abstaining from marriage; the state of being unmarried. - (Abstenerse del matrimonio; el estado de no estar casado.)"
+      },
+      {
+        word: "nudidad",
+        definition: "Definition of nudity: The state or quality of being without clothing on the body; specifically, the quality of being without clothing on the genitals. - (El estado o cualidad de estar sin ropa en el cuerpo; específicamente, la cualidad de estar sin ropa en los genitales.)"
+      },
+      {
+        word: "histérico",
+        definition: "Definition of hysterical: Of, or arising from hysteria. - (Perteneciente o derivado de la histeria.)"
+      },
+      {
+        word: "comercialización",
+        definition: "Definition of commercialisation: The act of commercializing. - (El acto de comercializar.)"
+      },    
             ],
           };
   
