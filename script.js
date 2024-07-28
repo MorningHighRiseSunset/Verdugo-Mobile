@@ -1679,37 +1679,69 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 }
 
 function checkGameStatus() {
-    if (selectedWord && wrongGuesses >= maxWrongGuesses) {
-        cancelAnimationFrame(animationFrameId);
-        showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
-        logWordResult(selectedWord, getWordDefinition(selectedWord), false);
-        playRandomSound(loseSounds); // Play a random lose sound
-        resetGame();
-    } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
-        cancelAnimationFrame(animationFrameId);
-        showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
-        logWordResult(selectedWord, getWordDefinition(selectedWord), true);
-        playRandomSound(winSounds); // Play a random win sound
+  if (selectedWord && wrongGuesses >= maxWrongGuesses) {
+      cancelAnimationFrame(animationFrameId);
+      showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
+      logWordResult(selectedWord, getWordDefinition(selectedWord), false);
+      playRandomSound(loseSounds); // Play a random lose sound
 
-        // Get the English equivalent of the word
-        const englishEquivalent = getEnglishEquivalent(selectedWord);
+      // Speak the losing message
+      const losingMessage = `Game Over! The word was: ${selectedWord}`;
+      speakText(losingMessage, 'en-US');
 
-        // Speak the word in Spanish and then in English
-        const spanishWordText = `La palabra es: ${selectedWord}`;
-        const englishWordText = `The word is: ${englishEquivalent}`;
-        speakText(spanishWordText, 'es-ES');
-        speakText(englishWordText, 'en-US');
+      // Get the pronunciation of the word
+      const pronunciation = getWordPronunciation(selectedWord);
+      if (pronunciation) {
+          speakText(`The pronunciation is: ${pronunciation}`, 'en-US');
+      }
 
-        // Show the repeat button
-        const repeatButton = document.getElementById('repeat-btn');
-        repeatButton.classList.remove('hide');
-        repeatButton.onclick = () => {
-            speakText(spanishWordText, 'es-ES');
-            speakText(englishWordText, 'en-US');
-        };
+      resetGame();
+  } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
+      cancelAnimationFrame(animationFrameId);
+      showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
+      logWordResult(selectedWord, getWordDefinition(selectedWord), true);
+      playRandomSound(winSounds); // Play a random win sound
 
-        resetGame();
-    }
+      // Get the English equivalent of the word
+      const englishEquivalent = getEnglishEquivalent(selectedWord);
+
+      // Speak the word in Spanish and then in English
+      const spanishWordText = `La palabra es: ${selectedWord}`;
+      const englishWordText = `The word is: ${englishEquivalent}`;
+      speakText(spanishWordText, 'es-ES');
+      speakText(englishWordText, 'en-US');
+
+      // Show the repeat button
+      showRepeatButton(spanishWordText, englishWordText);
+
+      resetGame();
+  }
+}
+
+function showRepeatButton(spanishWordText, englishWordText) {
+  let repeatButton = document.getElementById('repeat-btn');
+  if (!repeatButton) {
+      repeatButton = document.createElement('button');
+      repeatButton.id = 'repeat-btn';
+      repeatButton.innerText = 'Repeat';
+      document.body.appendChild(repeatButton);
+  }
+  repeatButton.classList.remove('hide');
+  repeatButton.onclick = () => {
+      speakText(spanishWordText, 'es-ES');
+      speakText(englishWordText, 'en-US');
+  };
+}
+
+function getWordPronunciation(word) {
+  for (const mode in options) {
+      for (const wordObj of options[mode]) {
+          if (wordObj.word.toUpperCase() === word) {
+              return wordObj.pronunciation;
+          }
+      }
+  }
+  return '';
 }
 
 function getEnglishEquivalent(word) {
