@@ -1685,18 +1685,8 @@ function checkGameStatus() {
       logWordResult(selectedWord, getWordDefinition(selectedWord), false);
       playRandomSound(loseSounds); // Play a random lose sound
 
-      // Speak the losing message
-      const losingMessage = `Game Over! The word was: ${selectedWord}`;
-      speakText(losingMessage, 'en-US');
-
-      // Get the pronunciation of the word
-      const pronunciation = getWordPronunciation(selectedWord);
-      if (pronunciation) {
-          speakText(`The pronunciation is: ${pronunciation}`, 'en-US');
-      }
-
-      // Show the repeat button
-      showRepeatButton(losingMessage, pronunciation ? `The pronunciation is: ${pronunciation}` : '');
+      // Show the repeat button with the word but without speaking it
+      showRepeatButton(`La palabra es: ${selectedWord}`, `The word is: ${getEnglishEquivalent(selectedWord)}`);
 
       resetGame();
   } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
@@ -1708,31 +1698,40 @@ function checkGameStatus() {
       // Get the English equivalent of the word
       const englishEquivalent = getEnglishEquivalent(selectedWord);
 
-      // Speak the word in Spanish and then in English
-      const spanishWordText = `La palabra es: ${selectedWord}`;
-      const englishWordText = `The word is: ${englishEquivalent}`;
-      speakText(spanishWordText, 'es-ES');
-      speakText(englishWordText, 'en-US');
-
-      // Show the repeat button
-      showRepeatButton(spanishWordText, englishWordText);
+      // Show the repeat button with the word but without speaking it
+      showRepeatButton(`La palabra es: ${selectedWord}`, `The word is: ${englishEquivalent}`);
 
       resetGame();
   }
 }
 
-function showRepeatButton(text1, text2) {
-  let repeatButton = document.getElementById('repeat-btn');
-  if (!repeatButton) {
-      repeatButton = document.createElement('button');
-      repeatButton.id = 'repeat-btn';
-      repeatButton.innerText = 'Repeat';
-      document.body.appendChild(repeatButton);
+function showRepeatButton(spanishText, englishText) {
+  let repeatSpanishButton = document.getElementById('repeat-spanish-btn');
+  let repeatEnglishButton = document.getElementById('repeat-english-btn');
+
+  if (!repeatSpanishButton) {
+      repeatSpanishButton = document.createElement('button');
+      repeatSpanishButton.id = 'repeat-spanish-btn';
+      repeatSpanishButton.innerText = 'Repeat Spanish';
+      document.body.appendChild(repeatSpanishButton);
   }
-  repeatButton.classList.remove('hide');
-  repeatButton.onclick = () => {
-      if (text1) speakText(text1, 'es-ES');
-      if (text2) speakText(text2, 'en-US');
+
+  if (!repeatEnglishButton) {
+      repeatEnglishButton = document.createElement('button');
+      repeatEnglishButton.id = 'repeat-english-btn';
+      repeatEnglishButton.innerText = 'Repeat English';
+      document.body.appendChild(repeatEnglishButton);
+  }
+
+  repeatSpanishButton.classList.remove('hide');
+  repeatEnglishButton.classList.remove('hide');
+
+  repeatSpanishButton.onclick = () => {
+      if (spanishText) speakText(spanishText, 'es-ES');
+  };
+
+  repeatEnglishButton.onclick = () => {
+      if (englishText) speakText(englishText, 'en-US');
   };
 }
 
