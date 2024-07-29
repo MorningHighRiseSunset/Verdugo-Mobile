@@ -1695,6 +1695,9 @@ function checkGameStatus() {
           speakText(`The pronunciation is: ${pronunciation}`, 'en-US');
       }
 
+      // Show the repeat button
+      showRepeatButton(losingMessage, pronunciation ? `The pronunciation is: ${pronunciation}` : '');
+
       resetGame();
   } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
       cancelAnimationFrame(animationFrameId);
@@ -1718,7 +1721,7 @@ function checkGameStatus() {
   }
 }
 
-function showRepeatButton(spanishWordText, englishWordText) {
+function showRepeatButton(text1, text2) {
   let repeatButton = document.getElementById('repeat-btn');
   if (!repeatButton) {
       repeatButton = document.createElement('button');
@@ -1728,8 +1731,8 @@ function showRepeatButton(spanishWordText, englishWordText) {
   }
   repeatButton.classList.remove('hide');
   repeatButton.onclick = () => {
-      speakText(spanishWordText, 'es-ES');
-      speakText(englishWordText, 'en-US');
+      if (text1) speakText(text1, 'es-ES');
+      if (text2) speakText(text2, 'en-US');
   };
 }
 
