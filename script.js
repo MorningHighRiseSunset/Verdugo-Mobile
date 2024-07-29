@@ -642,7 +642,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
           },
           {
             word: "sobornos",
-            definition: "Definition of kickbacks: A backward kick, a retrograde movement of an extremity. - (Una patada hacia atrás, un movimiento retrógrado de una extremidad.)",
+            definition: "Definition of kickbacks: An elicit payment. Bribe. - (Un pago para obtener. Soborno.)",
             pronunciation: "/No pronunciation available/",
             englishEquivalent: "kickbacks"
           },
