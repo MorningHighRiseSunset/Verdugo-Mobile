@@ -282,7 +282,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
           },
           {
             word: "escolares",
-            definition: "Definition of escolars: Lepidocybium flavobrunneum, one of the snake mackerels. - (Lepidocybium flavobrunneum, una de las caballas serpiente.)",
+            definition: "Definition of escolars: (also known as school children : a child attending school ) Lepidocybium flavobrunneum, one of the snake mackerels. - (Lepidocybium flavobrunneum, una de las caballas serpiente.)",
             pronunciation: "/No pronunciation available/",
             englishEquivalent: "escolars"
           },
