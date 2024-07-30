@@ -69,6 +69,1508 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   };
 
   let options = {
+    "Hangman": [
+      {
+  word: "situses",
+  definition: "Definition: The position, especially the usual, normal position, of a body part or part of a plant.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "situses"
+},
+{
+  word: "unpersuasive",
+  definition: "Definition: Not persuasive",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "unpersuasive"
+},
+{
+  word: "extermination",
+  definition: "Definition: The act of exterminating; total destruction or eradication",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "extermination"
+},
+{
+  word: "hobo",
+  definition: "Definition: A wandering homeless person, especially one illegally travelling by rail or a penniless, unemployed bum.",
+  pronunciation: "/ˈhəʊ.bəʊ/",
+  englishEquivalent: "hobo"
+},
+{
+  word: "decries",
+  definition: "Definition: To denounce as harmful.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "decries"
+},
+{
+  word: "refroze",
+  definition: "Definition: To freeze again.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "refroze"
+},
+{
+  word: "apprentices",
+  definition: "Definition: A trainee, especially in a skilled trade.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "apprentices"
+},
+{
+  word: "utterance",
+  definition: "Definition: An act of uttering.",
+  pronunciation: "/ˈʌtəɹəns/",
+  englishEquivalent: "utterance"
+},
+{
+  word: "abscission",
+  definition: "Definition: The act or process of cutting off.",
+  pronunciation: "/æbˈsɪ.ʃn̩/",
+  englishEquivalent: "abscission"
+},
+{
+  word: "cravats",
+  definition: "Definition: A wide fabric band worn as a necktie by men having long ends hanging in front.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cravats"
+},
+{
+  word: "fundraises",
+  definition: "Definition: To raise funds for a specified cause or purpose.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "fundraises"
+},
+{
+  word: "mellowest",
+  definition: "Definition: To make mellow; to relax or soften.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "mellowest"
+},
+{
+  word: "rogueries",
+  definition: "Definition: Malicious or reckless behaviour",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "rogueries"
+},
+{
+  word: "lasagna",
+  definition: "Definition: A flat sheet of pasta.",
+  pronunciation: "/ləˈzɑ.njə/",
+  englishEquivalent: "lasagna"
+},
+{
+  word: "physicist",
+  definition: "Definition: A person whose occupation specializes in the science of physics, especially at a professional level.",
+  pronunciation: "/ˈfɪz.ɪ.sɪst/",
+  englishEquivalent: "physicist"
+},
+{
+  word: "clevises",
+  definition: "Definition: A U-shaped coupling having holes at each end, through which a bolt is run; used especially to fit attachments to a tractor or other vehicle as it allows a degree of rotation about the bolt.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "clevises"
+},
+{
+  word: "beneficiate",
+  definition: "Definition: To reduce (ores).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "beneficiate"
+},
+{
+  word: "mentorships",
+  definition: "Definition: State of being a mentor",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "mentorships"
+},
+{
+  word: "interethnic",
+  definition: "Definition: Between ethnic groups, or their members.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "interethnic"
+},
+{
+  word: "breathable",
+  definition: "Definition: (of air) suitable for breathing",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "breathable"
+},
+{
+  word: "dreamy",
+  definition: "Definition: As in a dream; resembling a dream.",
+  pronunciation: "/ˈdɹiː.mi/",
+  englishEquivalent: "dreamy"
+},
+{
+  word: "opaques",
+  definition: "Definition: To make, render (more) opaque.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "opaques"
+},
+{
+  word: "fluorimeter",
+  definition: "Definition: An instrument used to detect and measure fluorescence.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "fluorimeter"
+},
+{
+  word: "grippe",
+  definition: "Definition: Influenza, the flu.",
+  pronunciation: "/ɡɹɪp/",
+  englishEquivalent: "grippe"
+},
+{
+  word: "animadverted",
+  definition: "Definition: To criticise, to censure.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "animadverted"
+},
+{
+  word: "quartos",
+  definition: "Definition: A size of paper (7.5"-10" x 10"-12.5" or 190-254 x 254-312 mm). Formed by folding and cutting one of several standard sizes of paper (15"-20" x 20"-25" or 381-508 x 508-635 mm) twice to form 4 leaves (eight sides).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "quartos"
+},
+{
+  word: "experiential",
+  definition: "Definition: Of, related to, encountered in, or derived from experience.",
+  pronunciation: "/ɛkˌspɪəɹiˈɛnʃəl/",
+  englishEquivalent: "experiential"
+},
+{
+  word: "players",
+  definition: "Definition: One that plays",
+  pronunciation: "/ˈpleɪəz/",
+  englishEquivalent: "players"
+},
+{
+  word: "conspiracies",
+  definition: "Definition: The act of two or more persons, called conspirators, working secretly to obtain some goal, usually understood with negative connotations.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "conspiracies"
+},
+{
+  word: "alibis",
+  definition: "Definition: The plea or mode of defense under which a person on trial for a crime proves or attempts to prove being in another place when the alleged act was committed",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "alibis"
+},
+{
+  word: "chutes",
+  definition: "Definition: A framework, trough or tube, upon or through which objects are made to slide from a higher to a lower level, or through which water passes to a wheel.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "chutes"
+},
+{
+  word: "siglum",
+  definition: "Definition: A letter or other symbol that stands for a word or name.",
+  pronunciation: "/ˈsɪɡləm/",
+  englishEquivalent: "siglum"
+},
+{
+  word: "dekaliters",
+  definition: "Definition: Ten litres. Symbol: dal",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "dekaliters"
+},
+{
+  word: "deaerated",
+  definition: "Definition: To remove the air or gas from something",
+  pronunciation: "/diːˈeəɹeɪtəd/",
+  englishEquivalent: "deaerated"
+},
+{
+  word: "veiled",
+  definition: "Definition: To dress in, or decorate with, a veil.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "veiled"
+},
+{
+  word: "galliass",
+  definition: "Definition: A type of rowable vessel of the 16th and 17th centuries, similar to a galley but larger, and normally equipped with sails.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "galliass"
+},
+{
+  word: "unstudied",
+  definition: "Definition: Free of artifice or cunning; innocent, spontaneous and unaffected.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "unstudied"
+},
+{
+  word: "emerge",
+  definition: "Definition: To come into view.",
+  pronunciation: "/iˈmɜːd͡ʒ/",
+  englishEquivalent: "emerge"
+},
+{
+  word: "lunks",
+  definition: "Definition: A fool; an idiot; a lunkhead.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "lunks"
+},
+{
+  word: "hereditary",
+  definition: "Definition: A hereditary ruler; a hereditary peer in the House of Lords.",
+  pronunciation: "/həˈɹɛdɪt(ə)ɹi/",
+  englishEquivalent: "hereditary"
+},
+{
+  word: "firelocks",
+  definition: "Definition: A form of gunlock, in which the priming is ignited by a spark.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "firelocks"
+},
+{
+  word: "rices",
+  definition: "Definition: Cereal plants, Oryza sativa of the grass family whose seeds are used as food.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "rices"
+},
+{
+  word: "sousliks",
+  definition: "Definition: Any of several large Eurasian squirrels, of the genera Citellus or Spermophilus",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "sousliks"
+},
+{
+  word: "balkline",
+  definition: "Definition: Baulk line",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "balkline"
+},
+{
+  word: "unicellular",
+  definition: "Definition: A single-celled organism; a unicell.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "unicellular"
+},
+{
+  word: "solifluction",
+  definition: "Definition: Soil creep caused by waterlogged soil slowly moving downhill on top of an impermeable layer.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "solifluction"
+},
+{
+  word: "vaporer",
+  definition: "Definition: Any of several tussock moths (family Erebidae, subfamily Lymantriinae), especially of the genus Orgyia.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "vaporer"
+},
+{
+  word: "ferity",
+  definition: "Definition: The quality or fact of being wild or in a wild state; wildness, brutishness.",
+  pronunciation: "/ˈfɛɹɪti/",
+  englishEquivalent: "ferity"
+},
+{
+  word: "coelenterates",
+  definition: "Definition: Any simple aquatic animal formerly considered to belong to the phylum Coelenterata, now divided into the cnidarians and ctenophores.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "coelenterates"
+},
+{
+  word: "executants",
+  definition: "Definition: A person who executes a dance or piece of music; a performer.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "executants"
+},
+{
+  word: "billfolds",
+  definition: "Definition: A small, folding sleeve or case designed to hold paper currency, as well as credit cards, pictures, etc.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "billfolds"
+},
+{
+  word: "overpromise",
+  definition: "Definition: To promise more than is delivered",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "overpromise"
+},
+{
+  word: "breath",
+  definition: "Definition: The act or process of breathing.",
+  pronunciation: "/bɹɛθ/",
+  englishEquivalent: "breath"
+},
+{
+  word: "shirty",
+  definition: "Definition: Ill-tempered or annoyed.",
+  pronunciation: "/ˈʃɜː.ti/",
+  englishEquivalent: "shirty"
+},
+{
+  word: "blip",
+  definition: "Definition: To emit one or more bleeps.",
+  pronunciation: "/blɪp/",
+  englishEquivalent: "blip"
+},
+{
+  word: "gastropods",
+  definition: "Definition: Any member of a class of mollusks (Gastropoda) that includes snails and slugs; univalve mollusk.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "gastropods"
+},
+{
+  word: "horror",
+  definition: "Definition: An intense distressing emotion of fear or repugnance.",
+  pronunciation: "/ˈhɔɹɚ/",
+  englishEquivalent: "horror"
+},
+{
+  word: "unpressed",
+  definition: "Definition: Not pressed.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "unpressed"
+},
+{
+  word: "rocamboles",
+  definition: "Definition: The sand leek, Allium scorodoprasum",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "rocamboles"
+},
+{
+  word: "direct",
+  definition: "Definition: To manage, control, steer.",
+  pronunciation: "/d(a)ɪˈɹɛkt/",
+  englishEquivalent: "direct"
+},
+{
+  word: "beneficiaries",
+  definition: "Definition: One who benefits or receives an advantage.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "beneficiaries"
+},
+{
+  word: "lazaretto",
+  definition: "Definition: A medical facility specializing in the care for contagious patients.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "lazaretto"
+},
+{
+  word: "invigorates",
+  definition: "Definition: To impart vigor, strength, or vitality to.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "invigorates"
+},
+{
+  word: "minkes",
+  definition: "Definition: A minke whale, one of two species of baleen whales within Balaenoptera, the northern-dwelling species of which is often seen in coastal waters.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "minkes"
+},
+{
+  word: "naves",
+  definition: "Definition: The middle or body of a church, extending from the transepts to the principal entrances.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "naves"
+},
+{
+  word: "companions",
+  definition: "Definition: A friend, acquaintance, or partner; someone with whom one spends time or keeps company",
+  pronunciation: "/kəmˈpænjənz/",
+  englishEquivalent: "companions"
+},
+{
+  word: "adhesives",
+  definition: "Definition: A substance, such as glue, that provides or promotes adhesion",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "adhesives"
+},
+{
+  word: "tithings",
+  definition: "Definition: A tithe or tenth in its various senses, :",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "tithings"
+},
+{
+  word: "mash",
+  definition: "Definition: A mass of mixed ingredients reduced to a soft pulpy state by beating or pressure; a mass of anything in a soft pulpy state.",
+  pronunciation: "/mæʃ/",
+  englishEquivalent: "mash"
+},
+{
+  word: "gristmills",
+  definition: "Definition: A mill that grinds grain, especially grain brought by a farmer to be exchanged for the flour (less a percentage)",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "gristmills"
+},
+{
+  word: "vigilante",
+  definition: "Definition: A person who considers it their own responsibility to uphold the law in their neighborhood and often does so summarily and without legal jurisdiction.",
+  pronunciation: "/vɪdʒɪˈlænti/",
+  englishEquivalent: "vigilante"
+},
+{
+  word: "optional",
+  definition: "Definition: Something that is not compulsory, especially part of an academic course.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "optional"
+},
+{
+  word: "decried",
+  definition: "Definition: To denounce as harmful.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "decried"
+},
+{
+  word: "tempest",
+  definition: "Definition: A storm, especially one with severe winds.",
+  pronunciation: "/ˈtɛmpəst/",
+  englishEquivalent: "tempest"
+},
+{
+  word: "wounded",
+  definition: "Definition: To hurt or injure (someone) by cutting, piercing, or tearing the skin.",
+  pronunciation: "/ˈwuːndɪd/",
+  englishEquivalent: "wounded"
+},
+{
+  word: "doorposts",
+  definition: "Definition: Doorjamb",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "doorposts"
+},
+{
+  word: "longeron",
+  definition: "Definition: A thin strip of wood or metal, to which the skin of an aircraft is fastened.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "longeron"
+},
+{
+  word: "crustal",
+  definition: "Definition: Of, pertaining to, or forming a crust, especially the crust of the Earth or other planet.",
+  pronunciation: "/ˈkɹʌstəl/",
+  englishEquivalent: "crustal"
+},
+{
+  word: "sobers",
+  definition: "Definition: (often with up) To make or become sober.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "sobers"
+},
+{
+  word: "elating",
+  definition: "Definition: To make joyful or proud.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "elating"
+},
+{
+  word: "fetes",
+  definition: "Definition: A festival open to the public, the proceeds from which are often given to charity.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "fetes"
+},
+{
+  word: "cloned",
+  definition: "Definition: To create a clone of.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cloned"
+},
+{
+  word: "steps",
+  definition: "Definition: An advance or movement made from one foot to the other; a pace.",
+  pronunciation: "/stɛps/",
+  englishEquivalent: "steps"
+},
+{
+  word: "opes",
+  definition: "Definition: To open.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "opes"
+},
+{
+  word: "furs",
+  definition: "Definition: The hairy coat of various mammal species, especially when fine, soft and thick.",
+  pronunciation: "/fɜːz/",
+  englishEquivalent: "furs"
+},
+{
+  word: "outbreak",
+  definition: "Definition: An eruption; the sudden appearance of a rash, disease, etc.",
+  pronunciation: "/ˈaʊtbɹeɪk/",
+  englishEquivalent: "outbreak"
+},
+{
+  word: "cancelled",
+  definition: "Definition: To cross out something with lines etc.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cancelled"
+},
+{
+  word: "paleography",
+  definition: "Definition: The study of old or ancient forms of writing.",
+  pronunciation: "/ˌpalɪˈɒɡɹəfi/",
+  englishEquivalent: "paleography"
+},
+{
+  word: "cliches",
+  definition: "Definition: Something, most often a phrase or expression, that is overused or used outside its original context, so that its original impact and meaning are lost. A trite saying; a platitude.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cliches"
+},
+{
+  word: "flan",
+  definition: "Definition: Baked tart with sweet or savoury filling in an open-topped pastry case. (Compare quiche.)",
+  pronunciation: "/flæn/",
+  englishEquivalent: "flan"
+},
+{
+  word: "greenmail",
+  definition: "Definition: Profiting from an attempted hostile takeover by forcing the target company to buy back the hostile bidder's shares at an inflated price.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "greenmail"
+},
+{
+  word: "fauces",
+  definition: "Definition: The narrow passage from the mouth to the pharynx, situated between the soft palate and the base of the tongue.",
+  pronunciation: "/[fɔːsiːz]/",
+  englishEquivalent: "fauces"
+},
+{
+  word: "epiphyses",
+  definition: "Definition: The pineal gland.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "epiphyses"
+},
+{
+  word: "cesti",
+  definition: "Definition: A leather fighting glove, frequently weighted with metal.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cesti"
+},
+{
+  word: "cowhands",
+  definition: "Definition: One who tends free-range cattle, especially in the American West.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cowhands"
+},
+{
+  word: "candidas",
+  definition: "Definition: A yeast of the genus Candida, usually specifically Candida albicans",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "candidas"
+},
+{
+  word: "spoonful",
+  definition: "Definition: The amount that a spoon will hold, either level or heaped.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "spoonful"
+},
+{
+  word: "vernissages",
+  definition: "Definition: A private viewing of an art exhibition before it opens to the public.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "vernissages"
+},
+{
+  word: "incanted",
+  definition: "Definition: To state solemnly, to chant.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "incanted"
+},
+{
+  word: "buggered",
+  definition: "Definition: To have anal sex with, sodomize.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "buggered"
+},
+{
+  word: "horal",
+  definition: "Definition: Of or relating to an hour, or to hours.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "horal"
+},
+{
+  word: "lossy",
+  definition: "Definition: Of a communication channel, subject to loss of signal strength.",
+  pronunciation: "/ˈlɒsi/",
+  englishEquivalent: "lossy"
+},
+{
+  word: "drunks",
+  definition: "Definition: One who is intoxicated with alcohol.",
+  pronunciation: "/dɹʌŋks/",
+  englishEquivalent: "drunks"
+},
+{
+  word: "affiliates",
+  definition: "Definition: Someone or something, especially, a television station, that is associated with a larger, related organization, such as a television network; a member of a group of associated things.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "affiliates"
+},
+{
+  word: "welds",
+  definition: "Definition: The joint made by welding.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "welds"
+},
+{
+  word: "chunters",
+  definition: "Definition: To speak in a soft, indistinct manner, mutter.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "chunters"
+},
+{
+  word: "virga",
+  definition: "Definition: A type of note used in plainsong notation, having a tail and representing a single tone.",
+  pronunciation: "/ˈvɜːɡə/",
+  englishEquivalent: "virga"
+},
+{
+  word: "clampdown",
+  definition: "Definition: A sudden repressive or punitive restriction or control",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "clampdown"
+},
+{
+  word: "overcommits",
+  definition: "Definition: To make excessive commitments, either beyond one's ability or beyond what is reasonable",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "overcommits"
+},
+{
+  word: "implementers",
+  definition: "Definition: A person who implements something.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "implementers"
+},
+{
+  word: "municipalizes",
+  definition: "Definition: To convert into a municipality",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "municipalizes"
+},
+{
+  word: "rutting",
+  definition: "Definition: To be in the annual rut or mating season.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "rutting"
+},
+{
+  word: "smile",
+  definition: "Definition: A facial expression comprised by flexing the muscles of both ends of one's mouth, often showing the front teeth, without vocalisation, and in humans is a common involuntary or voluntary expression of happiness, pleasure, amusement or anxiety.",
+  pronunciation: "/ˈsmaɪ.əl/",
+  englishEquivalent: "smile"
+},
+{
+  word: "propriety",
+  definition: "Definition: The particular character or essence of someone or something; individuality.",
+  pronunciation: "/pɹəˈpɹaɪəti/",
+  englishEquivalent: "propriety"
+},
+{
+  word: "liquorice",
+  definition: "Definition: The plant Glycyrrhiza glabra, or sometimes in North America the related American Licorice plant Glycyrrhiza lepidota.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "liquorice"
+},
+{
+  word: "potpies",
+  definition: "Definition: A pie, having pastry sides and bottom, and filled with meat etc",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "potpies"
+},
+{
+  word: "pacemakers",
+  definition: "Definition: One who sets the pace in a race, to guide the others.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "pacemakers"
+},
+{
+  word: "contacted",
+  definition: "Definition: To touch; to come into physical contact with.",
+  pronunciation: "/kənˈtæktɪd/",
+  englishEquivalent: "contacted"
+},
+{
+  word: "adenovirus",
+  definition: "Definition: Any virus of the family Adenoviridae, many of which are responsible for respiratory infections in humans",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "adenovirus"
+},
+{
+  word: "indecisive",
+  definition: "Definition: (of a person) Not decisive; not marked by promptness or decision.",
+  pronunciation: "/ˌɪndɪˈsaɪsɪv/",
+  englishEquivalent: "indecisive"
+},
+{
+  word: "behindhand",
+  definition: "Definition: (of a person) Late, tardy, overdue, behind (in accomplishing a task, etc.).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "behindhand"
+},
+{
+  word: "prolapses",
+  definition: "Definition: A moving out of place, especially a protrusion of an internal organ",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "prolapses"
+},
+{
+  word: "mongrelize",
+  definition: "Definition: To breed a mongrel",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "mongrelize"
+},
+{
+  word: "outmuscle",
+  definition: "Definition: To surpass in a contest involving strength.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "outmuscle"
+},
+{
+  word: "dirks",
+  definition: "Definition: A long Scottish dagger with a straight blade.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "dirks"
+},
+{
+  word: "gobbed",
+  definition: "Definition: To gather into a lump.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "gobbed"
+},
+{
+  word: "ostracod",
+  definition: "Definition: Any of many small crustaceans, of the class Ostracoda, that resemble a shrimp enclosed in a bivalve shell.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "ostracod"
+},
+{
+  word: "cadge",
+  definition: "Definition: A circular frame on which cadgers carry hawks for sale.",
+  pronunciation: "/kædʒ/",
+  englishEquivalent: "cadge"
+},
+{
+  word: "enjambed",
+  definition: "Definition: To carry a sentence over to the next line without a pause.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "enjambed"
+},
+{
+  word: "eluded",
+  definition: "Definition: To evade, or escape from someone or something, especially by using cunning or skill",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "eluded"
+},
+{
+  word: "marchers",
+  definition: "Definition: An inhabitant of a march (border country); specifically, a marcher lord.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "marchers"
+},
+{
+  word: "slates",
+  definition: "Definition: A fine-grained homogeneous sedimentary rock composed of clay or volcanic ash which has been metamorphosed so that it cleaves easily into thin layers.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "slates"
+},
+{
+  word: "unvarnished",
+  definition: "Definition: Not having been coated with varnish (or a similar surface treatment).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "unvarnished"
+},
+{
+  word: "razoring",
+  definition: "Definition: To shave with a razor.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "razoring"
+},
+{
+  word: "irksome",
+  definition: "Definition: Marked by irritation or annoyance; disagreeable; troublesome by reason of long continuance or repetition",
+  pronunciation: "/ˈɚksəm/",
+  englishEquivalent: "irksome"
+},
+{
+  word: "singularized",
+  definition: "Definition: To make singular.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "singularized"
+},
+{
+  word: "carcases",
+  definition: "Definition: The body of a dead animal.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "carcases"
+},
+{
+  word: "hermeneutics",
+  definition: "Definition: The study or theory of the methodical interpretation of text, especially holy texts.",
+  pronunciation: "/hɜːɹməˈnjuːtɪks/",
+  englishEquivalent: "hermeneutics"
+},
+{
+  word: "paleography",
+  definition: "Definition: The study of old or ancient forms of writing.",
+  pronunciation: "/ˌpalɪˈɒɡɹəfi/",
+  englishEquivalent: "paleography"
+},
+{
+  word: "communicating",
+  definition: "Definition: To impart",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "communicating"
+},
+{
+  word: "cause",
+  definition: "Definition: (often with of, typically of adverse results) The source of, or reason for, an event or action; that which produces or effects a result.",
+  pronunciation: "/kɔːz/",
+  englishEquivalent: "cause"
+},
+{
+  word: "counterchange",
+  definition: "Definition: An exchange of one thing for another.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "counterchange"
+},
+{
+  word: "sonata",
+  definition: "Definition: A musical composition for one or a few instruments, one of which is frequently a piano, in three or four movements that vary in key and tempo.",
+  pronunciation: "/səˈnɑːtə/",
+  englishEquivalent: "sonata"
+},
+{
+  word: "tergiversate",
+  definition: "Definition: To evade, to equivocate using subterfuge; to obfuscate in a deliberate manner.",
+  pronunciation: "/ˈtɜːdʒɪvəseɪt/",
+  englishEquivalent: "tergiversate"
+},
+{
+  word: "cloudscapes",
+  definition: "Definition: A work of art or other image depicting sky and clouds.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "cloudscapes"
+},
+{
+  word: "knockers",
+  definition: "Definition: A device, usually hinged with a striking plate, used for knocking on a door.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "knockers"
+},
+{
+  word: "temps",
+  definition: "Definition: A temporary employee, usually in an office.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "temps"
+},
+{
+  word: "untracked",
+  definition: "Definition: Not tracked.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "untracked"
+},
+{
+  word: "zebu",
+  definition: "Definition: A domesticated ox native to Asia and Africa, having a large fleshy hump on its back and a dewlap (Bos primigenius indicus).",
+  pronunciation: "/ˈzeɪ.bjuː/",
+  englishEquivalent: "zebu"
+},
+{
+  word: "diving",
+  definition: "Definition: To swim under water.",
+  pronunciation: "/ˈdaɪvɪŋ/",
+  englishEquivalent: "diving"
+},
+{
+  word: "ferryboats",
+  definition: "Definition: A boat used to ferry passengers, vehicles, or goods across open water, especially one that runs to a regular schedule",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "ferryboats"
+},
+{
+  word: "barcarole",
+  definition: "Definition: A Venetian folk song traditionally sung by gondoliers, often in 6/8 or 12/8 time with alternating strong and weak beats imitating a rowing motion.",
+  pronunciation: "/ˈbɑːkəɹəʊl/",
+  englishEquivalent: "barcarole"
+},
+{
+  word: "ganglier",
+  definition: "Definition: Tall and thin, especially so as to cause physical awkwardness.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "ganglier"
+},
+{
+  word: "absolutized",
+  definition: "Definition: To make absolute.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "absolutized"
+},
+{
+  word: "grunting",
+  definition: "Definition: (of a person) To make a grunt or grunts.",
+  pronunciation: "/ˈɡɹʌntɪŋ/",
+  englishEquivalent: "grunting"
+},
+{
+  word: "emeritus",
+  definition: "Definition: A person retired in this sense.",
+  pronunciation: "/ɪˈmɛɹɪtəs/",
+  englishEquivalent: "emeritus"
+},
+{
+  word: "tsaddikim",
+  definition: "Definition: A very righteous person, especially a Hassidic spiritual leader.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "tsaddikim"
+},
+{
+  word: "peneplane",
+  definition: "Definition: A low-relief plain representing the final stage of fluvial erosion during times of extended tectonic stability.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "peneplane"
+},
+{
+  word: "wolfberries",
+  definition: "Definition: Any of flowering species of the genus Lycium.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "wolfberries"
+},
+{
+  word: "lobbed",
+  definition: "Definition: To throw or hit a ball into the air in a high arch.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "lobbed"
+},
+{
+  word: "disfigured",
+  definition: "Definition: Change the appearance of something/someone to the negative.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "disfigured"
+},
+{
+  word: "hepatitis",
+  definition: "Definition: Inflammation of the liver, sometimes caused by a viral infection.",
+  pronunciation: "/ˌhɛpəˈtaɪ̯tɪs/",
+  englishEquivalent: "hepatitis"
+},
+{
+  word: "mutilation",
+  definition: "Definition: The act of mutilating or the state of being mutilated.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "mutilation"
+},
+{
+  word: "gorier",
+  definition: "Definition: Covered with blood, very bloody",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "gorier"
+},
+{
+  word: "scatters",
+  definition: "Definition: The act of scattering or dispersing.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "scatters"
+},
+{
+  word: "pronunciamento",
+  definition: "Definition: A manifesto or formal proclamation of rebellion, particularly in Spain, Portugal and Latin America.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "pronunciamento"
+},
+{
+  word: "meatloaf",
+  definition: "Definition: A dish of ground meat (usually made from ground beef, although lamb, pork, veal, venison, poultry and seafood are also used) formed into a loaf shape, mixed with egg and breadcrumbs, then baked or smoked, and usually served in slices.",
+  pronunciation: "/ˈmiːtləʊf/",
+  englishEquivalent: "meatloaf"
+},
+{
+  word: "plasticizes",
+  definition: "Definition: To make something more plastic, especially by adding a plasticizer",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "plasticizes"
+},
+{
+  word: "bloods",
+  definition: "Definition: A member of the Los Angeles gang The Bloods.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "bloods"
+},
+{
+  word: "juking",
+  definition: "Definition: To play dance music, or to dance, in a juke",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "juking"
+},
+{
+  word: "chore",
+  definition: "Definition: A task, especially a difficult, unpleasant, or routine one.",
+  pronunciation: "/tʃɔː/",
+  englishEquivalent: "chore"
+},
+{
+  word: "dioptase",
+  definition: "Definition: An intense emerald-green to bluish-green copper cyclosilicate mineral.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "dioptase"
+},
+{
+  word: "disassemble",
+  definition: "Definition: To take to pieces; to reverse the process of assembly.",
+  pronunciation: "/dɪsəˈsɛmbəɫ/",
+  englishEquivalent: "disassemble"
+},
+{
+  word: "idolatry",
+  definition: "Definition: The worship of idols.",
+  pronunciation: "/aɪˈdɒl.ə.tɹiː/",
+  englishEquivalent: "idolatry"
+},
+{
+  word: "poos",
+  definition: "Definition: Feces.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "poos"
+},
+{
+  word: "amply",
+  definition: "Definition: In an ample manner.",
+  pronunciation: "/ˈæmp.li/",
+  englishEquivalent: "amply"
+},
+{
+  word: "resected",
+  definition: "Definition: To remove (some part of an organ or structure) by surgical means.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "resected"
+},
+{
+  word: "hulas",
+  definition: "Definition: A form of chant and dance, which was developed in the Hawaiian Islands by the Polynesians who originally settled there.",
+  pronunciation: "/ˈhuːləz/",
+  englishEquivalent: "hulas"
+},
+{
+  word: "reservation",
+  definition: "Definition: The act of reserving, withholding or keeping back.",
+  pronunciation: "/ˌɹɛzəˈveɪʃən/",
+  englishEquivalent: "reservation"
+},
+{
+  word: "rout",
+  definition: "Definition: A noise, especially a loud one",
+  pronunciation: "/[ɹʌʊt]/",
+  englishEquivalent: "rout"
+},
+{
+  word: "fireplace",
+  definition: "Definition: An open hearth for holding a fire at the base of a chimney.",
+  pronunciation: "/ˈfaɪəpleɪs/",
+  englishEquivalent: "fireplace"
+},
+{
+  word: "internalising",
+  definition: "Definition: To make something internal; to incorporate it in oneself.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "internalising"
+},
+{
+  word: "gromwell",
+  definition: "Definition: Lithospermum arvense, a plant of the genus Lithospermum anciently used, because of its stony pericarp, in the cure of kidney stones.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "gromwell"
+},
+{
+  word: "bloodstock",
+  definition: "Definition: Thoroughbred animals in general, but especially horses.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "bloodstock"
+},
+{
+  word: "antivenin",
+  definition: "Definition: An antitoxin for treating bites from venomous animals as such as snakes and spiders.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "antivenin"
+},
+{
+  word: "revisited",
+  definition: "Definition: To visit again.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "revisited"
+},
+{
+  word: "stopes",
+  definition: "Definition: A mining excavation in the form of a terrace of steps.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "stopes"
+},
+{
+  word: "amping",
+  definition: "Definition: (usually with up) To amplify.",
+  pronunciation: "/ˈæm.pɪŋ/",
+  englishEquivalent: "amping"
+},
+{
+  word: "wildly",
+  definition: "Definition: In a wild, uncontrolled manner.",
+  pronunciation: "/ˈwaɪldli/",
+  englishEquivalent: "wildly"
+},
+{
+  word: "unwell",
+  definition: "Definition: Not in good health; not feeling well; somewhat ill",
+  pronunciation: "/ʌnˈwɛl/",
+  englishEquivalent: "unwell"
+},
+{
+  word: "demoiselle",
+  definition: "Definition: A damselfly of the family Calopterygidae.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "demoiselle"
+},
+{
+  word: "mending",
+  definition: "Definition: To repair, as anything that is torn, broken, defaced, decayed, or the like; to restore from partial decay, injury, or defacement.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "mending"
+},
+{
+  word: "finery",
+  definition: "Definition: Fineness; beauty.",
+  pronunciation: "/ˈfaɪnəɹi/",
+  englishEquivalent: "finery"
+},
+{
+  word: "dropsies",
+  definition: "Definition: Swelling, edema, often from chronic obstructive pulmonary disease (COPD).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "dropsies"
+},
+{
+  word: "refugia",
+  definition: "Definition: Any local environment that has escaped regional ecological change and therefore provides a habitat for endangered species.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "refugia"
+},
+{
+  word: "mainstreams",
+  definition: "Definition: To popularize, to normalize, to render mainstream.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "mainstreams"
+},
+{
+  word: "arming",
+  definition: "Definition: To take by the arm; to take up in one's arms.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "arming"
+},
+{
+  word: "surrejoinder",
+  definition: "Definition: A plaintiff's answer to the defendant's rejoinder.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "surrejoinder"
+},
+{
+  word: "transcultural",
+  definition: "Definition: Extending through more than one human culture.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "transcultural"
+},
+{
+  word: "technique",
+  definition: "Definition: The practical aspects of a given art, occupation etc.; formal requirements.",
+  pronunciation: "/tɛkˈniːk/",
+  englishEquivalent: "technique"
+},
+{
+  word: "bramble",
+  definition: "Definition: Any of many closely related thorny plants in the genus Rubus including the blackberry and likely not including the raspberry proper.",
+  pronunciation: "/ˈbɹæmbəl/",
+  englishEquivalent: "bramble"
+},
+{
+  word: "elitism",
+  definition: "Definition: The belief that a society or system should be run by an elite.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "elitism"
+},
+{
+  word: "yep",
+  definition: "Definition: Yes.",
+  pronunciation: "/jɛp/",
+  englishEquivalent: "yep"
+},
+{
+  word: "concomitants",
+  definition: "Definition: Something happening or existing at the same time.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "concomitants"
+},
+{
+  word: "monorchid",
+  definition: "Definition: An individual having only one testicle within the scrotum.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "monorchid"
+},
+{
+  word: "witenagemot",
+  definition: "Definition: (history, usually uncountable, sometimes countable) Any of several assemblies which existed in Anglo-Saxon England from the 7th to the 11th century, initially with regional jurisdiction (there being different ones in Essex, Kent, Mercia, Northumbria, Sussex and Wessex), later with national jurisdiction, made up of important noblemen.",
+  pronunciation: "/ˈwɪtənəjəməʊt/",
+  englishEquivalent: "witenagemot"
+},
+{
+  word: "scions",
+  definition: "Definition: A descendant, especially a first-generation descendant of a distinguished family.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "scions"
+},
+{
+  word: "sentinelling",
+  definition: "Definition: To watch over as a guard.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "sentinelling"
+},
+{
+  word: "derail",
+  definition: "Definition: A device placed on railway tracks causing a train to derail.",
+  pronunciation: "/dəˈɹeɪl/",
+  englishEquivalent: "derail"
+},
+{
+  word: "grooved",
+  definition: "Definition: To cut a groove or channel in; to form into channels or grooves; to furrow.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "grooved"
+},
+{
+  word: "multifoils",
+  definition: "Definition: A symmetrical shape which forms the overall outline of a set of partially-overlapping circles of the same diameter.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "multifoils"
+},
+{
+  word: "joshes",
+  definition: "Definition: To tease someone in a kindly or friendly fashion.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "joshes"
+},
+{
+  word: "derogated",
+  definition: "Definition: To partially repeal (a law etc.).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "derogated"
+},
+{
+  word: "socialising",
+  definition: "Definition: To interact with others",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "socialising"
+},
+{
+  word: "mistakenly",
+  definition: "Definition: Wrongly, erroneously",
+  pronunciation: "/mɪˈsteɪ.kən.li/",
+  englishEquivalent: "mistakenly"
+},
+{
+  word: "succussed",
+  definition: "Definition: To shake with vigor.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "succussed"
+},
+{
+  word: "flesher",
+  definition: "Definition: A person who removes the flesh from the skin during the making of leather.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "flesher"
+},
+{
+  word: "breadths",
+  definition: "Definition: The extent or measure of how broad or wide something is.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "breadths"
+},
+{
+  word: "pricy",
+  definition: "Definition: Expensive, dear.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "pricy"
+},
+{
+  word: "piezoelectric",
+  definition: "Definition: A piezoelectric material or device.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "piezoelectric"
+},
+{
+  word: "withershins",
+  definition: "Definition: Anti-clockwise, in the contrary direction, especially to the left or opposite to the direction of the sun.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "withershins"
+},
+{
+  word: "campuses",
+  definition: "Definition: The grounds or property of a school, college, university, business, church, or hospital, often understood to include buildings and other structures.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "campuses"
+},
+{
+  word: "thunderheads",
+  definition: "Definition: The top portion of a cumulonimbus cloud, which tends to be flattened or fibery in appearance, and may be indicative of thunderstorm activity.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "thunderheads"
+},
+{
+  word: "stooge",
+  definition: "Definition: One who knowingly allows himself or herself to be used for another's profit; a dupe.",
+  pronunciation: "/stuːdʒ/",
+  englishEquivalent: "stooge"
+},
+{
+  word: "puri",
+  definition: "Definition: A type of unleavened bread from India and Pakistan, usually deep-fried.",
+  pronunciation: "/ˈpʊəɹi/",
+  englishEquivalent: "puri"
+},
+{
+  word: "revitalized",
+  definition: "Definition: To give new life, energy, activity or success to something.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "revitalized"
+},
+{
+  word: "fornix",
+  definition: "Definition: An archlike structure or fold.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "fornix"
+},
+{
+  word: "overpassing",
+  definition: "Definition: To pass above something, as when flying or moving on a higher road.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "overpassing"
+},
+{
+  word: "dogmatize",
+  definition: "Definition: To treat something as dogma.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "dogmatize"
+},
+{
+  word: "couplings",
+  definition: "Definition: Act of joining together to form a couple",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "couplings"
+},
+{
+  word: "credence",
+  definition: "Definition: Acceptance of a belief or claim as true, especially on the basis of evidence.",
+  pronunciation: "/ˈkɹiː.dəns/",
+  englishEquivalent: "credence"
+},
+{
+  word: "bikies",
+  definition: "Definition: A motorcyclist who is a member of a club; a biker.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "bikies"
+},
+{
+  word: "meandered",
+  definition: "Definition: To wind or turn in a course or passage; to be intricate.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "meandered"
+},
+{
+  word: "randomness",
+  definition: "Definition: The property of all possible outcomes being equally likely.",
+  pronunciation: "/ˈɹændəmnəs/",
+  englishEquivalent: "randomness"
+},
+{
+  word: "candidas",
+  definition: "Definition: A yeast of the genus Candida, usually specifically Candida albicans",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "candidas"
+},
+{
+  word: "pinpointed",
+  definition: "Definition: To identify or locate precisely or with great accuracy.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "pinpointed"
+},
+{
+  word: "nicknack",
+  definition: "Definition: A small ornament of minor value.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "nicknack"
+},
+{
+  word: "hereby",
+  definition: "Definition: Near this place; nearby.",
+  pronunciation: "/hɪəˈbʌɪ/",
+  englishEquivalent: "hereby"
+},
+{
+  word: "aspiration",
+  definition: "Definition: The act of aspiring or ardently desiring; an ardent wish or desire, chiefly after what is elevated or spiritual (with common adjunct adpositions being to and of).",
+  pronunciation: "/ˌæspəˈɹeɪʃən/",
+  englishEquivalent: "aspiration"
+},
+{
+  word: "permuted",
+  definition: "Definition: Change the order of",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "permuted"
+},
+{
+  word: "chiffonades",
+  definition: "Definition: A culinary preparation of herbs or leafy vegetables cut into long, thin ribbons.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "chiffonades"
+},
+{
+  word: "trusted",
+  definition: "Definition: To place confidence in; to rely on, to confide, or have faith, in.",
+  pronunciation: "/ˈtɹʌstɪd/",
+  englishEquivalent: "trusted"
+},
+{
+  word: "pupated",
+  definition: "Definition: To become a pupa.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "pupated"
+},
+{
+  word: "prelusive",
+  definition: "Definition: Acting as a prelude; preliminary.",
+  pronunciation: "/pɹɪˈluːsɪv/",
+  englishEquivalent: "prelusive"
+},
+{
+  word: "longtime",
+  definition: "Definition: Having endured for a long period of time.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "longtime"
+},
+{
+  word: "foresheet",
+  definition: "Definition: One of the sheets (ropes) that controls the foresail",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "foresheet"
+},
+{
+  word: "sort",
+  definition: "Definition: A general type.",
+  pronunciation: "/sɔːt/",
+  englishEquivalent: "sort"
+},
+{
+  word: "laded",
+  definition: "Definition: To fill or load (related to cargo or a shipment).",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "laded"
+},
+{
+  word: "brouhahas",
+  definition: "Definition: A stir; a fuss or uproar.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "brouhahas"
+},
+{
+  word: "employers",
+  definition: "Definition: A person, firm or other entity which pays for or hires the services of another person.",
+  pronunciation: "/No pronunciation available/",
+  englishEquivalent: "employers"
+},
+    ],
     "Verdugo": [
         {
             word: "lágrima",
