@@ -222,7 +222,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 },
 {
   word: "quartos",
-  definition: "Definition: A size of paper (7.5"-10" x 10"-12.5" or 190-254 x 254-312 mm). Formed by folding and cutting one of several standard sizes of paper (15"-20" x 20"-25" or 381-508 x 508-635 mm) twice to form 4 leaves (eight sides).",
+  definition: "Definition: A size of paper (7.5'-10' x 10'-12.5' or 190-254 x 254-312 mm). Formed by folding and cutting one of several standard sizes of paper (15'-20' x 20'-25' or 381-508 x 508-635 mm) twice to form 4 leaves (eight sides).",
   pronunciation: "/No pronunciation available/",
   englishEquivalent: "quartos"
 },
