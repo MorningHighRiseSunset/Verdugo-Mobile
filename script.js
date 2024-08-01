@@ -21158,7 +21158,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
           },
           {
             word: "Salvador",
-            definition: "Definition of hosted: To perform the role of a host. - (Desempeñar el papel de anfitrión.)",
+            definition: "Definition of hosted: a person or god who saves people from sin, hell etc. - (una persona o dios que salva a las personas del pecado, el infierno, etc.)",
             pronunciation: "/ˈhəʊstɪd/",
             englishEquivalent: "hosted"
           },
@@ -21601,7 +21601,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   englishEquivalent: "mills"
 },
 {
-  word: "prácticas",
+  word: "el-internado",
   definition: "Definition of internships: A job taken by a student in order to learn a profession or trade. - (Un trabajo realizado por un estudiante con el fin de aprender una profesión u oficio.)",
   pronunciation: "/No pronunciation available/",
   englishEquivalent: "internships"
