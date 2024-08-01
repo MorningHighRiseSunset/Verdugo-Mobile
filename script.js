@@ -20118,7 +20118,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   },
   {
     word: "indulges",
-    definition: "Definition: (often followed by "in"): To yield to a temptation or desire.",
+    definition: "Definition: (often followed by 'in'): To yield to a temptation or desire.",
     pronunciation: "/ɪnˈdʌldʒɪz/",
     englishEquivalent: "indulges"
   },
