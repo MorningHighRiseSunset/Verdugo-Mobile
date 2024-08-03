@@ -22246,33 +22246,42 @@ function getEnglishEquivalent(word) {
       displayOptions(); // Show options again for a new game
   }
 
-  function displayOptions() {
-      const optionsContainer = document.getElementById('options-container');
-      optionsContainer.innerHTML = ''; // Clear previous options
-      for (const mode in options) {
-          const button = document.createElement('button');
-          button.innerText = mode;
-          button.classList.add('option-button');
-          button.onclick = () => {
-              const wordObj = options[mode][Math.floor(Math.random() * options[mode].length)];
-              selectedWord = wordObj.word.toUpperCase();
-              guessedLetters = [];
-              wrongGuesses = 0;
-              updateWordDisplay();
-              drawHangman();
-              createKeyboard();
-              optionsContainer.innerHTML = ''; // Clear options after selection
+  let usedWords = new Set(); // Track used words
 
-              // Switch recognition language based on category
-              if (mode === 'Verdugo') {
-                  recognition.lang = 'es-ES';
-              } else {
-                  recognition.lang = 'en-US';
-              }
-          };
-          optionsContainer.appendChild(button);
-      }
-  }
+function displayOptions() {
+    const optionsContainer = document.getElementById('options-container');
+    optionsContainer.innerHTML = ''; // Clear previous options
+    for (const mode in options) {
+        const button = document.createElement('button');
+        button.innerText = mode;
+        button.classList.add('option-button');
+        button.onclick = () => {
+            // Filter out used words
+            const availableWords = options[mode].filter(wordObj => !usedWords.has(wordObj.word));
+            if (availableWords.length === 0) {
+                alert('No more words available in this category.');
+                return; // Exit if no words are available
+            }
+            const wordObj = availableWords[Math.floor(Math.random() * availableWords.length)];
+            selectedWord = wordObj.word.toUpperCase();
+            usedWords.add(selectedWord); // Mark the word as used
+            guessedLetters = [];
+            wrongGuesses = 0;
+            updateWordDisplay();
+            drawHangman();
+            createKeyboard();
+            optionsContainer.innerHTML = ''; // Clear options after selection
+
+            // Switch recognition language based on category
+            if (mode === 'Verdugo') {
+                recognition.lang = 'es-ES';
+            } else {
+                recognition.lang = 'en-US';
+            }
+        };
+        optionsContainer.appendChild(button);
+    }
+}
 
   function updateWordDisplay() {
       const wordDisplay = document.getElementById('word-display');
