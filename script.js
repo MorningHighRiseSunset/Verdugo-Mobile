@@ -22043,50 +22043,50 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   const maxWrongGuesses = 6;
   let animationFrameId;
 
-  function createKeyboard() {
-      const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ'.split('');
-      const letterContainer = document.getElementById('letter-container');
-      letterContainer.innerHTML = ''; // Clear previous keyboard
+function createKeyboard() {
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ'.split('');
+    const letterContainer = document.getElementById('letter-container');
+    letterContainer.innerHTML = ''; // Clear previous keyboard
 
-      // Add hyphen button if the selected word contains a hyphen
-      if (selectedWord.includes('-')) {
-          const hyphenButton = document.createElement('button');
-          hyphenButton.innerText = '-';
-          hyphenButton.classList.add('letter-button', 'hyphen-button', 'flashing-slow');
-          hyphenButton.onclick = () => {
-              handleGuess('-');
-              hyphenButton.classList.add('guessed');
-              setTimeout(() => {
-                  hyphenButton.classList.remove('guessed');
-                  hyphenButton.style.display = 'none'; // Hide the hyphen button
-              }, 500); // Light blue briefly
-          };
-          letterContainer.appendChild(hyphenButton);
-      }
+    // Add hyphen button if the selected word contains a hyphen
+    if (selectedWord.includes('-')) {
+        const hyphenButton = document.createElement('button');
+        hyphenButton.innerText = 'Please Click'; // Change button text
+        hyphenButton.classList.add('letter-button', 'hyphen-button', 'flashing-slow'); // Add flashing class
+        hyphenButton.onclick = () => {
+            handleGuess('-');
+            hyphenButton.classList.add('guessed');
+            setTimeout(() => {
+                hyphenButton.classList.remove('guessed');
+                hyphenButton.style.display = 'none'; // Hide the hyphen button
+            }, 500); // Light blue briefly
+        };
+        letterContainer.appendChild(hyphenButton);
+    }
 
-      letters.forEach(letter => {
-          const button = document.createElement('button');
-          button.innerText = letter;
-          button.classList.add('letter-button');
-          button.onclick = () => {
-              handleGuess(letter);
-              button.classList.add('guessed');
-              setTimeout(() => {
-                  button.classList.remove('guessed');
-              }, 500); // Light blue briefly
-          };
-          letterContainer.appendChild(button);
-      });
+    letters.forEach(letter => {
+        const button = document.createElement('button');
+        button.innerText = letter;
+        button.classList.add('letter-button');
+        button.onclick = () => {
+            handleGuess(letter);
+            button.classList.add('guessed');
+            setTimeout(() => {
+                button.classList.remove('guessed');
+            }, 500); // Light blue briefly
+        };
+        letterContainer.appendChild(button);
+    });
 
-      // Create the log container for correct and incorrect words
-      const logContainer = document.getElementById('log-container');
-      if (!logContainer) {
-          const newLogContainer = document.createElement('div');
-          newLogContainer.id = 'log-container';
-          newLogContainer.style.marginTop = '20px';
-          letterContainer.parentNode.appendChild(newLogContainer);
-      }
-  }
+    // Create the log container for correct and incorrect words
+    const logContainer = document.getElementById('log-container');
+    if (!logContainer) {
+        const newLogContainer = document.createElement('div');
+        newLogContainer.id = 'log-container';
+        newLogContainer.style.marginTop = '20px';
+        letterContainer.parentNode.appendChild(newLogContainer);
+    }
+}
 
   function handleGuess(letter) {
       if (!guessedLetters.includes(letter)) {
