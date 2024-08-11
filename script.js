@@ -22310,10 +22310,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         console.log('Speech recognition ended');
         document.getElementById('status').innerText = '';
         document.getElementById('start-btn').disabled = false;
-        document.getElementById('stop-btn').disabled = true;
-    };
-  
-      // Add this global variable
+      document.getElementById('stop-btn').disabled = true;
+  };
+
+  // Add this global variable
   let audioStream = null; // Store the audio stream globally
 
   // Modify the start button click handler
