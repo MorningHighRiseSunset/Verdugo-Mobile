@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-18DRNP7FKM"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-18DRNP7FKM');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speech to Text Hangman</title>
@@ -20,7 +28,7 @@
         <div id="new-game-container" class="hide">
             <button id="new-game-button">New Game</button>
         </div>
-        <button id="instructions-button">| Instructions |</button> <!-- Added button to open instructions -->
+        <button id="instructions-button">| Instructions |</button>
         <div id="instructions-popup" class="popup hide">
             <div class="popup-content">
                 <span id="close-popup" class="close">&times;</span>
@@ -43,6 +51,6 @@
         <button id="repeat-english-btn" class="hide">|Pronunciation Button |</button>
         <button id="repeat-spanish-btn" class="hide">| Botón de Pronunciación |</button>
     </div>
-    <script src="script.js"></script> <!-- Ensure this path is correct -->
+    <script src="script.js"></script>
 </body>
 </html>
