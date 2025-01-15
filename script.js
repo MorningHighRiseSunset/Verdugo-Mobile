@@ -22043,6 +22043,20 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   const maxWrongGuesses = 6;
   let animationFrameId;
 
+  document.addEventListener('gameStart', (event) => {
+    recognition.lang = event.detail.language;
+    // Auto-select the appropriate game mode
+    const optionsContainer = document.getElementById('options-container');
+    if (optionsContainer) {
+      const buttons = optionsContainer.querySelectorAll('button');
+      buttons.forEach(button => {
+        if (button.innerText === event.detail.mode) {
+          button.click();
+        }
+      });
+    }
+  }, { once: true }); // This ensures the event listener only fires once  
+
   function createKeyboard() {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÁÉÍÓÚÑ'.split('');
     const letterContainer = document.getElementById('letter-container');
