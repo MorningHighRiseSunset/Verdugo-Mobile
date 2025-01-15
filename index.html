@@ -5,10 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.86, maximum-scale=5.0, minimum-scale=0.86">
     <title>Speech to Text Hangman</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="start-screen.css">
     <script src="https://code.responsivevoice.org/responsivevoice.js?key=cbdeE0T1"></script>
 </head>
 <body>
-    <div class="game-container">
+    <!-- Start Screen Container -->
+    <div id="particles-js"></div>
+    <div id="start-screen" class="start-screen">
+        <h1 class="title-3d">HANGMAN</h1>
+        <div class="hangman-figure">
+            <!-- Noose elements will be added by JavaScript -->
+        </div>
+        <select class="language-select">
+            <option value="en">English</option>
+            <option value="es">Español</option>
+        </select>
+        <button class="start-button">Start Game</button>
+    </div>
+
+    <!-- Main Game Container -->
+    <div class="game-container" style="display: none;">
         <button id="start-btn">Start Speaking</button>
         <button id="stop-btn" disabled>Stop Speaking</button>
         <p id="status"></p>
@@ -21,7 +37,9 @@
         <div id="new-game-container" class="hide">
             <button id="new-game-button">New Game</button>
         </div>
-        <button id="instructions-button">| Instructions |</button> <!-- Added button to open instructions -->
+        <button id="instructions-button">| Instructions |</button>
+
+        <!-- Instructions Popup -->
         <div id="instructions-popup" class="popup hide">
             <div class="popup-content">
                 <span id="close-popup" class="close">&times;</span>
@@ -40,9 +58,14 @@
                 </ol>
             </div>
         </div>
+
+        <!-- Pronunciation Buttons -->
         <button id="repeat-english-btn" class="hide">|Pronunciation Button |</button>
         <button id="repeat-spanish-btn" class="hide">| Botón de Pronunciación |</button>
     </div>
+
+    <!-- Scripts -->
+    <script src="start-screen.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 </html>
