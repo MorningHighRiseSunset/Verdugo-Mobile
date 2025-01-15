@@ -1,18 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-18DRNP7FKM"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-18DRNP7FKM');
-    </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=0.86, maximum-scale=5.0, minimum-scale=0.86">
     <title>Speech to Text Hangman</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=cbdeE0T1"></script>
 </head>
 <body>
     <div class="game-container">
@@ -28,7 +21,7 @@
         <div id="new-game-container" class="hide">
             <button id="new-game-button">New Game</button>
         </div>
-        <button id="instructions-button">| Instructions |</button>
+        <button id="instructions-button">| Instructions |</button> <!-- Added button to open instructions -->
         <div id="instructions-popup" class="popup hide">
             <div class="popup-content">
                 <span id="close-popup" class="close">&times;</span>
@@ -36,7 +29,6 @@
                 <p>Follow these steps to play Hangman:</p>
                 <ol>
                     <li>Choose a category to start the game. (Elige una categoría para comenzar el juego.)</li>
-                    <li>When hyphen button is flashing blue. Please click (Cuando el botón de guión parpadea en azul. Por favor haz click).</li>
                     <li>A word related to the chosen category will be selected randomly. (Se seleccionará una palabra relacionada con la categoría elegida al azar.)</li>
                     <li>Guess the word by selecting letters one at a time. (Adivina la palabra seleccionando letras una a la vez.)</li>
                     <li>If the letter is in the word, it will be revealed in its correct position(s). (Si la letra está en la palabra, se revelará en su(s) posición(es) correcta(s).)</li>
@@ -51,6 +43,6 @@
         <button id="repeat-english-btn" class="hide">|Pronunciation Button |</button>
         <button id="repeat-spanish-btn" class="hide">| Botón de Pronunciación |</button>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
