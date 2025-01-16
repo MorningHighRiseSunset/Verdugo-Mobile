@@ -10,6 +10,7 @@
   align-items: center;
   z-index: 1000;
   background: linear-gradient(45deg, #2c3e50, #3498db);
+  gap: 20px;
 }
 
 .title-3d {
@@ -32,36 +33,26 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-.language-select {
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 12px 25px;
-  color: white;
-  font-size: 1.2rem;
-  margin: 2rem 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(5px);
-}
-
-.language-select:hover {
-  background: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
+.button-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .start-button {
   background: linear-gradient(45deg, #e74c3c, #c0392b);
   border: none;
-  border-radius: 30px;
-  padding: 15px 40px;
+  border-radius: 20px;
+  padding: 12px 25px;
   color: white;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
   overflow: hidden;
+  min-width: 180px;
 }
 
 .start-button:hover {
@@ -117,7 +108,7 @@
   100% { transform: scale(1); }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .title-3d {
     font-size: 2.5rem;
   }
@@ -128,7 +119,12 @@
   }
   
   .start-button {
-    font-size: 1.2rem;
-    padding: 12px 30px;
+    font-size: 1rem;
+    padding: 10px 20px;
+    min-width: 150px;
+  }
+
+  .button-container {
+    gap: 10px;
   }
 }
