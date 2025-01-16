@@ -37,12 +37,17 @@ class StartScreen {
     startButtonEnglish.innerHTML = '🇺🇸 Play in English';
     startButtonEnglish.addEventListener('click', () => this.startGame('en'));
 
+    const orText = document.createElement('span');
+    orText.className = 'or-text';
+    orText.textContent = '&';
+
     const startButtonSpanish = document.createElement('button');
     startButtonSpanish.className = 'start-button pulse';
     startButtonSpanish.innerHTML = '🇪🇸 Jugar en Español';
     startButtonSpanish.addEventListener('click', () => this.startGame('es'));
     
     buttonContainer.appendChild(startButtonEnglish);
+    buttonContainer.appendChild(orText);
     buttonContainer.appendChild(startButtonSpanish);
     
     startScreen.appendChild(title);
@@ -51,6 +56,7 @@ class StartScreen {
     
     document.body.appendChild(startScreen);
 }
+
 
   initCanvas() {
     this.canvas = document.getElementById('start-canvas');
