@@ -124,7 +124,7 @@ class StartScreen {
 
     const lastPoint = points[points.length - 1];
     lastPoint.x = this.character.x;
-    lastPoint.y = this.character.y - this.character.radius;
+    lastPoint.y = this.character.y + this.character.radius - 5;
   }
 
   constrainRope() {
@@ -159,13 +159,28 @@ class StartScreen {
     const ctx = this.ctx;
     const char = this.character;
   
-    const tugAngle = Math.sin(this.frame * 0.1) * 0.2;
-    const tugOffsetX = Math.sin(tugAngle) * 5;
-    const tugOffsetY = Math.cos(tugAngle) * 2;
+    // Reduced movement for more stability
+    const tugAngle = Math.sin(this.frame * 0.1) * 0.1;
+    const tugOffsetX = Math.sin(tugAngle) * 2;
+    const tugOffsetY = Math.cos(tugAngle) * 1;
   
+    // Calculate neck position
+    const neckX = char.x;
+    const neckY = char.y + char.radius - 5;
+    
+    // Draw noose at neck level
+    ctx.strokeStyle = '#916835';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.moveTo(neckX, neckY);
+    // Draw the noose loop around the neck
+    ctx.arc(neckX, neckY, 12, -Math.PI * 0.8, Math.PI * 1.8, false);
+    ctx.stroke();
+    
     ctx.strokeStyle = '#333';
     ctx.lineWidth = 3;
     
+    // Draw body
     ctx.fillStyle = '#666';
     ctx.beginPath();
     ctx.moveTo(char.x - 12, char.y + char.radius + 5);
@@ -179,18 +194,20 @@ class StartScreen {
     ctx.fill();
     ctx.stroke();
   
+    // Draw head with less rotation
     ctx.beginPath();
     ctx.save();
     ctx.translate(char.x, char.y);
-    ctx.rotate(tugAngle);
+    ctx.rotate(tugAngle * 0.5);
     ctx.scale(1, 1.2);
     ctx.arc(0, 0, char.radius, 0, Math.PI * 2);
     ctx.restore();
     ctx.fill();
     ctx.stroke();
   
-    const faceX = char.x + tugOffsetX;
-    const faceY = char.y + tugOffsetY;
+    // Face features with reduced movement
+    const faceX = char.x + tugOffsetX * 0.5;
+    const faceY = char.y + tugOffsetY * 0.5;
     
     ctx.beginPath();
     ctx.arc(faceX - 5, faceY - 2, 2, 0, Math.PI * 2);
@@ -201,6 +218,7 @@ class StartScreen {
     ctx.arc(faceX, faceY + 5, 3, 0, Math.PI, true);
     ctx.stroke();
   
+    // Draw neck
     ctx.beginPath();
     ctx.moveTo(faceX - 5, faceY + char.radius - 2);
     ctx.lineTo(faceX + 5, faceY + char.radius - 2);
@@ -280,7 +298,8 @@ class StartScreen {
     ctx.moveTo(char.x - 9, char.y + char.radius + 30);
     ctx.lineTo(char.x + 9, char.y + char.radius + 30);
     ctx.stroke();
-  }
+}
+
 
   drawRope() {
     const ctx = this.ctx;
