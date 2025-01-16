@@ -29,35 +29,28 @@ class StartScreen {
     canvas.width = 400;
     canvas.height = 400;
     
-    const languageSelect = document.createElement('select');
-    languageSelect.className = 'language-select';
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'button-container';
+
+    const startButtonEnglish = document.createElement('button');
+    startButtonEnglish.className = 'start-button pulse';
+    startButtonEnglish.innerHTML = '🇺🇸 Play in English';
+    startButtonEnglish.addEventListener('click', () => this.startGame('en'));
+
+    const startButtonSpanish = document.createElement('button');
+    startButtonSpanish.className = 'start-button pulse';
+    startButtonSpanish.innerHTML = '🇪🇸 Jugar en Español';
+    startButtonSpanish.addEventListener('click', () => this.startGame('es'));
     
-    const languages = [
-      { value: 'en', text: '🇺🇸 English' },
-      { value: 'es', text: '🇪🇸 Español' }
-    ];
-    
-    languages.forEach((lang, index) => {
-      const option = document.createElement('option');
-      option.value = lang.value;
-      option.textContent = lang.text;
-      if (index === 0) option.selected = true;
-      languageSelect.appendChild(option);
-    });
-    
-    const startButton = document.createElement('button');
-    startButton.className = 'start-button pulse';
-    startButton.innerHTML = '▶ Start Game';
-    
-    startButton.addEventListener('click', () => this.startGame(languageSelect.value));
+    buttonContainer.appendChild(startButtonEnglish);
+    buttonContainer.appendChild(startButtonSpanish);
     
     startScreen.appendChild(title);
     startScreen.appendChild(canvas);
-    startScreen.appendChild(languageSelect);
-    startScreen.appendChild(startButton);
+    startScreen.appendChild(buttonContainer);
     
     document.body.appendChild(startScreen);
-  }
+}
 
   initCanvas() {
     this.canvas = document.getElementById('start-canvas');
