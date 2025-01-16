@@ -162,11 +162,11 @@ p {
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
     .game-container {
-        padding: 10px;
-        width: 100%;    /* Changed from 95% to 100% */
-        margin: 10px 0; /* Changed from auto to 0 */
+        padding: 10px 0; /* Remove horizontal padding */
+        width: 100%;
+        margin: 0; /* Remove margins */
         transform: scale(0.9);
-        border-radius: 0; /* Added to remove rounded corners */
+        border-radius: 0;
     }
 
     .letter-container {
@@ -211,11 +211,21 @@ p {
     .popup-content {
         font-size: 14px;
     }
+
+    .container {
+        margin: 0; /* Remove top margin to stick to top */
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 480px) {
     body {
-        margin-top: 20px;
+        margin: 0; /* Remove body margin */
+    }
+
+    .container {
+        margin: 0;
+        width: 100%;
     }
 
     .game-container {
@@ -225,7 +235,7 @@ p {
         border-radius: 0;
         margin: 0;
         padding: 10px 0;
-    }    
+    }   
 
     .letter-container {
         grid-template-columns: repeat(6, 1fr);
@@ -260,14 +270,8 @@ p {
 @media screen and (max-width: 320px) {
     .game-container {
         transform: scale(0.8);
-    }
-
-    .letter-container {
-        grid-template-columns: repeat(5, 1fr);
-    }
-
-    #letter-container button {
-        height: 22px;
-        font-size: 10px;
+        width: 100%;
+        margin: 0;
+        padding: 10px 0;
     }
 }
