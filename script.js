@@ -14562,10 +14562,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   },
   {
     word: "readability",
-    definition: "Definition: The property of being capable of being read; legibility.",
-    pronunciation: "/No pronunciation available/",
-    englishEquivalent: "readability"
-  },
+    definition: "The quality of being easy or possible to read and understand. (La cualidad de ser fácil o posible de leer y entender.)",
+    pronunciation: "/ˌriːdəˈbɪləti/",
+    englishEquivalent: "legibilidad"
+  },  
   {
     word: "chitchat",
     definition: "Definition: Light conversation; casual talk, usually about trivial matters.",
@@ -21055,11 +21055,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             englishEquivalent: "monoplane"
           },
           {
-            word: "estivada",
-            definition: "Definition of summery: Relating to the summer. - (En relación con el verano.)",
-            pronunciation: "/ˈsʌməɹi/",
-            englishEquivalent: "summery"
-          },
+            word: "verano",
+            definition: "The warmest season of the year, typically characterized by long days and warm weather. (La estación más cálida del año, típicamente caracterizada por días largos y clima cálido.)",
+            pronunciation: "/beˈɾa.no/",
+            englishEquivalent: "Summer"
+          },          
           {
             word: "mielomas",
             definition: "Definition of myelomas: A malignant tumour arising from cells of the bone marrow, specifically plasma cells. - (Un tumor maligno que surge de las células de la médula ósea, específicamente de las células plasmáticas.)",
