@@ -21266,10 +21266,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
           },
           {
             word: "cuantificable",
-            definition: "Definition of Measurable: That which can be measured; a metric. - (Lo que se puede medir; una métrica.)",
-            pronunciation: "/ˈmɛʒəɹəbəl/",
-            englishEquivalent: "Measurable"
-          },
+            definition: "Refers to something that can be expressed or evaluated in numerical terms. (Se refiere a algo que se puede expresar o evaluar en términos numéricos.)",
+            pronunciation: "/kwan.ti.fiˈka.βle/",
+            englishEquivalent: "Quantifiable"
+          },          
           {
             word: "alcaloides",
             definition: "Definition of Alkaloid: Any of many organic heterocyclic bases that occur in nature and often have medicinal properties. - (Cualquiera de las muchas bases heterocíclicas orgánicas que se producen en la naturaleza y que a menudo tienen propiedades medicinales.)",
@@ -21470,7 +21470,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
   },
   {
   word: "escarabajo",
-  definition: "Definition of beetle: A small car, the Volkswagen Beetle (original version made 1938–2003, similar models made 1997–2010 and since 2011) - (Un coche pequeño, el Volkswagen Beetle (versión original fabricada 1938–2003, modelos similares fabricados 1997–2010 y desde 2011))",
+  definition: "Insecto coleóptero, de antenas con nueve articulaciones terminadas en maza, élitros lisos, cuerpo deprimido, con cabeza rombal y dentada por delante, y patas anteriores desprovistas de tarsos, que busca el estiércol para alimentarse y hacer bolas, dentro de las cuales deposita los huevos.",
   pronunciation: "/[ˈbiɾəɫ]/",
   englishEquivalent: "beetle"
   },
