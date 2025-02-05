@@ -1,30 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5LWRCG33S1"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-5LWRCG33S1');
+    </script>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=0.86, maximum-scale=5.0, minimum-scale=0.86">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speech to Text Hangman</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="start-screen.css">
-    <script src="https://code.responsivevoice.org/responsivevoice.js?key=cbdeE0T1"></script>
 </head>
 <body>
-    <!-- Start Screen Container -->
-    <div id="particles-js"></div>
-    <div id="start-screen" class="start-screen">
-        <h1 class="title-3d">HANGMAN</h1>
-        <div class="hangman-figure">
-            <!-- Noose elements will be added by JavaScript -->
-        </div>
-        <select class="language-select">
-            <option value="en">English</option>
-            <option value="es">Español</option>
-        </select>
-        <button class="start-button">Start Game</button>
-    </div>
-
-    <!-- Main Game Container -->
-    <div class="game-container" style="display: none;">
+    <div class="game-container">
         <button id="start-btn">Start Speaking</button>
         <button id="stop-btn" disabled>Stop Speaking</button>
         <p id="status"></p>
@@ -38,8 +30,6 @@
             <button id="new-game-button">New Game</button>
         </div>
         <button id="instructions-button">| Instructions |</button>
-
-        <!-- Instructions Popup -->
         <div id="instructions-popup" class="popup hide">
             <div class="popup-content">
                 <span id="close-popup" class="close">&times;</span>
@@ -47,6 +37,7 @@
                 <p>Follow these steps to play Hangman:</p>
                 <ol>
                     <li>Choose a category to start the game. (Elige una categoría para comenzar el juego.)</li>
+                    <li>When hyphen button is flashing blue. Please click (Cuando el botón de guión parpadea en azul. Por favor haz click).</li>
                     <li>A word related to the chosen category will be selected randomly. (Se seleccionará una palabra relacionada con la categoría elegida al azar.)</li>
                     <li>Guess the word by selecting letters one at a time. (Adivina la palabra seleccionando letras una a la vez.)</li>
                     <li>If the letter is in the word, it will be revealed in its correct position(s). (Si la letra está en la palabra, se revelará en su(s) posición(es) correcta(s).)</li>
@@ -58,14 +49,11 @@
                 </ol>
             </div>
         </div>
-
-        <!-- Pronunciation Buttons -->
         <button id="repeat-english-btn" class="hide">|Pronunciation Button |</button>
         <button id="repeat-spanish-btn" class="hide">| Botón de Pronunciación |</button>
     </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
 
-    <!-- Scripts -->
-    <script src="start-screen.js"></script>
-    <script type="module" src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
