@@ -1,19 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5LWRCG33S1"></script>
     <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-    gtag('config', 'G-5LWRCG33S1');
+        gtag('config', 'G-5LWRCG33S1');
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Speech to Text Hangman</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-image: url('your-correct-path/background.gif'); /* Ensure path is correct */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .hint-box {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 2px solid #676767;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+            color: #333;
+            max-width: 300px;
+            z-index: 100;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
     <div class="game-container">
@@ -49,11 +73,45 @@
                 </ol>
             </div>
         </div>
-        <button id="repeat-english-btn" class="hide">|Pronunciation Button |</button>
-        <button id="repeat-spanish-btn" class="hide">| Botón de Pronunciación |</button>
+        <button id="repeat-english-btn">|Pronunciation Button |</button>
+        <button id="repeat-spanish-btn">| Botón de Pronunciación |</button>
     </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
 
+    <div id="hint-box" class="hint-box"></div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const hints = [
+                "Tip: Start with common vowels like 'A', 'E', 'I', 'O', 'U'.",
+                "Tip: Guess common consonants such as 'R', 'S', 'T', 'L', 'N'.",
+                "Tip: Check word length to get clues about possible words.",
+                "Tip: Avoid repeating already guessed incorrect letters.",
+                "Tip: Sound it out; saying the partial word aloud can help.",
+                "Found a bug or have suggestions? Contact: maurice13stu@gmail.com"
+            ];
+            
+            let currentHintIndex = 0;
+            const hintBox = document.getElementById('hint-box');
+
+            function showHint() {
+                hintBox.innerText = hints[currentHintIndex];
+                hintBox.style.display = 'block';
+
+                const isSpecialHint = currentHintIndex === hints.length - 1;
+
+                setTimeout(() => {
+                    hintBox.style.display = 'none';
+                    setTimeout(() => {
+                        currentHintIndex = (currentHintIndex + 1) % hints.length;
+                        showHint();
+                    }, isSpecialHint ? 2000 : 4000);
+                }, isSpecialHint ? 8000 : 4000);
+            }
+
+            showHint();
+        });
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
