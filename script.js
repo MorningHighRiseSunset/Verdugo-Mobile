@@ -33,6 +33,14 @@ const LANGUAGES = [
     }
 ];
 
+const BANNED_WORDS = [
+    "spic", "spics", "nigger", "niggers", "chink", "chinks", "kike", "kikes", "wetback", "wetbacks",
+    "fag", "fags", "faggot", "faggots", "dyke", "dykes", "tranny", "trannies", "gook", "gooks",
+    "coon", "coons", "beaner", "beaners", "cracker", "crackers", "jap", "japs", "slut", "sluts",
+    "whore", "whores", "bitch", "bitches", "retard", "retards", "spastic", "spastics"
+    // Add more as needed
+];
+
 const TRANSLATIONS = {
         "pick_alternate_language": {
         "en-US": "Pick alternate language:",
@@ -245,93 +253,104 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     let usedWords = new Set();
 
     // Fetch a random word and its data from real APIs
-async function fetchWordObject(language) {
-    let word = '';
-    let definition = '';
-    let pronunciation = '';
-    let englishEquivalent = '';
+    async function fetchWordObject(language) {
+        let word = '';
+        let definition = '';
+        let pronunciation = '';
+        let englishEquivalent = '';
 
-    // 1. Get a random English word
-    let baseWord = '';
-    for (let tries = 0; tries < 5; tries++) {
-        const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-        const wordArr = await wordRes.json();
-        baseWord = wordArr[0];
-        if (/^[a-zA-Z]+$/.test(baseWord)) break; // Only accept simple words
-    }
-
-    if (language === 'English') {
-        word = baseWord;
-        // Get definition and pronunciation
-        try {
-            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-            const dictData = await dictRes.json();
-            if (Array.isArray(dictData) && dictData[0]) {
-                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                pronunciation = dictData[0].phonetic || '';
-            }
-        } catch (e) {}
-        englishEquivalent = word;
-    } else {
-        // Translate to target language
-        let langpair = 'en|es';
-        let dictLangCode = 'es'; // default to Spanish
-        if (language === 'Spanish') { langpair = 'en|es'; dictLangCode = 'es'; }
-        if (language === 'Mandarin') { langpair = 'en|zh-CN'; dictLangCode = 'zh'; }
-        if (language === 'Hindi') { langpair = 'en|hi'; dictLangCode = 'hi'; }
-        if (language === 'French') { langpair = 'en|fr'; dictLangCode = 'fr'; }
-
-        let translatedWord = '';
-        try {
-            const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${baseWord}&langpair=${langpair}`);
-            const transData = await transRes.json();
-            translatedWord = transData.responseData.translatedText;
-        } catch (e) {
-            translatedWord = baseWord;
+        // 1. Get a random English word, filter banned words
+        let baseWord = '';
+        for (let tries = 0; tries < 10; tries++) {
+            const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+            const wordArr = await wordRes.json();
+            baseWord = wordArr[0];
+            // Only accept simple words and not in banned list
+            if (
+                /^[a-zA-Z]+$/.test(baseWord) &&
+                !BANNED_WORDS.includes(baseWord.toLowerCase())
+            ) break;
+            baseWord = ''; // Reset if banned or invalid
+        }
+        if (!baseWord) {
+            // Fallback if all tries failed
+            baseWord = "apple";
         }
 
-        // Only use the first word if translation returns a phrase
-        translatedWord = translatedWord.split(/[ ,.;:!?]/)[0];
-
-        // If translation failed or is empty, fallback to English
-        if (!translatedWord || translatedWord === baseWord) {
+        if (language === 'English') {
             word = baseWord;
+            // Get definition and pronunciation
+            try {
+                const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+                const dictData = await dictRes.json();
+                if (Array.isArray(dictData) && dictData[0]) {
+                    definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                    pronunciation = dictData[0].phonetic || '';
+                }
+            } catch (e) {}
+            englishEquivalent = word;
         } else {
-            word = translatedWord;
-        }
-        englishEquivalent = baseWord;
+            // Translate to target language
+            let langpair = 'en|es';
+            let dictLangCode = 'es'; // default to Spanish
+            if (language === 'Spanish') { langpair = 'en|es'; dictLangCode = 'es'; }
+            if (language === 'Mandarin') { langpair = 'en|zh-CN'; dictLangCode = 'zh'; }
+            if (language === 'Hindi') { langpair = 'en|hi'; dictLangCode = 'hi'; }
+            if (language === 'French') { langpair = 'en|fr'; dictLangCode = 'fr'; }
 
-        // Try to fetch the definition in the target language
-        try {
-            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${dictLangCode}/${encodeURIComponent(word)}`);
-            const dictData = await dictRes.json();
-            if (Array.isArray(dictData) && dictData[0]) {
-                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                pronunciation = dictData[0].phonetic || '';
+            let translatedWord = '';
+            try {
+                const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${baseWord}&langpair=${langpair}`);
+                const transData = await transRes.json();
+                translatedWord = transData.responseData.translatedText;
+            } catch (e) {
+                translatedWord = baseWord;
             }
-        } catch (e) {
-            definition = '';
-            pronunciation = '/No pronunciation available/';
+
+            // Only use the first word if translation returns a phrase
+            translatedWord = translatedWord.split(/[ ,.;:!?]/)[0];
+
+            // If translation failed or is empty, fallback to English
+            if (!translatedWord || translatedWord === baseWord) {
+                word = baseWord;
+            } else if (BANNED_WORDS.includes(translatedWord.toLowerCase())) {
+                word = baseWord; // fallback to English if translation is banned
+            } else {
+                word = translatedWord;
+            }
+            englishEquivalent = baseWord;
+
+            // Try to fetch the definition in the target language
+            try {
+                const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${dictLangCode}/${encodeURIComponent(word)}`);
+                const dictData = await dictRes.json();
+                if (Array.isArray(dictData) && dictData[0]) {
+                    definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                    pronunciation = dictData[0].phonetic || '';
+                }
+            } catch (e) {
+                definition = '';
+                pronunciation = '/No pronunciation available/';
+            }
+
+            // If no definition found, fallback to translation info
+            if (!definition) definition = `No definition found for "${word}" in ${language}.`;
+            if (!pronunciation) pronunciation = '/No pronunciation available/';
         }
 
-        // If no definition found, fallback to translation info
-        if (!definition) definition = `No definition found for "${word}" in ${language}.`;
-        if (!pronunciation) pronunciation = '/No pronunciation available/';
-    }
+        // Final fallback: if word is not valid for the keyboard, use English word
+        if (!word || word.length < 1 || /\s/.test(word)) {
+            word = baseWord;
+            englishEquivalent = baseWord;
+        }
 
-    // Final fallback: if word is not valid for the keyboard, use English word
-    if (!word || word.length < 1 || /\s/.test(word)) {
-        word = baseWord;
-        englishEquivalent = baseWord;
+        return {
+            word: word,
+            definition: definition,
+            pronunciation: pronunciation,
+            englishEquivalent: englishEquivalent
+        };
     }
-
-    return {
-        word: word,
-        definition: definition,
-        pronunciation: pronunciation,
-        englishEquivalent: englishEquivalent
-    };
-}
 
     // --- UI & GAME LOGIC (mostly unchanged) ---
 
