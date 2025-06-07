@@ -34,6 +34,13 @@ const LANGUAGES = [
 ];
 
 const TRANSLATIONS = {
+        "pick_alternate_language": {
+        "en-US": "Pick alternate language:",
+        "es-ES": "Elige idioma alternativo:",
+        "fr-FR": "Choisir une langue alternative :",
+        "zh-CN": "选择其他语言：",
+        "hi-IN": "वैकल्पिक भाषा चुनें:"
+    },
     "choose_language": {
         "en-US": "Choose your language",
         "es-ES": "Elige tu idioma",
@@ -196,13 +203,16 @@ function setUILanguage(langCode) {
     document.getElementById('instructions-button').innerText = `| ${TRANSLATIONS.instructions[langCode] || "Instructions"} |`;
     document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
         const lang = LANGUAGES[idx];
-        // Always show the name in its own language
-        btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> ${lang.names[lang.code]}`;
+        // Show the language name in the UI language
+        const langName = lang.names[langCode] || lang.canonicalName;
+        const pickAlt = TRANSLATIONS.pick_alternate_language[langCode] || "Pick alternate language:";
+        btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> ${langName}<br><small class="pick-alt-label">${pickAlt}</small>`;
     });
     const chooseLangTitle = document.getElementById('choose-lang-title');
     if (chooseLangTitle) {
         chooseLangTitle.innerText = TRANSLATIONS.choose_language[langCode] || "Choose your language";
     }
+    updateInstructionsPopup(langCode);
 }
 
 // Add translations for Start Game
@@ -503,6 +513,37 @@ function checkGameStatus() {
     }
 }
 
+function updateInstructionsPopup(langCode) {
+    const instructionsPopup = document.getElementById('instructions-popup');
+    if (!instructionsPopup) return;
+
+    // Get translated title and steps
+    const title = TRANSLATIONS.instructions[langCode] || "Instructions";
+    const steps = TRANSLATIONS.instructions_list[langCode] || TRANSLATIONS.instructions_list["en-US"];
+
+    // Update the popup content
+    const popupContent = instructionsPopup.querySelector('.popup-content');
+    if (!popupContent) return;
+
+    // Build the steps as <ol>
+    const stepsHtml = Array.isArray(steps)
+        ? `<ol>${steps.map(step => `<li>${step}</li>`).join('')}</ol>`
+        : `<p>${steps}</p>`;
+
+    popupContent.innerHTML = `
+        <span id="close-popup" class="close">&times;</span>
+        <h2>${title}</h2>
+        <p></p>
+        ${stepsHtml}
+    `;
+
+    // Re-attach close handler
+    const closePopup = popupContent.querySelector('#close-popup');
+    if (closePopup) {
+        closePopup.onclick = () => instructionsPopup.classList.add('hide');
+    }
+}
+
 document.addEventListener("DOMContentLoaded", function() {
     // Popup language selection (first language box)
     const popup = document.getElementById('lang-select-popup');
@@ -521,6 +562,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 b.classList.toggle('active', LANGUAGES[idx].code === lang.code);
             });
             pendingGameLang = lang.code; // Also set as pending game language
+            updateInstructionsPopup(lang.code); // Update instructions popup language
         };
         btnsDiv.appendChild(btn);
     });
@@ -676,7 +718,34 @@ function showWordInfo(wordObj) {
     if (!logContainer) return;
 
     // Helper to update UI
-    function updateUI(word, def, pron, ttsLang) {
+    async function updateUI(word, def, pron, ttsLang, uiLang) {
+        // If no definition, try to get English and translate
+        if ((!def || def.includes('No definition')) && wordObj.englishEquivalent) {
+            try {
+                // 1. Get English definition
+                let englishDef = '';
+                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(wordObj.englishEquivalent)}`);
+                const dictDataEn = await dictResEn.json();
+                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
+                    englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                }
+                // 2. Translate English definition to UI language if needed
+                if (englishDef && uiLang !== 'en') {
+                    try {
+                        const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${uiLang}`);
+                        const transDefData = await transDefRes.json();
+                        def = transDefData.responseData.translatedText;
+                    } catch (e) {
+                        def = `<span style="color:orange;">No definition found for "${word}" in this language.</span>`;
+                    }
+                } else if (englishDef) {
+                    def = englishDef;
+                }
+            } catch (e) {
+                def = `<span style="color:orange;">No definition found for "${word}" in this language.</span>`;
+            }
+        }
+
         logContainer.innerHTML = `
             <strong>Word:</strong> <span id="word-info-word">${word}</span><br>
             <strong>Definition:</strong> <span id="word-info-def">${def}</span>
@@ -713,7 +782,6 @@ function showWordInfo(wordObj) {
         document.getElementById('show-def-in-btn').onclick = async () => {
             const defLang = document.getElementById('def-lang-dropdown').value;
             let englishDef = '';
-            // 1. Get English definition if not already available
             try {
                 const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(wordObj.englishEquivalent)}`);
                 const dictDataEn = await dictResEn.json();
@@ -725,7 +793,6 @@ function showWordInfo(wordObj) {
                 document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
                 return;
             }
-            // 2. Translate English definition to selected language
             if (defLang === 'en') {
                 document.getElementById('word-info-def').innerText = englishDef;
             } else {
@@ -741,12 +808,21 @@ function showWordInfo(wordObj) {
         };
     }
 
+    // Detect UI language code (e.g., 'zh-CN', 'es', etc.)
+    let uiLang = selectedLang || 'en';
+    if (uiLang === 'en-US') uiLang = 'en';
+    if (uiLang === 'es-ES') uiLang = 'es';
+    if (uiLang === 'fr-FR') uiLang = 'fr';
+    if (uiLang === 'hi-IN') uiLang = 'hi';
+    // Mandarin stays 'zh-CN'
+
     // Initial display
     updateUI(
         wordObj.word ?? '(none)',
         wordObj.definition ?? '<span style="color:orange;">No definition found in this language.</span>',
         wordObj.pronunciation ?? '<span style="color:orange;">No pronunciation available.</span>',
-        'es-ES'
+        uiLang + '-ES',
+        uiLang
     );
 
     document.getElementById('show-in-btn').onclick = async () => {
@@ -761,7 +837,7 @@ function showWordInfo(wordObj) {
             const data = await res.json();
             translated = data.responseData.translatedText;
         } catch (e) {
-            updateUI('Translation error', '', '', lang + '-ES');
+            updateUI('Translation error', '', '', lang + '-ES', lang);
             return;
         }
 
@@ -810,7 +886,7 @@ function showWordInfo(wordObj) {
         if (!pron) pron = '<span style="color:orange;">No pronunciation available.</span>';
 
         // 6. Use browser TTS for pronunciation if not available
-        updateUI(translated, def, pron, lang + '-ES');
+        updateUI(translated, def, pron, lang + '-ES', lang);
     };
 }
 
@@ -1042,13 +1118,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const closePopup = document.getElementById('close-popup');
     const instructionsButton = document.getElementById('instructions-button');
 
-    instructionsButton.addEventListener('click', () => {
-        instructionsPopup.classList.remove('hide');
-    });
+    if (instructionsButton && instructionsPopup) {
+        instructionsButton.addEventListener('click', () => {
+            updateInstructionsPopup(selectedLang); // Always update before showing
+            instructionsPopup.classList.remove('hide');
+        });
+    }
 
-    closePopup.addEventListener('click', () => {
-        instructionsPopup.classList.add('hide');
-    });
+    if (closePopup && instructionsPopup) {
+        closePopup.addEventListener('click', () => {
+            instructionsPopup.classList.add('hide');
+        });
+    }
 
     window.addEventListener('click', (event) => {
         if (event.target === instructionsPopup) {
