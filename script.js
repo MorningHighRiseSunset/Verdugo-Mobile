@@ -552,11 +552,6 @@ document.addEventListener("DOMContentLoaded", function() {
         };
     });
 
-    // Highlight the default language button on load
-    document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
-        btn.classList.toggle('active', LANGUAGES[idx].code === pendingGameLang);
-    });
-
     setUILanguage(selectedLang);
 });
 
