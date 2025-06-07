@@ -4,12 +4,7 @@ class StartScreen {
     this.startGame = this.startGame.bind(this);
     this.initCanvas = this.initCanvas.bind(this);
     this.animate = this.animate.bind(this);
-    this.updatePhysics = this.updatePhysics.bind(this);
-    this.constrainRope = this.constrainRope.bind(this);
-    this.drawCharacter = this.drawCharacter.bind(this);
-    this.drawRope = this.drawRope.bind(this);
-    this.drawGallows = this.drawGallows.bind(this);
-    
+
     this.createStartScreen();
     this.initCanvas();
     this.frame = 0;
@@ -19,381 +14,201 @@ class StartScreen {
   createStartScreen() {
     const startScreen = document.createElement('div');
     startScreen.className = 'start-screen';
-    
-    const title = document.createElement('h1');
+
+    // Enhanced 3D Title
+    const title = document.createElement('div');
     title.className = 'title-3d bounce';
-    title.textContent = 'VERDUGO';
-    
+    title.id = 'game-title';
+    title.textContent = 'Verdugo';
+
+    // Enhanced 3D CSS
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .title-3d {
+        font-size: 3.5em;
+        color: #fff;
+        letter-spacing: 0.1em;
+        font-family: 'Segoe UI Black', Impact, Arial, sans-serif;
+        background: linear-gradient(90deg, #3498db 0%, #2ecc71 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow:
+          0 2px 0 #222,
+          0 4px 0 #1a1a1a,
+          0 8px 8px #3498db88,
+          2px 4px 0 #222,
+          0 0 32px #2ecc7188;
+        transform: perspective(200px) rotateX(10deg) scale(1.08,1);
+        margin-bottom: 20px;
+        user-select: none;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Language dropdown
+    const languageSelect = document.createElement('select');
+    languageSelect.id = 'language-select';
+    languageSelect.style.fontSize = '1.1em';
+    languageSelect.style.marginBottom = '20px';
+    languageSelect.innerHTML = `
+      <option value="verdugo">Verdugo (Español)</option>
+      <option value="hangman">Hangman (English)</option>
+      <option value="mandarin">刽子手 (Mandarin)</option>
+      <option value="french">Pendu (Français)</option>
+      <option value="hindi">फांसी (Hindi)</option>
+    `;
+
+    // Update title on dropdown change
+    const languageMap = {
+      verdugo: 'Verdugo',
+      hangman: 'Hangman',
+      mandarin: '刽子手',
+      french: 'Pendu',
+      hindi: 'फांसी'
+    };
+    languageSelect.addEventListener('change', function () {
+      title.textContent = languageMap[languageSelect.value];
+    });
+
+    // Canvas for 3D Cube
     const canvas = document.createElement('canvas');
     canvas.id = 'start-canvas';
     canvas.width = 400;
     canvas.height = 400;
-    
+
+    // Single Start Button
     const buttonContainer = document.createElement('div');
     buttonContainer.className = 'button-container';
 
-    const startButtonEnglish = document.createElement('button');
-    startButtonEnglish.className = 'start-button pulse';
-    startButtonEnglish.innerHTML = '🇺🇸 Play in English';
-    startButtonEnglish.addEventListener('click', () => this.startGame('en'));
+    const startButton = document.createElement('button');
+    startButton.className = 'start-button pulse';
+    startButton.innerHTML = '▶️ Start Game';
+    startButton.addEventListener('click', () => {
+      // Redirect to game.html with language as query param
+      window.location.href = `game.html?lang=${encodeURIComponent(languageSelect.value)}`;
+    });
 
-    const orText = document.createElement('span');
-    orText.className = 'or-text';
-    orText.textContent = '&';
+    buttonContainer.appendChild(startButton);
 
-    const startButtonSpanish = document.createElement('button');
-    startButtonSpanish.className = 'start-button pulse';
-    startButtonSpanish.innerHTML = '🇪🇸 Jugar en Español';
-    startButtonSpanish.addEventListener('click', () => this.startGame('es'));
-    
-    buttonContainer.appendChild(startButtonEnglish);
-    buttonContainer.appendChild(orText);
-    buttonContainer.appendChild(startButtonSpanish);
-    
+    // Add to start screen
     startScreen.appendChild(title);
+    startScreen.appendChild(languageSelect);
     startScreen.appendChild(canvas);
     startScreen.appendChild(buttonContainer);
-    
+
     document.body.appendChild(startScreen);
-}
+  }
 
-
+  // 3D Spinning Cube Animation
   initCanvas() {
     this.canvas = document.getElementById('start-canvas');
     this.ctx = this.canvas.getContext('2d');
-    
-    this.character = {
-      x: 200,
-      y: 200,
-      radius: 22,
-      swingAngle: 0,
-      swingSpeed: 0.012,
-      armAngle: 0,
-      legAngle: 0,
-      isStruggling: true,
-      struggleIntensity: 0.7
-    };
-    
-    this.rope = {
-      startX: 200,
-      startY: 50,
-      segments: 10,
-      points: [],
-      constraints: []
-    };
-
-    for (let i = 0; i <= this.rope.segments; i++) {
-      this.rope.points.push({
-        x: this.rope.startX,
-        y: this.rope.startY + (i * 15),
-        oldX: this.rope.startX,
-        oldY: this.rope.startY + (i * 15)
-      });
-    }
+    this.cubeSize = 90;
+    this.cubeCenter = { x: 200, y: 200, z: 0 };
+    this.cubeVertices = [
+      [-1, -1, -1], [1, -1, -1],
+      [1, 1, -1], [-1, 1, -1],
+      [-1, -1, 1], [1, -1, 1],
+      [1, 1, 1], [-1, 1, 1]
+    ];
+    this.cubeEdges = [
+      [0,1],[1,2],[2,3],[3,0],
+      [4,5],[5,6],[6,7],[7,4],
+      [0,4],[1,5],[2,6],[3,7]
+    ];
+    this.cubeColors = [
+      "#3498db", "#e74c3c", "#2ecc71", "#f1c40f",
+      "#9b59b6", "#1abc9c", "#e67e22", "#34495e"
+    ];
+    this.angle = 0;
   }
 
-  updatePhysics() {
-    this.character.swingAngle += this.character.swingSpeed;
-    const swingRadius = 40;
-    this.character.x = 200 + Math.sin(this.character.swingAngle) * swingRadius;
-    this.character.y = 150 + Math.abs(Math.cos(this.character.swingAngle)) * 20;
-
-    this.character.armAngle = Math.sin(this.frame * 0.1) * 0.5 * this.character.struggleIntensity;
-    this.character.legAngle = Math.sin(this.frame * 0.1 + Math.PI) * 0.3 * this.character.struggleIntensity;
-
-    const points = this.rope.points;
-    const gravity = 0.5;
-    const friction = 0.97;
-
-    for (let i = 0; i < points.length; i++) {
-      if (i === 0) continue;
-      
-      const point = points[i];
-      const vx = (point.x - point.oldX) * friction;
-      const vy = (point.y - point.oldY) * friction + gravity;
-      
-      point.oldX = point.x;
-      point.oldY = point.y;
-      point.x += vx;
-      point.y += vy;
-    }
-
-    for (let i = 0; i < 5; i++) {
-      this.constrainRope();
-    }
-
-    const lastPoint = points[points.length - 1];
-    lastPoint.x = this.character.x;
-    lastPoint.y = this.character.y + this.character.radius - 5;
-  }
-
-  constrainRope() {
-    const points = this.rope.points;
-    const segmentLength = 15;
-
-    for (let i = 0; i < points.length - 1; i++) {
-      const p1 = points[i];
-      const p2 = points[i + 1];
-      
-      const dx = p2.x - p1.x;
-      const dy = p2.y - p1.y;
-      const distance = Math.sqrt(dx * dx + dy * dy);
-      const difference = segmentLength - distance;
-      const percent = difference / distance / 2;
-      const offsetX = dx * percent;
-      const offsetY = dy * percent;
-
-      if (i === 0) {
-        p2.x += offsetX * 2;
-        p2.y += offsetY * 2;
-      } else {
-        p1.x -= offsetX;
-        p1.y -= offsetY;
-        p2.x += offsetX;
-        p2.y += offsetY;
-      }
-    }
-  }
-
-  drawCharacter() {
-    const ctx = this.ctx;
-    const char = this.character;
-  
-    // Reduced movement for more stability
-    const tugAngle = Math.sin(this.frame * 0.1) * 0.1;
-    const tugOffsetX = Math.sin(tugAngle) * 2;
-    const tugOffsetY = Math.cos(tugAngle) * 1;
-  
-    // Calculate neck position
-    const neckX = char.x;
-    const neckY = char.y + char.radius - 5;
-    
-    // Draw noose at neck level
-    ctx.strokeStyle = '#916835';
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.moveTo(neckX, neckY);
-    // Draw the noose loop around the neck
-    ctx.arc(neckX, neckY, 12, -Math.PI * 0.8, Math.PI * 1.8, false);
-    ctx.stroke();
-    
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 3;
-    
-    // Draw body
-    ctx.fillStyle = '#666';
-    ctx.beginPath();
-    ctx.moveTo(char.x - 12, char.y + char.radius + 5);
-    ctx.quadraticCurveTo(
-      char.x, char.y + char.radius + 25,
-      char.x + 12, char.y + char.radius + 5
-    );
-    ctx.lineTo(char.x + 10, char.y + char.radius + 40);
-    ctx.lineTo(char.x - 10, char.y + char.radius + 40);
-    ctx.closePath();
-    ctx.fill();
-    ctx.stroke();
-  
-    // Draw head with less rotation
-    ctx.beginPath();
-    ctx.save();
-    ctx.translate(char.x, char.y);
-    ctx.rotate(tugAngle * 0.5);
-    ctx.scale(1, 1.2);
-    ctx.arc(0, 0, char.radius, 0, Math.PI * 2);
-    ctx.restore();
-    ctx.fill();
-    ctx.stroke();
-  
-    // Face features with reduced movement
-    const faceX = char.x + tugOffsetX * 0.5;
-    const faceY = char.y + tugOffsetY * 0.5;
-    
-    ctx.beginPath();
-    ctx.arc(faceX - 5, faceY - 2, 2, 0, Math.PI * 2);
-    ctx.arc(faceX + 5, faceY - 2, 2, 0, Math.PI * 2);
-    ctx.fill();
-    
-    ctx.beginPath();
-    ctx.arc(faceX, faceY + 5, 3, 0, Math.PI, true);
-    ctx.stroke();
-  
-    // Draw neck
-    ctx.beginPath();
-    ctx.moveTo(faceX - 5, faceY + char.radius - 2);
-    ctx.lineTo(faceX + 5, faceY + char.radius - 2);
-    ctx.stroke();
-  
-    ctx.fillStyle = '#7c5c3c';
-    const handSize = 6;
-    
-    ctx.beginPath();
-    ctx.save();
-    ctx.translate(faceX - 8 + tugOffsetX, faceY + char.radius - 2 + tugOffsetY);
-    ctx.rotate(tugAngle - 0.5);
-    ctx.ellipse(0, 0, handSize, handSize/2, 0, 0, Math.PI * 2);
-    ctx.restore();
-    ctx.fill();
-    ctx.stroke();
-  
-    ctx.beginPath();
-    ctx.save();
-    ctx.translate(faceX + 8 + tugOffsetX, faceY + char.radius - 2 + tugOffsetY);
-    ctx.rotate(-tugAngle + 0.5);
-    ctx.ellipse(0, 0, handSize, handSize/2, 0, 0, Math.PI * 2);
-    ctx.restore();
-    ctx.fill();
-    ctx.stroke();
-  
-    const shoulderY = char.y + char.radius + 15;
-    
-    ctx.beginPath();
-    ctx.moveTo(char.x - 12, shoulderY);
-    ctx.quadraticCurveTo(
-      char.x - 15, char.y + char.radius + 5,
-      faceX - 8 + tugOffsetX, faceY + char.radius - 2 + tugOffsetY
-    );
-    ctx.stroke();
-  
-    ctx.beginPath();
-    ctx.moveTo(char.x + 12, shoulderY);
-    ctx.quadraticCurveTo(
-      char.x + 15, char.y + char.radius + 5,
-      faceX + 8 + tugOffsetX, faceY + char.radius - 2 + tugOffsetY
-    );
-    ctx.stroke();
-  
-    const hipY = char.y + char.radius + 40;
-    const legAngle = Math.sin(this.frame * 0.1) * 0.2;
-  
-    ctx.beginPath();
-    ctx.moveTo(char.x - 8, hipY);
-    ctx.quadraticCurveTo(
-      char.x - 10 + Math.sin(legAngle) * 5, hipY + 20,
-      char.x - 5 + Math.sin(legAngle) * 10, hipY + 40
-    );
-    ctx.stroke();
-  
-    ctx.beginPath();
-    ctx.moveTo(char.x + 8, hipY);
-    ctx.quadraticCurveTo(
-      char.x + 10 + Math.sin(-legAngle) * 5, hipY + 20,
-      char.x + 5 + Math.sin(-legAngle) * 10, hipY + 40
-    );
-    ctx.stroke();
-  
-    ctx.strokeStyle = '#444';
-    ctx.lineWidth = 1;
-    
-    ctx.beginPath();
-    ctx.moveTo(char.x - 8, char.y + char.radius + 5);
-    ctx.lineTo(char.x - 5, char.y + char.radius + 10);
-    ctx.lineTo(char.x + 5, char.y + char.radius + 10);
-    ctx.lineTo(char.x + 8, char.y + char.radius + 5);
-    ctx.stroke();
-  
-    ctx.beginPath();
-    ctx.moveTo(char.x - 10, char.y + char.radius + 20);
-    ctx.lineTo(char.x + 10, char.y + char.radius + 20);
-    ctx.moveTo(char.x - 9, char.y + char.radius + 30);
-    ctx.lineTo(char.x + 9, char.y + char.radius + 30);
-    ctx.stroke();
-}
-
-
-  drawRope() {
-    const ctx = this.ctx;
-    const points = this.rope.points;
-
-    ctx.strokeStyle = '#916835';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(points[0].x, points[0].y);
-
-    for (let i = 1; i < points.length; i++) {
-      ctx.lineTo(points[i].x, points[i].y);
-    }
-    ctx.stroke();
-  }
-
-  drawGallows() {
-    const ctx = this.ctx;
-    
-    ctx.strokeStyle = '#8B4513';
-    ctx.lineWidth = 8;
-    
-    ctx.beginPath();
-    ctx.moveTo(50, 350);
-    ctx.lineTo(350, 350);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.moveTo(100, 350);
-    ctx.lineTo(100, 50);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.moveTo(98, 50);
-    ctx.lineTo(200, 50);
-    ctx.stroke();
-
-    ctx.beginPath();
-    ctx.moveTo(100, 80);
-    ctx.lineTo(140, 50);
-    ctx.stroke();
+  project([x, y, z]) {
+    // Simple perspective projection
+    const scale = 320 / (z + 4);
+    return [
+      this.cubeCenter.x + x * this.cubeSize * scale * 0.25,
+      this.cubeCenter.y + y * this.cubeSize * scale * 0.25
+    ];
   }
 
   animate() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    
-    const gradient = this.ctx.createLinearGradient(0, 0, 0, this.canvas.height);
-    gradient.addColorStop(0, '#2c3e50');
-    gradient.addColorStop(1, '#3498db');
-    this.ctx.fillStyle = gradient;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    const ctx = this.ctx;
+    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
-    this.drawGallows();
-    this.updatePhysics();
-    this.drawRope();
-    this.drawCharacter();
+    // Background gradient
+    const gradient = ctx.createLinearGradient(0, 0, 0, this.canvas.height);
+    gradient.addColorStop(0, "#232526");
+    gradient.addColorStop(1, "#3498db");
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+    // 3D Cube rotation
+    this.angle += 0.015;
+    const sinA = Math.sin(this.angle);
+    const cosA = Math.cos(this.angle);
+    const sinB = Math.sin(this.angle * 0.7);
+    const cosB = Math.cos(this.angle * 0.7);
+
+    // Rotate and project vertices
+    const projected = this.cubeVertices.map(([x, y, z]) => {
+      // Rotate around Y axis
+      let dx = x * cosA - z * sinA;
+      let dz = x * sinA + z * cosA;
+      // Rotate around X axis
+      let dy = y * cosB - dz * sinB;
+      dz = y * sinB + dz * cosB;
+      return this.project([dx, dy, dz]);
+    });
+
+    // Draw cube faces (filled polygons)
+    const faces = [
+      [0,1,2,3], // back
+      [4,5,6,7], // front
+      [0,1,5,4], // bottom
+      [2,3,7,6], // top
+      [1,2,6,5], // right
+      [0,3,7,4]  // left
+    ];
+    faces.forEach((face, i) => {
+      ctx.beginPath();
+      ctx.moveTo(...projected[face[0]]);
+      for (let j = 1; j < face.length; j++) {
+        ctx.lineTo(...projected[face[j]]);
+      }
+      ctx.closePath();
+      ctx.globalAlpha = 0.85;
+      ctx.fillStyle = this.cubeColors[i % this.cubeColors.length];
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = "#fff";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    });
+
+    // Draw cube edges (for extra 3D pop)
+    ctx.strokeStyle = "#222";
+    ctx.lineWidth = 2;
+    this.cubeEdges.forEach(([a, b]) => {
+      ctx.beginPath();
+      ctx.moveTo(...projected[a]);
+      ctx.lineTo(...projected[b]);
+      ctx.stroke();
+    });
+
+    // Draw a glowing shadow under the cube
+    ctx.save();
+    ctx.globalAlpha = 0.25;
+    ctx.beginPath();
+    ctx.ellipse(this.cubeCenter.x, this.cubeCenter.y + this.cubeSize + 30, this.cubeSize * 0.9, 18, 0, 0, Math.PI * 2);
+    ctx.fillStyle = "#000";
+    ctx.shadowColor = "#3498db";
+    ctx.shadowBlur = 30;
+    ctx.fill();
+    ctx.restore();
 
     this.frame++;
     this.animationFrameId = requestAnimationFrame(() => this.animate());
-  }
-
-  startGame(language) {
-    const startScreen = document.querySelector('.start-screen');
-    startScreen.style.animation = 'fadeOut 1s forwards';
-    
-    const selectedLanguage = language || 'en';
-    
-    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      const recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.lang = selectedLanguage === 'es' ? 'es-ES' : 'en-US';
-    }
-    
-    const gameContainer = document.querySelector('.game-container');
-    if (gameContainer) {
-      gameContainer.style.display = 'block';
-      
-      document.dispatchEvent(new CustomEvent('gameStart', { 
-        detail: { 
-          mode: selectedLanguage === 'es' ? 'Verdugo' : 'Hangman',
-          language: selectedLanguage === 'es' ? 'es-ES' : 'en-US' 
-        }
-      }));
-    }
-
-    if (this.animationFrameId) {
-      cancelAnimationFrame(this.animationFrameId);
-    }
-    
-    setTimeout(() => {
-      startScreen.remove();
-    }, 1000);
   }
 }
 

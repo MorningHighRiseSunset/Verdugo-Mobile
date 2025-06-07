@@ -38,30 +38,46 @@
     border: 1px solid #ccc;
 }
 
+/* --- KEYPAD SCROLLBAR & LAYOUT --- */
 .letter-container {
-    width: 70%; /* Adjust width to make it smaller */
+    width: 75%;              /* Moderately wide */
+    max-width: 700px;        /* Not too extreme */
     display: grid;
-    grid-template-columns: repeat(8, 1fr); /* Set 8 columns */
-    gap: 0.3em; /* Reduce gap for closer spacing */
+    grid-template-columns: repeat(auto-fit, minmax(35px, 1fr));
+    gap: 0.3em;
     justify-content: center;
-    margin: 20px auto; /* Center the container */
+    margin: 20px auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    padding-bottom: 8px;
+    scrollbar-color: #888 #eee;
+    scrollbar-width: thin;
+}
+.letter-container::-webkit-scrollbar {
+    height: 8px;
+    background: #eee;
+}
+.letter-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
 }
 
 #letter-container button {
-    height: 35px; /* Reduce height for smaller keys */
-    width: 100%; /* Full width of the grid cell */
-    border-radius: 0.2em; /* Slightly larger border radius */
+    height: 35px;
+    width: 100%;
+    border-radius: 0.2em;
     background-color: #ffffff;
     cursor: pointer;
     border: 1px solid black;
-    font-size: 14px; /* Reduce font size for better readability */
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #letter-container button.active {
-    background-color: yellow; /* Change background color to indicate activation */
+    background-color: yellow;
 }
 
 #letter-container button.hyphen-button {
@@ -102,7 +118,7 @@ p {
 }
 
 #log-container {
-    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 20px;
@@ -124,12 +140,12 @@ p {
 /* Hide scrollbar but allow scrolling */
 #log-container::-webkit-scrollbar {
     width: 0px;
-    background: transparent; /* make scrollbar transparent */
+    background: transparent;
 }
 
 #log-container {
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 .popup {
@@ -137,7 +153,7 @@ p {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(255, 255, 255); /* Semi-transparent background */
+    background-color: rgba(255, 255, 255);
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -162,9 +178,9 @@ p {
 /* Mobile Responsive Styles */
 @media screen and (max-width: 768px) {
     .game-container {
-        padding: 10px 0; /* Remove horizontal padding */
+        padding: 10px 0;
         width: 100%;
-        margin: 0; /* Remove margins */
+        margin: 0;
         transform: scale(0.9);
         border-radius: 0;
     }
@@ -213,14 +229,14 @@ p {
     }
 
     .container {
-        margin: 0; /* Remove top margin to stick to top */
+        margin: 0;
         width: 100%;
     }
 }
 
 @media screen and (max-width: 480px) {
     body {
-        margin: 0; /* Remove body margin */
+        margin: 0;
     }
 
     .container {
@@ -273,5 +289,144 @@ p {
         width: 100%;
         margin: 0;
         padding: 10px 0;
+    }
+}
+
+#repeat-container button {
+    min-width: 120px;
+}
+
+#word-info {
+    margin-top: 20px;
+    color: #222;
+    background: rgba(255,255,255,0.85);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 16px;
+    max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.hint-box {
+    display: none;
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    left: auto;
+    transform: none;
+    background-color: rgba(255, 255, 255, 0.95);
+    border: 2px solid #676767;
+    padding: 12px 18px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-size: 14px;
+    color: #333;
+    max-width: 260px;
+    z-index: 100;
+    text-align: left;
+}
+
+/* Add at the end of your CSS file */
+#lang-select-popup {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 3000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: popup-fadein 0.7s;
+}
+
+.lang-popup-content {
+    background: linear-gradient(135deg, #f8fafc 60%, #e0e7ef 100%);
+    border-radius: 18px;
+    padding: 36px 28px 28px 28px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+    min-width: 260px;
+    max-width: 95vw;
+    animation: popup-bouncein 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+    border: 2px solid #b3c6e0;
+    position: relative;
+    overflow: hidden;
+}
+
+#lang-select-buttons button {
+    font-size: 1.25em;
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: 1.5px solid #b3c6e0;
+    background: #f5faff;
+    margin: 0 0 6px 0;
+    cursor: pointer;
+    width: 260px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: flex-start;
+    transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    outline: none;
+    border-bottom: 3px solid #dbeafe;
+    position: relative;
+    overflow: hidden;
+}
+#lang-select-buttons button:hover, #lang-select-buttons button:focus {
+    background: #e0e7ef;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+    transform: scale(1.03) translateY(-2px);
+    border-color: #60a5fa;
+}
+
+#lang-select-buttons button .flag-emoji {
+    font-size: 2em;
+    filter: drop-shadow(0 1px 2px #b3c6e0);
+    margin-right: 10px;
+    transition: transform 0.2s;
+}
+#lang-select-buttons button:hover .flag-emoji {
+    transform: scale(1.15) rotate(-6deg);
+}
+
+#lang-select-popup h2 {
+    font-size: 2em;
+    margin-bottom: 24px;
+    color: #2563eb;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    text-shadow: 0 2px 8px #e0e7ef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    animation: popup-title-fadein 1.2s;
+}
+
+@keyframes popup-fadein {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+@keyframes popup-bouncein {
+    0% { transform: scale(0.7) translateY(60px); opacity: 0; }
+    60% { transform: scale(1.05) translateY(-8px); opacity: 1; }
+    80% { transform: scale(0.98) translateY(2px);}
+    100% { transform: scale(1) translateY(0);}
+}
+@keyframes popup-title-fadein {
+    from { opacity: 0; transform: translateY(-30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+@media screen and (max-width: 480px) {
+    #lang-select-buttons button {
+        width: 90vw;
+        font-size: 1.1em;
+        padding: 12px 10px;
+    }
+    .lang-popup-content {
+        padding: 18px 4vw 18px 4vw;
     }
 }

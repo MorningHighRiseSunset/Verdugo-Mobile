@@ -6,7 +6,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-
         gtag('config', 'G-5LWRCG33S1');
     </script>
     <meta charset="UTF-8">
@@ -14,32 +13,183 @@
     <title>Speech to Text Hangman</title>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            background-image: url('your-correct-path/background.gif'); /* Ensure path is correct */
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+        .button-row {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+            align-items: flex-start;
+            margin-bottom: 6px;
+            margin-top: 6px;
+            flex-direction: column;
+            width: 100%;
+            padding: 0;
         }
-        .hint-box {
-            display: none;
+        .lang-btn.active {
+            background: #0078d7;
+            color: #fff;
+            border: 2px solid #0078d7;
+        }
+        .lang-btn {
+            background: #fff;
+            color: #222;
+            border: 1px solid #aaa;
+            border-radius: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            min-width: 60px;
+            max-width: 110px;
+            width: 100%;
+            height: 28px;
+            padding: 0 6px;
+            margin: 0;
+            transition: background 0.2s, color 0.2s;
+        }
+        .lang-btn:hover {
+            background: #e6f0fa;
+        }
+        #language-box {
+            display: flex;
+            flex-direction: row;
+            gap: 6px;
+            align-items: center;
+            width: 100%;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+        #instructions-button {
+            font-size: 13px;
+            height: 28px;
+            padding: 0 10px;
+            margin: 0;
+            border-radius: 4px;
+            background: #f5f5f5;
+            border: 1px solid #aaa;
+            color: #222;
+            transition: background 0.2s, color 0.2s;
+        }
+        #instructions-button:hover {
+            background: #e6f0fa;
+        }
+        #repeat-container {
+            margin-top: 4px;
+        }
+        /* Popup overlay for language selection */
+        #lang-select-popup {
             position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(255, 255, 255, 0.9);
-            border: 2px solid #676767;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            font-size: 14px;
-            color: #333;
-            max-width: 300px;
-            z-index: 100;
-            text-align: center;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.45);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: popup-fadein 0.7s;
+        }
+        .lang-popup-content {
+            background: linear-gradient(135deg, #f8fafc 60%, #e0e7ef 100%);
+            border-radius: 18px;
+            padding: 36px 28px 28px 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08);
+            min-width: 260px;
+            max-width: 95vw;
+            animation: popup-bouncein 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+            border: 2px solid #b3c6e0;
+            position: relative;
+            overflow: hidden;
+        }
+        #lang-select-buttons button {
+            font-size: 1.25em;
+            padding: 14px 28px;
+            border-radius: 10px;
+            border: 1.5px solid #b3c6e0;
+            background: #f5faff;
+            margin: 0 0 6px 0;
+            cursor: pointer;
+            width: 260px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            justify-content: flex-start;
+            transition: background 0.18s, box-shadow 0.18s, transform 0.18s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            outline: none;
+            border-bottom: 3px solid #dbeafe;
+            position: relative;
+            overflow: hidden;
+        }
+        #lang-select-buttons button:hover, #lang-select-buttons button:focus {
+            background: #e0e7ef;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+            transform: scale(1.03) translateY(-2px);
+            border-color: #60a5fa;
+        }
+        #lang-select-buttons button .flag-emoji {
+            font-size: 2em;
+            filter: drop-shadow(0 1px 2px #b3c6e0);
+            margin-right: 10px;
+            transition: transform 0.2s;
+        }
+        #lang-select-buttons button:hover .flag-emoji {
+            transform: scale(1.15) rotate(-6deg);
+        }
+        #lang-select-popup h2 {
+            font-size: 2em;
+            margin-bottom: 24px;
+            color: #2563eb;
+            letter-spacing: 0.01em;
+            font-weight: 700;
+            text-shadow: 0 2px 8px #e0e7ef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5em;
+            animation: popup-title-fadein 1.2s;
+        }
+        @keyframes popup-fadein {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes popup-bouncein {
+            0% { transform: scale(0.7) translateY(60px); opacity: 0; }
+            60% { transform: scale(1.05) translateY(-8px); opacity: 1; }
+            80% { transform: scale(0.98) translateY(2px);}
+            100% { transform: scale(1) translateY(0);}
+        }
+        @keyframes popup-title-fadein {
+            from { opacity: 0; transform: translateY(-30px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        @media screen and (max-width: 768px) {
+            .button-row { flex-direction: column; gap: 4px; }
+            #language-box { flex-direction: column; gap: 4px; }
+            #lang-select-buttons button { width: 90vw; min-width: 0; }
+        }
+        @media screen and (max-width: 480px) {
+            #lang-select-buttons button {
+                width: 90vw;
+                font-size: 1.1em;
+                padding: 12px 10px;
+            }
+            .lang-popup-content {
+                padding: 18px 4vw 18px 4vw;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Language selection popup -->
+    <div id="lang-select-popup" style="display:flex;">
+        <div class="popup-content lang-popup-content" style="text-align:center;">
+            <h2 id="choose-lang-title">🌐 <span>Choose your language</span></h2>
+            <div id="lang-select-buttons" style="display:flex;flex-direction:column;gap:16px;align-items:center;">
+                <!-- Buttons will be injected by JS -->
+            </div>
+        </div>
+    </div>
+
+    <div id="hint-box" class="hint-box"></div>
+
     <div class="game-container">
         <button id="start-btn">Start Speaking</button>
         <button id="stop-btn" disabled>Stop Speaking</button>
@@ -48,70 +198,49 @@
         <p id="word-display" class="word-display"></p>
         <canvas id="hangman-canvas" width="150" height="150"></canvas>
         <div id="letter-container" class="letter-container"></div>
+        
+        <!-- The language/category box -->
         <div id="options-container" class="options-container"></div>
+        
         <div id="log-container" style="margin-top: 20px;"></div>
-        <div id="new-game-container" class="hide">
-            <button id="new-game-button">New Game</button>
+
+        <div class="button-row">
+            <div id="language-box">
+                <button class="lang-btn" data-value="en-US"></button>
+                <button class="lang-btn" data-value="es-ES"></button>
+                <button class="lang-btn" data-value="zh-CN"></button>
+                <button class="lang-btn" data-value="hi-IN"></button>
+                <button class="lang-btn" data-value="fr-FR"></button>
+            </div>
+            <button id="instructions-button" style="width:auto;">| Instructions |</button>
+            <div id="repeat-container" style="display:flex;align-items:center;gap:8px;width:100%;"></div>
         </div>
-        <button id="instructions-button">| Instructions |</button>
+
+        <div id="new-game-container" class="hide">
+            <!-- This can be removed if you use the button above -->
+        </div>
         <div id="instructions-popup" class="popup hide">
             <div class="popup-content">
                 <span id="close-popup" class="close">&times;</span>
                 <h2>Instructions (instrucciones)</h2>
                 <p>Follow these steps to play Hangman:</p>
                 <ol>
-                    <li>Choose a category to start the game. (Elige una categoría para comenzar el juego.)</li>
+                    <li>Choose a language to start the game.</li>
                     <li>When hyphen button is flashing blue. Please click (Cuando el botón de guión parpadea en azul. Por favor haz click).</li>
-                    <li>A word related to the chosen category will be selected randomly. (Se seleccionará una palabra relacionada con la categoría elegida al azar.)</li>
-                    <li>Guess the word by selecting letters one at a time. (Adivina la palabra seleccionando letras una a la vez.)</li>
-                    <li>If the letter is in the word, it will be revealed in its correct position(s). (Si la letra está en la palabra, se revelará en su(s) posición(es) correcta(s).)</li>
-                    <li>If the letter is not in the word, a part of the hangman will be drawn. (Si la letra no está en la palabra, se dibujará una parte del ahorcado.)</li>
-                    <li>You win if you guess the word before the hangman is fully drawn. (Ganas si adivinas la palabra antes de que el ahorcado esté completamente dibujado.)</li>
-                    <li>You lose if the hangman is fully drawn before you guess the word. (Pierdes si el ahorcado está completamente dibujado antes de que adivines la palabra.)</li>
-                    <li>Click "New Game" to start a new round. (Haz clic en "Nuevo Juego" para comenzar una nueva ronda.)</li>
+                    <li>A word related to the chosen category will be selected randomly.</li>
+                    <li>Guess the word by selecting letters one at a time.</li>
+                    <li>If the letter is in the word, it will be revealed in its correct position(s).</li>
+                    <li>If the letter is not in the word, a part of the hangman will be drawn.</li>
+                    <li>You win if you guess the word before the hangman is fully drawn.</li>
+                    <li>You lose if the hangman is fully drawn before you guess the word.</li>
+                    <li>Click a language to start a new round.</li>
                     <li>Access Mic permissions through website settings</li>
                 </ol>
             </div>
         </div>
-        <button id="repeat-english-btn">|Pronunciation Button |</button>
-        <button id="repeat-spanish-btn">| Botón de Pronunciación |</button>
     </div>
 
-    <div id="hint-box" class="hint-box"></div>
-
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const hints = [
-                "Tip: Start with common vowels like 'A', 'E', 'I', 'O', 'U'.",
-                "Tip: Guess common consonants such as 'R', 'S', 'T', 'L', 'N'.",
-                "Tip: Check word length to get clues about possible words.",
-                "Tip: Avoid repeating already guessed incorrect letters.",
-                "Tip: Sound it out; saying the partial word aloud can help.",
-                "Found a bug or have suggestions? Contact: maurice13stu@gmail.com"
-            ];
-            
-            let currentHintIndex = 0;
-            const hintBox = document.getElementById('hint-box');
-
-            function showHint() {
-                hintBox.innerText = hints[currentHintIndex];
-                hintBox.style.display = 'block';
-
-                const isSpecialHint = currentHintIndex === hints.length - 1;
-
-                setTimeout(() => {
-                    hintBox.style.display = 'none';
-                    setTimeout(() => {
-                        currentHintIndex = (currentHintIndex + 1) % hints.length;
-                        showHint();
-                    }, isSpecialHint ? 2000 : 4000);
-                }, isSpecialHint ? 8000 : 4000);
-            }
-
-            showHint();
-        });
-    </script>
     <script src="script.js"></script>
 </body>
 </html>
