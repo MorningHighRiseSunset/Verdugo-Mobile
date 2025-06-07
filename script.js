@@ -1,28 +1,34 @@
 let selectedLang = "en-US";
+let pendingGameLang = "en-US";
 const LANGUAGES = [
     {
         code: "en-US",
         flag: "🇺🇸",
+        canonicalName: "English",
         names: { "en-US": "English", "es-ES": "Inglés", "fr-FR": "Anglais", "zh-CN": "英语", "hi-IN": "अंग्रेज़ी" }
     },
     {
         code: "es-ES",
         flag: "🇪🇸",
+        canonicalName: "Spanish",
         names: { "en-US": "Spanish", "es-ES": "Español", "fr-FR": "Espagnol", "zh-CN": "西班牙语", "hi-IN": "स्पेनिश" }
     },
     {
         code: "zh-CN",
         flag: "🇨🇳",
+        canonicalName: "Mandarin",
         names: { "en-US": "Mandarin", "es-ES": "Mandarín", "fr-FR": "Mandarin", "zh-CN": "普通话", "hi-IN": "मंदारिन" }
     },
     {
         code: "hi-IN",
         flag: "🇮🇳",
+        canonicalName: "Hindi",
         names: { "en-US": "Hindi", "es-ES": "Hindi", "fr-FR": "Hindi", "zh-CN": "印地语", "hi-IN": "हिन्दी" }
     },
     {
         code: "fr-FR",
         flag: "🇫🇷",
+        canonicalName: "French",
         names: { "en-US": "French", "es-ES": "Francés", "fr-FR": "Français", "zh-CN": "法语", "hi-IN": "फ्रेंच" }
     }
 ];
@@ -190,13 +196,23 @@ function setUILanguage(langCode) {
     document.getElementById('instructions-button').innerText = `| ${TRANSLATIONS.instructions[langCode] || "Instructions"} |`;
     document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
         const lang = LANGUAGES[idx];
-        btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> ${lang.names[langCode]}`;
+        // Always show the name in its own language
+        btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> ${lang.names[lang.code]}`;
     });
     const chooseLangTitle = document.getElementById('choose-lang-title');
     if (chooseLangTitle) {
         chooseLangTitle.innerText = TRANSLATIONS.choose_language[langCode] || "Choose your language";
     }
 }
+
+// Add translations for Start Game
+TRANSLATIONS.start_game = {
+    "en-US": "Start Game",
+    "es-ES": "Comenzar juego",
+    "fr-FR": "Démarrer le jeu",
+    "zh-CN": "开始游戏",
+    "hi-IN": "खेल शुरू करें"
+};
 
 // Check if the browser supports the Web Speech API
 if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
@@ -488,6 +504,7 @@ function checkGameStatus() {
 }
 
 document.addEventListener("DOMContentLoaded", function() {
+    // Popup language selection (first language box)
     const popup = document.getElementById('lang-select-popup');
     const btnsDiv = document.getElementById('lang-select-buttons');
     btnsDiv.innerHTML = '';
@@ -495,33 +512,33 @@ document.addEventListener("DOMContentLoaded", function() {
         const btn = document.createElement('button');
         btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> <span>${lang.names[lang.code]}</span>`;
         btn.onclick = function() {
-            selectedLang = lang.code;
+            selectedLang = lang.code; // Set UI language
             if (typeof recognition !== "undefined") recognition.lang = lang.code;
             setUILanguage(lang.code);
             popup.style.display = "none";
-            // DO NOT start a game or fetch a word here!
-            // Only update UI language and close popup.
+            // Highlight the correct button in the main UI
             document.querySelectorAll('.lang-btn').forEach((b, idx) => {
                 b.classList.toggle('active', LANGUAGES[idx].code === lang.code);
             });
+            pendingGameLang = lang.code; // Also set as pending game language
         };
         btnsDiv.appendChild(btn);
     });
+
+    // Main UI language selection (second language box)
     document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
         btn.onclick = function() {
-            // Set the recognition language and UI language for the game
-            selectedLang = LANGUAGES[idx].code;
-            if (typeof recognition !== "undefined") recognition.lang = LANGUAGES[idx].code;
-            setUILanguage(LANGUAGES[idx].code);
-
-            // Visually mark the active button
+            pendingGameLang = LANGUAGES[idx].code;
+            // Do NOT set selectedLang here!
             document.querySelectorAll('.lang-btn').forEach((b, i) => {
                 b.classList.toggle('active', i === idx);
             });
-
-            // Start a new game in the selected language
+            // Do NOT call setUILanguage(selectedLang) here!
+            if (typeof recognition !== "undefined") recognition.lang = pendingGameLang;
             if (typeof fetchWordObject === "function") {
-                fetchWordObject(LANGUAGES[idx].names[LANGUAGES[idx].code]).then(wordObj => {
+                const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
+                const langName = langObj ? langObj.canonicalName : "English";
+                fetchWordObject(langName).then(wordObj => {
                     currentWordObj = wordObj;
                     selectedWord = wordObj.word.toUpperCase();
                     usedWords.add(selectedWord);
@@ -534,7 +551,13 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         };
     });
-    setUILanguage("en-US");
+
+    // Highlight the default language button on load
+    document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', LANGUAGES[idx].code === pendingGameLang);
+    });
+
+    setUILanguage(selectedLang);
 });
 
 function showRepeatButtons(wordObj) {
