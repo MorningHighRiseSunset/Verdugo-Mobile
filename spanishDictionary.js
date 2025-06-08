@@ -1,4 +1,4 @@
-const SPANISH_DICTIONARY = {
+window.SPANISH_DICTIONARY = {
   "seconding": {
     definition: "Definition: To agree as a second person to (a proposal), usually to reach a necessary quorum of two. (See under #Etymology 3 for translations.)",
     pronunciation: "/No pronunciation available/",
