@@ -1,5 +1,6 @@
 let selectedLang = "en-US";
 let pendingGameLang = "en-US";
+let SPANISH_DICTIONARY = window.SPANISH_DICTIONARY || {};
 const LANGUAGES = [
     {
         code: "en-US",
@@ -254,140 +255,159 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
     // Fetch a random word and its data from real APIs
     async function fetchWordObject(language) {
-        let word = '';
-        let definition = '';
-        let pronunciation = '';
-        let englishEquivalent = '';
+    let word = '';
+    let definition = '';
+    let pronunciation = '';
+    let englishEquivalent = '';
 
-        // Local safe fallback words (not "apple")
-        const SAFE_WORDS = [
-            "music", "planet", "river", "forest", "window", "garden", "school", "friend", "family", "holiday",
-            "orange", "pencil", "market", "animal", "doctor", "summer", "winter", "travel", "nature", "science"
-        ];
+    // Local safe fallback words (not "apple")
+    const SAFE_WORDS = [
+        "music", "planet", "river", "forest", "window", "garden", "school", "friend", "family", "holiday",
+        "orange", "pencil", "market", "animal", "doctor", "summer", "winter", "travel", "nature", "science"
+    ];
 
-        // List of common short words to avoid as game words
-        const BAD_TRANSLATIONS = [
-            'con', 'de', 'a', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'y', 'o', 'pero', 'por', 'para', 'sin', 'al', 'del', 'le', 'les',
-            'du', 'des', 'et', 'ou', 'mais', 'avec', 'dans', 'sur', 'par', 'chez', 'au', 'aux', 'ce', 'cette', 'ces',
-            '是', '的', '了', '和', '在', '有', '我', '你', '他', '她', '它', '我们', '你们', '他们', '她们', '它们'
-        ];
+    // List of common short words to avoid as game words
+    const BAD_TRANSLATIONS = [
+        'con', 'de', 'a', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'y', 'o', 'pero', 'por', 'para', 'sin', 'al', 'del', 'le', 'les',
+        'du', 'des', 'et', 'ou', 'mais', 'avec', 'dans', 'sur', 'par', 'chez', 'au', 'aux', 'ce', 'cette', 'ces',
+        '是', '的', '了', '和', '在', '有', '我', '你', '他', '她', '它', '我们', '你们', '他们', '她们', '它们'
+    ];
 
-        function getRandomSafeWord() {
-            return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
-        }
+    function getRandomSafeWord() {
+        return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
+    }
 
-        let tries = 0;
-        let maxTries = 30;
-        let baseWord = '';
+    let tries = 0;
+    let maxTries = 30;
+    let baseWord = '';
 
-        // Try to get a valid English word
-        while (tries < maxTries) {
-            tries++;
-            try {
-                const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-                const wordArr = await wordRes.json();
-                baseWord = wordArr[0];
-                if (
-                    /^[a-zA-Z]+$/.test(baseWord) &&
-                    !BANNED_WORDS.includes(baseWord.toLowerCase())
-                ) {
-                    break;
-                }
-            } catch (e) {}
-            baseWord = '';
-        }
-        if (!baseWord) baseWord = getRandomSafeWord();
-
-        if (language === 'English') {
-            word = baseWord;
-            try {
-                const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
-                const dictData = await dictRes.json();
-                if (Array.isArray(dictData) && dictData[0]) {
-                    definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                    pronunciation = dictData[0].phonetic || '';
-                }
-            } catch (e) {}
-            englishEquivalent = word;
-        } else {
-            let langpair = 'en|es';
-            let dictLangCode = 'es';
-            if (language === 'Spanish') { langpair = 'en|es'; dictLangCode = 'es'; }
-            if (language === 'Mandarin') { langpair = 'en|zh-CN'; dictLangCode = 'zh'; }
-            if (language === 'Hindi') { langpair = 'en|hi'; dictLangCode = 'hi'; }
-            if (language === 'French') { langpair = 'en|fr'; dictLangCode = 'fr'; }
-
-            let translatedWord = '';
-            let translationTries = 0;
-            let maxTranslationTries = 10;
-            let translationSuccess = false;
-
-            while (translationTries < maxTranslationTries && !translationSuccess) {
-                translationTries++;
-                try {
-                    const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${baseWord}&langpair=${langpair}`);
-                    const transData = await transRes.json();
-                    translatedWord = transData.responseData.translatedText;
-                } catch (e) {
-                    translatedWord = baseWord;
-                }
-                translatedWord = translatedWord.split(/[ ,.;:!?]/)[0];
-
-                if (
-                    translatedWord &&
-                    translatedWord !== baseWord &&
-                    !BANNED_WORDS.includes(translatedWord.toLowerCase()) &&
-                    !BAD_TRANSLATIONS.includes(translatedWord.toLowerCase()) &&
-                    translatedWord.length >= 3
-                ) {
-                    translationSuccess = true;
-                } else {
-                    baseWord = getRandomSafeWord();
-                }
+    // Try to get a valid English word
+    while (tries < maxTries) {
+        tries++;
+        try {
+            const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+            const wordArr = await wordRes.json();
+            baseWord = wordArr[0];
+            if (
+                /^[a-zA-Z]+$/.test(baseWord) &&
+                !BANNED_WORDS.includes(baseWord.toLowerCase())
+            ) {
+                break;
             }
+        } catch (e) {}
+        baseWord = '';
+    }
+    if (!baseWord) baseWord = getRandomSafeWord();
+
+    if (language === 'English') {
+        word = baseWord;
+        try {
+            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
+            const dictData = await dictRes.json();
+            if (Array.isArray(dictData) && dictData[0]) {
+                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                pronunciation = dictData[0].phonetic || '';
+            }
+        } catch (e) {}
+        englishEquivalent = word;
+    } else {
+        let langpair = 'en|es';
+        let dictLangCode = 'es';
+        if (language === 'Spanish') {
+            // Only use local SPANISH_DICTIONARY
+            const keys = Object.keys(SPANISH_DICTIONARY);
+            if (keys.length === 0) {
+                // Fallback if dictionary is empty
+                word = "manzana";
+                definition = "Fruta del manzano, comestible, de forma redonda y sabor dulce o ácido.";
+                pronunciation = "man-za-na";
+                englishEquivalent = "apple";
+            } else {
+                // Pick a random Spanish word from the dictionary
+                const randomKey = keys[Math.floor(Math.random() * keys.length)];
+                const entry = SPANISH_DICTIONARY[randomKey];
+                word = randomKey;
+                definition = entry.definition || '';
+                pronunciation = entry.pronunciation || '';
+                englishEquivalent = entry.english || randomKey;
+            }
+            return { word, definition, pronunciation, englishEquivalent };
+        }
+        if (language === 'Mandarin') { langpair = 'en|zh-CN'; dictLangCode = 'zh'; }
+        if (language === 'Hindi') { langpair = 'en|hi'; dictLangCode = 'hi'; }
+        if (language === 'French') { langpair = 'en|fr'; dictLangCode = 'fr'; }
+
+        let translatedWord = '';
+        let translationTries = 0;
+        let maxTranslationTries = 10;
+        let translationSuccess = false;
+
+        while (translationTries < maxTranslationTries && !translationSuccess) {
+            translationTries++;
+            try {
+                const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${baseWord}&langpair=${langpair}`);
+                const transData = await transRes.json();
+                translatedWord = transData.responseData.translatedText;
+            } catch (e) {
+                translatedWord = baseWord;
+            }
+            translatedWord = translatedWord.split(/[ ,.;:!?]/)[0];
 
             if (
-                !translatedWord ||
-                translatedWord === baseWord ||
-                BANNED_WORDS.includes(translatedWord.toLowerCase()) ||
-                BAD_TRANSLATIONS.includes(translatedWord.toLowerCase()) ||
-                translatedWord.length < 3
+                translatedWord &&
+                translatedWord !== baseWord &&
+                !BANNED_WORDS.includes(translatedWord.toLowerCase()) &&
+                !BAD_TRANSLATIONS.includes(translatedWord.toLowerCase()) &&
+                translatedWord.length >= 3
             ) {
-                word = baseWord;
-                englishEquivalent = baseWord;
+                translationSuccess = true;
             } else {
-                word = translatedWord;
-                englishEquivalent = baseWord;
+                baseWord = getRandomSafeWord();
             }
-
-            try {
-                const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${dictLangCode}/${encodeURIComponent(word)}`);
-                const dictData = await dictRes.json();
-                if (Array.isArray(dictData) && dictData[0]) {
-                    definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                    pronunciation = dictData[0].phonetic || '';
-                }
-            } catch (e) {
-                definition = '';
-                pronunciation = '/No pronunciation available/';
-            }
-
-            if (!definition) definition = `No definition found for "${word}" in ${language}.`;
-            if (!pronunciation) pronunciation = '/No pronunciation available/';
         }
 
-        if (!word || word.length < 1 || /\s/.test(word)) {
-            word = getRandomSafeWord();
-            englishEquivalent = word;
+        if (
+            !translatedWord ||
+            translatedWord === baseWord ||
+            BANNED_WORDS.includes(translatedWord.toLowerCase()) ||
+            BAD_TRANSLATIONS.includes(translatedWord.toLowerCase()) ||
+            translatedWord.length < 3
+        ) {
+            word = baseWord;
+            englishEquivalent = baseWord;
+        } else {
+            word = translatedWord;
+            englishEquivalent = baseWord;
         }
 
-        return {
-            word: word,
-            definition: definition,
-            pronunciation: pronunciation,
-            englishEquivalent: englishEquivalent
-        };
+        try {
+            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${dictLangCode}/${encodeURIComponent(word)}`);
+            const dictData = await dictRes.json();
+            if (Array.isArray(dictData) && dictData[0]) {
+                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                pronunciation = dictData[0].phonetic || '';
+            }
+        } catch (e) {
+            definition = '';
+            pronunciation = '/No pronunciation available/';
+        }
+
+        if (!definition) definition = `No definition found for "${word}" in ${language}.`;
+        if (!pronunciation) pronunciation = '/No pronunciation available/';
     }
+
+    if (!word || word.length < 1 || /\s/.test(word)) {
+        word = getRandomSafeWord();
+        englishEquivalent = word;
+    }
+
+    return {
+        word: word,
+        definition: definition,
+        pronunciation: pronunciation,
+        englishEquivalent: englishEquivalent
+    };
+}
 
     // --- UI & GAME LOGIC (mostly unchanged) ---
 
