@@ -259,27 +259,47 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         let pronunciation = '';
         let englishEquivalent = '';
 
-        // 1. Get a random English word, filter banned words
+        // Local safe fallback words (not "apple")
+        const SAFE_WORDS = [
+            "music", "planet", "river", "forest", "window", "garden", "school", "friend", "family", "holiday",
+            "orange", "pencil", "market", "animal", "doctor", "summer", "winter", "travel", "nature", "science"
+        ];
+
+        // List of common short words to avoid as game words
+        const BAD_TRANSLATIONS = [
+            'con', 'de', 'a', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'y', 'o', 'pero', 'por', 'para', 'sin', 'al', 'del', 'le', 'les',
+            'du', 'des', 'et', 'ou', 'mais', 'avec', 'dans', 'sur', 'par', 'chez', 'au', 'aux', 'ce', 'cette', 'ces',
+            '是', '的', '了', '和', '在', '有', '我', '你', '他', '她', '它', '我们', '你们', '他们', '她们', '它们'
+        ];
+
+        function getRandomSafeWord() {
+            return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
+        }
+
+        let tries = 0;
+        let maxTries = 30;
         let baseWord = '';
-        for (let tries = 0; tries < 10; tries++) {
-            const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-            const wordArr = await wordRes.json();
-            baseWord = wordArr[0];
-            // Only accept simple words and not in banned list
-            if (
-                /^[a-zA-Z]+$/.test(baseWord) &&
-                !BANNED_WORDS.includes(baseWord.toLowerCase())
-            ) break;
-            baseWord = ''; // Reset if banned or invalid
+
+        // Try to get a valid English word
+        while (tries < maxTries) {
+            tries++;
+            try {
+                const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+                const wordArr = await wordRes.json();
+                baseWord = wordArr[0];
+                if (
+                    /^[a-zA-Z]+$/.test(baseWord) &&
+                    !BANNED_WORDS.includes(baseWord.toLowerCase())
+                ) {
+                    break;
+                }
+            } catch (e) {}
+            baseWord = '';
         }
-        if (!baseWord) {
-            // Fallback if all tries failed
-            baseWord = "apple";
-        }
+        if (!baseWord) baseWord = getRandomSafeWord();
 
         if (language === 'English') {
             word = baseWord;
-            // Get definition and pronunciation
             try {
                 const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
                 const dictData = await dictRes.json();
@@ -290,37 +310,56 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             } catch (e) {}
             englishEquivalent = word;
         } else {
-            // Translate to target language
             let langpair = 'en|es';
-            let dictLangCode = 'es'; // default to Spanish
+            let dictLangCode = 'es';
             if (language === 'Spanish') { langpair = 'en|es'; dictLangCode = 'es'; }
             if (language === 'Mandarin') { langpair = 'en|zh-CN'; dictLangCode = 'zh'; }
             if (language === 'Hindi') { langpair = 'en|hi'; dictLangCode = 'hi'; }
             if (language === 'French') { langpair = 'en|fr'; dictLangCode = 'fr'; }
 
             let translatedWord = '';
-            try {
-                const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${baseWord}&langpair=${langpair}`);
-                const transData = await transRes.json();
-                translatedWord = transData.responseData.translatedText;
-            } catch (e) {
-                translatedWord = baseWord;
+            let translationTries = 0;
+            let maxTranslationTries = 10;
+            let translationSuccess = false;
+
+            while (translationTries < maxTranslationTries && !translationSuccess) {
+                translationTries++;
+                try {
+                    const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${baseWord}&langpair=${langpair}`);
+                    const transData = await transRes.json();
+                    translatedWord = transData.responseData.translatedText;
+                } catch (e) {
+                    translatedWord = baseWord;
+                }
+                translatedWord = translatedWord.split(/[ ,.;:!?]/)[0];
+
+                if (
+                    translatedWord &&
+                    translatedWord !== baseWord &&
+                    !BANNED_WORDS.includes(translatedWord.toLowerCase()) &&
+                    !BAD_TRANSLATIONS.includes(translatedWord.toLowerCase()) &&
+                    translatedWord.length >= 3
+                ) {
+                    translationSuccess = true;
+                } else {
+                    baseWord = getRandomSafeWord();
+                }
             }
 
-            // Only use the first word if translation returns a phrase
-            translatedWord = translatedWord.split(/[ ,.;:!?]/)[0];
-
-            // If translation failed or is empty, fallback to English
-            if (!translatedWord || translatedWord === baseWord) {
+            if (
+                !translatedWord ||
+                translatedWord === baseWord ||
+                BANNED_WORDS.includes(translatedWord.toLowerCase()) ||
+                BAD_TRANSLATIONS.includes(translatedWord.toLowerCase()) ||
+                translatedWord.length < 3
+            ) {
                 word = baseWord;
-            } else if (BANNED_WORDS.includes(translatedWord.toLowerCase())) {
-                word = baseWord; // fallback to English if translation is banned
+                englishEquivalent = baseWord;
             } else {
                 word = translatedWord;
+                englishEquivalent = baseWord;
             }
-            englishEquivalent = baseWord;
 
-            // Try to fetch the definition in the target language
             try {
                 const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${dictLangCode}/${encodeURIComponent(word)}`);
                 const dictData = await dictRes.json();
@@ -333,15 +372,13 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 pronunciation = '/No pronunciation available/';
             }
 
-            // If no definition found, fallback to translation info
             if (!definition) definition = `No definition found for "${word}" in ${language}.`;
             if (!pronunciation) pronunciation = '/No pronunciation available/';
         }
 
-        // Final fallback: if word is not valid for the keyboard, use English word
         if (!word || word.length < 1 || /\s/.test(word)) {
-            word = baseWord;
-            englishEquivalent = baseWord;
+            word = getRandomSafeWord();
+            englishEquivalent = word;
         }
 
         return {
