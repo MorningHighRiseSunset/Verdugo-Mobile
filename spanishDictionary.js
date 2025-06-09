@@ -515,14 +515,14 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "deflection"
   },
   "Salvador": {
-    definition: "Definition of hosted: a person or god who saves people from sin, hell etc. - (una persona o dios que salva a las personas del pecado, el infierno, etc.)",
-    pronunciation: "/ˈhəʊstɪd/",
-    englishEquivalent: "hosted"
+    definition: "Persona o deidad que salva o libera de un peligro o situación adversa. - (Savior: A person or god who saves people from danger or sin.)",
+    pronunciation: "/salβaˈðoɾ/",
+    englishEquivalent: "savior"
   },
   "lácteos": {
-    definition: "Definition of products: A commodity offered for sale. - (Una mercancía ofrecida a la venta.)",
-    pronunciation: "/ˈpɹɒd.əkts/",
-    englishEquivalent: "products"
+    definition: "Productos derivados de la leche. - (Dairy products: Foods made from milk.)",
+    pronunciation: "/ˈlakteos/",
+    englishEquivalent: "dairy products"
   },
   "faraones": {
     definition: "Definition of Pharaoh: The supreme ruler of Ancient Egypt; a formal address for the sovereign seat of power as personified by the 'king' in an institutional role of Horus son of Osiris; often used by metonymy for Ancient Egyptian sovereignty - (El gobernante supremo del Antiguo Egipto; un discurso formal para la sede soberana del poder personificado por el 'rey' en un papel institucional de Horus, hijo de Osiris; a menudo utilizado por la metonimia para la soberanía del Antiguo Egipto)",
@@ -729,11 +729,6 @@ window.SPANISH_DICTIONARY = {
     pronunciation: "/ˈɛn.iː.(h)wɛə(ɹ)/",
     englishEquivalent: "Anywhere"
   },
-  "leche": {
-    definition: "Definition of milk: A white liquid produced by the mammary glands of female mammals to nourish their young. From certain animals, especially cows, it is also called dairy milk and is a common food for humans as a beverage or used to produce various dairy products such as butter, cheese, and yogurt. - (Líquido blanco producido por las glándulas mamarias de las hembras de los mamíferos para alimentar a sus crías. De ciertos animales, especialmente las vacas, también se llama leche de vaca y es un alimento común para los humanos como bebida o utilizado para producir diversos productos lácteos como mantequilla, queso y yogur.)",
-    pronunciation: "/[mɛlk]/",
-    englishEquivalent: "milk"
-  },
   "ministerio": {
     definition: "Definition of ministry: Government department, at the administrative level normally headed by a minister (or equivalent rank, e.g. secretary of state), who holds it as portfolio, especially in a constitutional monarchy, but also as a polity - (Departamento de gobierno, a nivel administrativo normalmente encabezado por un ministro (o rango equivalente, por ejemplo, secretario de estado), que lo tiene como cartera, especialmente en una monarquía constitucional, pero también como una entidad política)",
     pronunciation: "/ˈmɪnɪstɹi/",
@@ -760,9 +755,9 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "pyridine"
   },
   "cabañas": {
-    definition: "Definition of rooms: Opportunity or scope (to do something). - (Oportunidad o alcance (para hacer algo).)",
-    pronunciation: "/ɹuːmz/",
-    englishEquivalent: "rooms"
+    definition: "Construcción rústica pequeña, generalmente de madera, situada en zonas rurales o de montaña. - (Cabins: Small, simple houses, usually in rural or mountain areas.)",
+    pronunciation: "/kaˈβaɲas/",
+    englishEquivalent: "cabins"
   },
   "injertos": {
     definition: "Definition of Graft: A small shoot or scion of a tree inserted in another tree, the stock of which is to support and nourish it. The two unite and become one tree, but the graft determines the kind of fruit. - (Un pequeño brote o vástago de un árbol insertado en otro árbol, cuyo tronco es para apoyarlo y nutrirlo. Los dos se unen y se convierten en un árbol, pero el injerto determina el tipo de fruta.)",
@@ -775,8 +770,8 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "Impressive"
   },
   "escarabajo": {
-    definition: "Insecto coleóptero, de antenas con nueve articulaciones terminadas en maza, élitros lisos, cuerpo deprimido, con cabeza rombal y dentada por delante, y patas anteriores desprovistas de tarsos, que busca el estiércol para alimentarse y hacer bolas, dentro de las cuales deposita los huevos.",
-    pronunciation: "/[ˈbiɾəɫ]/",
+    definition: "Insecto coleóptero, de cuerpo generalmente ovalado y duro, con élitros que cubren las alas membranosas. - (Beetle: An insect of the order Coleoptera, typically with a hard shell-like pair of wings covering the flying wings.)",
+    pronunciation: "/eskaɾaˈbaxo/",
     englishEquivalent: "beetle"
   },
   "insolventes": {
@@ -790,9 +785,9 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "pigs"
   },
   "pasivo": {
-    definition: "Definition of charges: The amount of money levied for a service. - (La cantidad de dinero recaudada por un servicio.)",
-    pronunciation: "/ˈt͡ʃɑːd͡ʒɪz/",
-    englishEquivalent: "charges"
+    definition: "Que recibe la acción en vez de realizarla; en finanzas, una obligación o deuda. - (Passive: Receiving action rather than acting; in finance, a liability.)",
+    pronunciation: "/paˈsiβo/",
+    englishEquivalent: "passive"
   },
   "reaparición": {
     definition: "Definition of Reappearance: The act of appearing again following absence - (El acto de comparecer de nuevo tras la ausencia)",
@@ -800,9 +795,9 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "Reappearance"
   },
   "maricas": {
-    definition: "Definition of brands: A conflagration; a flame. - (Una conflagración; una llama.)",
-    pronunciation: "/No pronunciation available/",
-    englishEquivalent: "brands"
+    definition: "Término coloquial y a menudo ofensivo para referirse a hombres homosexuales o afeminados. - (Slang, often offensive: effeminate men or homosexuals.)",
+    pronunciation: "/maˈɾikas/",
+    englishEquivalent: "effeminate men (slang)"
   },
   "corporales": {
     definition: "Definition of physical: Physical examination. - (Exploración física.)",
@@ -850,9 +845,9 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "advantageous"
   },
   "previstos": {
-    definition: "Definition of Planned: To design (a building, machine, etc.). - (Para diseñar (un edificio, máquina, etc.).)",
-    pronunciation: "/plænd/",
-    englishEquivalent: "Planned"
+    definition: "Que se ha planeado o anticipado con anterioridad. - (Planned: That which has been planned or anticipated.)",
+    pronunciation: "/pɾeˈβistos/",
+    englishEquivalent: "planned"
   },
   "organizadores": {
     definition: "Definition of hosts: One which receives or entertains a guest, socially, commercially, or officially. - (Una que recibe o entretiene a un huésped, social, comercial u oficialmente.)",
@@ -860,8 +855,8 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "hosts"
   },
   "leche": {
-    definition: "Definition of milk: A white liquid produced by the mammary glands of female mammals to nourish their young. From certain animals, especially cows, it is also called dairy milk and is a common food for humans as a beverage or used to produce various dairy products such as butter, cheese, and yogurt. - (Líquido blanco producido por las glándulas mamarias de las hembras de los mamíferos para alimentar a sus crías. De ciertos animales, especialmente las vacas, también se llama leche de vaca y es un alimento común para los humanos como bebida o utilizado para producir diversos productos lácteos como mantequilla, queso y yogur.)",
-    pronunciation: "/[mɛlk]/",
+    definition: "Líquido blanco producido por las glándulas mamarias de las hembras de los mamíferos para alimentar a sus crías. - (Milk: A white liquid produced by the mammary glands of female mammals to nourish their young.)",
+    pronunciation: "/ˈletʃe/",
     englishEquivalent: "milk"
   },
   "determinismo": {
@@ -1015,9 +1010,9 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "governance"
   },
   "clínicos": {
-    definition: "Definition of Department: A part, portion, or subdivision. - (Una parte, porción o subdivisión.)",
-    pronunciation: "/dɪˈpɑːtm(ə)nt/",
-    englishEquivalent: "Department"
+    definition: "Relativo a la clínica o a los médicos que atienden a los pacientes. - (Clinical: Relating to clinics or medical practitioners.)",
+    pronunciation: "/ˈklinikos/",
+    englishEquivalent: "clinical"
   },
   "pis": {
     definition: "Definition of pee: Urine. - (Orina.)",
@@ -1065,9 +1060,9 @@ window.SPANISH_DICTIONARY = {
     englishEquivalent: "implicit"
   },
   "aniversario": {
-    definition: "Definition of special: A reduction in consumer cost (usually for a limited time) for items or services rendered. - (Una reducción en el costo para el consumidor (generalmente por un tiempo limitado) de los artículos o servicios prestados.)",
-    pronunciation: "/ˈspɛ.ʃəl/",
-    englishEquivalent: "special"
+    definition: "Fecha en que se cumple un número exacto de años desde que ocurrió un evento. - (Anniversary: The date on which an event took place in a previous year.)",
+    pronunciation: "/aniβeɾˈsaɾjo/",
+    englishEquivalent: "anniversary"
   },
   "ridiculizar": {
     definition: "Definition of ridicule: Derision; mocking or humiliating words or behaviour - (Escarnio; palabras o comportamientos burlones o humillantes)",
