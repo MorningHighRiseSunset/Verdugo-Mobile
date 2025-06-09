@@ -502,10 +502,20 @@ function createKeyboard() {
     }
 }
 
+    function normalizeLetter(letter) {
+        // Remove accents for comparison
+        return letter.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+    }
+
     function handleGuess(letter) {
-        if (!guessedLetters.includes(letter)) {
-            if (selectedWord.includes(letter)) {
-                guessedLetters.push(letter);
+        // Normalize guessed letter for comparison
+        const normalizedGuess = normalizeLetter(letter);
+
+        // Check if already guessed (by normalized value)
+        if (!guessedLetters.some(l => normalizeLetter(l) === normalizedGuess)) {
+            // If any letter in selectedWord matches normalized guess, it's correct
+            if (selectedWord.split('').some(l => normalizeLetter(l) === normalizedGuess)) {
+                guessedLetters.push(letter); // Store the actual guessed letter
             } else {
                 wrongGuesses++;
                 if (wrongGuesses === maxWrongGuesses) {
@@ -968,7 +978,10 @@ function showWordInfo(wordObj) {
 
     function updateWordDisplay() {
         const wordDisplay = document.getElementById('word-display');
-        wordDisplay.innerText = selectedWord.split('').map(letter => (guessedLetters.includes(letter) ? letter : '_')).join(' ');
+        wordDisplay.innerText = selectedWord.split('').map(letter => {
+            // Reveal if any guessed letter matches (normalized)
+            return guessedLetters.some(g => normalizeLetter(g) === normalizeLetter(letter)) ? letter : '_';
+        }).join(' ');
     }
 
     function drawHangman() {
