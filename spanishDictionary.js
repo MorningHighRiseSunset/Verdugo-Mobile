@@ -1,4 +1,4 @@
-const dictionary = {
+window.SPANISH_DICTIONARY = {
   "lágrima": {
     definition: "Definition of tear: A hole or break caused by tearing. - (Un agujero o rotura causado por un desgarro.)",
     pronunciation: "/No pronunciation available/",
