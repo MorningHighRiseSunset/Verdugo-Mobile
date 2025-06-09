@@ -254,7 +254,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     let usedWords = new Set();
 
     // Fetch a random word and its data from real APIs
-    async function fetchWordObject(language) {
+async function fetchWordObject(language) {
     let word = '';
     let definition = '';
     let pronunciation = '';
@@ -277,11 +277,33 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
     }
 
+    // --- FIX: Handle Spanish FIRST, before any random English word fetching ---
+    if (language === 'Spanish') {
+        // Only use local SPANISH_DICTIONARY
+        const keys = Object.keys(SPANISH_DICTIONARY);
+        if (keys.length === 0) {
+            // Fallback if dictionary is empty
+            word = "manzana";
+            definition = "Fruta del manzano, comestible, de forma redonda y sabor dulce o ácido.";
+            pronunciation = "man-za-na";
+            englishEquivalent = "apple";
+        } else {
+            // Pick a random Spanish word from the dictionary
+            const randomKey = keys[Math.floor(Math.random() * keys.length)];
+            const entry = SPANISH_DICTIONARY[randomKey];
+            word = randomKey;
+            definition = entry.definition || '';
+            pronunciation = entry.pronunciation || '';
+            englishEquivalent = entry.englishEquivalent || entry.english || randomKey;
+        }
+        return { word, definition, pronunciation, englishEquivalent };
+    }
+
+    // --- Only fetch random English word for non-Spanish languages ---
     let tries = 0;
     let maxTries = 30;
     let baseWord = '';
 
-    // Try to get a valid English word
     while (tries < maxTries) {
         tries++;
         try {
@@ -313,26 +335,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     } else {
         let langpair = 'en|es';
         let dictLangCode = 'es';
-        if (language === 'Spanish') {
-            // Only use local SPANISH_DICTIONARY
-            const keys = Object.keys(SPANISH_DICTIONARY);
-            if (keys.length === 0) {
-                // Fallback if dictionary is empty
-                word = "manzana";
-                definition = "Fruta del manzano, comestible, de forma redonda y sabor dulce o ácido.";
-                pronunciation = "man-za-na";
-                englishEquivalent = "apple";
-            } else {
-                // Pick a random Spanish word from the dictionary
-                const randomKey = keys[Math.floor(Math.random() * keys.length)];
-                const entry = SPANISH_DICTIONARY[randomKey];
-                word = randomKey;
-                definition = entry.definition || '';
-                pronunciation = entry.pronunciation || '';
-                englishEquivalent = entry.english || randomKey;
-            }
-            return { word, definition, pronunciation, englishEquivalent };
-        }
         if (language === 'Mandarin') { langpair = 'en|zh-CN'; dictLangCode = 'zh'; }
         if (language === 'Hindi') { langpair = 'en|hi'; dictLangCode = 'hi'; }
         if (language === 'French') { langpair = 'en|fr'; dictLangCode = 'fr'; }
@@ -684,10 +686,12 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function showRepeatButtons(wordObj) {
-    // Only fill the existing repeat-container
-    let repeatContainer = document.getElementById('repeat-container');
-    if (!repeatContainer) return;
-    repeatContainer.innerHTML = '';
+    let logContainer = document.getElementById('log-container');
+    if (!logContainer) return;
+
+    // Remove any previous repeat controls (optional, for cleanliness)
+    const oldControls = logContainer.querySelector('.repeat-controls');
+    if (oldControls) oldControls.remove();
 
     const currentLang = recognition.lang;
     const langMap = {
@@ -698,6 +702,11 @@ function showRepeatButtons(wordObj) {
         'fr-FR': 'French'
     };
     const langCodes = Object.keys(langMap);
+
+    // Create wrapper for repeat controls
+    const repeatControls = document.createElement('div');
+    repeatControls.className = 'repeat-controls';
+    repeatControls.style.marginTop = '12px';
 
     // Create dropdown
     const dropdown = document.createElement('select');
@@ -729,9 +738,6 @@ function showRepeatButtons(wordObj) {
             dropdown.appendChild(opt);
         }
     });
-
-    // Add dropdown to container
-    repeatContainer.appendChild(dropdown);
 
     // --- Auto-resize repeat-dropdown ---
     function resizeRepeatDropdown() {
@@ -772,7 +778,11 @@ function showRepeatButtons(wordObj) {
             speakText(text, selectedLang);
         }
     };
-    repeatContainer.appendChild(repeatBtn);
+
+    // Add controls to wrapper, then to logContainer
+    repeatControls.appendChild(dropdown);
+    repeatControls.appendChild(repeatBtn);
+    logContainer.appendChild(repeatControls);
 }
 
     // --- DYNAMIC WORD INFO FUNCTIONS ---
@@ -804,36 +814,54 @@ function showWordInfo(wordObj) {
     if (!logContainer) return;
 
     // Helper to update UI
-    async function updateUI(word, def, pron, ttsLang, uiLang) {
-        // If no definition, try to get English and translate
-        if ((!def || def.includes('No definition')) && wordObj.englishEquivalent) {
-            try {
-                // 1. Get English definition
-                let englishDef = '';
-                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(wordObj.englishEquivalent)}`);
-                const dictDataEn = await dictResEn.json();
-                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                    englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                }
-                // 2. Translate English definition to UI language if needed
-                if (englishDef && uiLang !== 'en') {
-                    try {
-                        const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${uiLang}`);
-                        const transDefData = await transDefRes.json();
-                        def = transDefData.responseData.translatedText;
-                    } catch (e) {
-                        def = `<span style="color:orange;">No definition found for "${word}" in this language.</span>`;
-                    }
-                } else if (englishDef) {
-                    def = englishDef;
-                }
-            } catch (e) {
-                def = `<span style="color:orange;">No definition found for "${word}" in this language.</span>`;
+async function updateUI(word, def, pron, ttsLang, uiLang) {
+    // If no definition, try to get English and translate
+    if ((!def || def.includes('No definition')) && wordObj.englishEquivalent) {
+        try {
+            // 1. Get English definition
+            let englishDef = '';
+            const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(wordObj.englishEquivalent)}`);
+            const dictDataEn = await dictResEn.json();
+            if (Array.isArray(dictDataEn) && dictDataEn[0]) {
+                englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
             }
+            // 2. Translate English definition to UI language if needed
+            if (englishDef && uiLang !== 'en') {
+                try {
+                    const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${uiLang}`);
+                    const transDefData = await transDefRes.json();
+                    def = transDefData.responseData.translatedText;
+                } catch (e) {
+                    def = `<span style="color:orange;">No definition found for "${word}" in this language.</span>`;
+                }
+            } else if (englishDef) {
+                def = englishDef;
+            }
+        } catch (e) {
+            def = `<span style="color:orange;">No definition found for "${word}" in this language.</span>`;
         }
+    }
+
+    // Compare word and English equivalent for display
+    const englishEquivalent = wordObj.englishEquivalent ?? '';
+    const showEnglishEquivalent =
+        englishEquivalent &&
+        englishEquivalent.trim().toLowerCase() !== (word ?? '').trim().toLowerCase();
 
         logContainer.innerHTML = `
-            <strong>Word:</strong> <span id="word-info-word">${word}</span><br>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                <div>
+                    <strong>Word:</strong> <span id="word-info-word">${word}</span>
+                </div>
+                <div>
+                    <strong>English Equivalent:</strong>
+                    ${
+                        showEnglishEquivalent
+                            ? englishEquivalent
+                            : `<span style="color:#aaa;">(same)</span>`
+                    }
+                </div>
+            </div>
             <strong>Definition:</strong> <span id="word-info-def">${def}</span>
             <button id="show-def-in-btn" style="margin-left:10px;">🌐 Show definition in...</button>
             <select id="def-lang-dropdown" style="margin-left:5px;">
@@ -845,8 +873,8 @@ function showWordInfo(wordObj) {
             </select>
             <br>
             <strong>Pronunciation:</strong> <span id="word-info-pron">${pron}</span>
-            <button id="tts-btn" style="margin-left:10px;">🔊</button><br>
-            <strong>English Equivalent:</strong> ${wordObj.englishEquivalent ?? '(none)'}<br>
+            <button id="tts-btn" style="margin-left:10px;">🔊</button>
+            <br>
             <div style="margin-top:10px;">
                 <select id="show-in-lang">
                     <option value="">Show word in...</option>
@@ -858,41 +886,41 @@ function showWordInfo(wordObj) {
                 <button id="show-in-btn">Show</button>
             </div>
         `;
-        document.getElementById('tts-btn').onclick = () => {
-            const utter = new SpeechSynthesisUtterance(word);
-            utter.lang = ttsLang;
-            window.speechSynthesis.speak(utter);
-        };
+    document.getElementById('tts-btn').onclick = () => {
+        const utter = new SpeechSynthesisUtterance(word);
+        utter.lang = ttsLang;
+        window.speechSynthesis.speak(utter);
+    };
 
-        // Handler for "Show definition in..." button
-        document.getElementById('show-def-in-btn').onclick = async () => {
-            const defLang = document.getElementById('def-lang-dropdown').value;
-            let englishDef = '';
+    // Handler for "Show definition in..." button
+    document.getElementById('show-def-in-btn').onclick = async () => {
+        const defLang = document.getElementById('def-lang-dropdown').value;
+        let englishDef = '';
+        try {
+            const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(wordObj.englishEquivalent)}`);
+            const dictDataEn = await dictResEn.json();
+            if (Array.isArray(dictDataEn) && dictDataEn[0]) {
+                englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+            }
+        } catch (e) {}
+        if (!englishDef) {
+            document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
+            return;
+        }
+        if (defLang === 'en') {
+            document.getElementById('word-info-def').innerText = englishDef;
+        } else {
             try {
-                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(wordObj.englishEquivalent)}`);
-                const dictDataEn = await dictResEn.json();
-                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                    englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                }
-            } catch (e) {}
-            if (!englishDef) {
-                document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
-                return;
+                const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${defLang}`);
+                const transDefData = await transDefRes.json();
+                const translatedDef = transDefData.responseData.translatedText;
+                document.getElementById('word-info-def').innerText = translatedDef;
+            } catch (e) {
+                document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">Could not translate definition.</span>`;
             }
-            if (defLang === 'en') {
-                document.getElementById('word-info-def').innerText = englishDef;
-            } else {
-                try {
-                    const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${defLang}`);
-                    const transDefData = await transDefRes.json();
-                    const translatedDef = transDefData.responseData.translatedText;
-                    document.getElementById('word-info-def').innerText = translatedDef;
-                } catch (e) {
-                    document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">Could not translate definition.</span>`;
-                }
-            }
-        };
-    }
+        }
+    };
+}
 
     // Detect UI language code (e.g., 'zh-CN', 'es', etc.)
     let uiLang = selectedLang || 'en';
@@ -974,6 +1002,7 @@ function showWordInfo(wordObj) {
         // 6. Use browser TTS for pronunciation if not available
         updateUI(translated, def, pron, lang + '-ES', lang);
     };
+    showRepeatButtons(wordObj);
 }
 
 function updateWordDisplay() {
