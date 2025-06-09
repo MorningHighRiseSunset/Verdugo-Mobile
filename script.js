@@ -976,13 +976,32 @@ function showWordInfo(wordObj) {
     };
 }
 
-    function updateWordDisplay() {
-        const wordDisplay = document.getElementById('word-display');
+function updateWordDisplay() {
+    const wordDisplay = document.getElementById('word-display');
+    // If UI is English and word is Mandarin, show Mandarin char with guessed English letter in parentheses
+    if (selectedLang === 'en-US' && pendingGameLang === 'zh-CN') {
+        // Example: Assume you have a mapping for the current word
+        // For demo, let's say currentWordObj.pinyin = ['A', 'B', 'C'] for each Mandarin char
+        const pinyinArr = currentWordObj && currentWordObj.pinyin ? currentWordObj.pinyin : [];
+        wordDisplay.innerHTML = selectedWord.split('').map((char, idx) => {
+            // If guessed, show Mandarin char with (A) above if guessed letter matches pinyin
+            const guessed = guessedLetters.some(g => g.toUpperCase() === (pinyinArr[idx] || '').toUpperCase());
+            if (guessed) {
+                return `<div style="display:inline-block;text-align:center;">
+                    <span style="font-size:0.8em;">(${pinyinArr[idx] || ''})</span><br>
+                    <span>${char}</span>
+                </div>`;
+            } else {
+                return `<span style="margin:0 4px;">_</span>`;
+            }
+        }).join(' ');
+    } else {
+        // Default: show letters or underscores
         wordDisplay.innerText = selectedWord.split('').map(letter => {
-            // Reveal if any guessed letter matches (normalized)
             return guessedLetters.some(g => normalizeLetter(g) === normalizeLetter(letter)) ? letter : '_';
         }).join(' ');
     }
+}
 
     function drawHangman() {
         const canvas = document.getElementById('hangman-canvas');
