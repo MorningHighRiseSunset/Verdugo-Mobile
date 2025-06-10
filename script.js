@@ -822,6 +822,9 @@ function showWordInfo(wordObj) {
 
     // Helper to update UI
 async function updateUI(word, def, pron, ttsLang, uiLang) {
+    const logContainer = document.getElementById('log-container');
+    if (!logContainer) return;
+
     // If no definition, try to get English and translate
     if ((!def || def.includes('No definition')) && wordObj.englishEquivalent) {
         try {
@@ -855,7 +858,7 @@ async function updateUI(word, def, pron, ttsLang, uiLang) {
         englishEquivalent &&
         englishEquivalent.trim().toLowerCase() !== (word ?? '').trim().toLowerCase();
 
-    // --- NEW: Get UI language code and translation for "Word:" ---
+    // --- Get UI language code and translation for "Word:" ---
     let uiLangCode = selectedLang || 'en-US';
     let wordLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLangCode]) || "Word";
 
@@ -891,13 +894,13 @@ async function updateUI(word, def, pron, ttsLang, uiLang) {
         <br>
         <div style="margin-top:10px;">
             <select id="show-in-lang">
-                <option value="">Show word in...</option>
+                <option value="">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLangCode] ? TRANSLATIONS.show_word[uiLangCode] : "Show word in..."}</option>
                 <option value="es">Spanish</option>
                 <option value="zh-CN">Mandarin</option>
                 <option value="hi">Hindi</option>
                 <option value="fr">French</option>
             </select>
-            <button id="show-in-btn">Show</button>
+            <button id="show-in-btn">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLangCode] ? TRANSLATIONS.show_word[uiLangCode] : "Show"}</button>
         </div>
     `;
     document.getElementById('tts-btn').onclick = () => {
