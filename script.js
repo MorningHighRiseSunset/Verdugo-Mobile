@@ -50,6 +50,13 @@ const TRANSLATIONS = {
         "zh-CN": "选择其他语言：",
         "hi-IN": "वैकल्पिक भाषा चुनें:"
     },
+    "word": {
+        "en-US": "Word",
+        "es-ES": "Palabra",
+        "fr-FR": "Mot",
+        "zh-CN": "单词",
+        "hi-IN": "शब्द"
+    },
     "choose_language": {
         "en-US": "Choose your language",
         "es-ES": "Elige tu idioma",
@@ -848,46 +855,53 @@ async function updateUI(word, def, pron, ttsLang, uiLang) {
         englishEquivalent &&
         englishEquivalent.trim().toLowerCase() !== (word ?? '').trim().toLowerCase();
 
-        logContainer.innerHTML = `
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                <div>
-                    <strong>Word:</strong> <span id="word-info-word">${word}</span>
-                </div>
-                <div>
-                    <strong>English Equivalent:</strong>
-                    ${
-                        showEnglishEquivalent
-                            ? englishEquivalent
-                            : `<span style="color:#aaa;">(same)</span>`
-                    }
-                </div>
+    // --- NEW: Get UI language code and translation for "Word:" ---
+    let uiLangCode = selectedLang || 'en-US';
+    let wordLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLangCode]) || "Word";
+
+    // Decide which word to show: UI language = English? Show English equivalent, else show word in that language
+    let wordToShow = (uiLangCode === 'en-US') ? (wordObj.englishEquivalent || word) : word;
+
+    logContainer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+            <div>
+                <strong>${wordLabel}:</strong> <span id="word-info-word">${wordToShow}</span>
             </div>
-            <strong>Definition:</strong> <span id="word-info-def">${def}</span>
-            <button id="show-def-in-btn" style="margin-left:10px;">🌐 Show definition in...</button>
-            <select id="def-lang-dropdown" style="margin-left:5px;">
+            <div>
+                <strong>English Equivalent:</strong>
+                ${
+                    showEnglishEquivalent
+                        ? englishEquivalent
+                        : `<span style="color:#aaa;">(same)</span>`
+                }
+            </div>
+        </div>
+        <strong>Definition:</strong> <span id="word-info-def">${def}</span>
+        <button id="show-def-in-btn" style="margin-left:10px;">🌐 Show definition in...</button>
+        <select id="def-lang-dropdown" style="margin-left:5px;">
+            <option value="es">Spanish</option>
+            <option value="en">English</option>
+            <option value="fr">French</option>
+            <option value="hi">Hindi</option>
+            <option value="zh-CN">Mandarin</option>
+        </select>
+        <br>
+        <strong>Pronunciation:</strong> <span id="word-info-pron">${pron}</span>
+        <button id="tts-btn" style="margin-left:10px;">🔊</button>
+        <br>
+        <div style="margin-top:10px;">
+            <select id="show-in-lang">
+                <option value="">Show word in...</option>
                 <option value="es">Spanish</option>
-                <option value="en">English</option>
-                <option value="fr">French</option>
-                <option value="hi">Hindi</option>
                 <option value="zh-CN">Mandarin</option>
+                <option value="hi">Hindi</option>
+                <option value="fr">French</option>
             </select>
-            <br>
-            <strong>Pronunciation:</strong> <span id="word-info-pron">${pron}</span>
-            <button id="tts-btn" style="margin-left:10px;">🔊</button>
-            <br>
-            <div style="margin-top:10px;">
-                <select id="show-in-lang">
-                    <option value="">Show word in...</option>
-                    <option value="es">Spanish</option>
-                    <option value="zh-CN">Mandarin</option>
-                    <option value="hi">Hindi</option>
-                    <option value="fr">French</option>
-                </select>
-                <button id="show-in-btn">Show</button>
-            </div>
-        `;
+            <button id="show-in-btn">Show</button>
+        </div>
+    `;
     document.getElementById('tts-btn').onclick = () => {
-        const utter = new SpeechSynthesisUtterance(word);
+        const utter = new SpeechSynthesisUtterance(wordToShow);
         utter.lang = ttsLang;
         window.speechSynthesis.speak(utter);
     };
