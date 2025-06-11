@@ -863,7 +863,7 @@ async function updateUI(word, def, pron, ttsLang, uiLang) {
     let wordLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLangCode]) || "Word";
 
     // Decide which word to show: UI language = English? Show English equivalent, else show word in that language
-    let wordToShow = (uiLangCode === 'en-US') ? (wordObj.englishEquivalent || word) : word;
+    let wordToShow = wordObj.word || word;
 
     logContainer.innerHTML = `
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
