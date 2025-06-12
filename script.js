@@ -946,7 +946,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         const playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
         const eqLabels = {
             'en': 'English Equivalent',
-            'es': 'Spanish Equivalent',
+            'es': 'Spanish Equivalente',
             'fr': 'French Equivalent',
             'zh-CN': 'Mandarin Equivalent',
             'hi': 'Hindi Equivalent'
