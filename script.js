@@ -255,7 +255,14 @@ function setUILanguage(langCode) {
     });
     const chooseLangTitle = document.getElementById('choose-lang-title');
     if (chooseLangTitle) {
-        chooseLangTitle.innerText = TRANSLATIONS.choose_language[langCode] || "Choose your language";
+        // Show all translations at once
+        chooseLangTitle.innerHTML = `
+            🌐 <span>${TRANSLATIONS.choose_language["en-US"]}</span><br>
+            🌐 <span>${TRANSLATIONS.choose_language["es-ES"]}</span><br>
+            🌐 <span>${TRANSLATIONS.choose_language["fr-FR"]}</span><br>
+            🌐 <span>${TRANSLATIONS.choose_language["zh-CN"]}</span><br>
+            🌐 <span>${TRANSLATIONS.choose_language["hi-IN"]}</span>
+        `;
     }
     updateInstructionsPopup(langCode);
 }
@@ -711,6 +718,20 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         const btnsDiv = document.getElementById('lang-select-buttons');
         btnsDiv.innerHTML = '';
         LANGUAGES.forEach(lang => {
+            // Create a row for label + button
+            const row = document.createElement('div');
+            row.style.display = 'flex';
+            row.style.alignItems = 'center';
+            row.style.gap = '12px';
+            row.style.marginBottom = '8px';
+
+            // Create the label
+            const label = document.createElement('span');
+            label.innerHTML = `🌐 ${TRANSLATIONS.choose_language[lang.code]}`;
+            label.style.minWidth = '180px';
+            label.style.textAlign = 'right';
+
+            // Create the button
             const btn = document.createElement('button');
             btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> <span>${lang.names[lang.code]}</span>`;
             btn.onclick = function() {
@@ -725,7 +746,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 pendingGameLang = lang.code; // Also set as pending game language
                 updateInstructionsPopup(lang.code); // Update instructions popup language
             };
-            btnsDiv.appendChild(btn);
+
+            row.appendChild(label);
+            row.appendChild(btn);
+            btnsDiv.appendChild(row);
         });
 
         // Main UI language selection (second language box)
