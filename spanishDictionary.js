@@ -1239,4 +1239,54 @@ window.SPANISH_DICTIONARY = {
     pronunciation: "/No pronunciation available/",
     englishEquivalent: "unforgiving"
   },
+  "amistad": {
+  definition: "Relación de afecto, simpatía y confianza que se establece entre personas que no son familia. - (Friendship: A relationship of affection, sympathy, and trust between people who are not family.)",
+  pronunciation: "/amisˈtað/",
+  englishEquivalent: "friendship"
+  },
+  "felicidad": {
+    definition: "Estado de ánimo de la persona que se siente plenamente satisfecha por gozar de lo que desea o por disfrutar de algo bueno. - (Happiness: The state of being happy or satisfied.)",
+    pronunciation: "/feliθiˈðað/",
+    englishEquivalent: "happiness"
+  },
+  "valiente": {
+    definition: "Que actúa con valor y determinación ante situaciones arriesgadas o difíciles. - (Brave: Showing courage and determination in difficult situations.)",
+    pronunciation: "/baˈljente/",
+    englishEquivalent: "brave"
+  },
+  "oscuro": {
+    definition: "Que carece de luz o claridad. - (Dark: Lacking light or brightness.)",
+    pronunciation: "/osˈkuɾo/",
+    englishEquivalent: "dark"
+  },
+  "alegría": {
+    definition: "Sentimiento grato y vivo que suele manifestarse con signos exteriores. - (Joy: A feeling of great pleasure and happiness.)",
+    pronunciation: "/aleˈɣɾia/",
+    englishEquivalent: "joy"
+  },
+  "montaña": {
+    definition: "Gran elevación natural del terreno. - (Mountain: A large natural elevation of the earth's surface.)",
+    pronunciation: "/monˈtaɲa/",
+    englishEquivalent: "mountain"
+  },
+  "río": {
+    definition: "Corriente natural de agua que fluye con continuidad. - (River: A large, flowing natural stream of water.)",
+    pronunciation: "/ˈrio/",
+    englishEquivalent: "river"
+  },
+  "bosque": {
+    definition: "Gran extensión que forma un ecosistema de árboles y arbustos. - (Forest: A large area covered chiefly with trees and undergrowth.)",
+    pronunciation: "/ˈboske/",
+    englishEquivalent: "forest"
+  },
+  "estrella": {
+    definition: "Cuerpo celeste que brilla con luz propia en el cielo. - (Star: A luminous celestial body visible in the night sky.)",
+    pronunciation: "/esˈtɾeʎa/",
+    englishEquivalent: "star"
+  },
+  "libertad": {
+    definition: "Facultad y derecho de las personas para elegir de manera responsable su propia forma de actuar dentro de una sociedad. - (Freedom: The power or right to act, speak, or think as one wants.)",
+    pronunciation: "/liβeɾˈtað/",
+    englishEquivalent: "freedom"
+  },
 };
