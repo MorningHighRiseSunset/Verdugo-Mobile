@@ -958,37 +958,36 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             const eqWord = await getEquivalentInUILang();
             const def = await getDefinitionInUILang();
             logContainer.innerHTML = `
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                    <div>
-                        <strong>${playedLabel}:</strong> <span id="word-info-word">${playedWord}</span>
-                    </div>
-                    <div>
-                        <strong>${eqLabel}:</strong>
-                        <span id="word-info-equivalent">${eqWord}</span>
-                    </div>
+                <div style="margin:0;padding:0;">
+                    <strong>${playedLabel}:</strong> <span id="word-info-word">${playedWord}</span>
+                    &nbsp;|&nbsp;
+                    <strong>${eqLabel}:</strong> <span id="word-info-equivalent">${eqWord}</span>
                 </div>
-                <strong>Definition:</strong> <span id="word-info-def">${def}</span>
-                <button id="show-def-in-btn" style="margin-left:10px;">🌐 Show definition in...</button>
-                <select id="def-lang-dropdown" style="margin-left:5px;">
-                    <option value="es">Spanish</option>
-                    <option value="en">English</option>
-                    <option value="fr">French</option>
-                    <option value="hi">Hindi</option>
-                    <option value="zh-CN">Mandarin</option>
-                </select>
-                <br>
-                <strong>Pronunciation:</strong> <span id="word-info-pron">${wordObj.pronunciation ?? '<span style="color:orange;">No pronunciation available.</span>'}</span>
-                <button id="tts-btn" style="margin-left:10px;">🔊</button>
-                <br>
-                <div style="margin-top:10px;">
-                    <select id="show-in-lang">
-                        <option value="">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show word in..."}</option>
+                <div style="margin:0;padding:0;">
+                    <strong>Definition:</strong> <span id="word-info-def">${def}</span>
+                    <br>
+                    <button id="show-def-in-btn" style="margin-top:6px;margin-left:0;">🌐 Show definition in...</button>
+                    <select id="def-lang-dropdown" style="margin-left:5px;margin-top:6px;">
                         <option value="es">Spanish</option>
-                        <option value="zh-CN">Mandarin</option>
-                        <option value="hi">Hindi</option>
+                        <option value="en">English</option>
                         <option value="fr">French</option>
+                        <option value="hi">Hindi</option>
+                        <option value="zh-CN">Mandarin</option>
                     </select>
-                    <button id="show-in-btn">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show"}</button>
+                    <br>
+                    <strong>Pronunciation:</strong> <span id="word-info-pron">${wordObj.pronunciation ?? '<span style="color:orange;">No pronunciation available.</span>'}</span>
+                    <button id="tts-btn" style="margin-left:10px;">🔊</button>
+                    <br>
+                    <div style="margin-top:10px;">
+                        <select id="show-in-lang">
+                            <option value="">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show word in..."}</option>
+                            <option value="es">Spanish</option>
+                            <option value="zh-CN">Mandarin</option>
+                            <option value="hi">Hindi</option>
+                            <option value="fr">French</option>
+                        </select>
+                        <button id="show-in-btn">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show"}</button>
+                    </div>
                 </div>
             `;
             document.getElementById('tts-btn').onclick = () => {
