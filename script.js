@@ -296,13 +296,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     let currentWordObj = null;
     let usedWords = new Set();
 
-    // --- ENGLISH DICTIONARY IMPORT ---
-    import('./EnglishDictionary.js').then(module => {
-        window.ENGLISH_DICTIONARY = module.dictionary || {};
-    }).catch(() => {
-        window.ENGLISH_DICTIONARY = window.dictionary || {};
-    });
-
     // Fetch a random word and its data from real APIs
     async function fetchWordObject(language) {
         let word = '';
@@ -312,8 +305,29 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         // Local safe fallback words (not "apple")
         const SAFE_WORDS = [
+            // Nouns
             "music", "planet", "river", "forest", "window", "garden", "school", "friend", "family", "holiday",
-            "orange", "pencil", "market", "animal", "doctor", "summer", "winter", "travel", "nature", "science"
+            "orange", "pencil", "market", "animal", "doctor", "summer", "winter", "travel", "nature", "science",
+            "mountain", "ocean", "desert", "island", "village", "city", "country", "teacher", "student", "library",
+            "computer", "bottle", "camera", "picture", "flower", "bridge", "castle", "cloud", "rainbow", "star",
+            "moon", "sun", "tree", "leaf", "river", "beach", "forest", "desert", "valley", "hill", "lake", "park",
+            "train", "bus", "car", "bicycle", "airplane", "boat", "ship", "road", "street", "tower", "house",
+            "apartment", "kitchen", "bedroom", "bathroom", "livingroom", "door", "window", "roof", "wall", "floor",
+            "table", "chair", "sofa", "bed", "lamp", "clock", "mirror", "phone", "television", "radio", "book",
+            "magazine", "newspaper", "pen", "notebook", "bag", "wallet", "key", "ticket", "passport", "map",
+            "glove", "hat", "scarf", "shirt", "pants", "dress", "shoes", "boots", "socks", "umbrella", "watch",
+            "ring", "necklace", "bracelet", "earring", "pocket", "button", "zipper", "belt", "jacket", "coat",
+            // Verbs
+            "run", "jump", "swim", "read", "write", "draw", "sing", "dance", "cook", "bake", "drive", "fly",
+            "walk", "climb", "paint", "play", "watch", "listen", "speak", "learn", "teach", "build", "fix",
+            "open", "close", "start", "finish", "help", "carry", "throw", "catch", "buy", "sell", "find",
+            "lose", "win", "grow", "cut", "clean", "wash", "dry", "fold", "pack", "unpack", "move", "stay",
+            // Adjectives
+            "happy", "sad", "angry", "brave", "calm", "clever", "funny", "kind", "lucky", "polite", "quiet",
+            "quick", "slow", "strong", "weak", "young", "old", "new", "ancient", "modern", "rich", "poor",
+            "tall", "short", "big", "small", "long", "wide", "narrow", "deep", "shallow", "hot", "cold",
+            "warm", "cool", "bright", "dark", "clean", "dirty", "soft", "hard", "smooth", "rough", "sweet",
+            "sour", "bitter", "salty", "fresh", "stale", "loud", "silent", "empty", "full", "safe", "dangerous"
         ];
 
         // List of common short words to avoid as game words
@@ -356,10 +370,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             const ENGLISH_DICTIONARY = window.ENGLISH_DICTIONARY || window.dictionary || {};
             const keys = Object.keys(ENGLISH_DICTIONARY);
             if (keys.length === 0) {
-                word = "music";
-                definition = "Vocal or instrumental sounds (or both) combined in such a way as to produce beauty of form, harmony, and expression of emotion.";
-                pronunciation = "/ˈmjuː.zɪk/";
-                englishEquivalent = "music";
+                // Use a random safe word instead of always "music"
+                word = SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
+                definition = "No dictionary available. This is a fallback word.";
+                pronunciation = "/No pronunciation available/";
+                englishEquivalent = word;
             } else {
                 let randomKey = keys[Math.floor(Math.random() * keys.length)];
                 let tries = 0;
