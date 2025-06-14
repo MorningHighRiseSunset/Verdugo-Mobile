@@ -734,6 +734,13 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             // Create the button
             const btn = document.createElement('button');
             btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> <span>${lang.names[lang.code]}</span>`;
+            btn.style.padding = '4px 16px 4px 10px'; // More right padding
+            btn.style.fontSize = '15px';
+            btn.style.minWidth = '80px';
+            btn.style.width = 'auto';
+            btn.style.maxWidth = '140px'; // Slightly wider for "Français"
+            btn.style.overflow = 'hidden';
+            btn.style.textOverflow = 'ellipsis';
             btn.onclick = function() {
                 selectedLang = lang.code; // Set UI language
                 if (typeof recognition !== "undefined") recognition.lang = lang.code;
