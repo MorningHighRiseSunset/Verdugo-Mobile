@@ -7,20 +7,6 @@ body {
     color: #222;
 }
 
-body, html {
-  width: 100vw;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  overflow-x: auto;
-}
-#main-container, #game-container, canvas {
-  width: 100%;
-  max-width: 1200px; /* or your chosen width */
-  margin: 0 auto;
-  display: block;
-}
-
 .container {
     text-align: center;
     margin-top: 50px;
@@ -37,8 +23,10 @@ body, html {
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
-    max-width: 700px;
+    max-width: 1200px; /* or your chosen width */
     box-sizing: border-box;
+    min-height: 900px;   /* Add this line for minimum height */
+    height: 100vh;       /* Or set a fixed height, e.g., 900px */
 }
 
 .button-row {
