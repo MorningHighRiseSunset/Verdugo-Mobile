@@ -1430,7 +1430,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    document.body.style.backgroundImage = "url('https://64.media.tumblr.com/43891cae5450425ccd1f06c610b731b3/27bd7103dd700c5a-8e/s500x750/5d2563ae1f3a14bf6864b088a06c17b46c205e86.gif')";
+    document.body.style.backgroundImage = "url('watermark_cropped.gif')";
     document.body.style.backgroundSize = "cover";
     document.body.style.backgroundRepeat = "no-repeat";
     document.body.style.backgroundPosition = "center 20%";
