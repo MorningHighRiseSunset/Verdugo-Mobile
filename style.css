@@ -1,4 +1,6 @@
 /* === GENERAL LAYOUT === */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Color+Emoji:wght@400&display=swap');
+
 body {
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
     text-align: center;
@@ -80,7 +82,43 @@ body {
     font-size: 1.5em;
     margin-right: 6px;
     vertical-align: middle;
+    font-family: 'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI Symbol', sans-serif;
+    display: inline-block;
+    line-height: 1;
+    /* Ensure flags render properly on Windows */
+    -webkit-font-feature-settings: "liga" 1, "dlig" 1, "emoji" 1;
+    font-feature-settings: "liga" 1, "dlig" 1, "emoji" 1;
+    /* Force emoji rendering */
+    -webkit-text-rendering: optimizeLegibility;
+    text-rendering: optimizeLegibility;
+    font-variant-emoji: emoji;
 }
+
+/* Fallback for systems that don't support flag emojis */
+@supports not (font-family: 'Noto Color Emoji') {
+    .flag-emoji {
+        font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI Symbol', sans-serif;
+    }
+}
+
+/* Additional fallback for Windows systems */
+@media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+    .flag-emoji {
+        font-family: 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+    }
+}
+
+/* Force emoji rendering on Windows */
+@media screen and (max-width: 9999px) {
+    .flag-emoji {
+        font-family: 'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI Symbol', sans-serif !important;
+        font-variant-emoji: emoji;
+        -webkit-font-feature-settings: "emoji" 1;
+        font-feature-settings: "emoji" 1;
+    }
+}
+
+
 
 /* === BUTTONS === */
 button {
@@ -329,6 +367,9 @@ button:active, button:focus {
     filter: drop-shadow(0 1px 2px #b3c6e0);
     margin-right: 10px;
     transition: transform 0.2s;
+    font-family: 'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI Symbol', sans-serif;
+    display: inline-block;
+    line-height: 1;
 }
 #lang-select-buttons button:hover .flag-emoji {
     transform: scale(1.15) rotate(-6deg);

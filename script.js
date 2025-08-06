@@ -242,6 +242,59 @@ const TRANSLATIONS = {
     // Add more keys as needed for your UI!
 };
 
+// Function to detect if flag emojis are supported
+function detectFlagEmojiSupport() {
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 20;
+        canvas.height = 20;
+        
+        // Test with a flag emoji
+        ctx.font = '16px Arial';
+        ctx.fillText('🇺🇸', 0, 16);
+        
+        const imageData = ctx.getImageData(0, 0, 20, 20);
+        const data = imageData.data;
+        
+        // Check if the emoji was rendered (not just a placeholder)
+        let hasColor = false;
+        for (let i = 0; i < data.length; i += 4) {
+            if (data[i] !== 0 || data[i + 1] !== 0 || data[i + 2] !== 0) {
+                hasColor = true;
+                break;
+            }
+        }
+        
+        return hasColor;
+    } catch (e) {
+        // If canvas detection fails, try a simpler approach
+        return navigator.userAgent.includes('Windows') ? false : true;
+    }
+}
+
+// Function to get flag display (emoji or fallback)
+function getFlagDisplay(langCode) {
+    const lang = LANGUAGES.find(l => l.code === langCode);
+    if (!lang) return '';
+    
+    // If flag emojis are supported, use them
+    if (window.flagEmojiSupported !== false) {
+        return lang.flag;
+    }
+    
+    // Fallback to country codes or symbols
+    const fallbacks = {
+        'en-US': '🇺🇸',
+        'es-ES': '🇪🇸', 
+        'zh-CN': '🇨🇳',
+        'hi-IN': '🇮🇳',
+        'fr-FR': '🇫🇷'
+    };
+    
+    return fallbacks[langCode] || lang.flag;
+}
+
 function setUILanguage(langCode) {
     document.getElementById('start-btn').innerText = TRANSLATIONS.start_speaking[langCode] || "Start Speaking";
     document.getElementById('stop-btn').innerText = TRANSLATIONS.stop_speaking[langCode] || "Stop Speaking";
@@ -251,7 +304,8 @@ function setUILanguage(langCode) {
         // Show the language name in the UI language
         const langName = lang.names[langCode] || lang.canonicalName;
         const pickAlt = TRANSLATIONS.pick_alternate_language[langCode] || "Pick alternate language:";
-        btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> ${langName}<br><small class="pick-alt-label">${pickAlt}</small>`;
+        const flagDisplay = getFlagDisplay(lang.code);
+        btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> ${langName}<br><small class="pick-alt-label">${pickAlt}</small>`;
     });
     const chooseLangTitle = document.getElementById('choose-lang-title');
     if (chooseLangTitle) {
@@ -728,6 +782,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
 
     document.addEventListener("DOMContentLoaded", function() {
+        // Initialize flag emoji support detection
+        window.flagEmojiSupported = detectFlagEmojiSupport();
+        console.log('Flag emoji support detected:', window.flagEmojiSupported);
+        
         // Popup language selection (first language box)
         const popup = document.getElementById('lang-select-popup');
         const btnsDiv = document.getElementById('lang-select-buttons');
@@ -748,7 +806,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
             // Create the button
             const btn = document.createElement('button');
-            btn.innerHTML = `<span class="flag-emoji">${lang.flag}</span> <span>${lang.names[lang.code]}</span>`;
+            const flagDisplay = getFlagDisplay(lang.code);
+            btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> <span>${lang.names[lang.code]}</span>`;
             btn.style.padding = '4px 16px 4px 10px'; // More right padding
             btn.style.fontSize = '15px';
             btn.style.minWidth = '80px';
