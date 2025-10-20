@@ -273,6 +273,9 @@ function detectFlagEmojiSupport() {
     }
 }
 
+// Run detection once so other code can rely on the result
+window.flagEmojiSupported = detectFlagEmojiSupport();
+
 // Function to get flag display (emoji or fallback)
 function getFlagDisplay(langCode) {
     const lang = LANGUAGES.find(l => l.code === langCode);
@@ -309,14 +312,16 @@ function setUILanguage(langCode) {
     });
     const chooseLangTitle = document.getElementById('choose-lang-title');
     if (chooseLangTitle) {
-        // Show all translations at once
-        chooseLangTitle.innerHTML = `
-            🌐 <span>${TRANSLATIONS.choose_language["en-US"]}</span><br>
-            🌐 <span>${TRANSLATIONS.choose_language["es-ES"]}</span><br>
-            🌐 <span>${TRANSLATIONS.choose_language["fr-FR"]}</span><br>
-            🌐 <span>${TRANSLATIONS.choose_language["zh-CN"]}</span><br>
-            🌐 <span>${TRANSLATIONS.choose_language["hi-IN"]}</span>
-        `;
+        // Show each language with its correct flag and localized "choose language" text
+        chooseLangTitle.innerHTML = LANGUAGES.map(l => {
+            const flag = getFlagDisplay(l.code) || '';
+            const flagHtml = l.code === 'es-ES'
+                ? `<a href="https://spanish-learning-tool.netlify.app/" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flag}</span></a>`
+                : `<span class="flag-emoji">${flag}</span>`;
+            // Prefer the translation for that language code, fall back to canonical/case
+            const text = TRANSLATIONS.choose_language[l.code] || l.names[selectedLang] || l.canonicalName;
+            return `<div class="choose-lang-line">${flagHtml} <span>${text}</span></div>`;
+        }).join('');
     }
     updateInstructionsPopup(langCode);
 }
@@ -798,16 +803,25 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             row.style.gap = '12px';
             row.style.marginBottom = '8px';
 
-            // Create the label
-            const label = document.createElement('span');
-            label.innerHTML = `🌐 ${TRANSLATIONS.choose_language[lang.code]}`;
-            label.style.minWidth = '180px';
-            label.style.textAlign = 'right';
+                // Create the label (use the language's flag instead of a globe)
+                const label = document.createElement('span');
+                const flagDisplay = getFlagDisplay(lang.code);
+                // If this is the Spanish language, make the flag a link to the Spanish learning tool
+                const flagHtml = lang.code === 'es-ES'
+                    ? `<a href="https://spanish-learning-tool.netlify.app/" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flagDisplay}</span></a>`
+                    : `<span class="flag-emoji">${flagDisplay}</span>`;
+                label.innerHTML = `${flagHtml} ${TRANSLATIONS.choose_language[lang.code]}`;
+                label.style.minWidth = '180px';
+                label.style.textAlign = 'right';
 
-            // Create the button
-            const btn = document.createElement('button');
-            const flagDisplay = getFlagDisplay(lang.code);
-            btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> <span>${lang.names[lang.code]}</span>`;
+                // Create the button
+                const btn = document.createElement('button');
+                // For the popup button, if Spanish, make the flag inside the button act as a link (open in new tab)
+                if (lang.code === 'es-ES') {
+                    btn.innerHTML = `<a href="https://spanish-learning-tool.netlify.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;"><span class="flag-emoji">${flagDisplay}</span>&nbsp;<span>${lang.names[lang.code]}</span></a>`;
+                } else {
+                    btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> <span>${lang.names[lang.code]}</span>`;
+                }
             btn.style.padding = '4px 16px 4px 10px'; // More right padding
             btn.style.fontSize = '15px';
             btn.style.minWidth = '80px';
@@ -1071,7 +1085,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 <div style="margin:0;padding:0;">
                     <strong>Definition:</strong> <span id="word-info-def">${def}</span>
                     <br>
-                    <button id="show-def-in-btn" style="margin-top:6px;margin-left:0;">🌐 Show definition in...</button>
+                    <button id="show-def-in-btn" style="margin-top:6px;margin-left:0;"><span class="flag-emoji">${getFlagDisplay(uiLang)}</span> ${TRANSLATIONS.show_definition && TRANSLATIONS.show_definition[uiLang] ? TRANSLATIONS.show_definition[uiLang] : 'Show definition in...'}</button>
                     <select id="def-lang-dropdown" style="margin-left:5px;margin-top:6px;">
                         <option value="es">Spanish</option>
                         <option value="en">English</option>
@@ -1185,7 +1199,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                         </div>
                     </div>
                     <strong>Definition:</strong> <span id="word-info-def">${def}</span>
-                    <button id="show-def-in-btn" style="margin-left:10px;">🌐 Show definition in...</button>
+                    <button id="show-def-in-btn" style="margin-left:10px;"><span class="flag-emoji">${getFlagDisplay(uiLang)}</span> ${TRANSLATIONS.show_definition && TRANSLATIONS.show_definition[uiLang] ? TRANSLATIONS.show_definition[uiLang] : 'Show definition in...'}</button>
                     <select id="def-lang-dropdown" style="margin-left:5px;">
                         <option value="es">Spanish</option>
                         <option value="en">English</option>
