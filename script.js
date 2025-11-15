@@ -63,6 +63,18 @@ const LANGUAGES = [{
     }
 ];
 
+// Helper function to get translator URL for each language
+function getTranslatorUrl(langCode) {
+    const translators = {
+        "en-US": "https://english-ai-helper.netlify.app/",
+        "es-ES": "https://spanish-ai-translator.netlify.app/",
+        "zh-CN": "https://mandarin-ai-translator.netlify.app/",
+        "hi-IN": "https://hindi-ai-translator.netlify.app/",
+        "fr-FR": "https://french-ai-translator.netlify.app/"
+    };
+    return translators[langCode] || null;
+}
+
 const BANNED_WORDS = [
     "spic", "spics", "nigger", "niggers", "chink", "chinks", "kike", "kikes", "wetback", "wetbacks",
     "fag", "fags", "faggot", "faggots", "dyke", "dykes", "tranny", "trannies", "gook", "gooks",
@@ -315,8 +327,9 @@ function setUILanguage(langCode) {
         // Show each language with its correct flag and localized "choose language" text
         chooseLangTitle.innerHTML = LANGUAGES.map(l => {
             const flag = getFlagDisplay(l.code) || '';
-            const flagHtml = l.code === 'es-ES'
-                ? `<a href="https://spanish-ai-translator.netlify.app/" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flag}</span></a>`
+            const translatorUrl = getTranslatorUrl(l.code);
+            const flagHtml = translatorUrl
+                ? `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flag}</span></a>`
                 : `<span class="flag-emoji">${flag}</span>`;
             // Prefer the translation for that language code, fall back to canonical/case
             const text = TRANSLATIONS.choose_language[l.code] || l.names[selectedLang] || l.canonicalName;
@@ -806,9 +819,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 // Create the label (use the language's flag instead of a globe)
                 const label = document.createElement('span');
                 const flagDisplay = getFlagDisplay(lang.code);
-                // If this is the Spanish language, make the flag a link to the Spanish learning tool
-                const flagHtml = lang.code === 'es-ES'
-                    ? `<a href="https://spanish-ai-translator.netlify.app/" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flagDisplay}</span></a>`
+                // Make the flag a link to the translator tool for all languages
+                const translatorUrl = getTranslatorUrl(lang.code);
+                const flagHtml = translatorUrl
+                    ? `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flagDisplay}</span></a>`
                     : `<span class="flag-emoji">${flagDisplay}</span>`;
                 label.innerHTML = `${flagHtml} ${TRANSLATIONS.choose_language[lang.code]}`;
                 label.style.minWidth = '180px';
@@ -816,9 +830,9 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
                 // Create the button
                 const btn = document.createElement('button');
-                // For the popup button, if Spanish, make the flag inside the button act as a link (open in new tab)
-                if (lang.code === 'es-ES') {
-                    btn.innerHTML = `<a href="https://spanish-ai-translator.netlify.app/" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;"><span class="flag-emoji">${flagDisplay}</span>&nbsp;<span>${lang.names[lang.code]}</span></a>`;
+                // For the popup button, make the flag inside the button act as a link (open in new tab)
+                if (translatorUrl) {
+                    btn.innerHTML = `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;"><span class="flag-emoji">${flagDisplay}</span>&nbsp;<span>${lang.names[lang.code]}</span></a>`;
                 } else {
                     btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> <span>${lang.names[lang.code]}</span>`;
                 }
