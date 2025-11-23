@@ -842,14 +842,16 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 label.style.minWidth = '180px';
                 label.style.textAlign = 'right';
 
-                // Create the button
+                // Create the button (always a plain button — the left label handles translator links)
                 const btn = document.createElement('button');
-                // For the popup button, make the flag inside the button act as a link (open in new tab)
-                if (translatorUrl) {
-                    btn.innerHTML = `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;color:inherit;display:inline-flex;align-items:center;"><span class="flag-emoji">${flagDisplay}</span>&nbsp;<span>${lang.names[lang.code]}</span></a>`;
-                } else {
-                    btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> <span>${lang.names[lang.code]}</span>`;
-                }
+                btn.innerHTML = '';
+                const btnFlag = document.createElement('span');
+                btnFlag.className = 'flag-emoji';
+                btnFlag.textContent = flagDisplay;
+                const btnName = document.createElement('span');
+                btnName.textContent = ' ' + (lang.names[lang.code] || lang.canonicalName);
+                btn.appendChild(btnFlag);
+                btn.appendChild(btnName);
             btn.style.padding = '4px 16px 4px 10px'; // More right padding
             btn.style.fontSize = '15px';
             btn.style.minWidth = '80px';
