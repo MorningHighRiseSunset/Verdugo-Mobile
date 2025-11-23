@@ -904,6 +904,25 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         });
 
         setUILanguage(selectedLang);
+
+        // Defensive: prevent any anchor inside main `.lang-btn` from navigating.
+        // This ensures deployed sites (or cached JS) that still render anchors
+        // inside the right-side buttons won't open translator links by accident.
+        document.addEventListener('click', function (ev) {
+            try {
+                const a = ev.target.closest && ev.target.closest('.lang-btn a');
+                if (a) {
+                    // Stop navigation
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    // Trigger the parent button's click handler instead (simulate button behavior)
+                    const btn = a.closest('.lang-btn');
+                    if (btn) btn.click();
+                }
+            } catch (e) {
+                // ignore
+            }
+        }, true);
     });
 
     function showRepeatButtons(wordObj) {
