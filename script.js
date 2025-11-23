@@ -320,7 +320,21 @@ function setUILanguage(langCode) {
         const langName = lang.names[langCode] || lang.canonicalName;
         const pickAlt = TRANSLATIONS.pick_alternate_language[langCode] || "Pick alternate language:";
         const flagDisplay = getFlagDisplay(lang.code);
-        btn.innerHTML = `<span class="flag-emoji">${flagDisplay}</span> ${langName}<br><small class="pick-alt-label">${pickAlt}</small>`;
+        // Build button content using DOM methods (avoid innerHTML to prevent accidental anchors)
+        btn.innerHTML = '';
+        const flagSpan = document.createElement('span');
+        flagSpan.className = 'flag-emoji';
+        flagSpan.textContent = flagDisplay;
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = ' ' + langName;
+        const br = document.createElement('br');
+        const small = document.createElement('small');
+        small.className = 'pick-alt-label';
+        small.textContent = pickAlt;
+        btn.appendChild(flagSpan);
+        btn.appendChild(nameSpan);
+        btn.appendChild(br);
+        btn.appendChild(small);
     });
     const chooseLangTitle = document.getElementById('choose-lang-title');
     if (chooseLangTitle) {
@@ -862,21 +876,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         });
 
         // Main UI language selection (second language box)
-        // Sanitize main UI lang buttons so they never contain anchor tags
-        function sanitizeMainLangButtons() {
-            document.querySelectorAll('.lang-btn').forEach((b) => {
-                const a = b.querySelector('a');
-                if (a) {
-                    const span = document.createElement('span');
-                    span.innerHTML = a.innerHTML;
-                    b.innerHTML = '';
-                    b.appendChild(span);
-                }
-            });
-        }
-
-        sanitizeMainLangButtons();
-
         document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
             btn.onclick = function() {
                 pendingGameLang = LANGUAGES[idx].code;
@@ -905,24 +904,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         setUILanguage(selectedLang);
 
-        // Defensive: prevent any anchor inside main `.lang-btn` from navigating.
-        // This ensures deployed sites (or cached JS) that still render anchors
-        // inside the right-side buttons won't open translator links by accident.
-        document.addEventListener('click', function (ev) {
-            try {
-                const a = ev.target.closest && ev.target.closest('.lang-btn a');
-                if (a) {
-                    // Stop navigation
-                    ev.preventDefault();
-                    ev.stopPropagation();
-                    // Trigger the parent button's click handler instead (simulate button behavior)
-                    const btn = a.closest('.lang-btn');
-                    if (btn) btn.click();
-                }
-            } catch (e) {
-                // ignore
-            }
-        }, true);
+        // (removed defensive click handler — main fix ensures `.lang-btn` never contains anchors)
     });
 
     function showRepeatButtons(wordObj) {
