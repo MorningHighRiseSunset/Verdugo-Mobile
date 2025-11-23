@@ -862,6 +862,21 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         });
 
         // Main UI language selection (second language box)
+        // Sanitize main UI lang buttons so they never contain anchor tags
+        function sanitizeMainLangButtons() {
+            document.querySelectorAll('.lang-btn').forEach((b) => {
+                const a = b.querySelector('a');
+                if (a) {
+                    const span = document.createElement('span');
+                    span.innerHTML = a.innerHTML;
+                    b.innerHTML = '';
+                    b.appendChild(span);
+                }
+            });
+        }
+
+        sanitizeMainLangButtons();
+
         document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
             btn.onclick = function() {
                 pendingGameLang = LANGUAGES[idx].code;
