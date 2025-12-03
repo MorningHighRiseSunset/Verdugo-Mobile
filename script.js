@@ -1385,14 +1385,14 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
             if (targetDefLang === 'en') return englishDef;
 
-            // Use server-side proxy to translate the English definition into the learning language
+            // Prefer: server-side proxy translating the English definition text itself
             try {
-                const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(targetDefLang)}`;
-                const pres = await fetch(proxyUrl);
-                if (pres.ok) {
-                    const pdata = await pres.json();
-                    if (pdata.definition && !/No definition found/i.test(pdata.definition)) return pdata.definition;
-                    if (pdata.translated && pdata.translated !== '') return pdata.translated;
+                const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}`;
+                const presDef = await fetch(proxyUrlDef);
+                if (presDef.ok) {
+                    const pdataDef = await presDef.json();
+                    if (pdataDef.definition && !/No definition found/i.test(pdataDef.definition)) return pdataDef.definition;
+                    if (pdataDef.translated && pdataDef.translated !== '') return pdataDef.translated;
                 }
             } catch (e) {
                 // ignore
@@ -1402,10 +1402,29 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             try {
                 const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${targetDefLang}`);
                 const transDefData = await transDefRes.json();
-                return transDefData.responseData.translatedText || englishDef;
+                if (transDefData && transDefData.responseData && transDefData.responseData.translatedText) {
+                    return transDefData.responseData.translatedText;
+                }
             } catch (e) {
-                return englishDef;
+                // ignore
             }
+
+            // Last resort: use client-side Google Translate if the user provided a key (insecure)
+            try {
+                if (window.GOOGLE_API_KEY) {
+                    const key = encodeURIComponent(window.GOOGLE_API_KEY);
+                    const defUrl = `https://translation.googleapis.com/language/translate/v2?key=${key}&q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}&format=text`;
+                    const defRes = await fetch(defUrl);
+                    const defData = await defRes.json();
+                    const translatedDef = defData?.data?.translations?.[0]?.translatedText || '';
+                    if (translatedDef) return translatedDef;
+                }
+            } catch (e) {
+                // ignore
+            }
+
+            // Give up: return English definition as a last resort (should be rare now)
+            return englishDef;
         }
 
         // Get label for "Word" and "Equivalent" in UI language
