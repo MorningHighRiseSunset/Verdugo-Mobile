@@ -919,16 +919,104 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         "CARLINGAS": "car-ling-gas",
         "tocopherol": "to-co-fer-ol"
     };
+    // Add a few common overrides for problematic compound words
+    phoneticReplacements['SALESROOM'] = 'sales room';
 
+    // Improved TTS helper that normalizes text, handles hyphens, selects a voice
+    // and queues multiple utterances to create natural pauses for compound words.
     function speakText(text, lang) {
-        const modifiedText = text.replace(/\b\w+\b/g, word => phoneticReplacements[word.toUpperCase()] || word);
-        const utterance = new SpeechSynthesisUtterance(modifiedText);
-        utterance.lang = lang;
-        utterance.onerror = function(event) {
-            console.error('Speech synthesis error', event);
-            alert(`Speech synthesis error: ${event.error}`);
+        if (!text) return;
+
+        // Normalize incoming lang (accept 'en-US' or 'en') -> use full locale where possible
+        let speechLang = (lang || 'en-US').toString();
+        // Map short codes to common locales
+        const langMap = {
+            'en': 'en-US',
+            'en-US': 'en-US',
+            'es': 'es-ES',
+            'es-ES': 'es-ES',
+            'fr': 'fr-FR',
+            'fr-FR': 'fr-FR',
+            'zh-CN': 'zh-CN',
+            'hi': 'hi-IN',
+            'hi-IN': 'hi-IN'
         };
-        window.speechSynthesis.speak(utterance);
+        // If lang like 'es-ES' passed, keep it; otherwise map short code
+        const langKey = speechLang.split('-')[0];
+        speechLang = langMap[speechLang] || langMap[langKey] || speechLang;
+
+        // Apply phonetic replacements on whole words
+        const normalized = text.replace(/[_]/g, ' ').trim();
+
+        // If the whole phrase matches an override, use it
+        const override = phoneticReplacements[normalized.toUpperCase()];
+        let toSpeak = override || normalized;
+
+        // Replace hyphens with space-separated parts to avoid mangled pronunciations
+        // e.g., 'sales-room' -> ['sales', 'room'] queued as separate utterances
+        const parts = toSpeak.split(/[-–—]/).map(p => p.trim()).filter(Boolean);
+
+        // Further split very long concatenations by inserting spaces before common word boundaries
+        // (simple heuristic: split where a lowercase letter is followed by an uppercase letter)
+        const expandedParts = [];
+        parts.forEach(p => {
+            if (/[a-z][A-Z]/.test(p)) {
+                // Insert space between camelCase boundaries
+                const s = p.replace(/([a-z])([A-Z])/g, '$1 $2');
+                expandedParts.push(s);
+            } else {
+                expandedParts.push(p);
+            }
+        });
+
+        // Create utterances for each part (or the whole phrase if single)
+        const utterances = [];
+        expandedParts.forEach((part, idx) => {
+            // Apply word-level phonetic replacements too
+            const modified = part.replace(/\b\w+\b/g, word => {
+                return phoneticReplacements[word.toUpperCase()] || word;
+            });
+            const u = new SpeechSynthesisUtterance(modified);
+            u.lang = speechLang;
+            // Slightly slow down for clarity
+            u.rate = 0.95;
+            utterances.push(u);
+        });
+
+        // Choose a voice that matches the language if available
+        function chooseVoiceFor(u) {
+            const voices = window.speechSynthesis.getVoices() || [];
+            // prefer exact match, then prefix match
+            let v = voices.find(v => v.lang && v.lang.toLowerCase() === u.lang.toLowerCase());
+            if (!v) v = voices.find(v => v.lang && v.lang.toLowerCase().startsWith(u.lang.split('-')[0]));
+            if (v) u.voice = v;
+        }
+
+        // If voices not yet loaded, wait briefly for onvoiceschanged
+        const speakAll = () => {
+            utterances.forEach(u => {
+                try {
+                    chooseVoiceFor(u);
+                    window.speechSynthesis.speak(u);
+                } catch (e) {
+                    console.warn('TTS speak failed for', u.text, e);
+                }
+            });
+        };
+
+        const voices = window.speechSynthesis.getVoices();
+        if (!voices || voices.length === 0) {
+            // Wait for voices to load
+            window.speechSynthesis.onvoiceschanged = () => {
+                speakAll();
+                // remove handler to avoid duplicate calls
+                window.speechSynthesis.onvoiceschanged = null;
+            };
+            // Also set a fallback timeout to speak in case onvoiceschanged doesn't fire
+            setTimeout(speakAll, 300);
+        } else {
+            speakAll();
+        }
     }
 
     function checkGameStatus() {
@@ -1341,9 +1429,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 </div>
             `;
             document.getElementById('tts-btn').onclick = () => {
-                const utter = new SpeechSynthesisUtterance(playedWord);
-                utter.lang = uiLang;
-                window.speechSynthesis.speak(utter);
+                speakText(playedWord, uiLang);
             };
 
             // Handler for "Show definition in..." button
@@ -1484,9 +1570,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     </div>
                 `;
                 document.getElementById('tts-btn').onclick = () => {
-                    const utter = new SpeechSynthesisUtterance(translated);
-                    utter.lang = lang;
-                    window.speechSynthesis.speak(utter);
+                    speakText(translated, lang);
                 };
             };
             showRepeatButtons(wordObj);
