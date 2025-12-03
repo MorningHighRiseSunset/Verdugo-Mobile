@@ -1,6 +1,22 @@
 let selectedLang = "en-US";
 let pendingGameLang = "en-US";
 let SPANISH_DICTIONARY = window.SPANISH_DICTIONARY || {};
+// Optional large spanish word list loader.
+window.SPANISH_WORDS = window.SPANISH_WORDS || [];
+async function loadSpanishWordList() {
+    if (window.SPANISH_WORDS && window.SPANISH_WORDS.length > 0) return;
+    try {
+        const res = await fetch('spanishWords.txt');
+        if (!res.ok) return;
+        const text = await res.text();
+        const words = text.split(/\r?\n/).map(w => w.trim()).filter(Boolean);
+        // De-duplicate and keep unique list
+        window.SPANISH_WORDS = Array.from(new Set(words));
+        console.log('Loaded spanishWords.txt:', window.SPANISH_WORDS.length, 'words');
+    } catch (e) {
+        // file not present or blocked; silent fallback to SPANISH_DICTIONARY
+    }
+}
 const LANGUAGES = [{
         code: "en-US",
         flag: "🇺🇸",
@@ -428,28 +444,181 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         }
 
         // --- SPANISH: Use ONLY local SPANISH_DICTIONARY ---
-        if (language === 'Spanish') {
-            const keys = Object.keys(SPANISH_DICTIONARY);
-            if (keys.length === 0) {
-                word = "manzana";
-                definition = "Fruta del manzano, comestible, de forma redonda y sabor dulce o ácido.";
-                pronunciation = "man-za-na";
-                englishEquivalent = "apple";
-            } else {
-                const randomKey = keys[Math.floor(Math.random() * keys.length)];
-                const entry = SPANISH_DICTIONARY[randomKey];
-                word = randomKey;
-                definition = entry.definition || '';
-                pronunciation = entry.pronunciation || '';
-                englishEquivalent = entry.englishEquivalent || entry.english || randomKey;
-            }
-            return {
-                word,
-                definition,
-                pronunciation,
-                englishEquivalent
-            };
-        }
+                if (language === 'Spanish') {
+                    // If a Google API key is provided in `window.GOOGLE_API_KEY`, prefer a
+                    // real-time API-driven flow: fetch a random English base word and
+                    // translate it into Spanish using Google Translate API (no local files
+                    // required). WARNING: exposing API keys to the browser is insecure.
+                    // Try server-side Netlify function first (recommended). If it fails,
+                    // fall back to client-side Google key (insecure) or MyMemory.
+                    // Get a base English word
+                    let baseWord = '';
+                    try {
+                        const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
+                        const wordArr = await wordRes.json();
+                        baseWord = wordArr && wordArr[0] ? wordArr[0] : '';
+                    } catch (e) {
+                        baseWord = '';
+                    }
+                    if (!baseWord || !/^[a-zA-Z]+$/.test(baseWord)) baseWord = SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
+
+                    // 1) Try Netlify function proxy
+                    let translated = '';
+                    let defFromProxy = '';
+                    let pronFromProxy = '';
+                    try {
+                        const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(baseWord)}&target=es`;
+                        const pres = await fetch(proxyUrl);
+                        if (pres.ok) {
+                            const pdata = await pres.json();
+                            translated = pdata.translated || pdata.translatedText || '';
+                            defFromProxy = pdata.definition || pdata.def || '';
+                            pronFromProxy = pdata.pronunciation || pdata.pron || '';
+                        }
+                    } catch (e) {
+                        // proxy failed, continue to other fallbacks
+                    }
+
+                    // 2) If proxy didn't return a translation, try client-side Google key (only if provided)
+                    if (!translated && window.GOOGLE_API_KEY) {
+                        try {
+                            const key = encodeURIComponent(window.GOOGLE_API_KEY);
+                            const q = encodeURIComponent(baseWord);
+                            const url = `https://translation.googleapis.com/language/translate/v2?key=${key}&q=${q}&target=es&format=text`;
+                            const gres = await fetch(url, { method: 'GET' });
+                            const gdata = await gres.json();
+                            translated = gdata?.data?.translations?.[0]?.translatedText || '';
+                        } catch (e) {
+                            translated = '';
+                        }
+                    }
+
+                    // 3) Fallback to MyMemory if still empty
+                    if (!translated) {
+                        try {
+                            const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(baseWord)}&langpair=en|es`);
+                            const transData = await transRes.json();
+                            translated = transData.responseData.translatedText || '';
+                        } catch (e) {
+                            translated = '';
+                        }
+                    }
+
+                    if (!translated) translated = baseWord;
+
+                    word = ('' + translated).split(/[ ,.;:!?]/)[0];
+                    englishEquivalent = baseWord;
+
+                    // Use definition from proxy if available
+                    if (defFromProxy) {
+                        definition = defFromProxy;
+                        pronunciation = pronFromProxy || '/No pronunciation available/';
+                    } else {
+                        // Try to fetch a Spanish definition first, then English definition for the base word
+                        try {
+                            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${encodeURIComponent(word)}`);
+                            const dictData = await dictRes.json();
+                            if (Array.isArray(dictData) && dictData[0]) {
+                                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                                pronunciation = dictData[0].phonetic || '';
+                            }
+                        } catch (e) {}
+
+                        if (!definition) {
+                            try {
+                                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(englishEquivalent)}`);
+                                const dictDataEn = await dictResEn.json();
+                                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
+                                    definition = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                                    pronunciation = dictDataEn[0].phonetic || '';
+                                }
+                            } catch (e) {}
+                        }
+                    }
+
+                    if (!definition) definition = `No definition found for "${word}".`;
+                    if (!pronunciation) pronunciation = '/No pronunciation available/';
+
+                    return { word, definition, pronunciation, englishEquivalent };
+
+                    // No Google key: Prefer a pre-built word list `spanishWords.txt` (one word per line) if present.
+                    // Fallback to `SPANISH_DICTIONARY` keys. If a chosen word is not in the
+                    // local dictionary, try to get an English equivalent (MyMemory) and an
+                    // English definition (DictionaryAPI.dev) as a best-effort fallback.
+                    await loadSpanishWordList();
+
+                    let chosen = '';
+                    // Build a pool from the external wordlist if available, otherwise from the
+                    // local SPANISH_DICTIONARY keys. Avoid repeating words already in `usedWords`.
+                    const pool = (window.SPANISH_WORDS && window.SPANISH_WORDS.length > 0)
+                        ? window.SPANISH_WORDS
+                        : Object.keys(SPANISH_DICTIONARY).length > 0 ? Object.keys(SPANISH_DICTIONARY) : ['manzana'];
+
+                    // Defensive: ensure pool is an array
+                    const cleanPool = Array.isArray(pool) ? pool.map(p => (''+p).trim()).filter(Boolean) : ['manzana'];
+
+                    if (cleanPool.length === 0) cleanPool.push('manzana');
+
+                    // Try to pick a word not used in this session (usedWords stores uppercase values)
+                    let tries = 0;
+                    const maxTries = cleanPool.length;
+                    let candidate = cleanPool[Math.floor(Math.random() * cleanPool.length)];
+                    while (typeof usedWords !== 'undefined' && usedWords.has(candidate.toUpperCase()) && tries < maxTries) {
+                        candidate = cleanPool[Math.floor(Math.random() * cleanPool.length)];
+                        tries++;
+                    }
+
+                    // If we've exhausted the pool (tries >= maxTries) then clear usedWords to allow repeats
+                    if (tries >= maxTries && typeof usedWords !== 'undefined') {
+                        usedWords.clear();
+                    }
+
+                    chosen = candidate;
+                    chosen = ('' + chosen).trim();
+                    word = chosen;
+
+                    const entry = SPANISH_DICTIONARY[chosen];
+                    if (entry) {
+                        definition = entry.definition || '';
+                        pronunciation = entry.pronunciation || '';
+                        englishEquivalent = entry.englishEquivalent || entry.english || '';
+                    } else {
+                        // Try translating the Spanish word to English (MyMemory as free fallback).
+                        try {
+                            const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(chosen)}&langpair=es|en`);
+                            const transData = await transRes.json();
+                            englishEquivalent = (transData && transData.responseData && transData.responseData.translatedText) || '';
+                        } catch (e) {
+                            englishEquivalent = '';
+                        }
+
+                        if (!englishEquivalent) {
+                            englishEquivalent = chosen; // worst case
+                        }
+
+                        // Try to fetch an English definition for the English equivalent
+                        try {
+                            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(englishEquivalent)}`);
+                            const dictData = await dictRes.json();
+                            if (Array.isArray(dictData) && dictData[0]) {
+                                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                                pronunciation = dictData[0].phonetic || '';
+                            }
+                        } catch (e) {
+                            // ignore
+                        }
+
+                        if (!definition) definition = `Definition for "${chosen}" not found locally.`;
+                        if (!pronunciation) pronunciation = '/No pronunciation available/';
+                    }
+
+                    return {
+                        word,
+                        definition,
+                        pronunciation,
+                        englishEquivalent
+                    };
+                }
 
         // --- ENGLISH: Use ONLY local ENGLISH_DICTIONARY.js ---
         if (language === 'English') {
@@ -1066,24 +1235,54 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         // Get definition in UI language
         async function getDefinitionInUILang() {
-            // If the definition is already in the UI language, use it
-            if (wordObj.definition && (uiLangShort === 'en' || pendingGameLang === selectedLang)) {
-                return wordObj.definition;
+            // Prefer a real English definition (not the placeholder) and translate it when needed.
+            // First: try to fetch a reliable English definition for the English equivalent.
+            let englishDef = '';
+
+            // If wordObj.definition looks like a real definition (not a fallback message), prefer it
+            const defText = (wordObj.definition || '').toString();
+            const isPlaceholder = /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(defText);
+            if (defText && !isPlaceholder) {
+                englishDef = defText;
             }
-            // Otherwise, translate the English definition
-            let englishDef = wordObj.definition;
-            if (!englishDef || englishDef.includes('No definition')) {
-                // Try to fetch English definition if missing
+
+            // If we still don't have an English definition, fetch from DictionaryAPI.dev
+            if (!englishDef) {
                 try {
                     const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
                     const dictDataEn = await dictResEn.json();
                     if (Array.isArray(dictDataEn) && dictDataEn[0]) {
                         englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
                     }
-                } catch {}
+                } catch (e) {
+                    // ignore
+                }
             }
+
+            // If still no English definition, give up early
             if (!englishDef) return `<span style="color:orange;">No definition found.</span>`;
+
+            // If UI language is English, return the English definition
             if (uiLangShort === 'en') return englishDef;
+
+            // Try to use the server-side Netlify translate function to get a translated definition
+            try {
+                const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(uiLangShort)}`;
+                const pres = await fetch(proxyUrl);
+                if (pres.ok) {
+                    const pdata = await pres.json();
+                    // If the proxy returned a helpful translated definition, use it
+                    if (pdata.definition && !/No definition found/i.test(pdata.definition)) {
+                        return pdata.definition;
+                    }
+                    // Otherwise if it returned a translated text, use that
+                    if (pdata.translated && pdata.translated !== '') return pdata.translated;
+                }
+            } catch (e) {
+                // proxy failed, fall back
+            }
+
+            // Fallback: translate the English definition via MyMemory
             try {
                 const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${uiLangShort}`);
                 const transDefData = await transDefRes.json();
@@ -1150,31 +1349,61 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             // Handler for "Show definition in..." button
             document.getElementById('show-def-in-btn').onclick = async () => {
                 const defLang = document.getElementById('def-lang-dropdown').value;
-                let englishDef = wordObj.definition;
-                if (!englishDef || englishDef.includes('No definition')) {
+                // We want a real English definition to translate, not a placeholder message.
+                let englishDef = '';
+                const defText = (wordObj.definition || '').toString();
+                const isPlaceholder = /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(defText);
+                if (defText && !isPlaceholder) englishDef = defText;
+
+                if (!englishDef) {
                     try {
                         const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
                         const dictDataEn = await dictResEn.json();
                         if (Array.isArray(dictDataEn) && dictDataEn[0]) {
                             englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
                         }
-                    } catch {}
+                    } catch (e) {
+                        // ignore
+                    }
                 }
+
                 if (!englishDef) {
                     document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
                     return;
                 }
+
                 if (defLang === 'en') {
                     document.getElementById('word-info-def').innerText = englishDef;
-                } else {
-                    try {
-                        const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${defLang}`);
-                        const transDefData = await transDefRes.json();
-                        const translatedDef = transDefData.responseData.translatedText;
-                        document.getElementById('word-info-def').innerText = translatedDef;
-                    } catch {
-                        document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">Could not translate definition.</span>`;
+                    return;
+                }
+
+                // Try server-side translation via Netlify function first
+                try {
+                    const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(defLang)}`;
+                    const pres = await fetch(proxyUrl);
+                    if (pres.ok) {
+                        const pdata = await pres.json();
+                        if (pdata.definition && !/No definition found/i.test(pdata.definition)) {
+                            document.getElementById('word-info-def').innerText = pdata.definition;
+                            return;
+                        }
+                        if (pdata.translated && pdata.translated !== '') {
+                            document.getElementById('word-info-def').innerText = pdata.translated;
+                            return;
+                        }
                     }
+                } catch (e) {
+                    // proxy failed, fall back
+                }
+
+                // Fallback to client-side translation of the English definition
+                try {
+                    const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${defLang}`);
+                    const transDefData = await transDefRes.json();
+                    const translatedDef = transDefData.responseData.translatedText;
+                    document.getElementById('word-info-def').innerText = translatedDef;
+                } catch (e) {
+                    document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">Could not translate definition.</span>`;
                 }
             };
 
