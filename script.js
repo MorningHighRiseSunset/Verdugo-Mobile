@@ -1147,16 +1147,21 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 if (typeof fetchWordObject === "function") {
                     const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
                     const langName = langObj ? langObj.canonicalName : "English";
-                    fetchWordObject(langName).then(wordObj => {
-                        currentWordObj = wordObj;
-                        selectedWord = wordObj.word.toUpperCase();
-                        usedWords.add(selectedWord);
-                        guessedLetters = [];
-                        wrongGuesses = 0;
-                        if (typeof updateWordDisplay === "function") updateWordDisplay();
-                        if (typeof drawHangman === "function") drawHangman();
-                        if (typeof createKeyboard === "function") createKeyboard();
-                    });
+                        fetchWordObject(langName).then(wordObj => {
+                            // Attach the game language code to the returned word object so
+                            // downstream UI (TTS/definition logic) can reliably know which
+                            // language the word belongs to.
+                            wordObj.gameLangCode = pendingGameLang;
+                            wordObj.gameLangName = langName;
+                            currentWordObj = wordObj;
+                            selectedWord = wordObj.word.toUpperCase();
+                            usedWords.add(selectedWord);
+                            guessedLetters = [];
+                            wrongGuesses = 0;
+                            if (typeof updateWordDisplay === "function") updateWordDisplay();
+                            if (typeof drawHangman === "function") drawHangman();
+                            if (typeof createKeyboard === "function") createKeyboard();
+                        });
                 }
             };
         });
@@ -1306,8 +1311,9 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Mandarin stays 'zh-CN'
 
         // Determine the learning/game language (the language of the played word).
-        // `pendingGameLang` is set when the user chooses which language to learn.
-        const learningLangCode = pendingGameLang || 'en-US';
+        // Prefer the language attached to the current word object (set when the word
+        // was fetched). Fall back to `pendingGameLang`.
+        const learningLangCode = (currentWordObj && currentWordObj.gameLangCode) ? currentWordObj.gameLangCode : (pendingGameLang || 'en-US');
         let learningLangShort = learningLangCode.split('-')[0];
         if (learningLangCode === 'en-US') learningLangShort = 'en';
         if (learningLangCode === 'es-ES') learningLangShort = 'es';
