@@ -515,6 +515,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                         pronunciation = pronFromProxy || '/No pronunciation available/';
                     } else {
                         // Try to fetch a Spanish definition first, then English definition for the base word
+                        let defFromEnglish = false;
                         try {
                             const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${encodeURIComponent(word)}`);
                             const dictData = await dictRes.json();
@@ -531,8 +532,26 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                                 if (Array.isArray(dictDataEn) && dictDataEn[0]) {
                                     definition = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
                                     pronunciation = dictDataEn[0].phonetic || '';
+                                    defFromEnglish = !!definition;
                                 }
                             } catch (e) {}
+                        }
+
+                        // If we only found an English definition, translate that definition text into Spanish
+                        if (defFromEnglish && definition) {
+                            try {
+                                const proxyDefUrl = `/.netlify/functions/translate?q=${encodeURIComponent(definition)}&target=es`;
+                                const presDef = await fetch(proxyDefUrl);
+                                if (presDef.ok) {
+                                    const pdataDef = await presDef.json();
+                                    const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
+                                    if (candidate && !/No definition found/i.test(candidate)) {
+                                        definition = candidate;
+                                    }
+                                }
+                            } catch (e) {
+                                // ignore translation failure; keep English definition as last resort
+                            }
                         }
                     }
 
@@ -610,6 +629,22 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
                         if (!definition) definition = `Definition for "${chosen}" not found locally.`;
                         if (!pronunciation) pronunciation = '/No pronunciation available/';
+                        // If we only have an English definition for a Spanish word, translate it now
+                        if (definition && !entry) {
+                            try {
+                                const proxyDefUrl2 = `/.netlify/functions/translate?q=${encodeURIComponent(definition)}&target=es`;
+                                const presDef2 = await fetch(proxyDefUrl2);
+                                if (presDef2.ok) {
+                                    const pdataDef2 = await presDef2.json();
+                                    const candidate2 = pdataDef2.definition || pdataDef2.translated || pdataDef2.translatedText || '';
+                                    if (candidate2 && !/No definition found/i.test(candidate2)) {
+                                        definition = candidate2;
+                                    }
+                                }
+                            } catch (e) {
+                                // ignore
+                            }
+                        }
                     }
 
                     return {
