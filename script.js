@@ -1305,6 +1305,15 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         if (uiLang === 'hi-IN') uiLangShort = 'hi';
         // Mandarin stays 'zh-CN'
 
+        // Determine the learning/game language (the language of the played word).
+        // `pendingGameLang` is set when the user chooses which language to learn.
+        const learningLangCode = pendingGameLang || 'en-US';
+        let learningLangShort = learningLangCode.split('-')[0];
+        if (learningLangCode === 'en-US') learningLangShort = 'en';
+        if (learningLangCode === 'es-ES') learningLangShort = 'es';
+        if (learningLangCode === 'fr-FR') learningLangShort = 'fr';
+        if (learningLangCode === 'hi-IN') learningLangShort = 'hi';
+
         // Determine played word and equivalent
         let playedWord = wordObj.word;
         let equivalentWord = wordObj.englishEquivalent;
@@ -1323,59 +1332,72 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         // Get definition in UI language
         async function getDefinitionInUILang() {
-            // Prefer a real English definition (not the placeholder) and translate it when needed.
-            // First: try to fetch a reliable English definition for the English equivalent.
-            let englishDef = '';
+            // Determine where to obtain the definition. Default to the learning language
+            // (the language being learned) rather than the UI language so the learner
+            // sees definitions in the target language.
+            const targetDefLang = learningLangShort || 'en';
 
-            // If wordObj.definition looks like a real definition (not a fallback message), prefer it
-            const defText = (wordObj.definition || '').toString();
-            const isPlaceholder = /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(defText);
-            if (defText && !isPlaceholder) {
-                englishDef = defText;
-            }
+            // Helper: return formatted missing message
+            const missingHtml = `<span style="color:orange;">No definition found.</span>`;
 
-            // If we still don't have an English definition, fetch from DictionaryAPI.dev
-            if (!englishDef) {
-                try {
+            // Try: 1) dictionary lookup in the learning language
+            try {
+                if (targetDefLang === 'en') {
+                    // For English definitions, look up the English equivalent
                     const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
                     const dictDataEn = await dictResEn.json();
                     if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                        englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                        const engDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                        if (engDef) return engDef;
                     }
-                } catch (e) {
-                    // ignore
+                } else {
+                    // For non-English learning languages, try to look up the played word in that language
+                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${encodeURIComponent(targetDefLang)}/${encodeURIComponent(playedWord)}`);
+                    const dictData = await dictRes.json();
+                    if (Array.isArray(dictData) && dictData[0]) {
+                        const def = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                        if (def) return def;
+                    }
                 }
+            } catch (e) {
+                // ignore and fallthrough
             }
 
-            // If still no English definition, give up early
-            if (!englishDef) return `<span style="color:orange;">No definition found.</span>`;
-
-            // If UI language is English, return the English definition
-            if (uiLangShort === 'en') return englishDef;
-
-            // Try to use the server-side Netlify translate function to get a translated definition
+            // Try: 2) get a reliable English definition, then translate it into the learning language
+            let englishDef = '';
             try {
-                const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(uiLangShort)}`;
+                const dictResEn2 = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
+                const dictDataEn2 = await dictResEn2.json();
+                if (Array.isArray(dictDataEn2) && dictDataEn2[0]) {
+                    englishDef = dictDataEn2[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                }
+            } catch (e) {
+                // ignore
+            }
+
+            if (!englishDef) return missingHtml;
+
+            if (targetDefLang === 'en') return englishDef;
+
+            // Use server-side proxy to translate the English definition into the learning language
+            try {
+                const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(targetDefLang)}`;
                 const pres = await fetch(proxyUrl);
                 if (pres.ok) {
                     const pdata = await pres.json();
-                    // If the proxy returned a helpful translated definition, use it
-                    if (pdata.definition && !/No definition found/i.test(pdata.definition)) {
-                        return pdata.definition;
-                    }
-                    // Otherwise if it returned a translated text, use that
+                    if (pdata.definition && !/No definition found/i.test(pdata.definition)) return pdata.definition;
                     if (pdata.translated && pdata.translated !== '') return pdata.translated;
                 }
             } catch (e) {
-                // proxy failed, fall back
+                // ignore
             }
 
-            // Fallback: translate the English definition via MyMemory
+            // Fallback: client-side MyMemory translation of the English definition
             try {
-                const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${uiLangShort}`);
+                const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${targetDefLang}`);
                 const transDefData = await transDefRes.json();
                 return transDefData.responseData.translatedText || englishDef;
-            } catch {
+            } catch (e) {
                 return englishDef;
             }
         }
@@ -1429,7 +1451,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 </div>
             `;
             document.getElementById('tts-btn').onclick = () => {
-                speakText(playedWord, uiLang);
+                // Speak the displayed word in the game's language (learning language) so pronunciation
+                // matches the word's language rather than the UI language.
+                const gameLangCode = (typeof pendingGameLang === 'string' && pendingGameLang) ? pendingGameLang : currentLang || 'en-US';
+                // Map codes like 'es-ES' or 'en-US' directly; fallback to 'en-US'.
+                speakText(playedWord, gameLangCode);
             };
 
             // Handler for "Show definition in..." button
@@ -1570,7 +1596,12 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     </div>
                 `;
                 document.getElementById('tts-btn').onclick = () => {
-                    speakText(translated, lang);
+                    // When showing a translated word, speak it using the target language code `lang`.
+                    // If the shown word is the English equivalent, prefer an English voice.
+                    const speakLang = (lang && typeof lang === 'string') ? lang : (pendingGameLang || 'en-US');
+                    // If the translated text is actually the English equivalent, use en-US
+                    const isEnglishEquivalent = (translated && translated.toLowerCase() === equivalentWord.toLowerCase());
+                    speakText(translated, isEnglishEquivalent ? 'en-US' : speakLang);
                 };
             };
             showRepeatButtons(wordObj);
