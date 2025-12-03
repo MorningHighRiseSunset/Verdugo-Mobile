@@ -1,6 +1,50 @@
 let selectedLang = "en-US";
 let pendingGameLang = "en-US";
 let SPANISH_DICTIONARY = window.SPANISH_DICTIONARY || {};
+
+// Helper: detect likely English definition text (simple heuristic)
+function isProbablyEnglishText(text) {
+    if (!text || typeof text !== 'string') return false;
+    const t = text.toLowerCase();
+    // if contains common English function words, likely English
+    const common = [' the ', ' and ', ' to ', ' of ', ' a ', ' is ', ' in ', ' for ', ' that ', ' this ', ' be ', ' by '];
+    for (const w of common) if (t.includes(w)) return true;
+    // if it contains typical Spanish characters, treat as not English
+    if (/[áéíóúñü¿¡]/i.test(text)) return false;
+    // if it's short or contains mostly single-word glosses, assume not English
+    if (t.split(' ').length <= 2 && t.length < 20) return false;
+    // fallback: if contains only ascii letters and spaces, treat as English-ish
+    if (/^[\x00-\x7F]+$/.test(text)) return true;
+    return false;
+}
+
+// Finalize a word object before returning: if the definition appears to be English
+// but the requested language is non-English, translate the definition server-side
+// into the requested language so callers receive a definition in the correct language.
+async function finalizeWordObj(obj, langName) {
+    try {
+        if (!obj || !obj.definition) return obj;
+        // map language name (e.g., 'Spanish','English','Mandarin') to short code
+        const map = { 'Spanish': 'es', 'English': 'en', 'Mandarin': 'zh-CN', 'Hindi': 'hi', 'French': 'fr' };
+        const target = map[langName] || (typeof langName === 'string' && langName.split('-')[0]) || 'en';
+        if (target === 'en') return obj; // nothing to do
+        const def = (obj.definition || '').toString();
+        if (!isProbablyEnglishText(def)) return obj;
+        // call serverless proxy to translate the definition text into target
+        const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(target)}`;
+        const presDef = await fetch(proxyUrlDef);
+        if (presDef.ok) {
+            const pdataDef = await presDef.json();
+            const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
+            if (candidate && !/No definition found/i.test(candidate)) {
+                obj.definition = candidate;
+            }
+        }
+    } catch (e) {
+        // ignore and return original
+    }
+    return obj;
+}
 // Optional large spanish word list loader.
 window.SPANISH_WORDS = window.SPANISH_WORDS || [];
 async function loadSpanishWordList() {
@@ -558,7 +602,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     if (!definition) definition = `No definition found for "${word}".`;
                     if (!pronunciation) pronunciation = '/No pronunciation available/';
 
-                    return { word, definition, pronunciation, englishEquivalent };
+                    return await finalizeWordObj({ word, definition, pronunciation, englishEquivalent }, 'Spanish');
 
                     // No Google key: Prefer a pre-built word list `spanishWords.txt` (one word per line) if present.
                     // Fallback to `SPANISH_DICTIONARY` keys. If a chosen word is not in the
@@ -647,12 +691,12 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                         }
                     }
 
-                    return {
+                    return await finalizeWordObj({
                         word,
                         definition,
                         pronunciation,
                         englishEquivalent
-                    };
+                    }, 'Spanish');
                 }
 
         // --- ENGLISH: Use ONLY local ENGLISH_DICTIONARY.js ---
@@ -678,12 +722,12 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 pronunciation = entry.pronunciation || '';
                 englishEquivalent = entry.englishEquivalent || randomKey;
             }
-            return {
+            return await finalizeWordObj({
                 word,
                 definition,
                 pronunciation,
                 englishEquivalent
-            };
+            }, language);
         }
 
         // --- OTHER LANGUAGES: Use API-based fallback ---
