@@ -1441,7 +1441,29 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Async update UI
         (async () => {
             const eqWord = await getEquivalentInUILang();
-            const def = await getDefinitionInUILang();
+            let def = await getDefinitionInUILang();
+
+            // Force-translate the definition into the learning language when appropriate.
+            // This is a safeguard: if previous lookups returned an English definition
+            // while the user is learning a non-English language, translate the
+            // English definition text into the learning language via the serverless proxy.
+            try {
+                const targetLang = learningLangShort || 'en';
+                if (targetLang !== 'en' && def && typeof def === 'string') {
+                    const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(targetLang)}`;
+                    const presDef = await fetch(proxyUrlDef);
+                    if (presDef.ok) {
+                        const pdataDef = await presDef.json();
+                        // prefer a returned definition, otherwise a translated string
+                        const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
+                        if (candidate && !/No definition found/i.test(candidate)) {
+                            def = candidate;
+                        }
+                    }
+                }
+            } catch (e) {
+                // ignore translation failure and show original def
+            }
             logContainer.innerHTML = `
                 <div style="margin:0;padding:0;">
                     <strong>${playedLabel}:</strong> <span id="word-info-word">${playedWord}</span>
