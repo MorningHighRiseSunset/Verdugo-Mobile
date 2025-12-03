@@ -18,6 +18,22 @@ function isProbablyEnglishText(text) {
     return false;
 }
 
+// Heuristic: does the text look like it's already in `langShort`?
+function textLooksLikeLang(text, langShort) {
+    if (!text || typeof text !== 'string') return false;
+    const t = text.toLowerCase();
+    if (langShort === 'en') return isProbablyEnglishText(text);
+    if (langShort === 'es') {
+        // check for Spanish-specific characters or common Spanish words
+        if (/[áéíóúñü¿¡]/i.test(text)) return true;
+        const commonEs = [' el ', ' la ', ' de ', ' que ', ' y ', ' en ', ' para ', ' con ', ' por ', 'no '];
+        for (const w of commonEs) if (t.includes(w)) return true;
+        return false;
+    }
+    // naive fallback: treat as not matching
+    return false;
+}
+
 // Finalize a word object before returning: if the definition appears to be English
 // but the requested language is non-English, translate the definition server-side
 // into the requested language so callers receive a definition in the correct language.
@@ -1522,18 +1538,17 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             const eqWord = await getEquivalentInUILang();
             let def = await getDefinitionInUILang();
 
-            // Force-translate the definition into the learning language when appropriate.
-            // This is a safeguard: if previous lookups returned an English definition
-            // while the user is learning a non-English language, translate the
-            // English definition text into the learning language via the serverless proxy.
+            // Ensure the displayed definition matches the user's UI language (the
+            // language they speak). If it doesn't, translate the definition text
+            // into the UI language via the serverless proxy.
             try {
-                const targetLang = learningLangShort || 'en';
-                if (targetLang !== 'en' && def && typeof def === 'string') {
-                    const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(targetLang)}`;
+                const targetUiLang = uiLangShort || 'en';
+                // If the definition doesn't already look like the UI language, translate it
+                if (def && typeof def === 'string' && !textLooksLikeLang(def, targetUiLang)) {
+                    const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(targetUiLang)}`;
                     const presDef = await fetch(proxyUrlDef);
                     if (presDef.ok) {
                         const pdataDef = await presDef.json();
-                        // prefer a returned definition, otherwise a translated string
                         const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
                         if (candidate && !/No definition found/i.test(candidate)) {
                             def = candidate;
