@@ -1433,44 +1433,20 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         // Get definition in UI language
         async function getDefinitionInUILang() {
-            // Determine where to obtain the definition. Default to the learning language
-            // (the language being learned) rather than the UI language so the learner
-            // sees definitions in the target language.
-            const targetDefLang = learningLangShort || 'en';
+            // Determine where to obtain the definition. Default to the UI language
+            // (the language the user speaks) so they understand the definition.
+            const targetDefLang = uiLangShort || 'en';
 
             // Helper: return formatted missing message
             const missingHtml = `<span style="color:orange;">No definition found.</span>`;
 
-            // Try: 1) dictionary lookup in the learning language
-            try {
-                if (targetDefLang === 'en') {
-                    // For English definitions, look up the English equivalent
-                    const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
-                    const dictDataEn = await dictResEn.json();
-                    if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                        const engDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                        if (engDef) return engDef;
-                    }
-                } else {
-                    // For non-English learning languages, try to look up the played word in that language
-                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${encodeURIComponent(targetDefLang)}/${encodeURIComponent(playedWord)}`);
-                    const dictData = await dictRes.json();
-                    if (Array.isArray(dictData) && dictData[0]) {
-                        const def = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                        if (def) return def;
-                    }
-                }
-            } catch (e) {
-                // ignore and fallthrough
-            }
-
-            // Try: 2) get a reliable English definition, then translate it into the learning language
+            // Try: 1) Get a reliable English definition first
             let englishDef = '';
             try {
-                const dictResEn2 = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
-                const dictDataEn2 = await dictResEn2.json();
-                if (Array.isArray(dictDataEn2) && dictDataEn2[0]) {
-                    englishDef = dictDataEn2[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
+                const dictDataEn = await dictResEn.json();
+                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
+                    englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
                 }
             } catch (e) {
                 // ignore
@@ -1478,8 +1454,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
             if (!englishDef) return missingHtml;
 
+            // If UI language is English, return English definition directly
             if (targetDefLang === 'en') return englishDef;
 
+            // Otherwise, translate the English definition into the UI language
             // Prefer: server-side proxy translating the English definition text itself
             try {
                 const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}`;
@@ -1538,26 +1516,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             const eqWord = await getEquivalentInUILang();
             let def = await getDefinitionInUILang();
 
-            // Ensure the displayed definition matches the user's UI language (the
-            // language they speak). If it doesn't, translate the definition text
-            // into the UI language via the serverless proxy.
-            try {
-                const targetUiLang = uiLangShort || 'en';
-                // If the definition doesn't already look like the UI language, translate it
-                if (def && typeof def === 'string' && !textLooksLikeLang(def, targetUiLang)) {
-                    const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(targetUiLang)}`;
-                    const presDef = await fetch(proxyUrlDef);
-                    if (presDef.ok) {
-                        const pdataDef = await presDef.json();
-                        const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
-                        if (candidate && !/No definition found/i.test(candidate)) {
-                            def = candidate;
-                        }
-                    }
-                }
-            } catch (e) {
-                // ignore translation failure and show original def
-            }
             logContainer.innerHTML = `
                 <div style="margin:0;padding:0;">
                     <strong>${playedLabel}:</strong> <span id="word-info-word">${playedWord}</span>
