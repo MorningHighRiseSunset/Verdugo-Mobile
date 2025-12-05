@@ -1419,16 +1419,66 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         let playedWord = wordObj.word;
         let equivalentWord = wordObj.englishEquivalent;
 
-        // If UI is not English, translate the equivalent to UI language
+        // Get the English-equivalent (or a UI-language translation of it).
+        // Behavior:
+        // - If the UI language is English, prefer a real English equivalent. If
+        //   `equivalentWord` isn't an English-looking string, try to translate the
+        //   played word from the learning language into English first.
+        // - If the UI language is non-English, first ensure we have a reliable
+        //   English equivalent (translating from the learning language when needed),
+        //   then translate that English equivalent into the UI language. This avoids
+        //   feeding raw romanizations like "phir" through en->es translation which
+        //   can produce bizarre results.
         async function getEquivalentInUILang() {
-            if (uiLangShort === 'en') return equivalentWord;
-            try {
-                const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(equivalentWord)}&langpair=en|${uiLangShort}`);
-                const data = await res.json();
-                return data.responseData.translatedText || equivalentWord;
-            } catch {
-                return equivalentWord;
+            // Helper: try to fetch English equivalent by translating from learning language
+            async function fetchEnglishFromPlayed() {
+                try {
+                    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(playedWord)}&langpair=${encodeURIComponent(learningLangShort)}|en`);
+                    const data = await res.json();
+                    const txt = data && data.responseData && data.responseData.translatedText;
+                    if (txt) return txt;
+                } catch (e) {
+                    // ignore
+                }
+                return null;
             }
+
+            // If UI language is English
+            if (uiLangShort === 'en') {
+                // If the existing equivalent looks like English, return it
+                if (equivalentWord && textLooksLikeLang(equivalentWord, 'en')) return equivalentWord;
+
+                // Otherwise try to fetch a proper English equivalent from the played word
+                const fetched = await fetchEnglishFromPlayed();
+                if (fetched) return fetched;
+
+                // Fall back to whatever we have
+                return equivalentWord || playedWord;
+            }
+
+            // For non-English UI languages: ensure we have an English equivalent first
+            let englishEq = equivalentWord && textLooksLikeLang(equivalentWord, 'en') ? equivalentWord : null;
+            if (!englishEq) {
+                englishEq = await fetchEnglishFromPlayed();
+            }
+            if (!englishEq) {
+                // As a last resort, use playedWord (may be non-Latin); return that raw
+                // since translating a garbage englishEquivalent will produce worse results.
+                return equivalentWord || playedWord;
+            }
+
+            // Now translate the English equivalent into the UI language
+            try {
+                const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
+                const data2 = await res2.json();
+                const out = data2 && data2.responseData && data2.responseData.translatedText;
+                if (out) return out;
+            } catch (e) {
+                // ignore
+            }
+
+            // Fallbacks
+            return englishEq || equivalentWord || playedWord;
         }
 
         // Get definition in UI language
