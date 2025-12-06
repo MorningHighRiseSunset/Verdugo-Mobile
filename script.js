@@ -34,6 +34,84 @@ function textLooksLikeLang(text, langShort) {
     return false;
 }
 
+// Simple transliteration for Devanagari (Hindi) -> Latin (IAST-like simplified)
+function transliterateDevanagari(input) {
+    if (!input || typeof input !== 'string') return '';
+    // Basic mappings
+    const vowels = {
+        '\u0905': 'a', '\u0906': 'ā', '\u0907': 'i', '\u0908': 'ī', '\u0909': 'u', '\u090A': 'ū',
+        '\u090F': 'e', '\u0910': 'ai', '\u0913': 'o', '\u0914': 'au', '\u0960': 'r̥'
+    };
+    const vowelSigns = {
+        '\u093E': 'ā', '\u093F': 'i', '\u0940': 'ī', '\u0941': 'u', '\u0942': 'ū', '\u0947': 'e', '\u0948': 'ai', '\u094B': 'o', '\u094C': 'au', '\u0902': 'ṃ', '\u0903': 'ḥ'
+    };
+    const consonants = {
+        '\u0915': 'k', '\u0916': 'kh', '\u0917': 'g', '\u0918': 'gh', '\u0919': 'ṅ',
+        '\u091A': 'c', '\u091B': 'ch', '\u091C': 'j', '\u091D': 'jh', '\u091E': 'ñ',
+        '\u091F': 'ṭ', '\u0920': 'ṭh', '\u0921': 'ḍ', '\u0922': 'ḍh', '\u0923': 'ṇ',
+        '\u0924': 't', '\u0925': 'th', '\u0926': 'd', '\u0927': 'dh', '\u0928': 'n',
+        '\u092A': 'p', '\u092B': 'ph', '\u092C': 'b', '\u092D': 'bh', '\u092E': 'm',
+        '\u092F': 'y', '\u0930': 'r', '\u0932': 'l', '\u0935': 'v', '\u0936': 'ś', '\u0937': 'ṣ', '\u0938': 's', '\u0939': 'h',
+        '\u0958': 'q', '\u0959': 'ḵ', '\u095A': 'ġ', '\u095B': 'z', '\u095C': 'ṛ', '\u095D': 'f'
+    };
+    const virama = '\u094D'; // halant
+
+    let out = '';
+    for (let i = 0; i < input.length; i++) {
+        const ch = input[i];
+        const code = ch;
+        // independent vowel
+        if (vowels[code]) {
+            out += vowels[code];
+            continue;
+        }
+        // consonant
+        if (consonants[code]) {
+            let cons = consonants[code];
+            // look ahead for vowel sign or virama
+            const next = input[i + 1];
+            if (next === virama) {
+                out += cons;
+                i++; // skip virama
+                continue;
+            }
+            if (vowelSigns[next]) {
+                out += cons + vowelSigns[next];
+                i++; // skip vowel sign
+                continue;
+            }
+            // default implicit 'a'
+            out += cons + 'a';
+            continue;
+        }
+        // vowel sign (standalone) or diacritic
+        if (vowelSigns[code]) {
+            out += vowelSigns[code];
+            continue;
+        }
+        // anusvara or others
+        if (code === '\u0902') { out += 'ṃ'; continue; }
+        if (code === '\u0903') { out += 'ḥ'; continue; }
+        // whitespace or latin characters pass through
+        if (/\s/.test(ch) || /[\u0000-\u007F]/.test(ch)) {
+            out += ch;
+            continue;
+        }
+        // fallback: try approximate by removing diacritics
+        out += ch;
+    }
+    // simple cleanup: remove duplicated vowels like 'aa' -> 'ā' not handled here; keep raw
+    return out.replace(/\u00A0/g, '');
+}
+
+function transliterate(text, fromLang) {
+    if (!text) return '';
+    const lang = (fromLang || '').toString().toLowerCase();
+    if (lang.startsWith('hi')) return transliterateDevanagari(text);
+    // other scripts could be added later
+    return text;
+}
+
 // Finalize a word object before returning: if the definition appears to be English
 // but the requested language is non-English, translate the definition server-side
 // into the requested language so callers receive a definition in the correct language.
@@ -1565,6 +1643,18 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         (async () => {
             const eqWord = await getEquivalentInUILang();
             let def = await getDefinitionInUILang();
+
+            // If the played word uses non-Latin script (e.g., Devanagari) and the
+            // UI language uses Latin characters, show a transliteration instead of
+            // raw symbols so users see readable Latin letters.
+            let displayedPlayedWord = playedWord;
+            const containsNonLatin = /[^\x00-\x7F]/.test(playedWord || '');
+            const uiUsesLatin = ['en', 'es', 'fr'].includes(uiLangShort);
+            if (containsNonLatin && uiUsesLatin) {
+                const t = transliterate(playedWord, learningLangShort || 'hi');
+                // prefer transliteration if it produced ascii letters
+                if (t && /[A-Za-z]/.test(t)) displayedPlayedWord = t;
+            }
 
             logContainer.innerHTML = `
                 <div style="margin:0;padding:0;">
