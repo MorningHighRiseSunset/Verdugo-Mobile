@@ -112,6 +112,35 @@ function transliterate(text, fromLang) {
     return text;
 }
 
+// Fetch a first-sentence definition from Wiktionary (language-specific subdomain)
+async function fetchWiktionaryDefinition(word, langShort = 'en') {
+    if (!word) return null;
+    try {
+        // Choose wiktionary domain (e.g., en.wiktionary.org, es.wiktionary.org)
+        const domain = `${langShort}.wiktionary.org`;
+        const url = `https://${domain}/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=extracts&explaintext=1&exintro=1&format=json&origin=*`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const j = await res.json();
+        const pages = j && j.query && j.query.pages;
+        if (!pages) return null;
+        const pageId = Object.keys(pages)[0];
+        if (!pageId || pageId === '-1') return null;
+        const extract = pages[pageId].extract || '';
+        if (!extract) return null;
+        // Get the first non-empty line/paragraph
+        const para = extract.split(/\n+/).map(p => p.trim()).find(Boolean) || '';
+        if (!para) return null;
+        // Take the first sentence (split on punctuation). Keep it simple.
+        const m = para.match(/[^\.\!\?]+[\.\!\?]?/);
+        const sentence = m ? m[0].trim() : para;
+        // Clean up references like (intransitive), etc. Return sentence
+        return sentence.replace(/\s*\[[^\]]+\]/g, '').replace(/\s*\([^\)]+\)/g, '').trim();
+    } catch (e) {
+        return null;
+    }
+}
+
 // Finalize a word object before returning: if the definition appears to be English
 // but the requested language is non-English, translate the definition server-side
 // into the requested language so callers receive a definition in the correct language.
@@ -1579,8 +1608,16 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             } catch (e) {
                 // ignore
             }
-
-            if (!englishDef) return missingHtml;
+                // If dictionaryapi.dev didn't return a definition, try Wiktionary as a fallback
+                if (!englishDef) {
+                    try {
+                        const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                        if (wik) englishDef = wik;
+                    } catch (e) {
+                        // ignore
+                    }
+                }
+                if (!englishDef) return missingHtml;
 
             // If UI language is English, return English definition directly
             if (targetDefLang === 'en') return englishDef;
@@ -1658,7 +1695,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
             logContainer.innerHTML = `
                 <div style="margin:0;padding:0;">
-                    <strong>${playedLabel}:</strong> <span id="word-info-word">${playedWord}</span>
+                    <strong>${playedLabel}:</strong> <span id="word-info-word">${displayedPlayedWord}</span>
                     &nbsp;|&nbsp;
                     <strong>${eqLabel}:</strong> <span id="word-info-equivalent">${eqWord}</span>
                 </div>
@@ -1718,10 +1755,20 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     }
                 }
 
-                if (!englishDef) {
-                    document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
-                    return;
-                }
+                    if (!englishDef) {
+                        // Try Wiktionary as a fallback for an English definition
+                        try {
+                            const wikEn = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                            if (wikEn) englishDef = wikEn;
+                        } catch (e) {
+                            // ignore
+                        }
+                    }
+
+                    if (!englishDef) {
+                        document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
+                        return;
+                    }
 
                 if (defLang === 'en') {
                     document.getElementById('word-info-def').innerText = englishDef;
@@ -1788,14 +1835,37 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                         const dictDataEn = await dictResEn.json();
                         if (Array.isArray(dictDataEn) && dictDataEn[0]) {
                             let englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
+                            if (!englishDef) {
+                                // Try Wiktionary for English def
+                                const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                                if (wik) englishDef = wik;
+                            }
                             if (englishDef) {
-                                const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${lang}`);
-                                const transDefData = await transDefRes.json();
-                                def = transDefData.responseData.translatedText;
+                                try {
+                                    const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${lang}`);
+                                    const transDefData = await transDefRes.json();
+                                    def = transDefData.responseData.translatedText;
+                                } catch (e) {
+                                    def = englishDef;
+                                }
                             }
                             pron = dictDataEn[0].phonetic || '';
+                        } else {
+                            // Try Wiktionary directly for English and translate
+                            const wik2 = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                            if (wik2) {
+                                try {
+                                    const transDefRes2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(wik2)}&langpair=en|${lang}`);
+                                    const transDefData2 = await transDefRes2.json();
+                                    def = transDefData2.responseData.translatedText;
+                                } catch (e) {
+                                    def = wik2;
+                                }
+                            }
                         }
-                    } catch {}
+                    } catch (e) {
+                        // ignore
+                    }
                 }
                 if (!def) def = `<span style="color:orange;">No definition found for "${translated}" in this language.</span>`;
                 if (!pron) pron = '<span style="color:orange;">No pronunciation available.</span>';
