@@ -1329,28 +1329,28 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             row.style.gap = '12px';
             row.style.marginBottom = '8px';
 
-                // Create the label (use the language's flag instead of a globe)
-                const label = document.createElement('span');
-                const flagDisplay = getFlagDisplay(lang.code);
-                // Make the flag a link to the translator tool for all languages
-                const translatorUrl = getTranslatorUrl(lang.code);
-                const flagHtml = translatorUrl
-                    ? `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flagDisplay}</span></a>`
-                    : `<span class="flag-emoji">${flagDisplay}</span>`;
-                label.innerHTML = `${flagHtml} ${TRANSLATIONS.choose_language[lang.code]}`;
-                label.style.minWidth = '180px';
-                label.style.textAlign = 'right';
+            // Create the label (use the language's flag instead of a globe)
+            const label = document.createElement('span');
+            const flagDisplay = getFlagDisplay(lang.code);
+            // Make the flag a link to the translator tool for all languages
+            const translatorUrl = getTranslatorUrl(lang.code);
+            const flagHtml = translatorUrl
+                ? `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flagDisplay}</span></a>`
+                : `<span class="flag-emoji">${flagDisplay}</span>`;
+            label.innerHTML = `${flagHtml} ${TRANSLATIONS.choose_language[lang.code]}`;
+            label.style.minWidth = '180px';
+            label.style.textAlign = 'right';
 
-                // Create the button (always a plain button — the left label handles translator links)
-                const btn = document.createElement('button');
-                btn.innerHTML = '';
-                const btnFlag = document.createElement('span');
-                btnFlag.className = 'flag-emoji';
-                btnFlag.textContent = flagDisplay;
-                const btnName = document.createElement('span');
-                btnName.textContent = ' ' + (lang.names[lang.code] || lang.canonicalName);
-                btn.appendChild(btnFlag);
-                btn.appendChild(btnName);
+            // Create the button (always a plain button — the left label handles translator links)
+            const btn = document.createElement('button');
+            btn.innerHTML = '';
+            const btnFlag = document.createElement('span');
+            btnFlag.className = 'flag-emoji';
+            btnFlag.textContent = flagDisplay;
+            const btnName = document.createElement('span');
+            btnName.textContent = ' ' + (lang.names[lang.code] || lang.canonicalName);
+            btn.appendChild(btnFlag);
+            btn.appendChild(btnName);
             btn.style.padding = '4px 16px 4px 10px'; // More right padding
             btn.style.fontSize = '15px';
             btn.style.minWidth = '80px';
@@ -1369,6 +1369,23 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 });
                 pendingGameLang = lang.code; // Also set as pending game language
                 updateInstructionsPopup(lang.code); // Update instructions popup language
+                // Immediately start the game for the selected language
+                if (typeof fetchWordObject === "function") {
+                    const langObj = LANGUAGES.find(l => l.code === lang.code);
+                    const langName = langObj ? langObj.canonicalName : "English";
+                    fetchWordObject(langName).then(wordObj => {
+                        wordObj.gameLangCode = lang.code;
+                        wordObj.gameLangName = langObj.canonicalName;
+                        currentWordObj = wordObj;
+                        selectedWord = wordObj.word.toUpperCase();
+                        usedWords.add(selectedWord);
+                        guessedLetters = [];
+                        wrongGuesses = 0;
+                        if (typeof updateWordDisplay === "function") updateWordDisplay();
+                        if (typeof drawHangman === "function") drawHangman();
+                        if (typeof createKeyboard === "function") createKeyboard();
+                    });
+                }
             };
 
             row.appendChild(label);
