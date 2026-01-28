@@ -20,8 +20,8 @@
         margin: 2px 0;
     }
     #log-container, #word-info-def, #word-info-pron {
-        min-height: 10vh;
-        max-height: 16vh;
+        min-height: 32vh;
+        max-height: 45vh;
         font-size: 0.28em !important;
         line-height: 1em;
         margin-bottom: 60px !important;
