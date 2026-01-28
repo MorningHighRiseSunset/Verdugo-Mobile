@@ -19,11 +19,13 @@
         padding: 6px 6px;
         margin: 2px 0;
     }
-    #log-container {
-        min-height: 32vh;
-        max-height: 45vh;
-        font-size: 1.2em !important;
+    #log-container, #word-info-def, #word-info-pron {
+        min-height: 28vh;
+        max-height: 38vh;
+        font-size: 0.95em !important;
+        line-height: 1.15em;
         margin-bottom: 60px !important;
+        padding: 6px 2vw 6px 2vw;
         /* leave space for fixed buttons */
     }
     .game-container {
