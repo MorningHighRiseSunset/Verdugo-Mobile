@@ -20,12 +20,12 @@
         margin: 2px 0;
     }
     #log-container, #word-info-def, #word-info-pron {
-        min-height: 28vh;
-        max-height: 38vh;
-        font-size: 0.95em !important;
-        line-height: 1.15em;
+        min-height: 24vh;
+        max-height: 34vh;
+        font-size: 0.72em !important;
+        line-height: 1.05em;
         margin-bottom: 60px !important;
-        padding: 6px 2vw 6px 2vw;
+        padding: 2px 1vw 2px 1vw;
         /* leave space for fixed buttons */
     }
     .game-container {
