@@ -1,5 +1,5 @@
-let selectedLang = "en-US";
-let pendingGameLang = "en-US";
+let selectedLang = null; // No language selected by default
+let pendingGameLang = null;
 let SPANISH_DICTIONARY = window.SPANISH_DICTIONARY || {};
 
 // Helper: detect likely English definition text (simple heuristic)
@@ -725,6 +725,16 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     if (!definition) definition = `No definition found for "${word}".`;
                     if (!pronunciation) pronunciation = '/No pronunciation available/';
 
+                    // Fallback: Try Wiktionary (Spanish) if still no definition
+                    if (!definition || /^No definition found/i.test(definition)) {
+                        try {
+                            const wiktionaryDef = await fetchWiktionaryDefinition(word, 'es');
+                            if (wiktionaryDef && !/^No definition found/i.test(wiktionaryDef)) {
+                                definition = wiktionaryDef;
+                            }
+                        } catch (e) {}
+                    }
+
                     return await finalizeWordObj({ word, definition, pronunciation, englishEquivalent }, 'Spanish');
 
                     // No Google key: Prefer a pre-built word list `spanishWords.txt` (one word per line) if present.
@@ -1425,7 +1435,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             };
         });
 
-        setUILanguage(selectedLang);
+        // Do NOT set UI language or highlight any language on load. Wait for user selection.
 
         // (removed defensive click handler — main fix ensures `.lang-btn` never contains anchors)
     });
