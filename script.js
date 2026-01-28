@@ -1225,18 +1225,58 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         if (selectedWord && wrongGuesses >= maxWrongGuesses) {
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
-            // logWordResult(selectedWord, getWordDefinition(selectedWord), false); // REMOVE THIS LINE
             playRandomSound(loseSounds);
             showRepeatButtons(currentWordObj);
             showWordInfo(currentWordObj);
+            // Always show definition after spelling (even if missing)
+            setTimeout(() => {
+                // Auto-start new game after 5 seconds in same language
+                if (pendingGameLang) {
+                    const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
+                    if (langObj && typeof fetchWordObject === "function") {
+                        fetchWordObject(langObj.canonicalName).then(wordObj => {
+                            wordObj.gameLangCode = pendingGameLang;
+                            wordObj.gameLangName = langObj.canonicalName;
+                            currentWordObj = wordObj;
+                            selectedWord = wordObj.word.toUpperCase();
+                            usedWords.add(selectedWord);
+                            guessedLetters = [];
+                            wrongGuesses = 0;
+                            if (typeof updateWordDisplay === "function") updateWordDisplay();
+                            if (typeof drawHangman === "function") drawHangman();
+                            if (typeof createKeyboard === "function") createKeyboard();
+                        });
+                    }
+                }
+            }, 5000);
             resetGame();
         } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
-            // logWordResult(selectedWord, getWordDefinition(selectedWord), true); // REMOVE THIS LINE
             playRandomSound(winSounds);
             showRepeatButtons(currentWordObj);
             showWordInfo(currentWordObj);
+            // Always show definition after spelling (even if missing)
+            setTimeout(() => {
+                // Auto-start new game after 5 seconds in same language
+                if (pendingGameLang) {
+                    const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
+                    if (langObj && typeof fetchWordObject === "function") {
+                        fetchWordObject(langObj.canonicalName).then(wordObj => {
+                            wordObj.gameLangCode = pendingGameLang;
+                            wordObj.gameLangName = langObj.canonicalName;
+                            currentWordObj = wordObj;
+                            selectedWord = wordObj.word.toUpperCase();
+                            usedWords.add(selectedWord);
+                            guessedLetters = [];
+                            wrongGuesses = 0;
+                            if (typeof updateWordDisplay === "function") updateWordDisplay();
+                            if (typeof drawHangman === "function") drawHangman();
+                            if (typeof createKeyboard === "function") createKeyboard();
+                        });
+                    }
+                }
+            }, 5000);
             resetGame();
         }
     }
