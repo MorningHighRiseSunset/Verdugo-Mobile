@@ -601,7 +601,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         // List of common short words to avoid as game words
         const BAD_TRANSLATIONS = [
-            'con', 'de', 'a', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'y', 'o', 'pero', 'por', 'para', 'sin', 'al', 'del', 'le', 'les',
+            'con', 'de', 'a', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'y', 'o', 'pero', 'por', 'para', 'al', 'del', 'le', 'les',
             'du', 'des', 'et', 'ou', 'mais', 'avec', 'dans', 'sur', 'par', 'chez', 'au', 'aux', 'ce', 'cette', 'ces',
             '是', '的', '了', '和', '在', '有', '我', '你', '他', '她', '它', '我们', '你们', '他们', '她们', '它们'
         ];
