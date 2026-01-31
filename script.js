@@ -112,13 +112,61 @@ function transliterate(text, fromLang) {
     return text;
 }
 
+// Extract first available definition and phonetic from a DictionaryAPI entry object.
+// Handles multiple meanings/definitions so we don't miss valid definitions.
+function extractFirstDefinition(entry) {
+    if (!entry || typeof entry !== 'object') return { definition: '', phonetic: '' };
+    let definition = '';
+    const meanings = entry.meanings;
+    if (Array.isArray(meanings)) {
+        for (const m of meanings) {
+            const defs = m && m.definitions;
+            if (Array.isArray(defs)) {
+                for (const d of defs) {
+                    const text = (d && d.definition && String(d.definition).trim()) || '';
+                    if (text && !/^No definition found/i.test(text)) {
+                        definition = text;
+                        break;
+                    }
+                }
+                if (definition) break;
+            }
+        }
+    }
+    let phonetic = (entry.phonetic && String(entry.phonetic).trim()) || '';
+    if (!phonetic && Array.isArray(entry.phonetics)) {
+        const withText = entry.phonetics.find(p => p && p.text && String(p.text).trim());
+        phonetic = withText ? String(withText.text).trim() : '';
+    }
+    return { definition, phonetic: phonetic || '' };
+}
+
+// Fetch definition from DictionaryAPI; returns { definition, phonetic } or null.
+// Only treats response as valid when res.ok and body is an array of entries.
+async function fetchDefinitionFromDictionaryApi(lang, word) {
+    if (!word || !lang) return null;
+    const langCode = (lang === 'zh-CN' || lang === 'zh') ? 'zh' : (String(lang).split('-')[0] || 'en');
+    try {
+        const url = `https://api.dictionaryapi.dev/api/v2/entries/${encodeURIComponent(langCode)}/${encodeURIComponent(String(word).trim())}`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!Array.isArray(data) || !data[0]) return null;
+        const out = extractFirstDefinition(data[0]);
+        return out.definition ? out : null;
+    } catch (e) {
+        return null;
+    }
+}
+
 // Fetch a first-sentence definition from Wiktionary (language-specific subdomain)
 async function fetchWiktionaryDefinition(word, langShort = 'en') {
     if (!word) return null;
+    const w = String(word).trim();
+    if (!w) return null;
     try {
-        // Choose wiktionary domain (e.g., en.wiktionary.org, es.wiktionary.org)
         const domain = `${langShort}.wiktionary.org`;
-        const url = `https://${domain}/w/api.php?action=query&titles=${encodeURIComponent(word)}&prop=extracts&explaintext=1&exintro=1&format=json&origin=*`;
+        const url = `https://${domain}/w/api.php?action=query&titles=${encodeURIComponent(w)}&prop=extracts&explaintext=1&exintro=1&exsentences=2&format=json&origin=*`;
         const res = await fetch(url);
         if (!res.ok) return null;
         const j = await res.json();
@@ -128,14 +176,12 @@ async function fetchWiktionaryDefinition(word, langShort = 'en') {
         if (!pageId || pageId === '-1') return null;
         const extract = pages[pageId].extract || '';
         if (!extract) return null;
-        // Get the first non-empty line/paragraph
-        const para = extract.split(/\n+/).map(p => p.trim()).find(Boolean) || '';
+        const lines = extract.split(/\n+/).map(p => p.trim()).filter(Boolean);
+        let para = lines.find(p => p.length > 10 && !/^redirect\s*:/i.test(p) && !/^#/i.test(p)) || lines[0] || '';
         if (!para) return null;
-        // Take the first sentence (split on punctuation). Keep it simple.
         const m = para.match(/[^\.\!\?]+[\.\!\?]?/);
-        const sentence = m ? m[0].trim() : para;
-        // Clean up references like (intransitive), etc. Return sentence
-        return sentence.replace(/\s*\[[^\]]+\]/g, '').replace(/\s*\([^\)]+\)/g, '').trim();
+        const sentence = (m ? m[0].trim() : para).replace(/\s*\[[^\]]+\]/g, '').replace(/\s*\([^\)]+\)/g, '').trim();
+        return sentence.length > 3 ? sentence : null;
     } catch (e) {
         return null;
     }
@@ -683,25 +729,18 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     } else {
                         // Try to fetch a Spanish definition first, then English definition for the base word
                         let defFromEnglish = false;
-                        try {
-                            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${encodeURIComponent(word)}`);
-                            const dictData = await dictRes.json();
-                            if (Array.isArray(dictData) && dictData[0]) {
-                                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                                pronunciation = dictData[0].phonetic || '';
-                            }
-                        } catch (e) {}
-
+                        let dictResult = await fetchDefinitionFromDictionaryApi('es', word);
+                        if (dictResult) {
+                            definition = dictResult.definition;
+                            pronunciation = dictResult.phonetic || '';
+                        }
                         if (!definition) {
-                            try {
-                                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(englishEquivalent)}`);
-                                const dictDataEn = await dictResEn.json();
-                                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                                    definition = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                                    pronunciation = dictDataEn[0].phonetic || '';
-                                    defFromEnglish = !!definition;
-                                }
-                            } catch (e) {}
+                            dictResult = await fetchDefinitionFromDictionaryApi('en', englishEquivalent);
+                            if (dictResult) {
+                                definition = dictResult.definition;
+                                pronunciation = dictResult.phonetic || '';
+                                defFromEnglish = true;
+                            }
                         }
 
                         // If we only found an English definition, translate that definition text into Spanish
@@ -793,17 +832,15 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                         }
 
                         // Try to fetch an English definition for the English equivalent
-                        try {
-                            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(englishEquivalent)}`);
-                            const dictData = await dictRes.json();
-                            if (Array.isArray(dictData) && dictData[0]) {
-                                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                                pronunciation = dictData[0].phonetic || '';
-                            }
-                        } catch (e) {
-                            // ignore
+                        let dictResult = await fetchDefinitionFromDictionaryApi('en', englishEquivalent);
+                        if (dictResult) {
+                            definition = dictResult.definition;
+                            pronunciation = dictResult.phonetic || '';
                         }
-
+                        if (!definition) {
+                            const wikEn = await fetchWiktionaryDefinition(englishEquivalent, 'en');
+                            if (wikEn) definition = wikEn;
+                        }
                         if (!definition) definition = `Definition for "${chosen}" not found locally.`;
                         if (!pronunciation) pronunciation = '/No pronunciation available/';
                         // If we only have an English definition for a Spanish word, translate it now
@@ -943,18 +980,16 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             englishEquivalent = baseWord;
         }
 
-        try {
-            const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${dictLangCode}/${encodeURIComponent(word)}`);
-            const dictData = await dictRes.json();
-            if (Array.isArray(dictData) && dictData[0]) {
-                definition = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                pronunciation = dictData[0].phonetic || '';
-            }
-        } catch (e) {
-            definition = '';
-            pronunciation = '/No pronunciation available/';
+        let dictResult = await fetchDefinitionFromDictionaryApi(dictLangCode, word);
+        if (dictResult) {
+            definition = dictResult.definition;
+            pronunciation = dictResult.phonetic || '';
         }
-
+        if (!definition) {
+            const wikLang = (dictLangCode === 'zh') ? 'zh' : dictLangCode;
+            const wikDef = await fetchWiktionaryDefinition(word, wikLang);
+            if (wikDef) definition = wikDef;
+        }
         if (!definition) definition = `No definition found for "${word}" in ${language}.`;
         if (!pronunciation) pronunciation = '/No pronunciation available/';
 
@@ -1664,27 +1699,15 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             // Helper: return formatted missing message
             const missingHtml = `<span style="color:orange;">No definition found.</span>`;
 
-            // Try: 1) Get a reliable English definition first
+            // Try: 1) Get a reliable English definition first (DictionaryAPI then Wiktionary)
             let englishDef = '';
-            try {
-                const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
-                const dictDataEn = await dictResEn.json();
-                if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                    englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                }
-            } catch (e) {
-                // ignore
+            const dictResultEn = await fetchDefinitionFromDictionaryApi('en', equivalentWord);
+            if (dictResultEn) englishDef = dictResultEn.definition;
+            if (!englishDef) {
+                const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                if (wik) englishDef = wik;
             }
-                // If dictionaryapi.dev didn't return a definition, try Wiktionary as a fallback
-                if (!englishDef) {
-                    try {
-                        const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                        if (wik) englishDef = wik;
-                    } catch (e) {
-                        // ignore
-                    }
-                }
-                if (!englishDef) return missingHtml;
+            if (!englishDef) return missingHtml;
 
             // If UI language is English, return English definition directly
             if (targetDefLang === 'en') return englishDef;
@@ -1811,26 +1834,13 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 if (defText && !isPlaceholder) englishDef = defText;
 
                 if (!englishDef) {
-                    try {
-                        const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
-                        const dictDataEn = await dictResEn.json();
-                        if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                            englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                        }
-                    } catch (e) {
-                        // ignore
+                    const dictResultEn = await fetchDefinitionFromDictionaryApi('en', equivalentWord);
+                    if (dictResultEn) englishDef = dictResultEn.definition;
+                    if (!englishDef) {
+                        const wikEn = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                        if (wikEn) englishDef = wikEn;
                     }
                 }
-
-                    if (!englishDef) {
-                        // Try Wiktionary as a fallback for an English definition
-                        try {
-                            const wikEn = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                            if (wikEn) englishDef = wikEn;
-                        } catch (e) {
-                            // ignore
-                        }
-                    }
 
                     if (!englishDef) {
                         document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
@@ -1887,51 +1897,35 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 }
                 // Try DictionaryAPI.dev for definition/pronunciation in target language
                 let def = '', pron = '';
-                try {
-                    const dictRes = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/${lang}/${encodeURIComponent(translated)}`);
-                    const dictData = await dictRes.json();
-                    if (Array.isArray(dictData) && dictData[0]) {
-                        def = dictData[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                        pron = dictData[0].phonetic || '';
-                    }
-                } catch {}
-                // If not found, get English definition and translate it
+                const dictResult = await fetchDefinitionFromDictionaryApi(lang, translated);
+                if (dictResult) {
+                    def = dictResult.definition;
+                    pron = dictResult.phonetic || '';
+                }
                 if (!def) {
-                    try {
-                        const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(equivalentWord)}`);
-                        const dictDataEn = await dictResEn.json();
-                        if (Array.isArray(dictDataEn) && dictDataEn[0]) {
-                            let englishDef = dictDataEn[0].meanings?.[0]?.definitions?.[0]?.definition || '';
-                            if (!englishDef) {
-                                // Try Wiktionary for English def
-                                const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                                if (wik) englishDef = wik;
-                            }
-                            if (englishDef) {
-                                try {
-                                    const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${lang}`);
-                                    const transDefData = await transDefRes.json();
-                                    def = transDefData.responseData.translatedText;
-                                } catch (e) {
-                                    def = englishDef;
-                                }
-                            }
-                            pron = dictDataEn[0].phonetic || '';
-                        } else {
-                            // Try Wiktionary directly for English and translate
-                            const wik2 = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                            if (wik2) {
-                                try {
-                                    const transDefRes2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(wik2)}&langpair=en|${lang}`);
-                                    const transDefData2 = await transDefRes2.json();
-                                    def = transDefData2.responseData.translatedText;
-                                } catch (e) {
-                                    def = wik2;
-                                }
-                            }
+                    const wikTarget = await fetchWiktionaryDefinition(translated, (lang === 'zh-CN' || lang === 'zh') ? 'zh' : lang);
+                    if (wikTarget) def = wikTarget;
+                }
+                // If still not found, get English definition and translate it
+                if (!def) {
+                    let englishDef = '';
+                    const dictResultEn = await fetchDefinitionFromDictionaryApi('en', equivalentWord);
+                    if (dictResultEn) {
+                        englishDef = dictResultEn.definition;
+                        pron = dictResultEn.phonetic || '';
+                    }
+                    if (!englishDef) {
+                        const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
+                        if (wik) englishDef = wik;
+                    }
+                    if (englishDef) {
+                        try {
+                            const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${lang}`);
+                            const transDefData = await transDefRes.json();
+                            def = transDefData.responseData.translatedText;
+                        } catch (e) {
+                            def = englishDef;
                         }
-                    } catch (e) {
-                        // ignore
                     }
                 }
                 if (!def) def = `<span style="color:orange;">No definition found for "${translated}" in this language.</span>`;
