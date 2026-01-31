@@ -25,12 +25,14 @@
         align-items: center;
         gap: 4px !important;
         flex-wrap: nowrap !important;
+        justify-content: flex-start !important;
     }
     #instructions-button {
         white-space: nowrap !important;
     }
     .lang-btn {
-        flex: 1;
+        flex: none;
+        width: 80px;
         min-width: 0 !important;
         max-width: none !important;
         font-size: 0.8em !important;
@@ -51,7 +53,8 @@
         justify-content: center;
     }
     #instructions-button {
-        flex: 1.5;
+        flex: none;
+        width: 150px;
         min-width: 0 !important;
         max-width: none !important;
         font-size: 0.8em !important;
@@ -128,13 +131,13 @@ body {
 .button-row {
     display: flex;
     gap: 6px;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     margin-bottom: 6px;
     margin-top: 6px;
     flex-direction: row;
     width: 100%;
-    padding: 0 12px 0 12px;
+    padding: 0 12px 0 0;
     box-sizing: border-box;
 @media screen and (max-width: 768px) {
     .button-row {
@@ -156,12 +159,12 @@ body {
     display: flex;
     gap: 8px;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 8px;
 }
 
 .lang-btn {
-    min-width: 120px;
+    min-width: 100px;
     padding: 8px 12px;
     border-radius: 8px;
     border: 1.5px solid #b3c6e0;
@@ -618,6 +621,50 @@ button:active, button:focus {
         overflow-y: auto;
         border: none !important;
     }
+    .lang-btn {
+        flex: none;
+        width: 70px;
+        min-width: 0 !important;
+        max-width: none !important;
+        font-size: 0.8em !important;
+        padding: 6px 3px !important;
+        margin: 2px 0 !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        background: #f5faff !important;
+        border: 1.5px solid #b3c6e0 !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #instructions-button {
+        flex: none;
+        width: 100px;
+        min-width: 0 !important;
+        max-width: none !important;
+        font-size: 0.8em !important;
+        padding: 6px 3px !important;
+        margin: 2px 0 !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        background: #f5faff !important;
+        border: 1.5px solid #b3c6e0 !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -681,5 +728,49 @@ button:active, button:focus {
         border-radius: 0 0 10px 10px;
         margin-left: 0;
         margin-right: 0;
+    }
+    .lang-btn {
+        flex: none;
+        width: 60px;
+        min-width: 0 !important;
+        max-width: none !important;
+        font-size: 0.8em !important;
+        padding: 6px 3px !important;
+        margin: 2px 0 !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        background: #f5faff !important;
+        border: 1.5px solid #b3c6e0 !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    #instructions-button {
+        flex: none;
+        width: 80px;
+        min-width: 0 !important;
+        max-width: none !important;
+        font-size: 0.8em !important;
+        padding: 6px 3px !important;
+        margin: 2px 0 !important;
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        background: #f5faff !important;
+        border: 1.5px solid #b3c6e0 !important;
+        color: inherit !important;
+        box-shadow: none !important;
+        white-space: normal !important;
+        overflow: visible !important;
+        text-overflow: unset !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 }
