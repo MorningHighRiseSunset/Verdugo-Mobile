@@ -1414,23 +1414,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 });
                 pendingGameLang = lang.code; // Also set as pending game language
                 updateInstructionsPopup(lang.code); // Update instructions popup language
-                // Immediately start the game for the selected language
-                if (typeof fetchWordObject === "function") {
-                    const langObj = LANGUAGES.find(l => l.code === lang.code);
-                    const langName = langObj ? langObj.canonicalName : "English";
-                    fetchWordObject(langName).then(wordObj => {
-                        wordObj.gameLangCode = lang.code;
-                        wordObj.gameLangName = langObj.canonicalName;
-                        currentWordObj = wordObj;
-                        selectedWord = wordObj.word.toUpperCase();
-                        usedWords.add(selectedWord);
-                        guessedLetters = [];
-                        wrongGuesses = 0;
-                        if (typeof updateWordDisplay === "function") updateWordDisplay();
-                        if (typeof drawHangman === "function") drawHangman();
-                        if (typeof createKeyboard === "function") createKeyboard();
-                    });
-                }
             };
 
             row.appendChild(label);
