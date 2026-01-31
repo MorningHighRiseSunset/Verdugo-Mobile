@@ -54,18 +54,18 @@
         margin-top: 0 !important;
     }
     #log-container, #word-info-def, #word-info-pron {
-        min-height: 30vh;
-        max-height: 45vh;
+        min-height: 50vh;
+        max-height: 70vh;
         font-size: 1em !important;
         line-height: 1.2em;
-        margin-bottom: 40px !important;
+        margin-bottom: 0px !important;
         padding: 0 0.1vw 0 0.1vw;
-        /* leave space for fixed buttons */
+        /* buttons will be right below */
     }
     .game-container {
         min-height: 70vh;
         height: auto;
-        padding-bottom: 80px !important;
+        padding-bottom: 40px !important;
     }
 }
 /* === GENERAL LAYOUT === */
@@ -589,8 +589,8 @@ button:active, button:focus {
     #log-container, #word-info-def, #word-info-pron {
         font-size: 1.4em !important;
         line-height: 1.7em;
-        min-height: 35vh;
-        max-height: 50vh;
+        min-height: 60vh;
+        max-height: 80vh;
         overflow-y: auto;
     }
 }
