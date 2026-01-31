@@ -54,9 +54,9 @@
         margin-top: 0 !important;
     }
     #log-container, #word-info-def, #word-info-pron {
-        min-height: 50vh;
-        max-height: 70vh;
-        font-size: 1em !important;
+        min-height: 30vh;
+        max-height: 40vh;
+        font-size: 0.8em !important;
         line-height: 1.2em;
         margin-bottom: 0px !important;
         padding: 0 0.1vw 0 0.1vw;
