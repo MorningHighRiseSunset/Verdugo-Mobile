@@ -65,7 +65,8 @@
     .game-container {
         min-height: 70vh;
         height: auto;
-        padding-bottom: 40px !important;
+        padding-bottom: 0px !important;
+        position: relative;
     }
 }
 /* === GENERAL LAYOUT === */
