@@ -28,7 +28,7 @@
         justify-content: flex-start !important;
     }
     #instructions-button {
-        white-space: nowrap !important;
+        white-space: normal !important;
     }
     .lang-btn {
         flex: none;
