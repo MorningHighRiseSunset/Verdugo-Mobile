@@ -28,8 +28,11 @@
     <div id="hint-box" class="hint-box"></div>
 
     <div class="game-container">
-        <button id="start-btn">Start Speaking</button>
-        <button id="stop-btn" disabled>Stop Speaking</button>
+        <div class="top-buttons">
+            <button id="start-btn">Start Speaking</button>
+            <button id="stop-btn" disabled>Stop Speaking</button>
+            <button id="instructions-button">ℹ<br>Instructions</button>
+        </div>
         <p id="status"></p>
         <p id="result"></p>
         <p id="word-display" class="word-display"></p>
@@ -43,7 +46,7 @@
 
         <div class="button-row">
             <div id="language-box" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;">
-                <button class="lang-btn" data-value="en-US"></button><button class="lang-btn" data-value="es-ES"></button><button class="lang-btn" data-value="zh-CN"></button><button class="lang-btn" data-value="hi-IN"></button><button class="lang-btn" data-value="fr-FR"></button><button id="instructions-button">ℹ<br>Instructions</button>
+                <button class="lang-btn" data-value="en-US"></button><button class="lang-btn" data-value="es-ES"></button><button class="lang-btn" data-value="zh-CN"></button><button class="lang-btn" data-value="hi-IN"></button><button class="lang-btn" data-value="fr-FR"></button>
             </div>
         </div>
 
