@@ -285,7 +285,7 @@ button:active, button:focus {
 }
 
 #instructions-button {
-    width: 60px;
+    width: 100px;
     font-weight: bold;
     border-radius: 8px;
     background: #e0e7ef;
@@ -677,7 +677,7 @@ button:active, button:focus {
     }
     #instructions-button {
         flex: none;
-        width: 60px;
+        width: 100px;
         min-width: 0 !important;
         max-width: none !important;
         font-size: 0.6em !important;
