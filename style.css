@@ -101,7 +101,7 @@
         margin-bottom: 10px;
     }
     .top-buttons button {
-        width: 100px;
+        width: 80px;
         padding: 6px 8px;
         font-size: 0.9em;
     }
@@ -147,7 +147,7 @@ body {
 }
 
 .top-buttons button {
-    width: 140px;
+    width: 120px;
     padding: 8px 12px;
     border-radius: 8px;
     border: 1.5px solid #b3c6e0;
