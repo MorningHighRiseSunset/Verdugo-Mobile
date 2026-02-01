@@ -23,7 +23,7 @@
         display: flex !important;
         flex-direction: row !important;
         align-items: center;
-        gap: 4px !important;
+        gap: 2px !important;
         flex-wrap: nowrap !important;
         justify-content: flex-start !important;
     }
@@ -32,7 +32,7 @@
     }
     .lang-btn {
         flex: none;
-        width: 80px;
+        width: 55px;
         min-width: 0 !important;
         max-width: none !important;
         font-size: 0.8em !important;
@@ -54,7 +54,7 @@
     }
     #instructions-button {
         flex: none;
-        width: 150px;
+        width: 90px;
         min-width: 0 !important;
         max-width: none !important;
         font-size: 0.8em !important;
