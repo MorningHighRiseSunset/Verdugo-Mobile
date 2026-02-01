@@ -281,11 +281,11 @@ button:active, button:focus {
 }
 
 #start-btn, #stop-btn, #new-game-button {
-    min-width: 120px;
+    min-width: 30px;
 }
 
 #instructions-button {
-    width: auto;
+    width: 30px;
     font-weight: bold;
     border-radius: 8px;
     background: #e0e7ef;
