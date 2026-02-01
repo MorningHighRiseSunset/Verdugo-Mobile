@@ -542,7 +542,7 @@ function getFlagDisplay(langCode) {
 function setUILanguage(langCode) {
     document.getElementById('start-btn').innerText = TRANSLATIONS.start_speaking[langCode] || "Start Speaking";
     document.getElementById('stop-btn').innerText = TRANSLATIONS.stop_speaking[langCode] || "Stop Speaking";
-    document.getElementById('instructions-button').innerText = `| ${TRANSLATIONS.instructions[langCode] || "Instructions"} |`;
+    document.getElementById('instructions-button').innerText = TRANSLATIONS.instructions[langCode] || "Instructions";
     document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
         const lang = LANGUAGES[idx];
         // Show the language name in the UI language
