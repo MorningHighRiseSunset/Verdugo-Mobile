@@ -101,7 +101,7 @@
         margin-bottom: 10px;
     }
     .top-buttons button {
-        width: 20px;
+        width: 60px;
         padding: 3px 4px;
         font-size: 0.7em;
     }
@@ -147,7 +147,7 @@ body {
 }
 
 .top-buttons button {
-    width: 20px;
+    width: 60px;
     padding: 4px 6px;
     border-radius: 8px;
     border: 1.5px solid #b3c6e0;
@@ -281,11 +281,11 @@ button:active, button:focus {
 }
 
 #start-btn, #stop-btn, #new-game-button {
-    min-width: 20px;
+    min-width: 60px;
 }
 
 #instructions-button {
-    width: 20px;
+    width: 60px;
     font-weight: bold;
     border-radius: 8px;
     background: #e0e7ef;
@@ -677,7 +677,7 @@ button:active, button:focus {
     }
     #instructions-button {
         flex: none;
-        width: 20px;
+        width: 60px;
         min-width: 0 !important;
         max-width: none !important;
         font-size: 0.6em !important;
