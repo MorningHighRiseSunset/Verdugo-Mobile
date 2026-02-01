@@ -13,7 +13,7 @@
         padding: 6px 0 10px 0;
         margin: 0;
         box-shadow: 0 -2px 12px 0 rgba(0,0,0,0.08);
-        overflow-x: auto;
+        overflow-x: hidden;
         overflow-y: hidden;
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
@@ -101,7 +101,7 @@
         margin-bottom: 10px;
     }
     .top-buttons button {
-        width: 70px;
+        width: 50px;
         padding: 6px 8px;
         font-size: 0.9em;
     }
@@ -147,7 +147,7 @@ body {
 }
 
 .top-buttons button {
-    width: 100px;
+    width: 50px;
     padding: 8px 12px;
     border-radius: 8px;
     border: 1.5px solid #b3c6e0;
