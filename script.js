@@ -1408,11 +1408,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 if (typeof recognition !== "undefined") recognition.lang = lang.code;
                 setUILanguage(lang.code);
                 popup.style.display = "none";
-                // Highlight the correct button in the main UI
-                document.querySelectorAll('.lang-btn').forEach((b, idx) => {
-                    b.classList.toggle('active', LANGUAGES[idx].code === lang.code);
-                });
-                pendingGameLang = lang.code; // Also set as pending game language
                 updateInstructionsPopup(lang.code); // Update instructions popup language
             };
 

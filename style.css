@@ -123,11 +123,11 @@ body {
     margin-top: 50px;
     position: relative;
     overflow: hidden;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: white;
 }
 
 .game-container {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -370,7 +370,7 @@ button:active, button:focus {
 
 /* === LOG CONTAINER === */
 #log-container {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 20px;
@@ -393,7 +393,7 @@ button:active, button:focus {
 
 /* === WORD INFO CONTAINERS (Definitions and TTS) === */
 #word-info-def, #word-info-pron {
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 20px;
