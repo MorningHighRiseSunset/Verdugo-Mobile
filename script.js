@@ -1655,6 +1655,16 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             }
 
             // Now translate the English equivalent into the UI language
+            // Skip translation if UI language is English (no translation needed)
+            if (uiLangShort === 'en') {
+                return englishEq || equivalentWord || playedWord;
+            }
+            
+            // Skip translation if source and target languages are the same
+            if (uiLangShort === 'en') {
+                return englishEq || equivalentWord || playedWord;
+            }
+
             try {
                 const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
                 const data2 = await res2.json();
