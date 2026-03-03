@@ -599,8 +599,28 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     recognition.interimResults = true;
     recognition.lang = 'en-US'; // Default to English
 
-    // ...phoneticMap and spanishPhoneticMap unchanged...
-    // (Keep your full phoneticMap and spanishPhoneticMap here)
+    // Phonetic maps for letter recognition
+    const phoneticMap = {
+        'alpha': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'echo': 'E',
+        'foxtrot': 'F', 'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J',
+        'kilo': 'K', 'lima': 'L', 'mike': 'M', 'november': 'N', 'oscar': 'O',
+        'papa': 'P', 'quebec': 'Q', 'romeo': 'R', 'sierra': 'S', 'tango': 'T',
+        'uniform': 'U', 'victor': 'V', 'whiskey': 'W', 'x-ray': 'X', 'yankee': 'Y', 'zulu': 'Z',
+        // Common pronunciations
+        'ay': 'A', 'bee': 'B', 'see': 'C', 'dee': 'D', 'ee': 'E',
+        'eff': 'F', 'gee': 'G', 'aitch': 'H', 'eye': 'I', 'jay': 'J',
+        'kay': 'K', 'el': 'L', 'em': 'M', 'en': 'N', 'oh': 'O',
+        'pee': 'P', 'cue': 'Q', 'are': 'R', 'ess': 'S', 'tee': 'T',
+        'you': 'U', 'vee': 'V', 'double u': 'W', 'ex': 'X', 'why': 'Y', 'zed': 'Z', 'zee': 'Z'
+    };
+
+    const spanishPhoneticMap = {
+        'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E',
+        'efe': 'F', 'g': 'G', 'hache': 'H', 'i': 'I', 'jota': 'J',
+        'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'o': 'O',
+        'pe': 'P', 'cu': 'Q', 'erre': 'R', 'ese': 'S', 'te': 'T',
+        'u': 'U', 'uve': 'V', 'doble ve': 'W', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z'
+    };
 
     // --- DYNAMIC WORD GENERATION SECTION ---
     let selectedWord = '';
@@ -2099,15 +2119,26 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             let transcript = event.results[i][0].transcript.trim().toLowerCase();
             console.log(`Recognized: ${transcript}`);
 
+            // Filter out sentences and long phrases - only focus on single letters or phonetic words
+            if (transcript.length > 10 || transcript.includes(' ') && !phoneticMap[transcript] && !spanishPhoneticMap[transcript]) {
+                // Skip long sentences and phrases that aren't phonetic mappings
+                console.log('Skipping long phrase/sentence:', transcript);
+                continue;
+            }
+
             // Show what we're hearing in real-time
             const statusElement = document.getElementById('status');
             if (statusElement) {
                 statusElement.innerHTML = `🎤 Hearing: "<strong>${transcript}</strong>"...`;
             }
 
+            // Check if it's a single letter or a phonetic word
             if (transcript.length === 1 || phoneticMap[transcript] || spanishPhoneticMap[transcript]) {
                 transcript = phoneticMap[transcript] || spanishPhoneticMap[transcript] || transcript.toUpperCase();
+                console.log('Mapped to letter:', transcript);
             } else {
+                // Skip words that aren't letters or phonetic mappings
+                console.log('Not a letter or phonetic word, skipping:', transcript);
                 continue;
             }
 
