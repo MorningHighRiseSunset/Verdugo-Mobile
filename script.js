@@ -1419,7 +1419,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Main UI language selection (second language box)
         document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
             btn.onclick = function() {
-                pendingGameLang = LANGUAGES[idx].code;
+                pendingGameLang = btn.getAttribute('data-value');
                 // Do NOT set selectedLang here!
                 document.querySelectorAll('.lang-btn').forEach((b, i) => {
                     b.classList.toggle('active', i === idx);
@@ -2099,6 +2099,12 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             let transcript = event.results[i][0].transcript.trim().toLowerCase();
             console.log(`Recognized: ${transcript}`);
 
+            // Show what we're hearing in real-time
+            const statusElement = document.getElementById('status');
+            if (statusElement) {
+                statusElement.innerHTML = `🎤 Hearing: "<strong>${transcript}</strong>"...`;
+            }
+
             if (transcript.length === 1 || phoneticMap[transcript] || spanishPhoneticMap[transcript]) {
                 transcript = phoneticMap[transcript] || spanishPhoneticMap[transcript] || transcript.toUpperCase();
             } else {
@@ -2107,6 +2113,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
             if (event.results[i].isFinal) {
                 finalTranscript += transcript;
+                // Show the detected letter clearly
+                const resultElement = document.getElementById('result');
+                if (resultElement) {
+                    resultElement.innerHTML = `✅ Letter detected: <strong style="color: #4CAF50; font-size: 1.2em;">${transcript}</strong>`;
+                }
             } else {
                 interimTranscript += transcript;
             }

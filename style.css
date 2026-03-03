@@ -114,7 +114,6 @@ body {
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
     text-align: center;
     margin: 0;
-    background-color: #f0f0f0;
     color: #222;
 }
 
@@ -123,11 +122,9 @@ body {
     margin-top: 50px;
     position: relative;
     overflow: hidden;
-    background-color: white;
 }
 
 .game-container {
-    background-color: white;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -138,6 +135,7 @@ body {
     box-sizing: border-box;
     min-height: 900px;   /* Add this line for minimum height */
     height: 100vh;       /* Or set a fixed height, e.g., 900px */
+    background: transparent; /* Remove white background */
 }
 
 .top-buttons {
