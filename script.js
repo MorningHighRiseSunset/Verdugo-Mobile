@@ -1678,15 +1678,26 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
             // Now translate the English equivalent into the UI language
             try {
+                console.log(`Translating "${englishEq}" from English to ${uiLangShort}`);
                 const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
                 const data2 = await res2.json();
+                console.log('Translation API response:', data2);
                 const out = data2 && data2.responseData && data2.responseData.translatedText;
-                if (out) return out;
+                if (out && out !== englishEq) {
+                    console.log(`Translation successful: ${englishEq} → ${out}`);
+                    return out;
+                } else {
+                    console.log('Translation failed or returned same text');
+                }
             } catch (e) {
-                // ignore
+                console.error('Translation API error:', e);
             }
 
             // Fallbacks
+            console.log('Using fallback due to translation failure');
+            if (uiLangShort !== 'en') {
+                return `${englishEq} (no ${uiLangShort} translation available)`;
+            }
             return englishEq || equivalentWord || playedWord;
         }
 
