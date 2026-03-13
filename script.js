@@ -695,68 +695,89 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
         }
 
+        // Known Spanish words as fallback when translation fails (never show English as "Spanish word")
+        const FALLBACK_SPANISH_WORDS = [
+            { word: 'ventana', english: 'window' }, { word: 'manzana', english: 'apple' }, { word: 'libro', english: 'book' },
+            { word: 'agua', english: 'water' }, { word: 'sol', english: 'sun' }, { word: 'casa', english: 'house' },
+            { word: 'mesa', english: 'table' }, { word: 'puerta', english: 'door' }, { word: 'gato', english: 'cat' }
+        ];
+
         // --- SPANISH: Use ONLY local SPANISH_DICTIONARY / API-driven flow ---
                 if (language === 'Spanish') {
-                    // Pick a base English word from a curated safe list instead of a
-                    // random-word API, so we avoid bizarre or ultra-rare vocabulary.
+                    // Pick a base English word; retry with another if translation fails so we never show English as the Spanish word.
+                    const maxTranslateTries = 4;
                     let baseWord = getRandomSafeWord();
-
-                    // 1) Try Netlify function proxy
                     let translated = '';
                     let defFromProxy = '';
                     let pronFromProxy = '';
-                    try {
-                        const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(baseWord)}&target=es`;
-                        const pres = await fetch(proxyUrl);
-                        if (pres.ok) {
-                            const pdata = await pres.json();
-                            translated = pdata.translated || pdata.translatedText || '';
-                            defFromProxy = pdata.definition || pdata.def || '';
-                            pronFromProxy = pdata.pronunciation || pdata.pron || '';
-                        }
-                    } catch (e) {
-                        // proxy failed, try direct MyMemory API as fallback
+
+                    for (let tryNum = 0; tryNum < maxTranslateTries && !translated; tryNum++) {
+                        if (tryNum > 0) baseWord = getRandomSafeWord();
+                        defFromProxy = '';
+                        pronFromProxy = '';
+
+                        // 1) Try Netlify function proxy
                         try {
-                            const memoryUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(baseWord)}&langpair=en|es`;
-                            const mres = await fetch(memoryUrl);
-                            if (mres.ok) {
-                                const mdata = await mres.json();
-                                translated = mdata.responseData.translatedText;
+                            const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(baseWord)}&target=es`;
+                            const pres = await fetch(proxyUrl);
+                            if (pres.ok) {
+                                const pdata = await pres.json();
+                                translated = pdata.translated || pdata.translatedText || '';
+                                defFromProxy = pdata.definition || pdata.def || '';
+                                pronFromProxy = pdata.pronunciation || pdata.pron || '';
                             }
-                        } catch (me) {
-                            // Both failed, continue to other fallbacks
-                        }
-                    }
-
-                    // 2) If proxy didn't return a translation, try client-side Google key (only if provided)
-                    if (!translated && window.GOOGLE_API_KEY) {
-                        try {
-                            const key = encodeURIComponent(window.GOOGLE_API_KEY);
-                            const q = encodeURIComponent(baseWord);
-                            const url = `https://translation.googleapis.com/language/translate/v2?key=${key}&q=${q}&target=es&format=text`;
-                            const gres = await fetch(url, { method: 'GET' });
-                            const gdata = await gres.json();
-                            translated = gdata?.data?.translations?.[0]?.translatedText || '';
                         } catch (e) {
-                            translated = '';
+                            // proxy failed, try direct MyMemory API as fallback
+                            try {
+                                const memoryUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(baseWord)}&langpair=en|es`;
+                                const mres = await fetch(memoryUrl);
+                                if (mres.ok) {
+                                    const mdata = await mres.json();
+                                    translated = mdata.responseData.translatedText;
+                                }
+                            } catch (me) {}
                         }
+
+                        // 2) If proxy didn't return a translation, try client-side Google key (only if provided)
+                        if (!translated && window.GOOGLE_API_KEY) {
+                            try {
+                                const key = encodeURIComponent(window.GOOGLE_API_KEY);
+                                const q = encodeURIComponent(baseWord);
+                                const url = `https://translation.googleapis.com/language/translate/v2?key=${key}&q=${q}&target=es&format=text`;
+                                const gres = await fetch(url, { method: 'GET' });
+                                const gdata = await gres.json();
+                                translated = gdata?.data?.translations?.[0]?.translatedText || '';
+                            } catch (e) {}
+                        }
+
+                        // 3) Fallback to MyMemory if still empty
+                        if (!translated) {
+                            try {
+                                const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(baseWord)}&langpair=en|es`);
+                                const transData = await transRes.json();
+                                translated = transData.responseData.translatedText || '';
+                            } catch (e) {}
+                        }
+
+                        // Reject if translation is same as English or looks like English (avoid showing "window" as Spanish word)
+                        const trimmed = ('' + (translated || '')).trim().split(/[ ,.;:!?]/)[0];
+                        if (trimmed && trimmed.toLowerCase() === baseWord.toLowerCase()) translated = '';
+                        if (trimmed && /^[a-zA-Z]+$/.test(trimmed) && textLooksLikeLang && textLooksLikeLang(trimmed, 'en')) translated = '';
                     }
 
-                    // 3) Fallback to MyMemory if still empty
+                    // If all translation attempts failed, use a known Spanish word so we never show English as "Spanish word"
                     if (!translated) {
-                        try {
-                            const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(baseWord)}&langpair=en|es`);
-                            const transData = await transRes.json();
-                            translated = transData.responseData.translatedText || '';
-                        } catch (e) {
-                            translated = '';
-                        }
+                        const fallback = FALLBACK_SPANISH_WORDS[Math.floor(Math.random() * FALLBACK_SPANISH_WORDS.length)];
+                        word = fallback.word;
+                        englishEquivalent = fallback.english;
+                        definition = '';
+                        pronunciation = '';
+                        defFromProxy = '';
+                        pronFromProxy = '';
+                    } else {
+                        word = ('' + translated).split(/[ ,.;:!?]/)[0];
+                        englishEquivalent = baseWord;
                     }
-
-                    if (!translated) translated = baseWord;
-
-                    word = ('' + translated).split(/[ ,.;:!?]/)[0];
-                    englishEquivalent = baseWord;
 
                     // Use definition from proxy if available
                     if (defFromProxy) {
@@ -1243,7 +1264,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
 
     const winSounds = ['correct-6033.mp3', 'sound-effect-twinklesparkle-115095.mp3'];
-    const loseSounds = ['fail-144746.mp3', 'no-luck-too-bad-disappointing-sound-effect-112943.mp3', '050612_wild-west-1-36194.mp3'];
+    const loseSounds = ['fail-144746.mp3', '050612_wild-west-1-36194.mp3'];
 
     function playRandomSound(sounds) {
         try {
@@ -1364,14 +1385,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
 
     function checkGameStatus() {
-        console.log('checkGameStatus called, wrongGuesses:', wrongGuesses, 'maxWrongGuesses:', maxWrongGuesses);
         if (selectedWord && wrongGuesses >= maxWrongGuesses) {
-            console.log('Game Over condition met');
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
             playRandomSound(loseSounds);
             showRepeatButtons(currentWordObj);
-            console.log('About to call showWordInfo with currentWordObj:', currentWordObj);
             showWordInfo(currentWordObj);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
@@ -1395,12 +1413,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             }, 5000);
             resetGame();
         } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
-            console.log('Win condition met');
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
             playRandomSound(winSounds);
             showRepeatButtons(currentWordObj);
-            console.log('About to call showWordInfo with currentWordObj (win):', currentWordObj);
             showWordInfo(currentWordObj);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
@@ -1686,16 +1702,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     // --- DYNAMIC LANGUAGE OPTIONS ---
 
     function showWordInfo(wordObj) {
-        console.log('showWordInfo called with:', wordObj);
         const logContainer = document.getElementById('log-container');
-        if (!logContainer) {
-            console.log('log-container not found');
-            return;
-        }
+        if (!logContainer) return;
 
         // Show the log-container when displaying word info
         logContainer.style.setProperty('display', 'block', 'important');
-        console.log('log-container display set to block');
 
         // Detect UI language code (e.g., 'zh-CN', 'es', etc.)
         let uiLang = selectedLang || 'en-US';
@@ -1939,7 +1950,10 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Async update UI
         (async () => {
             const eqWord = await getEquivalentInUILang();
-            let def = await getDefinitionInUILang();
+            // Prefer the definition stored with this word object so it always matches the played word
+            const storedDef = (wordObj.definition || '').toString().trim();
+            const isPlaceholder = !storedDef || /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(storedDef);
+            let def = (!isPlaceholder && storedDef) ? storedDef : await getDefinitionInUILang();
 
             // If the played word uses non-Latin script (e.g., Devanagari) and the
             // UI language uses Latin characters, show a transliteration instead of
