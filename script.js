@@ -1677,28 +1677,78 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             }
 
             // Now translate the English equivalent into the UI language
-            try {
-                console.log(`Translating "${englishEq}" from English to ${uiLangShort}`);
-                const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
-                const data2 = await res2.json();
-                console.log('Translation API response:', data2);
-                const out = data2 && data2.responseData && data2.responseData.translatedText;
-                if (out && out !== englishEq) {
-                    console.log(`Translation successful: ${englishEq} → ${out}`);
-                    return out;
-                } else {
-                    console.log('Translation failed or returned same text');
+            let translated = null;
+            
+            // Try Google Translate API first (if API key is available)
+            if (window.GOOGLE_TRANSLATE_API_KEY) {
+                try {
+                    console.log(`Trying Google Translate: "${englishEq}" from English to ${uiLangShort}`);
+                    const googleUrl = `https://translation.googleapis.com/language/translate/v2?key=${window.GOOGLE_TRANSLATE_API_KEY}&q=${encodeURIComponent(englishEq)}&source=en&target=${uiLangShort}&format=text`;
+                    const googleRes = await fetch(googleUrl);
+                    const googleData = await googleRes.json();
+                    if (googleData.data && googleData.data.translations && googleData.data.translations[0]) {
+                        translated = googleData.data.translations[0].translatedText;
+                        console.log(`Google Translate successful: ${englishEq} → ${translated}`);
+                    }
+                } catch (e) {
+                    console.error('Google Translate API error:', e);
                 }
-            } catch (e) {
-                console.error('Translation API error:', e);
             }
-
-            // Fallbacks
-            console.log('Using fallback due to translation failure');
-            if (uiLangShort !== 'en') {
-                return `${englishEq} (no ${uiLangShort} translation available)`;
+            
+            // Try LibreTranslate (free alternative)
+            if (!translated && window.LIBRETRANSLATE_URL) {
+                try {
+                    console.log(`Trying LibreTranslate: "${englishEq}" from English to ${uiLangShort}`);
+                    const libreUrl = `${window.LIBRETRANSLATE_URL}/translate`;
+                    const libreRes = await fetch(libreUrl, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            q: englishEq,
+                            source: 'en',
+                            target: uiLangShort,
+                            format: 'text'
+                        }),
+                        headers: { 'Content-Type': 'application/json' }
+                    });
+                    const libreData = await libreRes.json();
+                    if (libreData.translatedText) {
+                        translated = libreData.translatedText;
+                        console.log(`LibreTranslate successful: ${englishEq} → ${translated}`);
+                    }
+                } catch (e) {
+                    console.error('LibreTranslate API error:', e);
+                }
             }
-            return englishEq || equivalentWord || playedWord;
+            
+            // Fallback to MyMemory if others fail
+            if (!translated) {
+                try {
+                    console.log(`Trying MyMemory: "${englishEq}" from English to ${uiLangShort}`);
+                    const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
+                    const data2 = await res2.json();
+                    console.log('MyMemory API response:', data2);
+                    const out = data2 && data2.responseData && data2.responseData.translatedText;
+                    if (out && out !== englishEq && out !== 'SELECCIONA DOS IDIOMAS DISTINTOS') {
+                        translated = out;
+                        console.log(`MyMemory successful: ${englishEq} → ${translated}`);
+                    } else {
+                        console.log('MyMemory failed or returned invalid response');
+                    }
+                } catch (e) {
+                    console.error('MyMemory API error:', e);
+                }
+            }
+            
+            // Return translation or fallback message
+            if (translated) {
+                return translated;
+            } else {
+                console.log('All translation APIs failed');
+                if (uiLangShort !== 'en') {
+                    return `${englishEq} (no ${uiLangShort} translation available)`;
+                }
+                return englishEq || equivalentWord || playedWord;
+            }
         }
 
         // Get definition in UI language
