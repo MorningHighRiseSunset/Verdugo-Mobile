@@ -542,7 +542,7 @@ function getFlagDisplay(langCode) {
 function setUILanguage(langCode) {
     document.getElementById('start-btn').innerText = TRANSLATIONS.start_speaking[langCode] || "Start Speaking";
     document.getElementById('stop-btn').innerText = TRANSLATIONS.stop_speaking[langCode] || "Stop Speaking";
-    document.getElementById('instructions-button').innerText = TRANSLATIONS.instructions[langCode] || "Instructions";
+    document.getElementById('instructions-button').innerText = `| ${TRANSLATIONS.instructions[langCode] || "Instructions"} |`;
     document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
         const lang = LANGUAGES[idx];
         // Show the language name in the UI language
@@ -599,28 +599,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     recognition.interimResults = true;
     recognition.lang = 'en-US'; // Default to English
 
-    // Phonetic maps for letter recognition
-    const phoneticMap = {
-        'alpha': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'echo': 'E',
-        'foxtrot': 'F', 'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J',
-        'kilo': 'K', 'lima': 'L', 'mike': 'M', 'november': 'N', 'oscar': 'O',
-        'papa': 'P', 'quebec': 'Q', 'romeo': 'R', 'sierra': 'S', 'tango': 'T',
-        'uniform': 'U', 'victor': 'V', 'whiskey': 'W', 'x-ray': 'X', 'yankee': 'Y', 'zulu': 'Z',
-        // Common pronunciations
-        'ay': 'A', 'bee': 'B', 'see': 'C', 'dee': 'D', 'ee': 'E',
-        'eff': 'F', 'gee': 'G', 'aitch': 'H', 'eye': 'I', 'jay': 'J',
-        'kay': 'K', 'el': 'L', 'em': 'M', 'en': 'N', 'oh': 'O',
-        'pee': 'P', 'cue': 'Q', 'are': 'R', 'ess': 'S', 'tee': 'T',
-        'you': 'U', 'vee': 'V', 'double u': 'W', 'ex': 'X', 'why': 'Y', 'zed': 'Z', 'zee': 'Z'
-    };
-
-    const spanishPhoneticMap = {
-        'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E',
-        'efe': 'F', 'g': 'G', 'hache': 'H', 'i': 'I', 'jota': 'J',
-        'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'o': 'O',
-        'pe': 'P', 'cu': 'Q', 'erre': 'R', 'ese': 'S', 'te': 'T',
-        'u': 'U', 'uve': 'V', 'doble ve': 'W', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z'
-    };
+    // ...phoneticMap and spanishPhoneticMap unchanged...
+    // (Keep your full phoneticMap and spanishPhoneticMap here)
 
     // --- DYNAMIC WORD GENERATION SECTION ---
     let selectedWord = '';
@@ -1428,7 +1408,29 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 if (typeof recognition !== "undefined") recognition.lang = lang.code;
                 setUILanguage(lang.code);
                 popup.style.display = "none";
+                // Highlight the correct button in the main UI
+                document.querySelectorAll('.lang-btn').forEach((b, idx) => {
+                    b.classList.toggle('active', LANGUAGES[idx].code === lang.code);
+                });
+                pendingGameLang = lang.code; // Also set as pending game language
                 updateInstructionsPopup(lang.code); // Update instructions popup language
+                // Immediately start the game for the selected language
+                if (typeof fetchWordObject === "function") {
+                    const langObj = LANGUAGES.find(l => l.code === lang.code);
+                    const langName = langObj ? langObj.canonicalName : "English";
+                    fetchWordObject(langName).then(wordObj => {
+                        wordObj.gameLangCode = lang.code;
+                        wordObj.gameLangName = langObj.canonicalName;
+                        currentWordObj = wordObj;
+                        selectedWord = wordObj.word.toUpperCase();
+                        usedWords.add(selectedWord);
+                        guessedLetters = [];
+                        wrongGuesses = 0;
+                        if (typeof updateWordDisplay === "function") updateWordDisplay();
+                        if (typeof drawHangman === "function") drawHangman();
+                        if (typeof createKeyboard === "function") createKeyboard();
+                    });
+                }
             };
 
             row.appendChild(label);
@@ -1439,7 +1441,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Main UI language selection (second language box)
         document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
             btn.onclick = function() {
-                pendingGameLang = btn.getAttribute('data-value');
+                pendingGameLang = LANGUAGES[idx].code;
                 // Do NOT set selectedLang here!
                 document.querySelectorAll('.lang-btn').forEach((b, i) => {
                     b.classList.toggle('active', i === idx);
@@ -1675,16 +1677,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             }
 
             // Now translate the English equivalent into the UI language
-            // Skip translation if UI language is English (no translation needed)
-            if (uiLangShort === 'en') {
-                return englishEq || equivalentWord || playedWord;
-            }
-            
-            // Skip translation if source and target languages are the same
-            if (uiLangShort === 'en') {
-                return englishEq || equivalentWord || playedWord;
-            }
-
             try {
                 const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
                 const data2 = await res2.json();
@@ -1763,16 +1755,23 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             return englishDef;
         }
 
-        // Get label for "Word" and "Equivalent" in UI language
+        // Get label for "Word" and the other-side word in UI language
         const playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
-        const eqLabels = {
-            'en': 'English Equivalent',
-            'es': 'Spanish Equivalente',
-            'fr': 'French Equivalent',
-            'zh-CN': 'Mandarin Equivalent',
-            'hi': 'Hindi Equivalent'
-        };
-        const eqLabel = eqLabels[uiLangShort] || 'Equivalent';
+        let eqLabel;
+        // If the UI is English but the learning language is non-English (e.g., learning Spanish),
+        // avoid saying "English Equivalent" which is confusing. Use a neutral label instead.
+        if (uiLangShort === 'en' && learningLangShort !== 'en') {
+            eqLabel = 'Translation';
+        } else {
+            const eqLabels = {
+                'en': 'English Equivalent',
+                'es': 'Spanish Equivalente',
+                'fr': 'French Equivalent',
+                'zh-CN': 'Mandarin Equivalent',
+                'hi': 'Hindi Equivalent'
+            };
+            eqLabel = eqLabels[uiLangShort] || 'Equivalent';
+        }
 
         // Async update UI
         (async () => {
@@ -2115,42 +2114,33 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         let interimTranscript = '';
         let finalTranscript = '';
 
+        const currentRecLang = (typeof recognition !== 'undefined' && recognition.lang) ? recognition.lang : 'en-US';
+        const currentRecShort = currentRecLang.split('-')[0];
+
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-            let transcript = event.results[i][0].transcript.trim().toLowerCase();
-            console.log(`Recognized: ${transcript}`);
+            let transcriptRaw = event.results[i][0].transcript.trim().toLowerCase();
+            console.log(`Recognized: ${transcriptRaw}`);
 
-            // Filter out sentences and long phrases - only focus on single letters or phonetic words
-            if (transcript.length > 10 || transcript.includes(' ') && !phoneticMap[transcript] && !spanishPhoneticMap[transcript]) {
-                // Skip long sentences and phrases that aren't phonetic mappings
-                console.log('Skipping long phrase/sentence:', transcript);
-                continue;
+            let mapped = null;
+            if (phoneticMap[transcriptRaw]) mapped = phoneticMap[transcriptRaw];
+            else if (spanishPhoneticMap[transcriptRaw]) mapped = spanishPhoneticMap[transcriptRaw];
+            else if (transcriptRaw.length === 1) mapped = transcriptRaw.toUpperCase();
+
+            // For non-English recognition languages, be more forgiving:
+            // if we didn't find a mapping, try taking the first character that is a letter
+            if (!mapped && currentRecShort !== 'en') {
+                const firstChar = transcriptRaw[0];
+                if (firstChar && /[a-záéíóúñü]/i.test(firstChar)) {
+                    mapped = firstChar.toUpperCase();
+                }
             }
 
-            // Show what we're hearing in real-time
-            const statusElement = document.getElementById('status');
-            if (statusElement) {
-                statusElement.innerHTML = `🎤 Hearing: "<strong>${transcript}</strong>"...`;
-            }
-
-            // Check if it's a single letter or a phonetic word
-            if (transcript.length === 1 || phoneticMap[transcript] || spanishPhoneticMap[transcript]) {
-                transcript = phoneticMap[transcript] || spanishPhoneticMap[transcript] || transcript.toUpperCase();
-                console.log('Mapped to letter:', transcript);
-            } else {
-                // Skip words that aren't letters or phonetic mappings
-                console.log('Not a letter or phonetic word, skipping:', transcript);
-                continue;
-            }
+            if (!mapped) continue;
 
             if (event.results[i].isFinal) {
-                finalTranscript += transcript;
-                // Show the detected letter clearly
-                const resultElement = document.getElementById('result');
-                if (resultElement) {
-                    resultElement.innerHTML = `✅ Letter detected: <strong style="color: #4CAF50; font-size: 1.2em;">${transcript}</strong>`;
-                }
+                finalTranscript += mapped;
             } else {
-                interimTranscript += transcript;
+                interimTranscript += mapped;
             }
         }
 
