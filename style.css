@@ -645,8 +645,8 @@ button:active, button:focus {
     }
     /* Make definition and TTS container bigger */
     #log-container, #word-info-def, #word-info-pron {
-        font-size: 1.1em !important;
-        line-height: 1.6em;
+        font-size: 1.4em !important;
+        line-height: 1.5em;
         min-height: 50vh;
         max-height: 70vh;
         overflow-y: auto;
@@ -751,6 +751,11 @@ button:active, button:focus {
         border-radius: 0 0 10px 10px;
         margin-left: 0;
         margin-right: 0;
+    }
+    /* Make definitions even larger for smaller mobile screens */
+    #word-info-def, #word-info-pron {
+        font-size: 1.6em !important;
+        line-height: 1.4em !important;
     }
 }
 
