@@ -401,7 +401,7 @@ button:active, button:focus {
     word-wrap: break-word;
     position: static;
     box-sizing: border-box;
-    font-size: 15px;
+    font-size: 18px; /* Increased from 15px for better readability */
     border-radius: 0 0 10px 10px;
     margin-left: 0;
     margin-right: 0;
@@ -645,8 +645,8 @@ button:active, button:focus {
     }
     /* Make definition and TTS container bigger */
     #log-container, #word-info-def, #word-info-pron {
-        font-size: 0.7em !important;
-        line-height: 1.7em;
+        font-size: 1.1em !important;
+        line-height: 1.6em;
         min-height: 50vh;
         max-height: 70vh;
         overflow-y: auto;
