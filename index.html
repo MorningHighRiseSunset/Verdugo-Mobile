@@ -28,27 +28,36 @@
     <div id="hint-box" class="hint-box"></div>
 
     <div class="game-container">
-        <div class="top-buttons">
-            <button id="start-btn">Start Speaking</button>
-            <button id="stop-btn" disabled>Stop Speaking</button>
-            <button id="instructions-button">Instructions</button>
-        </div>
-        <p id="status"></p>
-        <p id="result"></p>
-        <p id="word-display" class="word-display"></p>
-        <canvas id="hangman-canvas" width="150" height="150"></canvas>
-        <div id="letter-container" class="letter-container"></div>
-        
-        <!-- The language/category box -->
-        <div id="options-container" class="options-container"></div>
-        
-        <div id="log-container"></div>
-
-        <div class="button-row">
-            <div id="language-box" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;">
-                <button class="lang-btn" data-value="en-US"></button><button class="lang-btn" data-value="es-ES"></button><button class="lang-btn" data-value="zh-CN"></button><button class="lang-btn" data-value="hi-IN"></button><button class="lang-btn" data-value="fr-FR"></button>
+        <div class="game-layout">
+            <!-- Left side with controls -->
+            <div class="left-controls">
+                <div class="speech-controls">
+                    <button id="start-btn">Start Speaking</button>
+                    <button id="stop-btn" disabled>Stop Speaking</button>
+                    <button id="instructions-button">Instructions</button>
+                </div>
+                <p id="status"></p>
+                <p id="result"></p>
+                <div class="button-row">
+                    <div id="language-box" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;">
+                        <button class="lang-btn" data-value="en-US"></button><button class="lang-btn" data-value="es-ES"></button><button class="lang-btn" data-value="zh-CN"></button><button class="lang-btn" data-value="hi-IN"></button><button class="lang-btn" data-value="fr-FR"></button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center game area -->
+            <div class="center-game">
+                <p id="word-display" class="word-display"></p>
+                <canvas id="hangman-canvas" width="150" height="150"></canvas>
+                <div id="letter-container" class="letter-container"></div>
+                
+                <!-- The language/category box -->
+                <div id="options-container" class="options-container"></div>
             </div>
         </div>
+        
+        <!-- Definition area at bottom with full width -->
+        <div id="log-container"></div>
 
         <div id="new-game-container" class="hide">
             <!-- This can be removed if you use the button above -->

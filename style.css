@@ -579,6 +579,34 @@ button:active, button:focus {
     animation: flash-slow 2s infinite;
 }
 
+/* === GAME LAYOUT === */
+.game-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.left-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.speech-controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.center-game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
 /* === RESPONSIVE DESIGN === */
 @media screen and (max-width: 768px) {
     .game-container {
