@@ -78,20 +78,32 @@
         margin-left: 8px !important;
         margin-top: 0 !important;
     }
-    #log-container, #word-info-def, #word-info-pron {
-        min-height: 5vh;
-        max-height: 15vh;
-        font-size: 0.7em !important;
-        line-height: 1.2em;
-        margin-bottom: 0px !important;
-        padding: 0 0.1vw 0 0.1vw;
-        border: none !important;
+    #log-container {
+        min-height: 12vh;
+        max-height: 30vh;
+        font-size: 0.9em !important;
+        line-height: 1.3em;
+        margin-bottom: 60px !important;
+        padding: 8px !important;
+        border: 1px solid #ccc !important;
+        background-color: white !important;
+        z-index: 100 !important;
+        position: relative !important;
         /* buttons will be right below */
+    }
+
+    /* Make definition/pronunciation text match the background of the
+       surrounding white card instead of drawing its own box. */
+    #word-info-def, #word-info-pron {
+        background-color: transparent !important;
+        border: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     .game-container {
         min-height: 25vh;
         height: auto;
-        padding-bottom: 50px !important;
+        padding-bottom: 80px !important;
         position: relative;
     }
     .top-buttons {
@@ -373,7 +385,9 @@ button:active, button:focus {
     padding: 10px;
     margin-top: 20px;
     width: 100%;
-    height: 150px;
+    /* Let the height follow content, but cap it so it doesn't
+       take over the whole screen. */
+    max-height: 40vh;
     overflow-y: auto;
     word-wrap: break-word;
     position: static;
@@ -382,29 +396,28 @@ button:active, button:focus {
     border-radius: 0 0 10px 10px;
     margin-left: 0;
     margin-right: 0;
+    display: none; /* Hidden by default */
 }
 #log-container div {
-    margin: 5px 0;
-    padding: 5px;
-    border-radius: 3px;
+    /* Make inner rows flush with the main white card;
+       avoid creating an extra "box" around the definition. */
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
 }
 
 /* === WORD INFO CONTAINERS (Definitions and TTS) === */
 #word-info-def, #word-info-pron {
-    background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-top: 20px;
-    width: 100%;
-    height: 300px; /* Increased height for better display */
-    overflow-y: auto;
-    word-wrap: break-word;
-    position: static;
-    box-sizing: border-box;
-    font-size: 18px; /* Increased from 15px for better readability */
-    border-radius: 0 0 10px 10px;
-    margin-left: 0;
-    margin-right: 0;
+    /* Pure inline text inside #log-container – absolutely no box */
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    font-size: 0.85em !important; /* slightly smaller text */
 }
 
 /* Hide scrollbar but allow scrolling */
@@ -641,7 +654,7 @@ button:active, button:focus {
     #log-container {
         width: 100%;
         height: 90px;
-        font-size: 15px;
+        font-size: 0.9em;
         border-radius: 0 0 10px 10px;
         margin-left: 0;
         margin-right: 0;
@@ -671,14 +684,13 @@ button:active, button:focus {
     .lang-popup-content {
         padding: 18px 4vw 18px 4vw;
     }
-    /* Make definition and TTS container bigger */
-    #log-container, #word-info-def, #word-info-pron {
-        font-size: 1.4em !important;
-        line-height: 1.5em;
-        min-height: 50vh;
-        max-height: 70vh;
+    /* Definition / TTS container on mobile: readable but compact */
+    #log-container {
+        font-size: 0.9em;
+        line-height: 1.4em;
+        max-height: 45vh;
         overflow-y: auto;
-        border: none !important;
+        border: 1px solid #ccc;
     }
     .lang-btn {
         flex: none;
@@ -780,9 +792,9 @@ button:active, button:focus {
         margin-left: 0;
         margin-right: 0;
     }
-    /* Make definitions even larger for smaller mobile screens */
+    /* Keep definition text small on very small screens as well */
     #word-info-def, #word-info-pron {
-        font-size: 1.6em !important;
+        font-size: 0.85em !important;
         line-height: 1.4em !important;
     }
 }

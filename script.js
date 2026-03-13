@@ -187,6 +187,28 @@ async function fetchWiktionaryDefinition(word, langShort = 'en') {
     }
 }
 
+// Fetch a short summary from Wikipedia as a last-resort definition source.
+// Especially useful for proper nouns (countries, cities, names) where
+// dictionary APIs often fail but Wikipedia has good coverage.
+async function fetchWikipediaSummary(word, langShort = 'en') {
+    if (!word) return null;
+    const w = String(word).trim();
+    if (!w) return null;
+    try {
+        const lang = langShort || 'en';
+        const url = `https://${lang}.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(w)}?redirect=true`;
+        const res = await fetch(url);
+        if (!res.ok) return null;
+        const data = await res.json();
+        const extract = (data && (data.extract || data.description)) || '';
+        if (!extract || typeof extract !== 'string') return null;
+        const text = extract.trim();
+        return text.length > 5 ? text : null;
+    } catch (e) {
+        return null;
+    }
+}
+
 // Finalize a word object before returning: if the definition appears to be English
 // but the requested language is non-English, translate the definition server-side
 // into the requested language so callers receive a definition in the correct language.
@@ -200,13 +222,30 @@ async function finalizeWordObj(obj, langName) {
         const def = (obj.definition || '').toString();
         if (!isProbablyEnglishText(def)) return obj;
         // call serverless proxy to translate the definition text into target
-        const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(target)}`;
-        const presDef = await fetch(proxyUrlDef);
-        if (presDef.ok) {
-            const pdataDef = await presDef.json();
-            const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
-            if (candidate && !/No definition found/i.test(candidate)) {
-                obj.definition = candidate;
+        try {
+            const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(target)}`;
+            const presDef = await fetch(proxyUrlDef);
+            if (presDef.ok) {
+                const pdataDef = await presDef.json();
+                const candidate = pdataDef.definition || pdataDef.translated || pdataDef.translatedText || '';
+                if (candidate && !/No definition found/i.test(candidate)) {
+                    obj.definition = candidate;
+                }
+            }
+        } catch (e) {
+            // proxy failed, try direct MyMemory API as fallback
+            try {
+                const memoryUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(def)}&langpair=en|${target}`;
+                const mres = await fetch(memoryUrl);
+                if (mres.ok) {
+                    const mdata = await mres.json();
+                    const candidate = mdata.responseData.translatedText;
+                    if (candidate && !/No definition found/i.test(candidate)) {
+                        obj.definition = candidate;
+                    }
+                }
+            } catch (me) {
+                // Both failed, ignore and return original
             }
         }
     } catch (e) {
@@ -602,7 +641,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     // ...phoneticMap and spanishPhoneticMap unchanged...
     // (Keep your full phoneticMap and spanishPhoneticMap here)
 
-    // --- DYNAMIC WORD GENERATION SECTION ---
+        // --- DYNAMIC WORD GENERATION SECTION ---
     let selectedWord = '';
     let guessedLetters = [];
     let wrongGuesses = 0;
@@ -656,24 +695,11 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
         }
 
-        // --- SPANISH: Use ONLY local SPANISH_DICTIONARY ---
+        // --- SPANISH: Use ONLY local SPANISH_DICTIONARY / API-driven flow ---
                 if (language === 'Spanish') {
-                    // If a Google API key is provided in `window.GOOGLE_API_KEY`, prefer a
-                    // real-time API-driven flow: fetch a random English base word and
-                    // translate it into Spanish using Google Translate API (no local files
-                    // required). WARNING: exposing API keys to the browser is insecure.
-                    // Try server-side Netlify function first (recommended). If it fails,
-                    // fall back to client-side Google key (insecure) or MyMemory.
-                    // Get a base English word
-                    let baseWord = '';
-                    try {
-                        const wordRes = await fetch('https://random-word-api.herokuapp.com/word?number=1');
-                        const wordArr = await wordRes.json();
-                        baseWord = wordArr && wordArr[0] ? wordArr[0] : '';
-                    } catch (e) {
-                        baseWord = '';
-                    }
-                    if (!baseWord || !/^[a-zA-Z]+$/.test(baseWord)) baseWord = SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
+                    // Pick a base English word from a curated safe list instead of a
+                    // random-word API, so we avoid bizarre or ultra-rare vocabulary.
+                    let baseWord = getRandomSafeWord();
 
                     // 1) Try Netlify function proxy
                     let translated = '';
@@ -689,7 +715,17 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                             pronFromProxy = pdata.pronunciation || pdata.pron || '';
                         }
                     } catch (e) {
-                        // proxy failed, continue to other fallbacks
+                        // proxy failed, try direct MyMemory API as fallback
+                        try {
+                            const memoryUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(baseWord)}&langpair=en|es`;
+                            const mres = await fetch(memoryUrl);
+                            if (mres.ok) {
+                                const mdata = await mres.json();
+                                translated = mdata.responseData.translatedText;
+                            }
+                        } catch (me) {
+                            // Both failed, continue to other fallbacks
+                        }
                     }
 
                     // 2) If proxy didn't return a translation, try client-side Google key (only if provided)
@@ -772,6 +808,15 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                                 definition = wiktionaryDef;
                             }
                         } catch (e) {}
+                    }
+
+                    // Final fallback: use English Wikipedia summary for the English equivalent.
+                    // This helps when the word is a place/person/etc. and dictionaries are empty.
+                    if (!definition || /^No definition found/i.test(definition)) {
+                        const wikiDef = await fetchWikipediaSummary(englishEquivalent || word, 'en');
+                        if (wikiDef) {
+                            definition = wikiDef;
+                        }
                     }
 
                     return await finalizeWordObj({ word, definition, pronunciation, englishEquivalent }, 'Spanish');
@@ -1006,6 +1051,50 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         };
     }
 
+    // Helper to avoid "trivial" words where the learning-language word and
+    // its English equivalent collapse to the same token (e.g. "BOLIVIA"
+    // in both languages). We only apply this when the learning language
+    // is non‑English so English‑learning mode still works.
+    function normalizeForComparison(str) {
+        if (!str) return '';
+        return String(str)
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '') // strip accents
+            .replace(/[^a-zA-Z]/g, '')       // keep only letters
+            .toLowerCase();
+    }
+
+    function isTriviallySameCrossLang(word, englishEquivalent, gameLangCode) {
+        if (!word || !englishEquivalent) return false;
+        // Only filter when learning language is not English
+        if (gameLangCode === 'en-US') return false;
+        const a = normalizeForComparison(word);
+        const b = normalizeForComparison(englishEquivalent);
+        if (!a || !b) return false;
+        return a === b;
+    }
+
+    async function fetchPlayableWord(gameLangCode, canonicalName, maxTries = 5) {
+        let lastObj = null;
+        for (let i = 0; i < maxTries; i++) {
+            const obj = await fetchWordObject(canonicalName);
+            if (!obj) continue;
+            lastObj = obj;
+            const played = obj.word || '';
+            const eq = obj.englishEquivalent || '';
+            if (!isTriviallySameCrossLang(played, eq, gameLangCode)) {
+                obj.gameLangCode = gameLangCode;
+                obj.gameLangName = canonicalName;
+                return obj;
+            }
+        }
+        if (lastObj) {
+            lastObj.gameLangCode = gameLangCode;
+            lastObj.gameLangName = canonicalName;
+        }
+        return lastObj;
+    }
+
     // --- UI & GAME LOGIC (mostly unchanged) ---
 
     document.addEventListener('gameStart', (event) => {
@@ -1157,9 +1246,17 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     const loseSounds = ['fail-144746.mp3', 'no-luck-too-bad-disappointing-sound-effect-112943.mp3', '050612_wild-west-1-36194.mp3'];
 
     function playRandomSound(sounds) {
-        const randomIndex = Math.floor(Math.random() * sounds.length);
-        const audio = new Audio(sounds[randomIndex]);
-        audio.play();
+        try {
+            const randomIndex = Math.floor(Math.random() * sounds.length);
+            const audio = new Audio(sounds[randomIndex]);
+            audio.play().catch(e => {
+                console.log('Sound file not found or could not play:', sounds[randomIndex]);
+                // Silently fail - don't break the game
+            });
+        } catch (e) {
+            console.log('Error playing sound:', e);
+            // Silently fail - don't break the game
+        }
     }
 
     const phoneticReplacements = {
@@ -1267,11 +1364,14 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
 
     function checkGameStatus() {
+        console.log('checkGameStatus called, wrongGuesses:', wrongGuesses, 'maxWrongGuesses:', maxWrongGuesses);
         if (selectedWord && wrongGuesses >= maxWrongGuesses) {
+            console.log('Game Over condition met');
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
             playRandomSound(loseSounds);
             showRepeatButtons(currentWordObj);
+            console.log('About to call showWordInfo with currentWordObj:', currentWordObj);
             showWordInfo(currentWordObj);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
@@ -1279,9 +1379,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 if (pendingGameLang) {
                     const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
                     if (langObj && typeof fetchWordObject === "function") {
-                        fetchWordObject(langObj.canonicalName).then(wordObj => {
-                            wordObj.gameLangCode = pendingGameLang;
-                            wordObj.gameLangName = langObj.canonicalName;
+                        fetchPlayableWord(pendingGameLang, langObj.canonicalName).then(wordObj => {
+                            if (!wordObj) return;
                             currentWordObj = wordObj;
                             selectedWord = wordObj.word.toUpperCase();
                             usedWords.add(selectedWord);
@@ -1296,10 +1395,12 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             }, 5000);
             resetGame();
         } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
+            console.log('Win condition met');
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
             playRandomSound(winSounds);
             showRepeatButtons(currentWordObj);
+            console.log('About to call showWordInfo with currentWordObj (win):', currentWordObj);
             showWordInfo(currentWordObj);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
@@ -1307,9 +1408,8 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                 if (pendingGameLang) {
                     const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
                     if (langObj && typeof fetchWordObject === "function") {
-                        fetchWordObject(langObj.canonicalName).then(wordObj => {
-                            wordObj.gameLangCode = pendingGameLang;
-                            wordObj.gameLangName = langObj.canonicalName;
+                        fetchPlayableWord(pendingGameLang, langObj.canonicalName).then(wordObj => {
+                            if (!wordObj) return;
                             currentWordObj = wordObj;
                             selectedWord = wordObj.word.toUpperCase();
                             usedWords.add(selectedWord);
@@ -1404,33 +1504,24 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             btn.style.overflow = 'hidden';
             btn.style.textOverflow = 'ellipsis';
             btn.onclick = function() {
-                selectedLang = lang.code; // Set UI language
+                // Set UI language only; actual game (word selection) will start
+                // when the user picks a learning language from the main language
+                // buttons below the microphone controls.
+                selectedLang = lang.code;
                 if (typeof recognition !== "undefined") recognition.lang = lang.code;
                 setUILanguage(lang.code);
                 popup.style.display = "none";
-                // Highlight the correct button in the main UI
+
+                // Highlight the corresponding button in the main UI so the user
+                // sees which language is currently selected for the interface.
                 document.querySelectorAll('.lang-btn').forEach((b, idx) => {
                     b.classList.toggle('active', LANGUAGES[idx].code === lang.code);
                 });
-                pendingGameLang = lang.code; // Also set as pending game language
-                updateInstructionsPopup(lang.code); // Update instructions popup language
-                // Immediately start the game for the selected language
-                if (typeof fetchWordObject === "function") {
-                    const langObj = LANGUAGES.find(l => l.code === lang.code);
-                    const langName = langObj ? langObj.canonicalName : "English";
-                    fetchWordObject(langName).then(wordObj => {
-                        wordObj.gameLangCode = lang.code;
-                        wordObj.gameLangName = langObj.canonicalName;
-                        currentWordObj = wordObj;
-                        selectedWord = wordObj.word.toUpperCase();
-                        usedWords.add(selectedWord);
-                        guessedLetters = [];
-                        wrongGuesses = 0;
-                        if (typeof updateWordDisplay === "function") updateWordDisplay();
-                        if (typeof drawHangman === "function") drawHangman();
-                        if (typeof createKeyboard === "function") createKeyboard();
-                    });
-                }
+
+                // Remember this as the default pending game language, and keep
+                // the instructions popup in sync, but do NOT fetch a word yet.
+                pendingGameLang = lang.code;
+                updateInstructionsPopup(lang.code);
             };
 
             row.appendChild(label);
@@ -1441,31 +1532,27 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         // Main UI language selection (second language box)
         document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
             btn.onclick = function() {
-                pendingGameLang = LANGUAGES[idx].code;
+                pendingGameLang = btn.getAttribute('data-value');
                 // Do NOT set selectedLang here!
                 document.querySelectorAll('.lang-btn').forEach((b, i) => {
-                    b.classList.toggle('active', i === idx);
+                    b.classList.toggle('active', b.getAttribute('data-value') === pendingGameLang);
                 });
                 // Do NOT call setUILanguage(selectedLang) here!
                 if (typeof recognition !== "undefined") recognition.lang = pendingGameLang;
                 if (typeof fetchWordObject === "function") {
                     const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
                     const langName = langObj ? langObj.canonicalName : "English";
-                        fetchWordObject(langName).then(wordObj => {
-                            // Attach the game language code to the returned word object so
-                            // downstream UI (TTS/definition logic) can reliably know which
-                            // language the word belongs to.
-                            wordObj.gameLangCode = pendingGameLang;
-                            wordObj.gameLangName = langName;
-                            currentWordObj = wordObj;
-                            selectedWord = wordObj.word.toUpperCase();
-                            usedWords.add(selectedWord);
-                            guessedLetters = [];
-                            wrongGuesses = 0;
-                            if (typeof updateWordDisplay === "function") updateWordDisplay();
-                            if (typeof drawHangman === "function") drawHangman();
-                            if (typeof createKeyboard === "function") createKeyboard();
-                        });
+                    fetchPlayableWord(pendingGameLang, langName).then(wordObj => {
+                        if (!wordObj) return;
+                        currentWordObj = wordObj;
+                        selectedWord = wordObj.word.toUpperCase();
+                        usedWords.add(selectedWord);
+                        guessedLetters = [];
+                        wrongGuesses = 0;
+                        if (typeof updateWordDisplay === "function") updateWordDisplay();
+                        if (typeof drawHangman === "function") drawHangman();
+                        if (typeof createKeyboard === "function") createKeyboard();
+                    });
                 }
             };
         });
@@ -1594,16 +1681,21 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         wrongGuesses = 0;
         updateWordDisplay();
         drawHangman();
-        // REMOVE or COMMENT OUT these lines:
-        // const defBox = document.getElementById('definition-box');
-        // if (defBox) defBox.remove();
     }
 
     // --- DYNAMIC LANGUAGE OPTIONS ---
 
     function showWordInfo(wordObj) {
+        console.log('showWordInfo called with:', wordObj);
         const logContainer = document.getElementById('log-container');
-        if (!logContainer) return;
+        if (!logContainer) {
+            console.log('log-container not found');
+            return;
+        }
+
+        // Show the log-container when displaying word info
+        logContainer.style.setProperty('display', 'block', 'important');
+        console.log('log-container display set to block');
 
         // Detect UI language code (e.g., 'zh-CN', 'es', etc.)
         let uiLang = selectedLang || 'en-US';
@@ -1817,19 +1909,29 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         }
 
         // Get label for "Word" and the other-side word in UI language
-        const playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
+        let playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
         let eqLabel;
-        // If the UI is English but the learning language is non-English (e.g., learning Spanish),
-        // avoid saying "English Equivalent" which is confusing. Use a neutral label instead.
+
+        // If UI is English and learning language is one of our supported non‑English
+        // languages, label the left/right explicitly, e.g. "Spanish word" and
+        // "English translation".
+        const learningNamesEn = {
+            'es-ES': 'Spanish',
+            'zh-CN': 'Mandarin',
+            'hi-IN': 'Hindi',
+            'fr-FR': 'French'
+        };
         if (uiLangShort === 'en' && learningLangShort !== 'en') {
-            eqLabel = 'Translation';
+            const lname = learningNamesEn[learningLangCode] || 'Foreign';
+            playedLabel = `${lname} word`;
+            eqLabel = 'English translation';
         } else {
             const eqLabels = {
-                'en': 'English Equivalent',
-                'es': 'Spanish Equivalente',
-                'fr': 'French Equivalent',
-                'zh-CN': 'Mandarin Equivalent',
-                'hi': 'Hindi Equivalent'
+                'en': 'English equivalent',
+                'es': 'Spanish equivalente',
+                'fr': 'French equivalent',
+                'zh-CN': 'Mandarin equivalent',
+                'hi': 'Hindi equivalent'
             };
             eqLabel = eqLabels[uiLangShort] || 'Equivalent';
         }
