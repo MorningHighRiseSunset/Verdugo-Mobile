@@ -1748,23 +1748,63 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
                     const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(playedWord)}&langpair=${encodeURIComponent(learningLangShort)}|en`);
                     const data = await res.json();
                     const txt = data && data.responseData && data.responseData.translatedText;
-                    if (txt) return txt;
+                    console.log(`fetchEnglishFromPlayed: translating "${playedWord}" from ${learningLangShort} to en, got: "${txt}"`);
+                    if (txt) {
+                        // Validate that the translation makes sense
+                        // If we already have an englishEquivalent that looks like English, prefer it
+                        if (equivalentWord && textLooksLikeLang(equivalentWord, 'en')) {
+                            console.log(`Using existing englishEquivalent "${equivalentWord}" over API translation "${txt}"`);
+                            return equivalentWord;
+                        }
+                        
+                        // Additional validation: check for obviously wrong translations
+                        const lowerTxt = txt.toLowerCase();
+                        const lowerPlayed = playedWord.toLowerCase();
+                        
+                        // Common Spanish words with their correct English equivalents
+                        const commonTranslations = {
+                            'libro': 'book',
+                            'casa': 'house', 
+                            'agua': 'water',
+                            'sol': 'sun',
+                            'mesa': 'table',
+                            'puerta': 'door',
+                            'gato': 'cat',
+                            'perro': 'dog',
+                            'manzana': 'apple',
+                            'ventana': 'window'
+                        };
+                        
+                        // If this is a common Spanish word and the translation looks wrong, use the known correct one
+                        if (commonTranslations[lowerPlayed] && 
+                            (lowerTxt !== commonTranslations[lowerPlayed]) && 
+                            (lowerTxt.includes('code') || lowerTxt.includes('civil') || lowerTxt.includes('legal'))) {
+                            console.log(`API returned wrong translation "${txt}" for "${playedWord}", using known correct translation "${commonTranslations[lowerPlayed]}"`);
+                            return commonTranslations[lowerPlayed];
+                        }
+                        
+                        return txt;
+                    }
                 } catch (e) {
-                    // ignore
+                    console.error('fetchEnglishFromPlayed error:', e);
                 }
                 return null;
             }
 
             // If UI language is English
             if (uiLangShort === 'en') {
-                // If the existing equivalent looks like English, return it
-                if (equivalentWord && textLooksLikeLang(equivalentWord, 'en')) return equivalentWord;
+                // If the existing equivalent looks like English, return it immediately
+                if (equivalentWord && textLooksLikeLang(equivalentWord, 'en')) {
+                    console.log(`Using existing englishEquivalent "${equivalentWord}" - looks like English`);
+                    return equivalentWord;
+                }
 
                 // Otherwise try to fetch a proper English equivalent from the played word
                 const fetched = await fetchEnglishFromPlayed();
                 if (fetched) return fetched;
 
                 // Fall back to whatever we have
+                console.log(`Using fallback: equivalentWord="${equivalentWord}", playedWord="${playedWord}"`);
                 return equivalentWord || playedWord;
             }
 
@@ -1776,6 +1816,7 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
             if (!englishEq) {
                 // As a last resort, use playedWord (may be non-Latin); return that raw
                 // since translating a garbage englishEquivalent will produce worse results.
+                console.log(`No English equivalent found, using playedWord "${playedWord}"`);
                 return equivalentWord || playedWord;
             }
 
