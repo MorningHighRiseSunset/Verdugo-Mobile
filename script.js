@@ -643,7 +643,12 @@ const phoneticMap = {
     'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P',
     'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X',
     'y': 'Y', 'z': 'Z',
-    // Single letter words
+    // Single letter pronunciations (common speech recognition outputs)
+    'bi': 'B', 'ci': 'C', 'di': 'D', 'ei': 'A', 'ef': 'F', 'gi': 'G', 'eich': 'H', 
+    'ai': 'I', 'jei': 'J', 'kei': 'K', 'el': 'L', 'em': 'M', 'en': 'N', 'ou': 'O',
+    'pi': 'P', 'kyu': 'Q', 'ar': 'R', 'es': 'S', 'ti': 'T', 'iu': 'U', 'vi': 'V',
+    'dabliu': 'W', 'ex': 'X', 'uai': 'Y', 'zi': 'Z',
+    // More variations
     'bee': 'B', 'see': 'C', 'dee': 'D', 'gee': 'G', 'pee': 'P', 'tea': 'T', 'you': 'U', 'why': 'Y',
     // Common mispronunciations
     'for': 'F', 'are': 'R', 'eye': 'I', 'oh': 'O', 'queue': 'Q', 'you': 'U', 'double you': 'W', 'double u': 'W'
@@ -664,6 +669,11 @@ const spanishPhoneticMap = {
     'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
     'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
     'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
+    // Single letter pronunciations (common speech recognition outputs)
+    'bi': 'B', 'ci': 'C', 'di': 'D', 'ei': 'A', 'efe': 'F', 'gi': 'G', 'hache': 'H',
+    'ai': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'ou': 'O',
+    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V',
+    'doble ve': 'W', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
     // English letters when speaking Spanish
     'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'eco': 'E', 'foxtrot': 'F',
     'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J', 'kilo': 'K', 'lima': 'L',
