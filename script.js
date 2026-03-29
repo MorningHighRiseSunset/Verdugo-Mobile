@@ -630,6 +630,55 @@ TRANSLATIONS.start_game = {
     "hi-IN": "खेल शुरू करें"
 };
 
+// Phonetic maps for voice recognition - defined in global scope
+const phoneticMap = {
+    // English phonetic alphabet
+    'alpha': 'A', 'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'echo': 'E',
+    'foxtrot': 'F', 'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J', 'juliett': 'J',
+    'kilo': 'K', 'lima': 'L', 'mike': 'M', 'michael': 'M', 'november': 'N', 'oscar': 'O',
+    'papa': 'P', 'quebec': 'Q', 'romeo': 'R', 'sierra': 'S', 'tango': 'T', 'uniform': 'U',
+    'victor': 'V', 'whiskey': 'W', 'x-ray': 'X', 'xray': 'X', 'yankee': 'Y', 'zulu': 'Z',
+    // Common spoken variations
+    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H',
+    'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P',
+    'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X',
+    'y': 'Y', 'z': 'Z',
+    // Single letter words
+    'bee': 'B', 'see': 'C', 'dee': 'D', 'gee': 'G', 'pee': 'P', 'tea': 'T', 'you': 'U', 'why': 'Y',
+    // Common mispronunciations
+    'for': 'F', 'are': 'R', 'eye': 'I', 'oh': 'O', 'queue': 'Q', 'you': 'U', 'double you': 'W', 'double u': 'W'
+};
+
+const spanishPhoneticMap = {
+    // Spanish alphabet with phonetic pronunciations
+    'a': 'A', 'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
+    'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
+    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
+    'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
+    // Spanish letters with accents
+    'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ü': 'Ü', 'ñ': 'Ñ',
+    // Common Spanish pronunciations and variations
+    'abe': 'A', 'be grande': 'B', 'be corta': 'V', 'che': 'CH', 'elle': 'LL',
+    // Single letters (Spanish speakers often say just the letter)
+    'a': 'A', 'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
+    'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
+    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
+    'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
+    // English letters when speaking Spanish
+    'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'eco': 'E', 'foxtrot': 'F',
+    'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J', 'kilo': 'K', 'lima': 'L',
+    'mike': 'M', 'noviembre': 'N', 'oscar': 'O', 'papa': 'P', 'quebec': 'Q', 'romeo': 'R',
+    'sierra': 'S', 'tango': 'T', 'uniform': 'U', 'victor': 'V', 'whiskey': 'W', 'x-ray': 'X',
+    'yanqui': 'Y', 'zulu': 'Z',
+    // Common Spanish words that sound like letters
+    'ah': 'A', 'eh': 'E', 'i': 'I', 'o': 'O', 'u': 'U',
+    'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'ese': 'S', 'o': 'O', 'u': 'U',
+    // Variations and mispronunciations
+    'cá': 'A', 'ce': 'C', 'de': 'D', 'efe': 'F', 'ge': 'G', 'jota': 'J', 'ka': 'K',
+    'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'pe': 'P', 'cu': 'Q', 'ere': 'R',
+    'ese': 'S', 'te': 'T', 'uve': 'V', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z'
+};
+
 // Check if the browser supports the Web Speech API
 if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -637,9 +686,6 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = 'en-US'; // Default to English
-
-    // ...phoneticMap and spanishPhoneticMap unchanged...
-    // (Keep your full phoneticMap and spanishPhoneticMap here)
 
         // --- DYNAMIC WORD GENERATION SECTION ---
     let selectedWord = '';
@@ -2334,31 +2380,59 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
         const currentRecLang = (typeof recognition !== 'undefined' && recognition.lang) ? recognition.lang : 'en-US';
         const currentRecShort = currentRecLang.split('-')[0];
+        console.log(`Recognition language: ${currentRecLang}, short: ${currentRecShort}`);
 
         for (let i = event.resultIndex; i < event.results.length; ++i) {
             let transcriptRaw = event.results[i][0].transcript.trim().toLowerCase();
-            console.log(`Recognized: ${transcriptRaw}`);
+            console.log(`Recognized: "${transcriptRaw}" (confidence: ${event.results[i][0].confidence})`);
 
             let mapped = null;
-            if (phoneticMap[transcriptRaw]) mapped = phoneticMap[transcriptRaw];
-            else if (spanishPhoneticMap[transcriptRaw]) mapped = spanishPhoneticMap[transcriptRaw];
-            else if (transcriptRaw.length === 1) mapped = transcriptRaw.toUpperCase();
+            
+            // Try English phonetic map first
+            if (phoneticMap[transcriptRaw]) {
+                mapped = phoneticMap[transcriptRaw];
+                console.log(`Found in English phonetic map: ${transcriptRaw} -> ${mapped}`);
+            }
+            // Try Spanish phonetic map for Spanish or as fallback
+            else if (spanishPhoneticMap[transcriptRaw]) {
+                mapped = spanishPhoneticMap[transcriptRaw];
+                console.log(`Found in Spanish phonetic map: ${transcriptRaw} -> ${mapped}`);
+            }
+            // Handle single character input
+            else if (transcriptRaw.length === 1) {
+                mapped = transcriptRaw.toUpperCase();
+                console.log(`Single character: ${transcriptRaw} -> ${mapped}`);
+            }
 
-            // For non-English recognition languages, be more forgiving:
-            // if we didn't find a mapping, try taking the first character that is a letter
-            if (!mapped && currentRecShort !== 'en') {
+            // For Spanish recognition, be more forgiving with character extraction
+            if (!mapped && currentRecShort === 'es') {
+                // Extract first Spanish character
+                const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
+                if (spanishCharMatch) {
+                    mapped = spanishCharMatch[0].toUpperCase();
+                    console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
+                }
+            }
+            // For other non-English languages, try basic character extraction
+            else if (!mapped && currentRecShort !== 'en') {
                 const firstChar = transcriptRaw[0];
                 if (firstChar && /[a-záéíóúñü]/i.test(firstChar)) {
                     mapped = firstChar.toUpperCase();
+                    console.log(`Extracted first character: ${transcriptRaw} -> ${mapped}`);
                 }
             }
 
-            if (!mapped) continue;
+            if (!mapped) {
+                console.log(`No mapping found for: "${transcriptRaw}"`);
+                continue;
+            }
 
             if (event.results[i].isFinal) {
                 finalTranscript += mapped;
+                console.log(`Final transcript: ${finalTranscript}`);
             } else {
                 interimTranscript += mapped;
+                console.log(`Interim transcript: ${interimTranscript}`);
             }
         }
 
