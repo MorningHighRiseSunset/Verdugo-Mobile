@@ -690,7 +690,23 @@ const spanishPhoneticMap = {
 };
 
 // Check if the browser supports the Web Speech API
-if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+// Show mobile warning if needed
+function checkMobileSupport() {
+    if (isIOS) {
+        console.warn('iOS detected - Speech recognition may not work on iOS Safari');
+        const statusEl = document.getElementById('status');
+        if (statusEl) {
+            statusEl.innerHTML = '<span style="color: orange;">⚠️ iOS Safari: Voice recognition limited. Try Chrome or use keyboard.</span>';
+        }
+        return false;
+    }
+    return true;
+}
+
+if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && checkMobileSupport()) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
     recognition.continuous = true;
@@ -2490,8 +2506,32 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
 
     recognition.onerror = function(event) {
         console.error('Speech recognition error', event);
-        alert(`Speech recognition error: ${event.error}`);
+        const statusEl = document.getElementById('status');
+        const errorMsg = getMobileFriendlyError(event.error);
+        if (statusEl) {
+            statusEl.innerHTML = `<span style="color: red;">❌ ${errorMsg}</span>`;
+        }
+        // Remove error message after 3 seconds
+        setTimeout(() => {
+            if (statusEl && statusEl.innerHTML.includes(errorMsg)) {
+                statusEl.innerHTML = '';
+            }
+        }, 3000);
     };
+
+    function getMobileFriendlyError(error) {
+        const errorMessages = {
+            'not-allowed': '🎤 Microphone permission denied. Please allow mic access.',
+            'not-found': '🎤 No microphone found. Please check your device.',
+            'network': '🌐 Network error. Please check internet connection.',
+            'no-speech': '🔊 No speech detected. Please speak clearly.',
+            'aborted': '⏹️ Speech recognition was stopped.',
+            'service-not-allowed': '🚫 Speech recognition not allowed on this device.',
+            'service-not-supported': '🚫 Speech recognition not supported. Try Chrome browser.',
+            'audio-capture': '🎤 Audio capture failed. Please check microphone settings.'
+        };
+        return errorMessages[error] || `Speech recognition error: ${error}`;
+    }
 
     recognition.onend = function() {
         console.log('Speech recognition ended');
@@ -2503,19 +2543,65 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     let audioStream = null;
 
     document.getElementById('start-btn').onclick = function() {
+        const statusEl = document.getElementById('status');
+        statusEl.innerHTML = '<span style="color: blue;">🎤 Requesting microphone access...</span>';
+        
         navigator.mediaDevices.getUserMedia({
-            audio: true
+            audio: {
+                echoCancellation: true,
+                noiseSuppression: true,
+                autoGainControl: true
+            }
         }).then(stream => {
             audioStream = stream;
-            const audioContext = new(window.AudioContext || window.webkitAudioContext)();
-            const source = audioContext.createMediaStreamSource(stream);
-            const gainNode = audioContext.createGain();
-            gainNode.gain.value = 2;
-            source.connect(gainNode).connect(audioContext.destination);
-            recognition.start();
+            statusEl.innerHTML = '<span style="color: green;">🎤 Microphone active! Start speaking...</span>';
+            
+            // Try to create audio context with mobile-friendly options
+            try {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                const audioContext = new AudioContextClass();
+                
+                // Only create audio nodes if context is running
+                if (audioContext.state === 'running') {
+                    const source = audioContext.createMediaStreamSource(stream);
+                    const gainNode = audioContext.createGain();
+                    gainNode.gain.value = isMobile ? 1.5 : 2; // Lower gain for mobile
+                    source.connect(gainNode).connect(audioContext.destination);
+                }
+            } catch (audioError) {
+                console.warn('Audio context creation failed, continuing without audio feedback:', audioError);
+            }
+            
+            // Start speech recognition
+            try {
+                recognition.start();
+                statusEl.innerHTML = '<span style="color: green;">🎤 Listening...</span>';
+            } catch (recognitionError) {
+                console.error('Failed to start recognition:', recognitionError);
+                statusEl.innerHTML = '<span style="color: red;">❌ Failed to start speech recognition</span>';
+            }
         }).catch(error => {
             console.error('Error accessing microphone:', error);
-            alert('Error accessing microphone. Please check your microphone settings.');
+            let errorMsg = '🎤 Microphone access failed';
+            
+            if (error.name === 'NotAllowedError') {
+                errorMsg = '🚫 Microphone permission denied. Please allow mic access in browser settings.';
+            } else if (error.name === 'NotFoundError') {
+                errorMsg = '🎤 No microphone found. Please check your device.';
+            } else if (error.name === 'NotReadableError') {
+                errorMsg = '🎤 Microphone is being used by another app.';
+            } else if (error.name === 'OverconstrainedError') {
+                errorMsg = '🎤 Microphone constraints not supported.';
+            }
+            
+            statusEl.innerHTML = `<span style="color: red;">${errorMsg}</span>`;
+            
+            // Remove error message after 5 seconds
+            setTimeout(() => {
+                if (statusEl && statusEl.innerHTML.includes(errorMsg)) {
+                    statusEl.innerHTML = '';
+                }
+            }, 5000);
         });
     };
 
@@ -2544,7 +2630,31 @@ if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
     }
 } else {
     console.error('Web Speech API is not supported in this browser.');
-    alert('Web Speech API is not supported in this browser. Please use a supported browser.');
+    
+    // Show mobile-friendly message instead of alert
+    const statusEl = document.getElementById('status');
+    if (statusEl) {
+        if (isIOS) {
+            statusEl.innerHTML = '<span style="color: orange;">📱 iOS Safari: Voice recognition not supported. Please use Chrome or tap letters below.</span>';
+        } else if (isMobile) {
+            statusEl.innerHTML = '<span style="color: orange;">📱 Voice recognition not supported. Please tap letters below or try Chrome browser.</span>';
+        } else {
+            statusEl.innerHTML = '<span style="color: red;">🚫 Voice recognition not supported. Please use Chrome browser.</span>';
+        }
+    }
+    
+    // Add keyboard input fallback for mobile
+    document.addEventListener('keydown', function(event) {
+        const key = event.key.toUpperCase();
+        if (/^[A-Z]$/.test(key)) {
+            const letterButtons = document.querySelectorAll('.letter-button');
+            letterButtons.forEach(button => {
+                if (button.innerText === key) {
+                    button.click();
+                }
+            });
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
