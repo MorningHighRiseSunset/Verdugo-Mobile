@@ -1,4 +1,4 @@
-// Netlify deployment instructions for Google Translate
+// Netlify deployment instructions
 // -----------------------------------------------------
 // Recommended (secure): Use Netlify environment variables and the included
 // Netlify Function `/.netlify/functions/translate` which uses `GOOGLE_API_KEY`.

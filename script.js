@@ -693,13 +693,39 @@ const spanishPhoneticMap = {
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 
+// iOS-specific speech recognition attempt
+function initIOSSpeechRecognition() {
+    if (isIOS && 'webkitSpeechRecognition' in window) {
+        try {
+            const recognition = new webkitSpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            return recognition;
+        } catch (e) {
+            console.warn('iOS WebKit speech recognition failed:', e);
+            return null;
+        }
+    }
+    return null;
+}
+
 // Show mobile warning if needed
 function checkMobileSupport() {
     if (isIOS) {
-        console.warn('iOS detected - Speech recognition may not work on iOS Safari');
+        console.warn('iOS detected - attempting iOS-specific speech recognition');
         const statusEl = document.getElementById('status');
         if (statusEl) {
-            statusEl.innerHTML = '<span style="color: orange;">⚠️ iOS Safari: Voice recognition limited. Try Chrome or use keyboard.</span>';
+            statusEl.innerHTML = '<span style="color: orange;">📱 iOS detected: Trying speech recognition... If this fails, use Chrome or tap letters below.</span>';
+        }
+        // Try iOS-specific recognition first
+        const iosRecognition = initIOSSpeechRecognition();
+        if (iosRecognition) {
+            return true; // Continue with iOS recognition
+        }
+        // Fallback to warning
+        if (statusEl) {
+            statusEl.innerHTML = '<span style="color: orange;">⚠️ iOS Safari: Voice recognition limited. Try Chrome browser or use keyboard below.</span>';
         }
         return false;
     }
@@ -2635,7 +2661,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     const statusEl = document.getElementById('status');
     if (statusEl) {
         if (isIOS) {
-            statusEl.innerHTML = '<span style="color: orange;">📱 iOS Safari: Voice recognition not supported. Please use Chrome or tap letters below.</span>';
+            statusEl.innerHTML = '<span style="color: orange;">📱 iOS: Using speech input below. Tap 🎤 to speak or type letters.</span>';
+            // Show iOS speech input
+            const iosContainer = document.getElementById('ios-speech-container');
+            if (iosContainer) {
+                iosContainer.style.display = 'block';
+                initIOSSpeechFallback();
+            }
         } else if (isMobile) {
             statusEl.innerHTML = '<span style="color: orange;">📱 Voice recognition not supported. Please tap letters below or try Chrome browser.</span>';
         } else {
@@ -2655,6 +2687,88 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             });
         }
     });
+}
+
+// iOS Speech Recognition Fallback
+function initIOSSpeechFallback() {
+    const speechBtn = document.getElementById('ios-speech-btn');
+    const speechInput = document.getElementById('ios-speech-input');
+    
+    if (!speechBtn || !speechInput) return;
+    
+    // Check if iOS supports speech recognition
+    const hasSpeechRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
+    
+    if (hasSpeechRecognition) {
+        // Use iOS speech recognition if available
+        speechBtn.onclick = function() {
+            const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognitionClass();
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = selectedLang || 'en-US';
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                speechInput.value = transcript;
+                processIOSSpeechInput(transcript);
+            };
+            
+            recognition.onerror = function(event) {
+                console.error('iOS speech recognition error:', event);
+                speechInput.placeholder = 'Speech failed. Please type letters...';
+            };
+            
+            recognition.start();
+            speechBtn.textContent = '🔊 Listening...';
+            speechBtn.disabled = true;
+            
+            setTimeout(() => {
+                recognition.stop();
+                speechBtn.textContent = '🎤 Speak';
+                speechBtn.disabled = false;
+            }, 3000);
+        };
+    } else {
+        // Fallback to just text input
+        speechBtn.style.display = 'none';
+        speechInput.placeholder = 'Type letters here and press Enter...';
+        speechInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                processIOSSpeechInput(speechInput.value);
+                speechInput.value = '';
+            }
+        });
+    }
+}
+
+function processIOSSpeechInput(input) {
+    const cleanInput = input.trim().toLowerCase();
+    const firstLetter = cleanInput[0];
+    
+    if (firstLetter && /[a-záéíóúñü]/i.test(firstLetter)) {
+        const letter = firstLetter.toUpperCase();
+        
+        // Try phonetic maps first
+        let mappedLetter = phoneticMap[firstLetter] || spanishPhoneticMap[firstLetter] || letter;
+        
+        // Make the letter guess
+        const letterButtons = document.querySelectorAll('.letter-button');
+        letterButtons.forEach(button => {
+            if (button.innerText === mappedLetter) {
+                button.style.backgroundColor = 'lightgreen';
+                setTimeout(() => {
+                    button.style.backgroundColor = '';
+                    button.click();
+                }, 300);
+            }
+        });
+        
+        document.getElementById('result').innerHTML = `Guessed: ${mappedLetter}`;
+        setTimeout(() => {
+            document.getElementById('result').innerHTML = '';
+        }, 2000);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
