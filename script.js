@@ -716,18 +716,34 @@ function checkMobileSupport() {
         console.warn('iOS detected - attempting iOS-specific speech recognition');
         const statusEl = document.getElementById('status');
         if (statusEl) {
-            statusEl.innerHTML = '<span style="color: orange;">📱 iOS detected: Trying speech recognition... If this fails, use Chrome or tap letters below.</span>';
+            statusEl.innerHTML = '<span style="color: orange;">iOS detected: Preparing speech recognition...</span>';
         }
+        
+        // Show iOS speech input immediately and try to start recognition
+        const iosContainer = document.getElementById('ios-speech-container');
+        if (iosContainer) {
+            iosContainer.style.display = 'block';
+            initIOSSpeechFallback();
+        }
+        
         // Try iOS-specific recognition first
         const iosRecognition = initIOSSpeechRecognition();
         if (iosRecognition) {
+            setTimeout(() => {
+                if (statusEl) {
+                    statusEl.innerHTML = '<span style="color: green;">iOS speech recognition ready! Tap the Speak button below.</span>';
+                }
+            }, 2000);
             return true; // Continue with iOS recognition
         }
-        // Fallback to warning
-        if (statusEl) {
-            statusEl.innerHTML = '<span style="color: orange;">⚠️ iOS Safari: Voice recognition limited. Try Chrome browser or use keyboard below.</span>';
-        }
-        return false;
+        
+        // Fallback to warning but then show the speech input
+        setTimeout(() => {
+            if (statusEl) {
+                statusEl.innerHTML = '<span style="color: orange;">Using speech input below. Tap Speak button or type letters.</span>';
+            }
+        }, 3000);
+        return true; // Continue with fallback input
     }
     return true;
 }
@@ -2702,37 +2718,51 @@ function initIOSSpeechFallback() {
     if (hasSpeechRecognition) {
         // Use iOS speech recognition if available
         speechBtn.onclick = function() {
+            const statusEl = document.getElementById('status');
+            statusEl.innerHTML = '<span style="color: blue;">🎤 iOS speech recognition starting...</span>';
+            
             const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
             const recognition = new SpeechRecognitionClass();
             recognition.continuous = false;
             recognition.interimResults = false;
             recognition.lang = selectedLang || 'en-US';
             
+            recognition.onstart = function() {
+                statusEl.innerHTML = '<span style="color: green;">🎤 iOS listening... Speak a letter!</span>';
+                speechBtn.textContent = '🔊 Listening...';
+                speechBtn.disabled = true;
+            };
+            
             recognition.onresult = function(event) {
                 const transcript = event.results[0][0].transcript;
                 speechInput.value = transcript;
+                statusEl.innerHTML = '<span style="color: lightgreen;">✅ Heard: ' + transcript + '</span>';
                 processIOSSpeechInput(transcript);
             };
             
             recognition.onerror = function(event) {
                 console.error('iOS speech recognition error:', event);
-                speechInput.placeholder = 'Speech failed. Please type letters...';
+                statusEl.innerHTML = '<span style="color: red;">❌ Speech failed. Try typing letters.</span>';
+                speechBtn.textContent = '🎤 Speak';
+                speechBtn.disabled = false;
+            };
+            
+            recognition.onend = function() {
+                statusEl.innerHTML = '<span style="color: green;">✅ iOS speech recognition ready</span>';
+                speechBtn.textContent = '🎤 Speak';
+                speechBtn.disabled = false;
             };
             
             recognition.start();
-            speechBtn.textContent = '🔊 Listening...';
-            speechBtn.disabled = true;
-            
-            setTimeout(() => {
-                recognition.stop();
-                speechBtn.textContent = '🎤 Speak';
-                speechBtn.disabled = false;
-            }, 3000);
         };
     } else {
         // Fallback to just text input
         speechBtn.style.display = 'none';
         speechInput.placeholder = 'Type letters here and press Enter...';
+        const statusEl = document.getElementById('status');
+        if (statusEl) {
+            statusEl.innerHTML = '<span style="color: orange;">⌨️ Type letters below and press Enter</span>';
+        }
         speechInput.addEventListener('keypress', function(event) {
             if (event.key === 'Enter') {
                 processIOSSpeechInput(speechInput.value);
