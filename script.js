@@ -872,6 +872,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
     // Fetch a random word and its data from real APIs
     async function fetchWordObject(language) {
+        console.log(`DEBUG: fetchWordObject called with language="${language}"`);
         let word = '';
         let definition = '';
         let pronunciation = '';
@@ -924,6 +925,20 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
         // --- SPANISH: Use Spanish words directly from the GitHub wordlist ---
                 if (language === 'Spanish') {
+                    console.log('DEBUG: Entering Spanish word selection logic');
+                    // Wait for Spanish wordlist to load if not ready
+                    if (SPANISH_WORDLIST.size === 0) {
+                        console.log('Spanish wordlist not loaded yet, using fallback');
+                        // Use fallback words while wordlist loads
+                        const fallback = FALLBACK_SPANISH_WORDS[Math.floor(Math.random() * FALLBACK_SPANISH_WORDS.length)];
+                        return await finalizeWordObj({
+                            word: fallback.word,
+                            definition: '',
+                            pronunciation: '/No pronunciation available/',
+                            englishEquivalent: fallback.english
+                        }, 'Spanish');
+                    }
+
                     // Pick Spanish words directly from the loaded wordlist
                     const maxTries = 10;
                     let chosen = '';
@@ -933,6 +948,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
                     // Convert wordlist Set to array for random selection
                     const spanishWordsArray = Array.from(SPANISH_WORDLIST);
+                    console.log(`Selecting from ${spanishWordsArray.length} Spanish words`);
                     
                     for (let tryNum = 0; tryNum < maxTries; tryNum++) {
                         // Try FALLBACK_SPANISH_WORDS first (reliable translations)
