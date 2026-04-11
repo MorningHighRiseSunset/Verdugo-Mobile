@@ -2602,6 +2602,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     };
 
     let audioStream = null;
+let iosRecognition = null; // Make iOS recognition accessible to stop button
 
     document.getElementById('start-btn').onclick = function() {
         const statusEl = document.getElementById('status');
@@ -2628,7 +2629,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             // Try iOS speech recognition
             const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (SpeechRecognitionClass) {
-                const iosRecognition = new SpeechRecognitionClass();
+                iosRecognition = new SpeechRecognitionClass(); // Use global variable
                 iosRecognition.continuous = true;
                 iosRecognition.interimResults = true;
                 iosRecognition.lang = selectedLang || 'en-US';
@@ -2797,11 +2798,47 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     };
 
     document.getElementById('stop-btn').onclick = function() {
-        recognition.stop();
+        // Stop iOS recognition if it's active
+        if (iosRecognition && isIOS) {
+            try {
+                iosRecognition.stop();
+                iosRecognition = null; // Clear the reference
+                console.log('iOS speech recognition stopped by user');
+            } catch (e) {
+                console.warn('Error stopping iOS recognition:', e);
+            }
+        }
+        
+        // Stop regular recognition if it's active
+        try {
+            recognition.stop();
+        } catch (e) {
+            console.warn('Error stopping regular recognition:', e);
+        }
+        
+        // Stop audio stream
         if (audioStream) {
             audioStream.getTracks().forEach(track => track.stop());
             audioStream = null;
         }
+        
+        // Reset UI
+        const statusEl = document.getElementById('status');
+        if (statusEl) {
+            const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                'Reconocimiento de voz detenido.' : 'Speech recognition stopped.';
+            statusEl.innerHTML = `<span style="color: orange;">${message}</span>`;
+            
+            // Clear message after 2 seconds
+            setTimeout(() => {
+                if (statusEl.innerHTML.includes(message)) {
+                    statusEl.innerHTML = '';
+                }
+            }, 2000);
+        }
+        
+        document.getElementById('start-btn').disabled = false;
+        document.getElementById('stop-btn').disabled = true;
     };
 
     document.addEventListener('keydown', function(event) {
