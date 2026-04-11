@@ -2101,12 +2101,16 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             return englishDef;
         }
 
-        // Fallback: If all translation methods fail, use the original Spanish word directly
+        // Fallback: If all translation methods fail, use the appropriate word based on user's learning language
         // This prevents the "PLEASE SELECT TWO DISTINCT LANGUAGES" error when APIs are down
-        const getFallbackSpanishEquivalent = () => {
-            // If learning language is Spanish and UI is English, the Spanish word IS the equivalent
+        const getFallbackEquivalent = () => {
+            // If user is learning English, show English word
+            if (learningLangShort === 'en' && uiLangShort === 'es') {
+                return playedWord; // Spanish speaker learning English = show English word
+            }
+            // If user is learning Spanish, show Spanish word
             if (learningLangShort === 'es' && uiLangShort === 'en') {
-                return playedWord; // Return the original Spanish word
+                return playedWord; // English speaker learning Spanish = show Spanish word
             }
             return equivalentWord || playedWord; // Fallback to whatever we have
         };
