@@ -1982,6 +1982,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             if (!translated) {
                 try {
                     console.log(`Trying MyMemory: "${englishEq}" from English to ${uiLangShort}`);
+                    
+                    // Skip translation if source and target are the same language
+                    if (englishEq.toLowerCase() === playedWord.toLowerCase() && learningLangShort === uiLangShort) {
+                        console.log(`Skipping translation: source and target are the same (${learningLangShort}|${uiLangShort})`);
+                        return englishEq;
+                    }
+                    
                     const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
                     const data2 = await res2.json();
                     console.log('MyMemory API response:', data2);
