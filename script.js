@@ -952,78 +952,21 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                         chosen = 'casa';
                         englishEquivalent = 'house';
                         pronunciation = '/No pronunciation available/';
-                                // ignore translation failure; keep English definition as last resort
-                            }
-                        }
-                    }
-
-                    if (!definition) definition = `No definition found for "${word}".`;
-                    if (!pronunciation) pronunciation = '/No pronunciation available/';
-
-                    // Fallback: Try Wiktionary (Spanish) if still no definition
-                    if (!definition || /^No definition found/i.test(definition)) {
-                        try {
-                            const wiktionaryDef = await fetchWiktionaryDefinition(word, 'es');
-                            if (wiktionaryDef && !/^No definition found/i.test(wiktionaryDef)) {
-                                definition = wiktionaryDef;
-                            }
-                        } catch (e) {}
-                    }
-
-                    // Final fallback: use English Wikipedia summary for the English equivalent.
-                    // This helps when the word is a place/person/etc. and dictionaries are empty.
-                    if (!definition || /^No definition found/i.test(definition)) {
-                        const wikiDef = await fetchWikipediaSummary(englishEquivalent || word, 'en');
-                        if (wikiDef) {
-                            definition = wikiDef;
-                        }
                     }
 
                     return await finalizeWordObj({
                         word: chosen,
                         definition: definition,
-                }
-
-                // Try FreeDict dictionary for more variety
-                const spanishWords = Object.keys(FREEDICT_SPANISH_ENGLISH);
-                if (spanishWords.length > 0) {
-                    chosen = spanishWords[Math.floor(Math.random() * spanishWords.length)];
-                    englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen];
-                    definition = '';
-                    pronunciation = '';
-                    break;
-                        // If we only have an English definition for a Spanish word, translate it now
-                        if (definition && !entry) {
-                            try {
-                                const proxyDefUrl2 = `/.netlify/functions/translate?q=${encodeURIComponent(definition)}&target=es`;
-                                const presDef2 = await fetch(proxyDefUrl2);
-                                if (presDef2.ok) {
-                                    const pdataDef2 = await presDef2.json();
-                                    const candidate2 = pdataDef2.definition || pdataDef2.translated || pdataDef2.translatedText || '';
-                                    if (candidate2 && !/No definition found/i.test(candidate2)) {
-                                        definition = candidate2;
-                                    }
-                                }
-                            } catch (e) {
-                                // ignore
-                            }
-                        }
-                    }
-
-                    return await finalizeWordObj({
-                        word,
-                        definition,
-                        pronunciation,
-                        englishEquivalent
+                        pronunciation: pronunciation,
+                        englishEquivalent: englishEquivalent
                     }, 'Spanish');
                 }
 
-        // --- ENGLISH: Use ONLY local ENGLISH_DICTIONARY.js ---
+        // --- ENGLISH: Use local dictionary or API-driven flow ---
         if (language === 'English') {
             const ENGLISH_DICTIONARY = window.ENGLISH_DICTIONARY || window.dictionary || {};
             const keys = Object.keys(ENGLISH_DICTIONARY);
             if (keys.length === 0) {
-                // Use a random safe word instead of always "music"
                 word = SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
                 definition = "No dictionary available. This is a fallback word.";
                 pronunciation = "/No pronunciation available/";
@@ -1069,7 +1012,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             } catch (e) {}
             baseWord = '';
         }
-        if (!baseWord) baseWord = getRandomSafeWord();
 
         let langpair = 'en|es';
         let dictLangCode = 'es';
