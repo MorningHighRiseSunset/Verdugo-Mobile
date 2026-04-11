@@ -731,7 +731,10 @@ function checkMobileSupport() {
         if (iosRecognition) {
             setTimeout(() => {
                 if (statusEl) {
-                    statusEl.innerHTML = '<span style="color: green;">iOS speech recognition ready! Tap the Speak button below.</span>';
+                    const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                        'Reconocimiento de voz iOS listo! Toca el botón Hablar arriba.' : 
+                        'iOS speech recognition ready! Tap the Speak button above.';
+                    statusEl.innerHTML = `<span style="color: green;">${message}</span>`;
                 }
             }, 2000);
             return true; // Continue with iOS recognition
@@ -740,7 +743,10 @@ function checkMobileSupport() {
         // Fallback to warning but then show the speech input
         setTimeout(() => {
             if (statusEl) {
-                statusEl.innerHTML = '<span style="color: orange;">Using speech input below. Tap Speak button or type letters.</span>';
+                const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                    'Usando entrada de voz arriba. Toca Hablar o escribe letras.' : 
+                    'Using speech input above. Tap Speak button or type letters.';
+                statusEl.innerHTML = `<span style="color: orange;">${message}</span>`;
             }
         }, 3000);
         return true; // Continue with fallback input
