@@ -2611,21 +2611,24 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     
                     for (let i = event.resultIndex; i < event.results.length; ++i) {
                         let transcriptRaw = event.results[i][0].transcript.trim().toLowerCase();
-                        console.log(`iOS Recognized: "${transcriptRaw}"`);
+                        console.log(`iOS Recognized: "${transcriptRaw}" (confidence: ${event.results[i][0].confidence}, isFinal: ${event.results[i].isFinal})`);
                         
                         let mapped = null;
                         
                         // Try English phonetic map first
                         if (phoneticMap[transcriptRaw]) {
                             mapped = phoneticMap[transcriptRaw];
+                            console.log(`Found in English phonetic map: ${transcriptRaw} -> ${mapped}`);
                         }
                         // Try Spanish phonetic map for Spanish or as fallback
                         else if (spanishPhoneticMap[transcriptRaw]) {
                             mapped = spanishPhoneticMap[transcriptRaw];
+                            console.log(`Found in Spanish phonetic map: ${transcriptRaw} -> ${mapped}`);
                         }
                         // Handle single character input
                         else if (transcriptRaw.length === 1) {
                             mapped = transcriptRaw.toUpperCase();
+                            console.log(`Single character: ${transcriptRaw} -> ${mapped}`);
                         }
                         
                         // For Spanish recognition, be more forgiving with character extraction
@@ -2633,22 +2636,38 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
                             if (spanishCharMatch) {
                                 mapped = spanishCharMatch[0].toUpperCase();
+                                console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
                             }
                         }
                         
-                        if (!mapped) continue;
+                        if (!mapped) {
+                            console.log(`No mapping found for: "${transcriptRaw}"`);
+                            continue;
+                        }
                         
                         if (event.results[i].isFinal) {
                             finalTranscript += mapped;
+                            console.log(`Final transcript: ${finalTranscript}`);
                         } else {
                             interimTranscript += mapped;
+                            console.log(`Interim transcript: ${interimTranscript}`);
+                        }
+                        
+                        // iOS FIX: Submit letters immediately for iOS since it may not mark as final
+                        if (isIOS && mapped) {
+                            console.log(`iOS: Immediately submitting letter: ${mapped}`);
+                            document.getElementById('result').innerHTML = mapped;
+                            handleGuess(mapped);
+                            return; // Submit first letter and stop processing
                         }
                     }
                     
                     document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
                     
-                    if (finalTranscript) {
+                    // Non-iOS: Only submit final results
+                    if (!isIOS && finalTranscript) {
                         const guessedLetter = finalTranscript.toUpperCase();
+                        console.log(`Non-iOS: Submitting final letter: ${guessedLetter}`);
                         handleGuess(guessedLetter);
                     }
                 };
