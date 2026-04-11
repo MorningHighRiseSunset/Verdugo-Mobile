@@ -1841,6 +1841,12 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         if (learningLangCode === 'fr-FR') learningLangShort = 'fr';
         if (learningLangCode === 'hi-IN') learningLangShort = 'hi';
 
+        // DEBUG: Log the actual language values
+        console.log(`DEBUG: selectedLang=${selectedLang}, pendingGameLang=${pendingGameLang}`);
+        console.log(`DEBUG: uiLang=${uiLang}, uiLangShort=${uiLangShort}`);
+        console.log(`DEBUG: learningLangCode=${learningLangCode}, learningLangShort=${learningLangShort}`);
+        console.log(`DEBUG: playedWord=${playedWord}, equivalentWord=${equivalentWord}`);
+
         // Determine played word and equivalent
         let playedWord = wordObj.word;
         let equivalentWord = wordObj.englishEquivalent;
