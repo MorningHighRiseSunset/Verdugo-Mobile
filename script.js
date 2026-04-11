@@ -697,6 +697,7 @@ const spanishPhoneticMap = {
 
 // Load FreeDict Spanish-English dictionary (large vocabulary)
 let FREEDICT_SPANISH_ENGLISH = {};
+let SPANISH_WORDLIST = new Set(); // For word validation
 
 // Initialize dictionary on page load
 async function loadFreeDictSpanishEnglish() {
@@ -743,8 +744,33 @@ async function loadFreeDictSpanishEnglish() {
     }
 }
 
-// Load dictionary when page loads
-loadFreeDictSpanishEnglish();
+// Load Spanish wordlist for comprehensive vocabulary
+async function loadSpanishWordlist() {
+    try {
+        const response = await fetch('https://raw.githubusercontent.com/xavier-hernandez/spanish-wordlist/main/text/spanish_words.txt');
+        if (response.ok) {
+            const text = await response.text();
+            const words = text.split('\n').filter(word => word.trim());
+            words.forEach(word => {
+                SPANISH_WORDLIST.add(word.trim().toLowerCase());
+            });
+            console.log(`Loaded ${SPANISH_WORDLIST.size} Spanish words from GitHub wordlist`);
+        }
+    } catch (e) {
+        console.warn('Failed to load Spanish wordlist:', e);
+    }
+}
+
+// Load both dictionaries when page loads
+async function initializeDictionaries() {
+    await Promise.all([
+        loadFreeDictSpanishEnglish(),
+        loadSpanishWordlist()
+    ]);
+}
+
+// Initialize dictionaries
+initializeDictionaries();
 
 // Check if the browser supports the Web Speech API
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -1073,6 +1099,12 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                         // If MyMemory fails, try FreeDict dictionary
                         if (!englishEquivalent) {
                             englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen.toLowerCase()] || '';
+                        }
+
+                        // Validate Spanish word using wordlist
+                        const isValidSpanish = SPANISH_WORDLIST.has(chosen.toLowerCase());
+                        if (!isValidSpanish) {
+                            console.log(`Word "${chosen}" not found in Spanish wordlist, may be invalid or rare`);
                         }
 
                         if (!englishEquivalent) {
