@@ -739,7 +739,24 @@ async function loadFreeDictSpanishEnglish() {
             'triste': 'sad', 'nuevo': 'new', 'viejo': 'old', 'rápido': 'fast',
             'lento': 'slow', 'caliente': 'hot', 'frío': 'cold', 'blanco': 'white',
             'negro': 'black', 'rojo': 'red', 'azul': 'blue', 'verde': 'green',
-            'amarillo': 'yellow'
+            'amarillo': 'yellow',
+            // MORE COMMON WORDS
+            'estudiante': 'student', 'profesor': 'teacher', 'clase': 'class', 'examen': 'exam',
+            'tarea': 'homework', 'libro': 'book', 'papel': 'paper', 'lápiz': 'pencil',
+            'computadora': 'computer', 'teléfono': 'phone', 'carro': 'car', 'calle': 'street',
+            'ciudad': 'city', 'país': 'country', 'mundo': 'world', 'gente': 'people',
+            'niño': 'child', 'hombre': 'man', 'mujer': 'woman', 'padre': 'father',
+            'madre': 'mother', 'hermano': 'brother', 'hermana': 'sister', 'hijo': 'son',
+            'hija': 'daughter', 'abuelo': 'grandfather', 'abuela': 'grandmother',
+            'comer': 'eat', 'beber': 'drink', 'dormir': 'sleep', 'trabajar': 'work',
+            'estudiar': 'study', 'aprender': 'learn', 'enseñar': 'teach', 'hablar': 'speak',
+            'escuchar': 'listen', 'leer': 'read', 'escribir': 'write', 'caminar': 'walk',
+            'correr': 'run', 'saltar': 'jump', 'nadar': 'swim', 'volar': 'fly',
+            'grande': 'big', 'pequeño': 'small', 'alto': 'tall', 'bajo': 'short',
+            'gordo': 'fat', 'delgado': 'thin', 'fuerte': 'strong', 'débil': 'weak',
+            'joven': 'young', 'viejo': 'old', 'nuevo': 'new', 'antiguo': 'ancient',
+            'bueno': 'good', 'malo': 'bad', 'feliz': 'happy', 'triste': 'sad',
+            'enojado': 'angry', 'calmado': 'calm', 'contento': 'content', 'preocupado': 'worried'
         };
     }
 }
@@ -905,15 +922,18 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             { word: 'mesa', english: 'table' }, { word: 'puerta', english: 'door' }, { word: 'gato', english: 'cat' }
         ];
 
-        // --- SPANISH: Use Spanish words directly instead of translating from English ---
+        // --- SPANISH: Use Spanish words directly from the GitHub wordlist ---
                 if (language === 'Spanish') {
-                    // Pick Spanish words directly from our wordlist/dictionary
+                    // Pick Spanish words directly from the loaded wordlist
                     const maxTries = 10;
                     let chosen = '';
                     let englishEquivalent = '';
                     let definition = '';
                     let pronunciation = '';
 
+                    // Convert wordlist Set to array for random selection
+                    const spanishWordsArray = Array.from(SPANISH_WORDLIST);
+                    
                     for (let tryNum = 0; tryNum < maxTries; tryNum++) {
                         // Try FALLBACK_SPANISH_WORDS first (reliable translations)
                         if (tryNum < 3 && FALLBACK_SPANISH_WORDS.length > 0) {
@@ -925,23 +945,20 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             break;
                         }
 
-                        // Try FreeDict dictionary for more variety
-                        const spanishWords = Object.keys(FREEDICT_SPANISH_ENGLISH);
-                        if (spanishWords.length > 0) {
-                            chosen = spanishWords[Math.floor(Math.random() * spanishWords.length)];
-                            englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen];
+                        // Use the ACTUAL Spanish wordlist from GitHub (73,434 words!)
+                        if (spanishWordsArray.length > 0) {
+                            chosen = spanishWordsArray[Math.floor(Math.random() * spanishWordsArray.length)];
+                            englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen.toLowerCase()] || '';
+                            
+                            // If no translation found, try a few more times to find a word with translation
+                            if (!englishEquivalent && tryNum < maxTries - 1) {
+                                continue; // Try another word
+                            }
+                            
                             definition = '';
                             pronunciation = '';
                             break;
                         }
-
-                        // If all else fails, use hardcoded list
-                        const hardcodedWords = ['cocina', 'casa', 'perro', 'gato', 'agua', 'sol', 'luna', 'mesa', 'silla', 'libro'];
-                        chosen = hardcodedWords[Math.floor(Math.random() * hardcodedWords.length)];
-                        englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen] || chosen;
-                        definition = '';
-                        pronunciation = '';
-                        break;
                     }
 
                     // Validate the Spanish word exists in our wordlist
