@@ -2589,7 +2589,22 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         
         // iOS-specific handling
         if (isIOS) {
-            statusEl.innerHTML = '<span style="color: blue;">iOS speech recognition starting...</span>';
+            // Get language-appropriate messages
+            const getIosMessage = (key) => {
+                const messages = {
+                    'starting': selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                        'Iniciando reconocimiento de voz en iOS...' : 'iOS speech recognition starting...',
+                    'listening': selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                        'iOS escuchando... ¡Di letras!' : 'iOS listening... Speak letters!',
+                    'not_supported': selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                        'Voz de iOS no compatible. Usa Chrome o escribe letras.' : 'iOS speech not supported. Use keyboard below.',
+                    'failed': selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                        'Reconocimiento de voz iOS falló. Intenta escribir letras.' : 'iOS speech recognition failed. Try typing letters.'
+                };
+                return messages[key];
+            };
+            
+            statusEl.innerHTML = `<span style="color: blue;">${getIosMessage('starting')}</span>`;
             
             // Try iOS speech recognition
             const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -2600,7 +2615,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 iosRecognition.lang = selectedLang || 'en-US';
                 
                 iosRecognition.onstart = function() {
-                    statusEl.innerHTML = '<span style="color: green;">iOS listening... Speak letters!</span>';
+                    statusEl.innerHTML = `<span style="color: green;">${getIosMessage('listening')}</span>`;
                     document.getElementById('start-btn').disabled = true;
                     document.getElementById('stop-btn').disabled = false;
                 };
@@ -2692,10 +2707,10 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     iosRecognition.start();
                 } catch (error) {
                     console.error('Failed to start iOS recognition:', error);
-                    statusEl.innerHTML = '<span style="color: red;">iOS speech recognition failed. Try typing letters.</span>';
+                    statusEl.innerHTML = `<span style="color: red;">${getIosMessage('failed')}</span>`;
                 }
             } else {
-                statusEl.innerHTML = '<span style="color: red;">iOS speech not supported. Use keyboard below.</span>';
+                statusEl.innerHTML = `<span style="color: red;">${getIosMessage('not_supported')}</span>`;
             }
             return;
         }
@@ -2792,11 +2807,20 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     const statusEl = document.getElementById('status');
     if (statusEl) {
         if (isIOS) {
-            statusEl.innerHTML = '<span style="color: red;">iOS speech not supported. Please use Chrome browser or type letters below.</span>';
+            const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                'Voz de iOS no compatible. Usa Chrome o escribe letras abajo.' : 
+                'iOS speech not supported. Please use Chrome browser or type letters below.';
+            statusEl.innerHTML = `<span style="color: red;">${message}</span>`;
         } else if (isMobile) {
-            statusEl.innerHTML = '<span style="color: orange;">Voice recognition not supported. Please tap letters below or try Chrome browser.</span>';
+            const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                'Reconocimiento de voz no compatible. Toca letras abajo o prueba Chrome.' : 
+                'Voice recognition not supported. Please tap letters below or try Chrome browser.';
+            statusEl.innerHTML = `<span style="color: orange;">${message}</span>`;
         } else {
-            statusEl.innerHTML = '<span style="color: red;">Voice recognition not supported. Please use Chrome browser.</span>';
+            const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
+                'Reconocimiento de voz no compatible. Usa Chrome.' : 
+                'Voice recognition not supported. Please use Chrome browser.';
+            statusEl.innerHTML = `<span style="color: red;">${message}</span>`;
         }
     }
     
