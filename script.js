@@ -695,6 +695,55 @@ const spanishPhoneticMap = {
     'xi': 'X', 'yi': 'Y', 'zi': 'Z'
 };
 
+// Simple Spanish-English dictionary fallback when APIs fail
+const SPANISH_ENGLISH_DICT = {
+    'cocina': 'kitchen',
+    'casa': 'house',
+    'perro': 'dog',
+    'gato': 'cat',
+    'agua': 'water',
+    'sol': 'sun',
+    'luna': 'moon',
+    'mesa': 'table',
+    'silla': 'chair',
+    'libro': 'book',
+    'coche': 'car',
+    'árbol': 'tree',
+    'flor': 'flower',
+    'comida': 'food',
+    'bebida': 'drink',
+    'familia': 'family',
+    'amigo': 'friend',
+    'trabajo': 'work',
+    'escuela': 'school',
+    'hospital': 'hospital',
+    'tienda': 'store',
+    'dinero': 'money',
+    'tiempo': 'time',
+    'día': 'day',
+    'noche': 'night',
+    'mañana': 'morning',
+    'tarde': 'afternoon',
+    'grande': 'big',
+    'pequeño': 'small',
+    'bueno': 'good',
+    'malo': 'bad',
+    'feliz': 'happy',
+    'triste': 'sad',
+    'nuevo': 'new',
+    'viejo': 'old',
+    'rápido': 'fast',
+    'lento': 'slow',
+    'caliente': 'hot',
+    'frío': 'cold',
+    'blanco': 'white',
+    'negro': 'black',
+    'rojo': 'red',
+    'azul': 'blue',
+    'verde': 'green',
+    'amarillo': 'yellow'
+};
+
 // Check if the browser supports the Web Speech API
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -1017,6 +1066,11 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             englishEquivalent = (transData && transData.responseData && transData.responseData.translatedText) || '';
                         } catch (e) {
                             englishEquivalent = '';
+                        }
+
+                        // If MyMemory fails, try our built-in dictionary
+                        if (!englishEquivalent) {
+                            englishEquivalent = SPANISH_ENGLISH_DICT[chosen.toLowerCase()] || '';
                         }
 
                         if (!englishEquivalent) {
