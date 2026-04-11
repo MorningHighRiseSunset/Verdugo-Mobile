@@ -655,38 +655,51 @@ const phoneticMap = {
 };
 
 const spanishPhoneticMap = {
-    // Spanish alphabet with phonetic pronunciations
+    // Spanish alphabet pronunciations (the way Spanish speakers actually say letters)
     'a': 'A', 'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
     'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
     'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
     'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
+    
     // Spanish letters with accents
     'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ü': 'Ü', 'ñ': 'Ñ',
-    // Common Spanish pronunciations and variations
+    
+    // Common Spanish variations and mispronunciations
     'abe': 'A', 'be grande': 'B', 'be corta': 'V', 'che': 'CH', 'elle': 'LL',
-    // Single letters (Spanish speakers often say just the letter)
-    'a': 'A', 'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
-    'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
-    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
-    'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
-    // Single letter pronunciations (common speech recognition outputs)
-    'bi': 'B', 'ci': 'C', 'di': 'D', 'ei': 'A', 'efe': 'F', 'gi': 'G', 'hache': 'H',
-    'ai': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'ou': 'O',
-    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V',
-    'doble ve': 'W', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
-    // English letters when speaking Spanish
+    
+    // Single letters (most common way Spanish speakers say letters)
+    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H',
+    'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'ñ': 'Ñ', 'o': 'O',
+    'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U', 'v': 'V', 'w': 'W',
+    'x': 'X', 'y': 'Y', 'z': 'Z',
+    
+    // Spanish speech recognition common outputs
+    'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
+    'ache': 'H', 'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N',
+    'eñe': 'Ñ', 'o': 'O', 'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T',
+    'u': 'U', 'uve': 'V', 'doble u': 'W', 'doble ve': 'W', 'equis': 'X', 'ye': 'Y',
+    'zeta': 'Z', 'seta': 'Z',
+    
+    // English phonetic alphabet (for Spanish speakers who know it)
     'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'eco': 'E', 'foxtrot': 'F',
     'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J', 'kilo': 'K', 'lima': 'L',
     'mike': 'M', 'noviembre': 'N', 'oscar': 'O', 'papa': 'P', 'quebec': 'Q', 'romeo': 'R',
     'sierra': 'S', 'tango': 'T', 'uniform': 'U', 'victor': 'V', 'whiskey': 'W', 'x-ray': 'X',
     'yanqui': 'Y', 'zulu': 'Z',
-    // Common Spanish words that sound like letters
+    
+    // Common Spanish letter sounds
     'ah': 'A', 'eh': 'E', 'i': 'I', 'o': 'O', 'u': 'U',
-    'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'ese': 'S', 'o': 'O', 'u': 'U',
-    // Variations and mispronunciations
+    'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'ese': 'S',
+    
+    // Additional Spanish variations
     'cá': 'A', 'ce': 'C', 'de': 'D', 'efe': 'F', 'ge': 'G', 'jota': 'J', 'ka': 'K',
     'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'pe': 'P', 'cu': 'Q', 'ere': 'R',
-    'ese': 'S', 'te': 'T', 'uve': 'V', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z'
+    'ese': 'S', 'te': 'T', 'uve': 'V', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
+    
+    // Common mispronunciations and variations
+    'bi': 'B', 'ci': 'C', 'di': 'D', 'gi': 'G', 'li': 'L', 'mi': 'M', 'ni': 'N',
+    'pi': 'P', 'qui': 'Q', 'ri': 'R', 'si': 'S', 'ti': 'T', 'vi': 'V', 'wi': 'W',
+    'xi': 'X', 'yi': 'Y', 'zi': 'Z'
 };
 
 // Check if the browser supports the Web Speech API
