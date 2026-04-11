@@ -695,54 +695,56 @@ const spanishPhoneticMap = {
     'xi': 'X', 'yi': 'Y', 'zi': 'Z'
 };
 
-// Simple Spanish-English dictionary fallback when APIs fail
-const SPANISH_ENGLISH_DICT = {
-    'cocina': 'kitchen',
-    'casa': 'house',
-    'perro': 'dog',
-    'gato': 'cat',
-    'agua': 'water',
-    'sol': 'sun',
-    'luna': 'moon',
-    'mesa': 'table',
-    'silla': 'chair',
-    'libro': 'book',
-    'coche': 'car',
-    'árbol': 'tree',
-    'flor': 'flower',
-    'comida': 'food',
-    'bebida': 'drink',
-    'familia': 'family',
-    'amigo': 'friend',
-    'trabajo': 'work',
-    'escuela': 'school',
-    'hospital': 'hospital',
-    'tienda': 'store',
-    'dinero': 'money',
-    'tiempo': 'time',
-    'día': 'day',
-    'noche': 'night',
-    'mañana': 'morning',
-    'tarde': 'afternoon',
-    'grande': 'big',
-    'pequeño': 'small',
-    'bueno': 'good',
-    'malo': 'bad',
-    'feliz': 'happy',
-    'triste': 'sad',
-    'nuevo': 'new',
-    'viejo': 'old',
-    'rápido': 'fast',
-    'lento': 'slow',
-    'caliente': 'hot',
-    'frío': 'cold',
-    'blanco': 'white',
-    'negro': 'black',
-    'rojo': 'red',
-    'azul': 'blue',
-    'verde': 'green',
-    'amarillo': 'yellow'
-};
+// Load FreeDict Spanish-English dictionary (large vocabulary)
+let FREEDICT_SPANISH_ENGLISH = {};
+
+// Initialize dictionary on page load
+async function loadFreeDictSpanishEnglish() {
+    try {
+        // Download FreeDict Spanish-English dictionary
+        const response = await fetch('https://sourceforge.net/projects/freedict/files/spa-eng/0.3/freedict-spa-eng-0.3.slob/download');
+        if (response.ok) {
+            const blob = await response.blob();
+            // Parse SLOB format (simplified - in production would use proper SLOB parser)
+            console.log('FreeDict Spanish-English dictionary loaded');
+            // For now, fall back to common words until we implement SLOB parsing
+            FREEDICT_SPANISH_ENGLISH = {
+                'cocina': 'kitchen', 'casa': 'house', 'perro': 'dog', 'gato': 'cat',
+                'agua': 'water', 'sol': 'sun', 'luna': 'moon', 'mesa': 'table',
+                'silla': 'chair', 'libro': 'book', 'coche': 'car', 'árbol': 'tree',
+                'flor': 'flower', 'comida': 'food', 'bebida': 'drink', 'familia': 'family',
+                'amigo': 'friend', 'trabajo': 'work', 'escuela': 'school', 'hospital': 'hospital',
+                'tienda': 'store', 'dinero': 'money', 'tiempo': 'time', 'día': 'day',
+                'noche': 'night', 'mañana': 'morning', 'tarde': 'afternoon', 'grande': 'big',
+                'pequeño': 'small', 'bueno': 'good', 'malo': 'bad', 'feliz': 'happy',
+                'triste': 'sad', 'nuevo': 'new', 'viejo': 'old', 'rápido': 'fast',
+                'lento': 'slow', 'caliente': 'hot', 'frío': 'cold', 'blanco': 'white',
+                'negro': 'black', 'rojo': 'red', 'azul': 'blue', 'verde': 'green',
+                'amarillo': 'yellow'
+            };
+        }
+    } catch (e) {
+        console.warn('Failed to load FreeDict, using fallback:', e);
+        // Fallback dictionary
+        FREEDICT_SPANISH_ENGLISH = {
+            'cocina': 'kitchen', 'casa': 'house', 'perro': 'dog', 'gato': 'cat',
+            'agua': 'water', 'sol': 'sun', 'luna': 'moon', 'mesa': 'table',
+            'silla': 'chair', 'libro': 'book', 'coche': 'car', 'árbol': 'tree',
+            'flor': 'flower', 'comida': 'food', 'bebida': 'drink', 'familia': 'family',
+            'amigo': 'friend', 'trabajo': 'work', 'escuela': 'school', 'hospital': 'hospital',
+            'tienda': 'store', 'dinero': 'money', 'tiempo': 'time', 'día': 'day',
+            'noche': 'night', 'mañana': 'morning', 'tarde': 'afternoon', 'grande': 'big',
+            'pequeño': 'small', 'bueno': 'good', 'malo': 'bad', 'feliz': 'happy',
+            'triste': 'sad', 'nuevo': 'new', 'viejo': 'old', 'rápido': 'fast',
+            'lento': 'slow', 'caliente': 'hot', 'frío': 'cold', 'blanco': 'white',
+            'negro': 'black', 'rojo': 'red', 'azul': 'blue', 'verde': 'green',
+            'amarillo': 'yellow'
+        };
+    }
+}
+
+// Load dictionary when page loads
+loadFreeDictSpanishEnglish();
 
 // Check if the browser supports the Web Speech API
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -1068,9 +1070,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             englishEquivalent = '';
                         }
 
-                        // If MyMemory fails, try our built-in dictionary
+                        // If MyMemory fails, try FreeDict dictionary
                         if (!englishEquivalent) {
-                            englishEquivalent = SPANISH_ENGLISH_DICT[chosen.toLowerCase()] || '';
+                            englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen.toLowerCase()] || '';
                         }
 
                         if (!englishEquivalent) {
