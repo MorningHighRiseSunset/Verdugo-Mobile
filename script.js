@@ -2118,20 +2118,17 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         // Get label for "Word" and the other-side word in UI language
         let playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
         let eqLabel;
-
-        // If UI is English and learning language is one of our supported non‑English
-        // languages, label the left/right explicitly, e.g. "Spanish word" and
-        // "English translation".
-        const learningNamesEn = {
-            'es-ES': 'Spanish',
-            'zh-CN': 'Mandarin',
-            'hi-IN': 'Hindi',
-            'fr-FR': 'French'
-        };
-        if (uiLangShort === 'en' && learningLangShort !== 'en') {
-            const lname = learningNamesEn[learningLangCode] || 'Foreign';
-            playedLabel = `${lname} word`;
-            eqLabel = 'English translation';
+        
+        // Simple direct display - show both words without complex translation
+        // This avoids API failures and gives users what they actually want
+        if (learningLangShort === 'es' && uiLangShort === 'en') {
+            // Spanish speaker learning English: show both words
+            playedLabel = "Spanish word";
+            eqLabel = "English equivalent";
+        } else if (learningLangShort === 'en' && uiLangShort === 'es') {
+            // English speaker learning Spanish: show both words  
+            playedLabel = "English word";
+            eqLabel = "Spanish equivalente";
         } else {
             const eqLabels = {
                 'en': 'English equivalent',
