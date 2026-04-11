@@ -2101,6 +2101,16 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             return englishDef;
         }
 
+        // Fallback: If all translation methods fail, use the original Spanish word directly
+        // This prevents the "PLEASE SELECT TWO DISTINCT LANGUAGES" error when APIs are down
+        const getFallbackSpanishEquivalent = () => {
+            // If learning language is Spanish and UI is English, the Spanish word IS the equivalent
+            if (learningLangShort === 'es' && uiLangShort === 'en') {
+                return playedWord; // Return the original Spanish word
+            }
+            return equivalentWord || playedWord; // Fallback to whatever we have
+        };
+
         // Get label for "Word" and the other-side word in UI language
         let playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
         let eqLabel;
@@ -2132,6 +2142,8 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         // Async update UI
         (async () => {
             const eqWord = await getEquivalentInUILang();
+            // If translation failed, use fallback
+            const finalEqWord = eqWord || getFallbackSpanishEquivalent();
             // Prefer the definition stored with this word object so it always matches the played word
             const storedDef = (wordObj.definition || '').toString().trim();
             const isPlaceholder = !storedDef || /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(storedDef);
@@ -2153,7 +2165,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 <div style="margin:0;padding:0;">
                     <strong>${playedLabel}:</strong> <span id="word-info-word">${displayedPlayedWord}</span>
                     &nbsp;|&nbsp;
-                    <strong>${eqLabel}:</strong> <span id="word-info-equivalent">${eqWord}</span>
+                    <strong>${eqLabel}:</strong> <span id="word-info-equivalent">${finalEqWord}</span>
                 </div>
                 <div style="margin:0;padding:0;">
                     <strong>Definition:</strong> <span id="word-info-def">${def}</span>
