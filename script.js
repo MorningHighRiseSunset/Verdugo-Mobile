@@ -2586,7 +2586,103 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
     document.getElementById('start-btn').onclick = function() {
         const statusEl = document.getElementById('status');
-        statusEl.innerHTML = '<span style="color: blue;">🎤 Requesting microphone access...</span>';
+        
+        // iOS-specific handling
+        if (isIOS) {
+            statusEl.innerHTML = '<span style="color: blue;">iOS speech recognition starting...</span>';
+            
+            // Try iOS speech recognition
+            const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (SpeechRecognitionClass) {
+                const iosRecognition = new SpeechRecognitionClass();
+                iosRecognition.continuous = true;
+                iosRecognition.interimResults = true;
+                iosRecognition.lang = selectedLang || 'en-US';
+                
+                iosRecognition.onstart = function() {
+                    statusEl.innerHTML = '<span style="color: green;">iOS listening... Speak letters!</span>';
+                    document.getElementById('start-btn').disabled = true;
+                    document.getElementById('stop-btn').disabled = false;
+                };
+                
+                iosRecognition.onresult = function(event) {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+                    
+                    for (let i = event.resultIndex; i < event.results.length; ++i) {
+                        let transcriptRaw = event.results[i][0].transcript.trim().toLowerCase();
+                        console.log(`iOS Recognized: "${transcriptRaw}"`);
+                        
+                        let mapped = null;
+                        
+                        // Try English phonetic map first
+                        if (phoneticMap[transcriptRaw]) {
+                            mapped = phoneticMap[transcriptRaw];
+                        }
+                        // Try Spanish phonetic map for Spanish or as fallback
+                        else if (spanishPhoneticMap[transcriptRaw]) {
+                            mapped = spanishPhoneticMap[transcriptRaw];
+                        }
+                        // Handle single character input
+                        else if (transcriptRaw.length === 1) {
+                            mapped = transcriptRaw.toUpperCase();
+                        }
+                        
+                        // For Spanish recognition, be more forgiving with character extraction
+                        if (!mapped && (selectedLang === 'es-ES' || selectedLang === 'es')) {
+                            const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
+                            if (spanishCharMatch) {
+                                mapped = spanishCharMatch[0].toUpperCase();
+                            }
+                        }
+                        
+                        if (!mapped) continue;
+                        
+                        if (event.results[i].isFinal) {
+                            finalTranscript += mapped;
+                        } else {
+                            interimTranscript += mapped;
+                        }
+                    }
+                    
+                    document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
+                    
+                    if (finalTranscript) {
+                        const guessedLetter = finalTranscript.toUpperCase();
+                        handleGuess(guessedLetter);
+                    }
+                };
+                
+                iosRecognition.onerror = function(event) {
+                    console.error('iOS speech recognition error:', event);
+                    const errorMsg = getMobileFriendlyError(event.error);
+                    statusEl.innerHTML = `<span style="color: red;">${errorMsg}</span>`;
+                    document.getElementById('start-btn').disabled = false;
+                    document.getElementById('stop-btn').disabled = true;
+                };
+                
+                iosRecognition.onend = function() {
+                    console.log('iOS speech recognition ended');
+                    statusEl.innerHTML = '';
+                    document.getElementById('start-btn').disabled = false;
+                    document.getElementById('stop-btn').disabled = true;
+                };
+                
+                // Start iOS recognition
+                try {
+                    iosRecognition.start();
+                } catch (error) {
+                    console.error('Failed to start iOS recognition:', error);
+                    statusEl.innerHTML = '<span style="color: red;">iOS speech recognition failed. Try typing letters.</span>';
+                }
+            } else {
+                statusEl.innerHTML = '<span style="color: red;">iOS speech not supported. Use keyboard below.</span>';
+            }
+            return;
+        }
+        
+        // Non-iOS handling (original code)
+        statusEl.innerHTML = '<span style="color: blue;">Requesting microphone access...</span>';
         
         navigator.mediaDevices.getUserMedia({
             audio: {
@@ -2596,7 +2692,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             }
         }).then(stream => {
             audioStream = stream;
-            statusEl.innerHTML = '<span style="color: green;">🎤 Microphone active! Start speaking...</span>';
+            statusEl.innerHTML = '<span style="color: green;">Microphone active! Start speaking...</span>';
             
             // Try to create audio context with mobile-friendly options
             try {
@@ -2617,23 +2713,23 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             // Start speech recognition
             try {
                 recognition.start();
-                statusEl.innerHTML = '<span style="color: green;">🎤 Listening...</span>';
+                statusEl.innerHTML = '<span style="color: green;">Listening...</span>';
             } catch (recognitionError) {
                 console.error('Failed to start recognition:', recognitionError);
-                statusEl.innerHTML = '<span style="color: red;">❌ Failed to start speech recognition</span>';
+                statusEl.innerHTML = '<span style="color: red;">Failed to start speech recognition</span>';
             }
         }).catch(error => {
             console.error('Error accessing microphone:', error);
-            let errorMsg = '🎤 Microphone access failed';
+            let errorMsg = 'Microphone access failed';
             
             if (error.name === 'NotAllowedError') {
-                errorMsg = '🚫 Microphone permission denied. Please allow mic access in browser settings.';
+                errorMsg = 'Microphone permission denied. Please allow mic access in browser settings.';
             } else if (error.name === 'NotFoundError') {
-                errorMsg = '🎤 No microphone found. Please check your device.';
+                errorMsg = 'No microphone found. Please check your device.';
             } else if (error.name === 'NotReadableError') {
-                errorMsg = '🎤 Microphone is being used by another app.';
+                errorMsg = 'Microphone is being used by another app.';
             } else if (error.name === 'OverconstrainedError') {
-                errorMsg = '🎤 Microphone constraints not supported.';
+                errorMsg = 'Microphone constraints not supported.';
             }
             
             statusEl.innerHTML = `<span style="color: red;">${errorMsg}</span>`;
@@ -2677,17 +2773,11 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     const statusEl = document.getElementById('status');
     if (statusEl) {
         if (isIOS) {
-            statusEl.innerHTML = '<span style="color: orange;">📱 iOS: Using speech input below. Tap 🎤 to speak or type letters.</span>';
-            // Show iOS speech input
-            const iosContainer = document.getElementById('ios-speech-container');
-            if (iosContainer) {
-                iosContainer.style.display = 'block';
-                initIOSSpeechFallback();
-            }
+            statusEl.innerHTML = '<span style="color: red;">iOS speech not supported. Please use Chrome browser or type letters below.</span>';
         } else if (isMobile) {
-            statusEl.innerHTML = '<span style="color: orange;">📱 Voice recognition not supported. Please tap letters below or try Chrome browser.</span>';
+            statusEl.innerHTML = '<span style="color: orange;">Voice recognition not supported. Please tap letters below or try Chrome browser.</span>';
         } else {
-            statusEl.innerHTML = '<span style="color: red;">🚫 Voice recognition not supported. Please use Chrome browser.</span>';
+            statusEl.innerHTML = '<span style="color: red;">Voice recognition not supported. Please use Chrome browser.</span>';
         }
     }
     
@@ -2703,102 +2793,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             });
         }
     });
-}
-
-// iOS Speech Recognition Fallback
-function initIOSSpeechFallback() {
-    const speechBtn = document.getElementById('ios-speech-btn');
-    const speechInput = document.getElementById('ios-speech-input');
-    
-    if (!speechBtn || !speechInput) return;
-    
-    // Check if iOS supports speech recognition
-    const hasSpeechRecognition = 'webkitSpeechRecognition' in window || 'SpeechRecognition' in window;
-    
-    if (hasSpeechRecognition) {
-        // Use iOS speech recognition if available
-        speechBtn.onclick = function() {
-            const statusEl = document.getElementById('status');
-            statusEl.innerHTML = '<span style="color: blue;">🎤 iOS speech recognition starting...</span>';
-            
-            const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognitionClass();
-            recognition.continuous = false;
-            recognition.interimResults = false;
-            recognition.lang = selectedLang || 'en-US';
-            
-            recognition.onstart = function() {
-                statusEl.innerHTML = '<span style="color: green;">🎤 iOS listening... Speak a letter!</span>';
-                speechBtn.textContent = '🔊 Listening...';
-                speechBtn.disabled = true;
-            };
-            
-            recognition.onresult = function(event) {
-                const transcript = event.results[0][0].transcript;
-                speechInput.value = transcript;
-                statusEl.innerHTML = '<span style="color: lightgreen;">✅ Heard: ' + transcript + '</span>';
-                processIOSSpeechInput(transcript);
-            };
-            
-            recognition.onerror = function(event) {
-                console.error('iOS speech recognition error:', event);
-                statusEl.innerHTML = '<span style="color: red;">❌ Speech failed. Try typing letters.</span>';
-                speechBtn.textContent = '🎤 Speak';
-                speechBtn.disabled = false;
-            };
-            
-            recognition.onend = function() {
-                statusEl.innerHTML = '<span style="color: green;">✅ iOS speech recognition ready</span>';
-                speechBtn.textContent = '🎤 Speak';
-                speechBtn.disabled = false;
-            };
-            
-            recognition.start();
-        };
-    } else {
-        // Fallback to just text input
-        speechBtn.style.display = 'none';
-        speechInput.placeholder = 'Type letters here and press Enter...';
-        const statusEl = document.getElementById('status');
-        if (statusEl) {
-            statusEl.innerHTML = '<span style="color: orange;">⌨️ Type letters below and press Enter</span>';
-        }
-        speechInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                processIOSSpeechInput(speechInput.value);
-                speechInput.value = '';
-            }
-        });
-    }
-}
-
-function processIOSSpeechInput(input) {
-    const cleanInput = input.trim().toLowerCase();
-    const firstLetter = cleanInput[0];
-    
-    if (firstLetter && /[a-záéíóúñü]/i.test(firstLetter)) {
-        const letter = firstLetter.toUpperCase();
-        
-        // Try phonetic maps first
-        let mappedLetter = phoneticMap[firstLetter] || spanishPhoneticMap[firstLetter] || letter;
-        
-        // Make the letter guess
-        const letterButtons = document.querySelectorAll('.letter-button');
-        letterButtons.forEach(button => {
-            if (button.innerText === mappedLetter) {
-                button.style.backgroundColor = 'lightgreen';
-                setTimeout(() => {
-                    button.style.backgroundColor = '';
-                    button.click();
-                }, 300);
-            }
-        });
-        
-        document.getElementById('result').innerHTML = `Guessed: ${mappedLetter}`;
-        setTimeout(() => {
-            document.getElementById('result').innerHTML = '';
-        }, 2000);
-    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
