@@ -655,30 +655,32 @@ const phoneticMap = {
 };
 
 const spanishPhoneticMap = {
-    // Spanish alphabet pronunciations (the way Spanish speakers actually say letters)
+    // Authoritative Spanish alphabet pronunciations (from linguistic sources)
     'a': 'A', 'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
     'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
     'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
     'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
     
-    // Spanish letters with accents
-    'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ü': 'Ü', 'ñ': 'Ñ',
+    // Spanish letter variations (regional and common alternatives)
+    'be larga': 'B', 'be corta': 'B', 'be de burro': 'B', 've de vaca': 'V',
+    'erre': 'R', 'i griega': 'Y', 'doble uve': 'W', 'doble u': 'W',
     
-    // Common Spanish variations and mispronunciations
-    'abe': 'A', 'be grande': 'B', 'be corta': 'V', 'che': 'CH', 'elle': 'LL',
-    
-    // Single letters (most common way Spanish speakers say letters)
+    // Single letters (most common way Spanish speakers actually say letters)
     'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H',
     'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'ñ': 'Ñ', 'o': 'O',
     'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U', 'v': 'V', 'w': 'W',
     'x': 'X', 'y': 'Y', 'z': 'Z',
     
-    // Spanish speech recognition common outputs
-    'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
-    'ache': 'H', 'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N',
-    'eñe': 'Ñ', 'o': 'O', 'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T',
-    'u': 'U', 'uve': 'V', 'doble u': 'W', 'doble ve': 'W', 'equis': 'X', 'ye': 'Y',
-    'zeta': 'Z', 'seta': 'Z',
+    // Spanish letters with accents
+    'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ü': 'Ü', 'ñ': 'Ñ',
+    
+    // Spanish vowel sounds (the way they're actually pronounced)
+    'ah': 'A', 'eh': 'E', 'ee': 'I', 'oh': 'O', 'oo': 'U',
+    
+    // Common Spanish speech recognition outputs
+    'be': 'B', 'ce': 'C', 'de': 'D', 'efe': 'F', 'ge': 'G', 'ache': 'H', 'hache': 'H',
+    'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'pe': 'P', 'cu': 'Q',
+    'ere': 'R', 'ese': 'S', 'te': 'T', 'uve': 'V', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
     
     // English phonetic alphabet (for Spanish speakers who know it)
     'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'eco': 'E', 'foxtrot': 'F',
@@ -686,15 +688,6 @@ const spanishPhoneticMap = {
     'mike': 'M', 'noviembre': 'N', 'oscar': 'O', 'papa': 'P', 'quebec': 'Q', 'romeo': 'R',
     'sierra': 'S', 'tango': 'T', 'uniform': 'U', 'victor': 'V', 'whiskey': 'W', 'x-ray': 'X',
     'yanqui': 'Y', 'zulu': 'Z',
-    
-    // Common Spanish letter sounds
-    'ah': 'A', 'eh': 'E', 'i': 'I', 'o': 'O', 'u': 'U',
-    'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'ese': 'S',
-    
-    // Additional Spanish variations
-    'cá': 'A', 'ce': 'C', 'de': 'D', 'efe': 'F', 'ge': 'G', 'jota': 'J', 'ka': 'K',
-    'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'pe': 'P', 'cu': 'Q', 'ere': 'R',
-    'ese': 'S', 'te': 'T', 'uve': 'V', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
     
     // Common mispronunciations and variations
     'bi': 'B', 'ci': 'C', 'di': 'D', 'gi': 'G', 'li': 'L', 'mi': 'M', 'ni': 'N',
@@ -1864,11 +1857,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         console.log(`DEBUG: selectedLang=${selectedLang}, pendingGameLang=${pendingGameLang}`);
         console.log(`DEBUG: uiLang=${uiLang}, uiLangShort=${uiLangShort}`);
         console.log(`DEBUG: learningLangCode=${learningLangCode}, learningLangShort=${learningLangShort}`);
-        console.log(`DEBUG: playedWord=${playedWord}, equivalentWord=${equivalentWord}`);
 
         // Determine played word and equivalent
         let playedWord = wordObj.word;
         let equivalentWord = wordObj.englishEquivalent;
+
+        // DEBUG: Log the word values after they're defined
+        console.log(`DEBUG: playedWord=${playedWord}, equivalentWord=${equivalentWord}`);
 
         // Get the English-equivalent (or a UI-language translation of it).
         // Behavior:
