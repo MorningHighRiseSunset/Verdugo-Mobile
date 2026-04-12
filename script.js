@@ -256,18 +256,8 @@ async function finalizeWordObj(obj, langName) {
 // Optional large spanish word list loader.
 window.SPANISH_WORDS = window.SPANISH_WORDS || [];
 async function loadSpanishWordList() {
-    if (window.SPANISH_WORDS && window.SPANISH_WORDS.length > 0) return;
-    try {
-        const res = await fetch('spanishWords.txt');
-        if (!res.ok) return;
-        const text = await res.text();
-        const words = text.split(/\r?\n/).map(w => w.trim()).filter(Boolean);
-        // De-duplicate and keep unique list
-        window.SPANISH_WORDS = Array.from(new Set(words));
-        console.log('Loaded spanishWords.txt:', window.SPANISH_WORDS.length, 'words');
-    } catch (e) {
-        // file not present or blocked; silent fallback to SPANISH_DICTIONARY
-    }
+    // Spanish words are now loaded from GitHub, so this function is deprecated
+    console.log('Spanish words loaded from GitHub instead of local file');
 }
 const LANGUAGES = [{
         code: "en-US",
@@ -699,14 +689,54 @@ const spanishPhoneticMap = {
 let FREEDICT_SPANISH_ENGLISH = {};
 let SPANISH_WORDLIST = new Set(); // For word validation
 
+// English dictionary and word list
+let ENGLISH_DICTIONARY = {};
+let ENGLISH_WORDLIST = new Set(); // For word validation
+
 // Suppress CORS error messages
 const originalConsoleError = console.error;
 console.error = function(...args) {
-    if (args[0] && args[0].includes && args[0].includes('CORS policy')) {
-        return; // Suppress CORS errors
+    if (args[0] && args[0].includes && (
+        args[0].includes('CORS policy') || 
+        args[0].includes('sourceforge.net') ||
+        args[0].includes('Access-Control-Allow-Origin')
+    )) {
+        return; // Suppress CORS errors and sourceforge.net related errors
     }
     originalConsoleError.apply(console, args);
 };
+
+// Load English dictionary from GitHub repositories
+async function loadEnglishDictionary() {
+    try {
+        // Try Webster's Dictionary first (has definitions)
+        const dictResponse = await fetch('https://raw.githubusercontent.com/matthewreagan/WebstersEnglishDictionary/master/dictionary.json');
+        if (dictResponse.ok) {
+            const dictData = await dictResponse.json();
+            ENGLISH_DICTIONARY = dictData;
+            console.log('Loaded Webster\'s English Dictionary:', Object.keys(dictData).length, 'entries');
+        }
+        
+        // Load English word list for validation
+        const wordsResponse = await fetch('https://raw.githubusercontent.com/words/an-array-of-english-words/master/index.json');
+        if (wordsResponse.ok) {
+            const wordsData = await wordsResponse.json();
+            ENGLISH_WORDLIST = new Set(wordsData.map(w => w.toLowerCase()));
+            console.log('Loaded English word list:', wordsData.length, 'words');
+        }
+    } catch (e) {
+        console.warn('Failed to load English dictionary, using fallback:', e);
+        // Fallback: create minimal dictionary from common words
+        const fallbackWords = ['house', 'water', 'sun', 'moon', 'tree', 'book', 'car', 'school'];
+        ENGLISH_WORDLIST = new Set(fallbackWords);
+        fallbackWords.forEach(word => {
+            ENGLISH_DICTIONARY[word] = {
+                definition: `A common English word: ${word}`,
+                pronunciation: `/${word}/`
+            };
+        });
+    }
+}
 
 // Initialize dictionary on page load
 async function loadFreeDictSpanishEnglish() {
@@ -887,33 +917,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         let pronunciation = '';
         let englishEquivalent = '';
 
-        // Local safe fallback words (not "apple")
-        const SAFE_WORDS = [
-            // Nouns
-            "music", "planet", "river", "forest", "window", "garden", "school", "friend", "family", "holiday",
-            "orange", "pencil", "market", "animal", "doctor", "summer", "winter", "travel", "nature", "science",
-            "mountain", "ocean", "desert", "island", "village", "city", "country", "teacher", "student", "library",
-            "computer", "bottle", "camera", "picture", "flower", "bridge", "castle", "cloud", "rainbow", "star",
-            "moon", "sun", "tree", "leaf", "river", "beach", "forest", "desert", "valley", "hill", "lake", "park",
-            "train", "bus", "car", "bicycle", "airplane", "boat", "ship", "road", "street", "tower", "house",
-            "apartment", "kitchen", "bedroom", "bathroom", "livingroom", "door", "window", "roof", "wall", "floor",
-            "table", "chair", "sofa", "bed", "lamp", "clock", "mirror", "phone", "television", "radio", "book",
-            "magazine", "newspaper", "pen", "notebook", "bag", "wallet", "key", "ticket", "passport", "map",
-            "glove", "hat", "scarf", "shirt", "pants", "dress", "shoes", "boots", "socks", "umbrella", "watch",
-            "ring", "necklace", "bracelet", "earring", "pocket", "button", "zipper", "belt", "jacket", "coat",
-            // Verbs
-            "run", "jump", "swim", "read", "write", "draw", "sing", "dance", "cook", "bake", "drive", "fly",
-            "walk", "climb", "paint", "play", "watch", "listen", "speak", "learn", "teach", "build", "fix",
-            "open", "close", "start", "finish", "help", "carry", "throw", "catch", "buy", "sell", "find",
-            "lose", "win", "grow", "cut", "clean", "wash", "dry", "fold", "pack", "unpack", "move", "stay",
-            // Adjectives
-            "happy", "sad", "angry", "brave", "calm", "clever", "funny", "kind", "lucky", "polite", "quiet",
-            "quick", "slow", "strong", "weak", "young", "old", "new", "ancient", "modern", "rich", "poor",
-            "tall", "short", "big", "small", "long", "wide", "narrow", "deep", "shallow", "hot", "cold",
-            "warm", "cool", "bright", "dark", "clean", "dirty", "soft", "hard", "smooth", "rough", "sweet",
-            "sour", "bitter", "salty", "fresh", "stale", "loud", "silent", "empty", "full", "safe", "dangerous"
-        ];
-
         // List of common short words to avoid as game words
         const BAD_TRANSLATIONS = [
             'con', 'de', 'a', 'en', 'el', 'la', 'los', 'las', 'un', 'una', 'y', 'o', 'pero', 'por', 'para', 'al', 'del', 'le', 'les',
@@ -922,7 +925,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         ];
 
         function getRandomSafeWord() {
-            return SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
+            // Minimal fallback words - will rarely be used since we load from GitHub
+            const minimalFallback = ['house', 'water', 'sun', 'moon', 'tree', 'book', 'car', 'school'];
+            return minimalFallback[Math.floor(Math.random() * minimalFallback.length)];
         }
 
         // Known Spanish words as fallback when translation fails (never show English as "Spanish word")
@@ -1004,14 +1009,25 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     }, 'Spanish');
                 }
 
-        // --- ENGLISH: Use local dictionary or API-driven flow ---
+        // --- ENGLISH: Use loaded dictionary from GitHub ---
         if (language === 'English') {
-            const ENGLISH_DICTIONARY = window.ENGLISH_DICTIONARY || window.dictionary || {};
+            console.log(`DEBUG: ENGLISH_DICTIONARY keys length: ${Object.keys(ENGLISH_DICTIONARY).length}`);
+            console.log(`DEBUG: ENGLISH_WORDLIST size: ${ENGLISH_WORDLIST.size}`);
+            
+            if (Object.keys(ENGLISH_DICTIONARY).length === 0) {
+                console.log('DEBUG: English dictionary not loaded yet, waiting...');
+                // Wait a moment for dictionary to load
+                await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            
             const keys = Object.keys(ENGLISH_DICTIONARY);
             if (keys.length === 0) {
-                word = SAFE_WORDS[Math.floor(Math.random() * SAFE_WORDS.length)];
-                definition = "No dictionary available. This is a fallback word.";
-                pronunciation = "/No pronunciation available/";
+                console.log('DEBUG: Still no English dictionary, using minimal fallback');
+                // Use minimal fallback
+                const fallbackWords = ['house', 'water', 'sun', 'moon', 'tree', 'book', 'car', 'school'];
+                word = fallbackWords[Math.floor(Math.random() * fallbackWords.length)];
+                definition = `A common English word: ${word}`;
+                pronunciation = `/${word}/`;
                 englishEquivalent = word;
             } else {
                 let randomKey = keys[Math.floor(Math.random() * keys.length)];
@@ -1022,9 +1038,20 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 }
                 const entry = ENGLISH_DICTIONARY[randomKey];
                 word = randomKey;
-                definition = entry.definition || '';
-                pronunciation = entry.pronunciation || '';
-                englishEquivalent = entry.englishEquivalent || randomKey;
+                
+                // Handle different dictionary formats
+                if (typeof entry === 'string') {
+                    definition = entry;
+                    pronunciation = `/${word}/`;
+                } else if (entry && typeof entry === 'object') {
+                    definition = entry.definition || entry.meaning || '';
+                    pronunciation = entry.pronunciation || entry.phonetic || `/${word}/`;
+                } else {
+                    definition = `English word: ${word}`;
+                    pronunciation = `/${word}/`;
+                }
+                
+                englishEquivalent = word;
             }
             return await finalizeWordObj({
                 word,
@@ -1035,6 +1062,15 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         }
 
         // --- OTHER LANGUAGES: Use API-based fallback ---
+        // Commented out non-working languages (French, Mandarin, Hindi)
+        // Only Spanish is currently supported
+        if (language === 'Mandarin' || language === 'Hindi' || language === 'French') {
+            console.log(`DEBUG: ${language} not yet supported, using Spanish fallback`);
+            // Fall back to Spanish for now
+            language = 'Spanish';
+            return fetchWordObject('Spanish');
+        }
+        
         let tries = 0;
         let maxTries = 30;
         let baseWord = '';
@@ -1057,18 +1093,19 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
         let langpair = 'en|es';
         let dictLangCode = 'es';
-        if (language === 'Mandarin') {
-            langpair = 'en|zh-CN';
-            dictLangCode = 'zh';
-        }
-        if (language === 'Hindi') {
-            langpair = 'en|hi';
-            dictLangCode = 'hi';
-        }
-        if (language === 'French') {
-            langpair = 'en|fr';
-            dictLangCode = 'fr';
-        }
+        // Commented out non-working languages
+        // if (language === 'Mandarin') {
+        //     langpair = 'en|zh-CN';
+        //     dictLangCode = 'zh';
+        // }
+        // if (language === 'Hindi') {
+        //     langpair = 'en|hi';
+        //     dictLangCode = 'hi';
+        // }
+        // if (language === 'French') {
+        //     langpair = 'en|fr';
+        //     dictLangCode = 'fr';
+        // }
 
         let translatedWord = '';
         let translationTries = 0;
@@ -1545,6 +1582,11 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         window.flagEmojiSupported = detectFlagEmojiSupport();
         console.log('Flag emoji support detected:', window.flagEmojiSupported);
         
+        // Load dictionaries
+        loadEnglishDictionary();
+        loadFreeDictSpanishEnglish();
+        loadSpanishWordList();
+        
         // Popup language selection (first language box)
         const popup = document.getElementById('lang-select-popup');
         const btnsDiv = document.getElementById('lang-select-buttons');
@@ -1618,6 +1660,22 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 console.log(`DEBUG: Language button clicked - pendingGameLang=${btn.getAttribute('data-value')}`);
                 pendingGameLang = btn.getAttribute('data-value');
                 // Do NOT set selectedLang here!
+                
+                // Immediately start game with selected language
+                const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
+                if (langObj && typeof fetchWordObject === "function") {
+                    fetchPlayableWord(pendingGameLang, langObj.canonicalName).then(wordObj => {
+                        if (!wordObj) return;
+                        currentWordObj = wordObj;
+                        selectedWord = wordObj.word.toUpperCase();
+                        usedWords.add(selectedWord);
+                        guessedLetters = [];
+                        wrongGuesses = 0;
+                        if (typeof updateWordDisplay === "function") updateWordDisplay();
+                        if (typeof drawHangman === "function") drawHangman();
+                        if (typeof createKeyboard === "function") createKeyboard();
+                    });
+                }
             };
         });
 
@@ -1952,7 +2010,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             } else {
                 console.log('All translation APIs failed');
                 if (uiLangShort !== 'en') {
-                    return `${englishEq} (no ${uiLangShort} translation available)`;
+                    return `${englishEq} (translation unavailable)`;
                 }
                 return englishEq || equivalentWord || playedWord;
             }
@@ -2028,13 +2086,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         const getFallbackEquivalent = () => {
             // If user is learning English, show English word
             if (learningLangShort === 'en' && uiLangShort === 'es') {
-                return playedWord; // Spanish speaker learning English = show English word
+                return `${playedWord} (translation service unavailable)`; // Spanish speaker learning English
             }
             // If user is learning Spanish, show Spanish word
             if (learningLangShort === 'es' && uiLangShort === 'en') {
-                return playedWord; // English speaker learning Spanish = show Spanish word
+                return `${playedWord} (translation service unavailable)`; // English speaker learning Spanish
             }
-            return equivalentWord || playedWord; // Fallback to whatever we have
+            return `${equivalentWord || playedWord} (translation service unavailable)`; // Fallback to whatever we have
         };
 
         // Get label for "Word" and the other-side word in UI language
@@ -2066,7 +2124,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         (async () => {
             const eqWord = await getEquivalentInUILang();
             // If translation failed, use fallback
-            const finalEqWord = eqWord || getFallbackSpanishEquivalent();
+            const finalEqWord = eqWord || getFallbackEquivalent();
             // Prefer the definition stored with this word object so it always matches the played word
             const storedDef = (wordObj.definition || '').toString().trim();
             const isPlaceholder = !storedDef || /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(storedDef);
@@ -2836,6 +2894,37 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
         }
     });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const instructionsPopup = document.getElementById('instructions-popup');
+    const closePopup = document.getElementById('close-popup');
+    const instructionsButton = document.getElementById('instructions-button');
+
+    if (instructionsButton && instructionsPopup) {
+        instructionsButton.addEventListener('click', () => {
+            updateInstructionsPopup(selectedLang); // Always update before showing
+            instructionsPopup.classList.remove('hide');
+        });
+    }
+
+    if (closePopup && instructionsPopup) {
+        closePopup.addEventListener('click', () => {
+            instructionsPopup.classList.add('hide');
+        });
+    }
+
+    window.addEventListener('click', (event) => {
+        if (event.target === instructionsPopup) {
+            instructionsPopup.classList.add('hide');
+        }
+    });
+
+    document.body.style.backgroundImage = "url('watermark_cropped.gif')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundPosition = "center 20%";
+    document.body.style.backgroundAttachment = "fixed";
+});
 
 const style = document.createElement('style');
 style.innerHTML = `
