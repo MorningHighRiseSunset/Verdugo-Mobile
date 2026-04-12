@@ -1608,26 +1608,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             btn.onclick = function() {
                 pendingGameLang = btn.getAttribute('data-value');
                 // Do NOT set selectedLang here!
-                document.querySelectorAll('.lang-btn').forEach((b, i) => {
-                    b.classList.toggle('active', b.getAttribute('data-value') === pendingGameLang);
-                });
-                // Do NOT call setUILanguage(selectedLang) here!
-                if (typeof recognition !== "undefined") recognition.lang = pendingGameLang;
-                if (typeof fetchWordObject === "function") {
-                    const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
-                    const langName = langObj ? langObj.canonicalName : "English";
-                    fetchPlayableWord(pendingGameLang, langName).then(wordObj => {
-                        if (!wordObj) return;
-                        currentWordObj = wordObj;
-                        selectedWord = wordObj.word.toUpperCase();
-                        usedWords.add(selectedWord);
-                        guessedLetters = [];
-                        wrongGuesses = 0;
-                        if (typeof updateWordDisplay === "function") updateWordDisplay();
-                        if (typeof drawHangman === "function") drawHangman();
-                        if (typeof createKeyboard === "function") createKeyboard();
-                    });
-                }
             };
         });
 
