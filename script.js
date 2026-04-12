@@ -2837,37 +2837,6 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const instructionsPopup = document.getElementById('instructions-popup');
-    const closePopup = document.getElementById('close-popup');
-    const instructionsButton = document.getElementById('instructions-button');
-
-    if (instructionsButton && instructionsPopup) {
-        instructionsButton.addEventListener('click', () => {
-            updateInstructionsPopup(selectedLang); // Always update before showing
-            instructionsPopup.classList.remove('hide');
-        });
-    }
-
-    if (closePopup && instructionsPopup) {
-        closePopup.addEventListener('click', () => {
-            instructionsPopup.classList.add('hide');
-        });
-    }
-
-    window.addEventListener('click', (event) => {
-        if (event.target === instructionsPopup) {
-            instructionsPopup.classList.add('hide');
-        }
-    });
-
-    document.body.style.backgroundImage = "url('watermark_cropped.gif')";
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundPosition = "center 20%";
-    document.body.style.backgroundAttachment = "fixed";
-});
-
 const style = document.createElement('style');
 style.innerHTML = `
 .flashing {
