@@ -699,6 +699,15 @@ const spanishPhoneticMap = {
 let FREEDICT_SPANISH_ENGLISH = {};
 let SPANISH_WORDLIST = new Set(); // For word validation
 
+// Suppress CORS error messages
+const originalConsoleError = console.error;
+console.error = function(...args) {
+    if (args[0] && args[0].includes && args[0].includes('CORS policy')) {
+        return; // Suppress CORS errors
+    }
+    originalConsoleError.apply(console, args);
+};
+
 // Initialize dictionary on page load
 async function loadFreeDictSpanishEnglish() {
     try {
@@ -1606,6 +1615,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         // Main UI language selection (second language box)
         document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
             btn.onclick = function() {
+                console.log(`DEBUG: Language button clicked - pendingGameLang=${btn.getAttribute('data-value')}`);
                 pendingGameLang = btn.getAttribute('data-value');
                 // Do NOT set selectedLang here!
             };
