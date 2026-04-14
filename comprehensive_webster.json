@@ -17,7 +17,7 @@
     "english": "time",
     "spanish": "tiempo",
     "english_definition": "The indefinite continued progress of existence and events in the past, present, and future regarded as a whole. It is measured in seconds, minutes, hours, days, and years.",
-    "spanish_definition": "Duración de las cosas o sucesión de los momentos",
+    "spanish_definition": "Estado de la atmósfera en un momento y lugar determinados",
     "has_webster": true
   },
   {
@@ -137,6 +137,1028 @@
     "spanish": "persona",
     "english_definition": "A human being regarded as an individual. Each person has unique characteristics, thoughts, feelings, and the ability to make choices.",
     "spanish_definition": "Ser humano individual",
+    "has_webster": true
+  },
+  {
+    "english": "day",
+    "spanish": "día",
+    "english_definition": "A common English word that refers to day.",
+    "spanish_definition": "Período de 24 horas en que la Tierra gira sobre su eje",
+    "has_webster": true
+  },
+  {
+    "english": "night",
+    "spanish": "noche",
+    "english_definition": "The period between sunset and sunrise, when a location faces far away from the sun, thus when the sky is dark.",
+    "spanish_definition": "Período de oscuridad entre el atardecer y el amanecer",
+    "has_webster": true
+  },
+  {
+    "english": "year",
+    "spanish": "año",
+    "english_definition": "A solar year, the time it takes the Earth to complete one revolution of the Sun (between 365.24 and 365.26 days depending on the point of reference).",
+    "spanish_definition": "Período de 365 días en que la Tierra orbita alrededor del Sol",
+    "has_webster": true
+  },
+  {
+    "english": "month",
+    "spanish": "mes",
+    "english_definition": "A common English word that refers to month.",
+    "spanish_definition": "Cada una de las doce divisiones del año",
+    "has_webster": true
+  },
+  {
+    "english": "week",
+    "spanish": "semana",
+    "english_definition": "A common English word that refers to week.",
+    "spanish_definition": "Período de siete días",
+    "has_webster": true
+  },
+  {
+    "english": "hour",
+    "spanish": "hora",
+    "english_definition": "A common English word that refers to hour.",
+    "spanish_definition": "Unidad de tiempo equivalente a 60 minutos",
+    "has_webster": true
+  },
+  {
+    "english": "minute",
+    "spanish": "minuto",
+    "english_definition": "A common English word that refers to minute.",
+    "spanish_definition": "Unidad de tiempo equivalente a 60 segundos",
+    "has_webster": true
+  },
+  {
+    "english": "second",
+    "spanish": "segundo",
+    "english_definition": "A common English word that refers to second.",
+    "spanish_definition": "Unidad básica de tiempo en el sistema internacional",
+    "has_webster": true
+  },
+  {
+    "english": "morning",
+    "spanish": "mañana",
+    "english_definition": "A common English word that refers to morning.",
+    "spanish_definition": "Primera parte del día, desde el amanecer hasta el mediodía",
+    "has_webster": true
+  },
+  {
+    "english": "afternoon",
+    "spanish": "tarde",
+    "english_definition": "A common English word that refers to afternoon.",
+    "spanish_definition": "Segunda parte del día, desde el mediodía hasta el atardecer",
+    "has_webster": true
+  },
+  {
+    "english": "evening",
+    "spanish": "noche",
+    "english_definition": "A common English word that refers to evening.",
+    "spanish_definition": "Período de oscuridad entre el atardecer y el amanecer",
+    "has_webster": true
+  },
+  {
+    "english": "today",
+    "spanish": "hoy",
+    "english_definition": "A common English word that refers to today.",
+    "spanish_definition": "Día presente",
+    "has_webster": true
+  },
+  {
+    "english": "tomorrow",
+    "spanish": "mañana",
+    "english_definition": "A common English word that refers to tomorrow.",
+    "spanish_definition": "Primera parte del día, desde el amanecer hasta el mediodía",
+    "has_webster": true
+  },
+  {
+    "english": "yesterday",
+    "spanish": "ayer",
+    "english_definition": "A common English word that refers to yesterday.",
+    "spanish_definition": "Día anterior al presente",
+    "has_webster": true
+  },
+  {
+    "english": "sun",
+    "spanish": "sol",
+    "english_definition": "A common English word that refers to sun.",
+    "spanish_definition": "Estrella alrededor de la cual orbita la Tierra",
+    "has_webster": true
+  },
+  {
+    "english": "moon",
+    "spanish": "luna",
+    "english_definition": "A common English word that refers to moon.",
+    "spanish_definition": "Satélite natural de la Tierra",
+    "has_webster": true
+  },
+  {
+    "english": "star",
+    "spanish": "estrella",
+    "english_definition": "Any small luminous dot appearing in the cloudless portion of the night sky, especially with a fixed location relative to other such dots.",
+    "spanish_definition": "Cuerpo celeste que emite luz propia",
+    "has_webster": true
+  },
+  {
+    "english": "sky",
+    "spanish": "cielo",
+    "english_definition": "A common English word that refers to sky.",
+    "spanish_definition": "Atmósfera vista desde la Tierra",
+    "has_webster": true
+  },
+  {
+    "english": "cloud",
+    "spanish": "nube",
+    "english_definition": "A common English word that refers to cloud.",
+    "spanish_definition": "Masa visible de gotas de agua en la atmósfera",
+    "has_webster": true
+  },
+  {
+    "english": "rain",
+    "spanish": "lluvia",
+    "english_definition": "A common English word that refers to rain.",
+    "spanish_definition": "Precipitación de agua en forma de gotas desde la atmósfera",
+    "has_webster": true
+  },
+  {
+    "english": "snow",
+    "spanish": "nieve",
+    "english_definition": "A common English word that refers to snow.",
+    "spanish_definition": "Precipitación de cristales de hielo desde la atmósfera",
+    "has_webster": true
+  },
+  {
+    "english": "wind",
+    "spanish": "viento",
+    "english_definition": "A common English word that refers to wind.",
+    "spanish_definition": "Movimiento del aire en la atmósfera",
+    "has_webster": true
+  },
+  {
+    "english": "weather",
+    "spanish": "tiempo",
+    "english_definition": "The short term state of the atmosphere at a specific time and place, including the temperature, relative humidity, cloud cover, precipitation, wind, etc.",
+    "spanish_definition": "Estado de la atmósfera en un momento y lugar determinados",
+    "has_webster": true
+  },
+  {
+    "english": "happy",
+    "spanish": "feliz",
+    "english_definition": "A common English word that refers to happy.",
+    "spanish_definition": "Sentimiento de alegría y satisfacción",
+    "has_webster": true
+  },
+  {
+    "english": "sad",
+    "spanish": "triste",
+    "english_definition": "A common English word that refers to sad.",
+    "spanish_definition": "Sentimiento de melancolía y desánimo",
+    "has_webster": true
+  },
+  {
+    "english": "angry",
+    "spanish": "enojado",
+    "english_definition": "A common English word that refers to angry.",
+    "spanish_definition": "Sentimiento de ira o enfado",
+    "has_webster": true
+  },
+  {
+    "english": "tired",
+    "spanish": "cansado",
+    "english_definition": "A common English word that refers to tired.",
+    "spanish_definition": "Sensación de fatiga o agotamiento",
+    "has_webster": true
+  },
+  {
+    "english": "excited",
+    "spanish": "emocionado",
+    "english_definition": "A common English word that refers to excited.",
+    "spanish_definition": "Estado de ánimo con gran entusiasmo",
+    "has_webster": true
+  },
+  {
+    "english": "scared",
+    "spanish": "asustado",
+    "english_definition": "A common English word that refers to scared.",
+    "spanish_definition": "Sensación de miedo o pánico",
+    "has_webster": true
+  },
+  {
+    "english": "beautiful",
+    "spanish": "hermoso",
+    "english_definition": "A common English word that refers to beautiful.",
+    "spanish_definition": "Que tiene belleza estética",
+    "has_webster": true
+  },
+  {
+    "english": "ugly",
+    "spanish": "feo",
+    "english_definition": "A common English word that refers to ugly.",
+    "spanish_definition": "Que carece de belleza atractiva",
+    "has_webster": true
+  },
+  {
+    "english": "big",
+    "spanish": "grande",
+    "english_definition": "A common English word that refers to big.",
+    "spanish_definition": "De tamaño considerable o importante",
+    "has_webster": true
+  },
+  {
+    "english": "small",
+    "spanish": "pequeño",
+    "english_definition": "Any part of something that is smaller or slimmer than the rest, now usually with anatomical reference to the back.",
+    "spanish_definition": "De tamaño reducido o limitado",
+    "has_webster": true
+  },
+  {
+    "english": "hot",
+    "spanish": "caliente",
+    "english_definition": "A common English word that refers to hot.",
+    "spanish_definition": "Que tiene alta temperatura",
+    "has_webster": true
+  },
+  {
+    "english": "cold",
+    "spanish": "frío",
+    "english_definition": "A common English word that refers to cold.",
+    "spanish_definition": "Que tiene baja temperatura",
+    "has_webster": true
+  },
+  {
+    "english": "good",
+    "spanish": "bueno",
+    "english_definition": "A common English word that refers to good.",
+    "spanish_definition": "Que tiene cualidades positivas o morales",
+    "has_webster": true
+  },
+  {
+    "english": "bad",
+    "spanish": "malo",
+    "english_definition": "A common English word that refers to bad.",
+    "spanish_definition": "Que tiene cualidades negativas o perjudiciales",
+    "has_webster": true
+  },
+  {
+    "english": "easy",
+    "spanish": "fácil",
+    "english_definition": "A common English word that refers to easy.",
+    "spanish_definition": "Que no requiere gran esfuerzo o dificultad",
+    "has_webster": true
+  },
+  {
+    "english": "difficult",
+    "spanish": "difícil",
+    "english_definition": "A common English word that refers to difficult.",
+    "spanish_definition": "Que requiere gran esfuerzo o habilidad",
+    "has_webster": true
+  },
+  {
+    "english": "fast",
+    "spanish": "rápido",
+    "english_definition": "A train that calls at only some stations it passes between its origin and destination, typically just the principal stations",
+    "spanish_definition": "Que se mueve o sucede a gran velocidad",
+    "has_webster": true
+  },
+  {
+    "english": "slow",
+    "spanish": "lento",
+    "english_definition": "A common English word that refers to slow.",
+    "spanish_definition": "Que se mueve o sucede a poca velocidad",
+    "has_webster": true
+  },
+  {
+    "english": "new",
+    "spanish": "nuevo",
+    "english_definition": "A common English word that refers to new.",
+    "spanish_definition": "Que ha sido creado o hecho recientemente",
+    "has_webster": true
+  },
+  {
+    "english": "old",
+    "spanish": "viejo",
+    "english_definition": "A common English word that refers to old.",
+    "spanish_definition": "Que existe desde hace mucho tiempo",
+    "has_webster": true
+  },
+  {
+    "english": "young",
+    "spanish": "joven",
+    "english_definition": "A common English word that refers to young.",
+    "spanish_definition": "Que está en la primera etapa de la vida",
+    "has_webster": true
+  },
+  {
+    "english": "healthy",
+    "spanish": "saludable",
+    "english_definition": "A common English word that refers to healthy.",
+    "spanish_definition": "Que contribuye al bienestar físico o mental",
+    "has_webster": true
+  },
+  {
+    "english": "sick",
+    "spanish": "enfermo",
+    "english_definition": "A common English word that refers to sick.",
+    "spanish_definition": "Que sufre alguna enfermedad o dolencia",
+    "has_webster": true
+  },
+  {
+    "english": "strong",
+    "spanish": "fuerte",
+    "english_definition": "A common English word that refers to strong.",
+    "spanish_definition": "Que tiene gran poder físico o resistencia",
+    "has_webster": true
+  },
+  {
+    "english": "weak",
+    "spanish": "débil",
+    "english_definition": "A common English word that refers to weak.",
+    "spanish_definition": "Que carece de fuerza o resistencia",
+    "has_webster": true
+  },
+  {
+    "english": "rich",
+    "spanish": "rico",
+    "english_definition": "A common English word that refers to rich.",
+    "spanish_definition": "Que posee gran cantidad de dinero o bienes",
+    "has_webster": true
+  },
+  {
+    "english": "poor",
+    "spanish": "pobre",
+    "english_definition": "A common English word that refers to poor.",
+    "spanish_definition": "Que carece de recursos económicos suficientes",
+    "has_webster": true
+  },
+  {
+    "english": "important",
+    "spanish": "importante",
+    "english_definition": "A common English word that refers to important.",
+    "spanish_definition": "Que tiene gran significado o relevancia",
+    "has_webster": true
+  },
+  {
+    "english": "interesting",
+    "spanish": "interesante",
+    "english_definition": "To engage the attention of; to awaken interest in; to excite emotion or passion in, in behalf of a person or thing.",
+    "spanish_definition": "Que capta la atención o curiosidad",
+    "has_webster": true
+  },
+  {
+    "english": "boring",
+    "spanish": "aburrido",
+    "english_definition": "A common English word that refers to boring.",
+    "spanish_definition": "Que no resulta entretenido o atractivo",
+    "has_webster": true
+  },
+  {
+    "english": "fun",
+    "spanish": "divertido",
+    "english_definition": "A common English word that refers to fun.",
+    "spanish_definition": "Que causa entretenimiento o alegría",
+    "has_webster": true
+  },
+  {
+    "english": "serious",
+    "spanish": "serio",
+    "english_definition": "A common English word that refers to serious.",
+    "spanish_definition": "Que carece de humor o ligereza",
+    "has_webster": true
+  },
+  {
+    "english": "quiet",
+    "spanish": "tranquilo",
+    "english_definition": "A common English word that refers to quiet.",
+    "spanish_definition": "Que está en calma o sin agitación",
+    "has_webster": true
+  },
+  {
+    "english": "loud",
+    "spanish": "ruidoso",
+    "english_definition": "A common English word that refers to loud.",
+    "spanish_definition": "Que produce mucho ruido",
+    "has_webster": true
+  },
+  {
+    "english": "clean",
+    "spanish": "limpio",
+    "english_definition": "A common English word that refers to clean.",
+    "spanish_definition": "Que está libre de suciedad",
+    "has_webster": true
+  },
+  {
+    "english": "dirty",
+    "spanish": "sucio",
+    "english_definition": "A common English word that refers to dirty.",
+    "spanish_definition": "Que tiene suciedad o está contaminado",
+    "has_webster": true
+  },
+  {
+    "english": "empty",
+    "spanish": "vacío",
+    "english_definition": "A common English word that refers to empty.",
+    "spanish_definition": "Que no contiene nada en su interior",
+    "has_webster": true
+  },
+  {
+    "english": "full",
+    "spanish": "lleno",
+    "english_definition": "A common English word that refers to full.",
+    "spanish_definition": "Que está completamente ocupado o contenido",
+    "has_webster": true
+  },
+  {
+    "english": "open",
+    "spanish": "abierto",
+    "english_definition": "A common English word that refers to open.",
+    "spanish_definition": "Que no está cerrado o sellado",
+    "has_webster": true
+  },
+  {
+    "english": "closed",
+    "spanish": "cerrado",
+    "english_definition": "A common English word that refers to closed.",
+    "spanish_definition": "Que está sellado o no permite el paso",
+    "has_webster": true
+  },
+  {
+    "english": "right",
+    "spanish": "correcto",
+    "english_definition": "A common English word that refers to right.",
+    "spanish_definition": "Que es adecuado o apropiado",
+    "has_webster": true
+  },
+  {
+    "english": "wrong",
+    "spanish": "incorrecto",
+    "english_definition": "A common English word that refers to wrong.",
+    "spanish_definition": "Que es inadecuado o equivocado",
+    "has_webster": true
+  },
+  {
+    "english": "true",
+    "spanish": "verdadero",
+    "english_definition": "A common English word that refers to true.",
+    "spanish_definition": "Que corresponde a la realidad",
+    "has_webster": true
+  },
+  {
+    "english": "false",
+    "spanish": "falso",
+    "english_definition": "A common English word that refers to false.",
+    "spanish_definition": "Que no corresponde a la realidad",
+    "has_webster": true
+  },
+  {
+    "english": "yes",
+    "spanish": "sí",
+    "english_definition": "A common English word that refers to yes.",
+    "spanish_definition": "Afirmación o confirmación",
+    "has_webster": true
+  },
+  {
+    "english": "no",
+    "spanish": "no",
+    "english_definition": "A common English word that refers to no.",
+    "spanish_definition": "Negación o rechazo",
+    "has_webster": true
+  },
+  {
+    "english": "please",
+    "spanish": "por favor",
+    "english_definition": "A common English word that refers to please.",
+    "spanish_definition": "Definición de por favor",
+    "has_webster": true
+  },
+  {
+    "english": "thank",
+    "spanish": "gracias",
+    "english_definition": "A common English word that refers to thank.",
+    "spanish_definition": "Definición de gracias",
+    "has_webster": true
+  },
+  {
+    "english": "sorry",
+    "spanish": "lo siento",
+    "english_definition": "A common English word that refers to sorry.",
+    "spanish_definition": "Definición de lo siento",
+    "has_webster": true
+  },
+  {
+    "english": "hello",
+    "spanish": "hola",
+    "english_definition": "A common English word that refers to hello.",
+    "spanish_definition": "Definición de hola",
+    "has_webster": true
+  },
+  {
+    "english": "goodbye",
+    "spanish": "adiós",
+    "english_definition": "A common English word that refers to goodbye.",
+    "spanish_definition": "Definición de adiós",
+    "has_webster": true
+  },
+  {
+    "english": "help",
+    "spanish": "ayuda",
+    "english_definition": "A common English word that refers to help.",
+    "spanish_definition": "Asistencia o apoyo para realizar algo",
+    "has_webster": true
+  },
+  {
+    "english": "problem",
+    "spanish": "problema",
+    "english_definition": "A common English word that refers to problem.",
+    "spanish_definition": "Situación difícil que requiere solución",
+    "has_webster": true
+  },
+  {
+    "english": "solution",
+    "spanish": "solución",
+    "english_definition": "A common English word that refers to solution.",
+    "spanish_definition": "Respuesta o resolución de un problema",
+    "has_webster": true
+  },
+  {
+    "english": "question",
+    "spanish": "pregunta",
+    "english_definition": "A common English word that refers to question.",
+    "spanish_definition": "Interrogación que busca información",
+    "has_webster": true
+  },
+  {
+    "english": "answer",
+    "spanish": "respuesta",
+    "english_definition": "A common English word that refers to answer.",
+    "spanish_definition": "Información que responde a una pregunta",
+    "has_webster": true
+  },
+  {
+    "english": "information",
+    "spanish": "información",
+    "english_definition": "A common English word that refers to information.",
+    "spanish_definition": "Conjunto de datos organizados",
+    "has_webster": true
+  },
+  {
+    "english": "knowledge",
+    "spanish": "conocimiento",
+    "english_definition": "A common English word that refers to knowledge.",
+    "spanish_definition": "Sabiduría o entendimiento adquirido",
+    "has_webster": true
+  },
+  {
+    "english": "experience",
+    "spanish": "experiencia",
+    "english_definition": "The effect upon the judgment or feelings produced by any event, whether witnessed or participated in; personal and direct impressions as contrasted with description or fancies; personal acquaintance; actual enjoyment or suffering.",
+    "spanish_definition": "Conocimiento adquirido por la práctica",
+    "has_webster": true
+  },
+  {
+    "english": "practice",
+    "spanish": "práctica",
+    "english_definition": "A common English word that refers to practice.",
+    "spanish_definition": "Ejercicio repetido para mejorar habilidades",
+    "has_webster": true
+  },
+  {
+    "english": "skill",
+    "spanish": "habilidad",
+    "english_definition": "Capacity to do something well; technique, ability. Skills are usually acquired or learned, as opposed to abilities, which are often thought of as innate.",
+    "spanish_definition": "Capacidad para realizar algo bien",
+    "has_webster": true
+  },
+  {
+    "english": "ability",
+    "spanish": "capacidad",
+    "english_definition": "A common English word that refers to ability.",
+    "spanish_definition": "Potencial o aptitud para hacer algo",
+    "has_webster": true
+  },
+  {
+    "english": "talent",
+    "spanish": "talento",
+    "english_definition": "A common English word that refers to talent.",
+    "spanish_definition": "Habilidad natural o innata",
+    "has_webster": true
+  },
+  {
+    "english": "dream",
+    "spanish": "sueño",
+    "english_definition": "A common English word that refers to dream.",
+    "spanish_definition": "Imaginación durante el sueño o deseo profundo",
+    "has_webster": true
+  },
+  {
+    "english": "hope",
+    "spanish": "esperanza",
+    "english_definition": "A common English word that refers to hope.",
+    "spanish_definition": "Confianza en que algo bueno sucederá",
+    "has_webster": true
+  },
+  {
+    "english": "wish",
+    "spanish": "deseo",
+    "english_definition": "A common English word that refers to wish.",
+    "spanish_definition": "Anhelo o querer intensamente algo",
+    "has_webster": true
+  },
+  {
+    "english": "goal",
+    "spanish": "objetivo",
+    "english_definition": "A common English word that refers to goal.",
+    "spanish_definition": "Meta o propósito que se quiere alcanzar",
+    "has_webster": true
+  },
+  {
+    "english": "plan",
+    "spanish": "plan",
+    "english_definition": "A drawing showing technical details of a building, machine, etc., with unwanted details omitted, and often using symbols rather than detailed drawing to represent doors, valves, etc.",
+    "spanish_definition": "Estrategia o método organizado",
+    "has_webster": true
+  },
+  {
+    "english": "future",
+    "spanish": "futuro",
+    "english_definition": "A common English word that refers to future.",
+    "spanish_definition": "Tiempo que aún no ha llegado",
+    "has_webster": true
+  },
+  {
+    "english": "past",
+    "spanish": "pasado",
+    "english_definition": "A common English word that refers to past.",
+    "spanish_definition": "Tiempo que ya ha transcurrido",
+    "has_webster": true
+  },
+  {
+    "english": "present",
+    "spanish": "presente",
+    "english_definition": "A common English word that refers to present.",
+    "spanish_definition": "Momento actual",
+    "has_webster": true
+  },
+  {
+    "english": "change",
+    "spanish": "cambio",
+    "english_definition": "A common English word that refers to change.",
+    "spanish_definition": "Modificación o transformación",
+    "has_webster": true
+  },
+  {
+    "english": "progress",
+    "spanish": "progreso",
+    "english_definition": "A common English word that refers to progress.",
+    "spanish_definition": "Avance o mejora gradual",
+    "has_webster": true
+  },
+  {
+    "english": "success",
+    "spanish": "éxito",
+    "english_definition": "A common English word that refers to success.",
+    "spanish_definition": "Resultado favorable o logro",
+    "has_webster": true
+  },
+  {
+    "english": "failure",
+    "spanish": "fracaso",
+    "english_definition": "A common English word that refers to failure.",
+    "spanish_definition": "Resultado desfavorable o falta de éxito",
+    "has_webster": true
+  },
+  {
+    "english": "mistake",
+    "spanish": "error",
+    "english_definition": "A common English word that refers to mistake.",
+    "spanish_definition": "Equívoco o falta de corrección",
+    "has_webster": true
+  },
+  {
+    "english": "lesson",
+    "spanish": "lección",
+    "english_definition": "A common English word that refers to lesson.",
+    "spanish_definition": "Enseñanza o aprendizaje obtenido",
+    "has_webster": true
+  },
+  {
+    "english": "opportunity",
+    "spanish": "oportunidad",
+    "english_definition": "A common English word that refers to opportunity.",
+    "spanish_definition": "Momento favorable para hacer algo",
+    "has_webster": true
+  },
+  {
+    "english": "challenge",
+    "spanish": "desafío",
+    "english_definition": "A common English word that refers to challenge.",
+    "spanish_definition": "Prueba o dificultad que requiere esfuerzo",
+    "has_webster": true
+  },
+  {
+    "english": "adventure",
+    "spanish": "aventura",
+    "english_definition": "The encountering of risks; a bold undertaking, in which dangers are likely to be encountered, and the issue is staked upon unforeseen events; a daring feat.",
+    "spanish_definition": "Experiencia emocionante o arriesgada",
+    "has_webster": true
+  },
+  {
+    "english": "journey",
+    "spanish": "viaje",
+    "english_definition": "A common English word that refers to journey.",
+    "spanish_definition": "Desplazamiento de un lugar a otro",
+    "has_webster": true
+  },
+  {
+    "english": "trip",
+    "spanish": "viaje",
+    "english_definition": "A common English word that refers to trip.",
+    "spanish_definition": "Desplazamiento de un lugar a otro",
+    "has_webster": true
+  },
+  {
+    "english": "vacation",
+    "spanish": "vacaciones",
+    "english_definition": "A common English word that refers to vacation.",
+    "spanish_definition": "Período de descanso del trabajo",
+    "has_webster": true
+  },
+  {
+    "english": "holiday",
+    "spanish": "fiesta",
+    "english_definition": "A common English word that refers to holiday.",
+    "spanish_definition": "Celebración o reunión social",
+    "has_webster": true
+  },
+  {
+    "english": "celebration",
+    "spanish": "celebración",
+    "english_definition": "A common English word that refers to celebration.",
+    "spanish_definition": "Acto de festejar o conmemorar",
+    "has_webster": true
+  },
+  {
+    "english": "party",
+    "spanish": "fiesta",
+    "english_definition": "A common English word that refers to party.",
+    "spanish_definition": "Celebración o reunión social",
+    "has_webster": true
+  },
+  {
+    "english": "gift",
+    "spanish": "regalo",
+    "english_definition": "A common English word that refers to gift.",
+    "spanish_definition": "Objeto dado voluntariamente a alguien",
+    "has_webster": true
+  },
+  {
+    "english": "surprise",
+    "spanish": "sorpresa",
+    "english_definition": "A common English word that refers to surprise.",
+    "spanish_definition": "Evento inesperado o imprevisto",
+    "has_webster": true
+  },
+  {
+    "english": "music",
+    "spanish": "música",
+    "english_definition": "A common English word that refers to music.",
+    "spanish_definition": "Arte de combinar sonidos de forma armoniosa",
+    "has_webster": true
+  },
+  {
+    "english": "song",
+    "spanish": "canción",
+    "english_definition": "A common English word that refers to song.",
+    "spanish_definition": "Composición musical con letra",
+    "has_webster": true
+  },
+  {
+    "english": "dance",
+    "spanish": "baile",
+    "english_definition": "A sequence of rhythmic steps or movements usually performed to music, for pleasure or as a form of social interaction.",
+    "spanish_definition": "Movimiento rítmico del cuerpo",
+    "has_webster": true
+  },
+  {
+    "english": "movie",
+    "spanish": "película",
+    "english_definition": "A recorded sequence of images displayed on a screen at a rate sufficiently fast to create the appearance of motion.",
+    "spanish_definition": "Obra cinematográfica o film",
+    "has_webster": true
+  },
+  {
+    "english": "game",
+    "spanish": "juego",
+    "english_definition": "A common English word that refers to game.",
+    "spanish_definition": "Actividad recreativa con reglas",
+    "has_webster": true
+  },
+  {
+    "english": "sport",
+    "spanish": "deporte",
+    "english_definition": "Any activity that uses physical exertion or skills competitively under a set of rules that is not based on aesthetics.",
+    "spanish_definition": "Actividad física competitiva",
+    "has_webster": true
+  },
+  {
+    "english": "exercise",
+    "spanish": "ejercicio",
+    "english_definition": "A common English word that refers to exercise.",
+    "spanish_definition": "Actividad física para mantener la salud",
+    "has_webster": true
+  },
+  {
+    "english": "health",
+    "spanish": "salud",
+    "english_definition": "A common English word that refers to health.",
+    "spanish_definition": "Estado de bienestar físico y mental",
+    "has_webster": true
+  },
+  {
+    "english": "doctor",
+    "spanish": "doctor",
+    "english_definition": "A physician; a member of the medical profession; one who is trained and licensed to heal the sick or injured. The final examination and qualification may award a doctor degree in which case the post-nominal letters are D.O., DPM, M.D., DMD, DDS, in the US or MBBS in the UK.",
+    "spanish_definition": "Profesional de la medicina",
+    "has_webster": true
+  },
+  {
+    "english": "medicine",
+    "spanish": "medicina",
+    "english_definition": "A common English word that refers to medicine.",
+    "spanish_definition": "Ciencia y práctica de tratar enfermedades",
+    "has_webster": true
+  },
+  {
+    "english": "hospital",
+    "spanish": "hospital",
+    "english_definition": "A large medical facility, usually in a building with multiple floors, where seriously ill or injured patients are given extensive medical and/or surgical treatment.",
+    "spanish_definition": "Centro médico para tratar pacientes",
+    "has_webster": true
+  },
+  {
+    "english": "city",
+    "spanish": "ciudad",
+    "english_definition": "A common English word that refers to city.",
+    "spanish_definition": "Centro urbano grande y poblado",
+    "has_webster": true
+  },
+  {
+    "english": "town",
+    "spanish": "pueblo",
+    "english_definition": "A settlement; an area with residential districts, shops and amenities, and its own local government; especially one larger than a village and smaller than a city.",
+    "spanish_definition": "Centro urbano pequeño o rural",
+    "has_webster": true
+  },
+  {
+    "english": "country",
+    "spanish": "país",
+    "english_definition": "A common English word that refers to country.",
+    "spanish_definition": "Nación o territorio con gobierno propio",
+    "has_webster": true
+  },
+  {
+    "english": "world",
+    "spanish": "mundo",
+    "english_definition": "A common English word that refers to world.",
+    "spanish_definition": "Planeta Tierra o conjunto de todos los países",
+    "has_webster": true
+  },
+  {
+    "english": "earth",
+    "spanish": "tierra",
+    "english_definition": "A common English word that refers to earth.",
+    "spanish_definition": "Planeta donde vivimos o suelo firme",
+    "has_webster": true
+  },
+  {
+    "english": "nature",
+    "spanish": "naturaleza",
+    "english_definition": "The natural world; that which consists of all things unaffected by or predating human technology, production, and design. (Compare ecosystem.)",
+    "spanish_definition": "Conjunto de seres vivos y elementos naturales",
+    "has_webster": true
+  },
+  {
+    "english": "environment",
+    "spanish": "ambiente",
+    "english_definition": "A common English word that refers to environment.",
+    "spanish_definition": "Entorno o condiciones que rodean algo",
+    "has_webster": true
+  },
+  {
+    "english": "pollution",
+    "spanish": "contaminación",
+    "english_definition": "A common English word that refers to pollution.",
+    "spanish_definition": "Deterioro del medio ambiente",
+    "has_webster": true
+  },
+  {
+    "english": "energy",
+    "spanish": "energía",
+    "english_definition": "A common English word that refers to energy.",
+    "spanish_definition": "Capacidad para realizar trabajo o producir cambios",
+    "has_webster": true
+  },
+  {
+    "english": "power",
+    "spanish": "poder",
+    "english_definition": "A common English word that refers to power.",
+    "spanish_definition": "Autoridad o capacidad de influir",
+    "has_webster": true
+  },
+  {
+    "english": "light",
+    "spanish": "luz",
+    "english_definition": "Visible electromagnetic radiation. The human eye can typically detect radiation (light) in the wavelength range of about 400 to 750 nanometers. Nearby shorter and longer wavelength ranges, although not visible, are commonly called ultraviolet and infrared light.",
+    "spanish_definition": "Radiación electromagnética visible",
+    "has_webster": true
+  },
+  {
+    "english": "dark",
+    "spanish": "oscuro",
+    "english_definition": "A common English word that refers to dark.",
+    "spanish_definition": "Que carece de luz o iluminación",
+    "has_webster": true
+  },
+  {
+    "english": "color",
+    "spanish": "color",
+    "english_definition": "A common English word that refers to color.",
+    "spanish_definition": "Propiedad visual de los objetos",
+    "has_webster": true
+  },
+  {
+    "english": "red",
+    "spanish": "rojo",
+    "english_definition": "Any of a range of colours having the longest wavelengths, 670 nm, of the visible spectrum; a primary additive colour for transmitted light: the colour obtained by subtracting green and blue from white light using magenta and yellow filters; the colour of blood, ripe strawberries, etc.",
+    "spanish_definition": "Color de la sangre o los tomates maduros",
+    "has_webster": true
+  },
+  {
+    "english": "blue",
+    "spanish": "azul",
+    "english_definition": "The colour of the clear sky or the deep sea, between green and violet in the visible spectrum, and one of the primary additive colours for transmitted light; the colour obtained by subtracting red and green from white light using magenta and cyan filters; or any colour resembling this.",
+    "spanish_definition": "Color del cielo o del mar profundo",
+    "has_webster": true
+  },
+  {
+    "english": "green",
+    "spanish": "verde",
+    "english_definition": "A common English word that refers to green.",
+    "spanish_definition": "Color de la hierba o las hojas",
+    "has_webster": true
+  },
+  {
+    "english": "yellow",
+    "spanish": "amarillo",
+    "english_definition": "The colour of gold, butter, or a lemon; the colour obtained by mixing green and red light, or by subtracting blue from white light.",
+    "spanish_definition": "Color del sol o los limones",
+    "has_webster": true
+  },
+  {
+    "english": "black",
+    "spanish": "negro",
+    "english_definition": "A common English word that refers to black.",
+    "spanish_definition": "Color oscuro que absorbe toda la luz",
+    "has_webster": true
+  },
+  {
+    "english": "white",
+    "spanish": "blanco",
+    "english_definition": "A common English word that refers to white.",
+    "spanish_definition": "Color claro que refleja toda la luz",
+    "has_webster": true
+  },
+  {
+    "english": "orange",
+    "spanish": "naranja",
+    "english_definition": "A common English word that refers to orange.",
+    "spanish_definition": "Color de la fruta del mismo nombre",
+    "has_webster": true
+  },
+  {
+    "english": "purple",
+    "spanish": "púrpura",
+    "english_definition": "A common English word that refers to purple.",
+    "spanish_definition": "Color mezcla de rojo y azul",
+    "has_webster": true
+  },
+  {
+    "english": "pink",
+    "spanish": "rosa",
+    "english_definition": "A common English word that refers to pink.",
+    "spanish_definition": "Color claro similar al de algunas flores",
+    "has_webster": true
+  },
+  {
+    "english": "brown",
+    "spanish": "café",
+    "english_definition": "A common English word that refers to brown.",
+    "spanish_definition": "Color de los granos de café tostado",
+    "has_webster": true
+  },
+  {
+    "english": "gray",
+    "spanish": "gris",
+    "english_definition": "A common English word that refers to gray.",
+    "spanish_definition": "Color intermedio entre blanco y negro",
     "has_webster": true
   }
 ]

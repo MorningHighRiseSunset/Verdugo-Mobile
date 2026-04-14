@@ -620,69 +620,36 @@ TRANSLATIONS.start_game = {
     "hi-IN": "खेल शुरू करें"
 };
 
-// Phonetic maps for voice recognition - defined in global scope
-const phoneticMap = {
-    // English phonetic alphabet
-    'alpha': 'A', 'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'echo': 'E',
-    'foxtrot': 'F', 'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J', 'juliett': 'J',
-    'kilo': 'K', 'lima': 'L', 'mike': 'M', 'michael': 'M', 'november': 'N', 'oscar': 'O',
-    'papa': 'P', 'quebec': 'Q', 'romeo': 'R', 'sierra': 'S', 'tango': 'T', 'uniform': 'U',
-    'victor': 'V', 'whiskey': 'W', 'x-ray': 'X', 'xray': 'X', 'yankee': 'Y', 'zulu': 'Z',
-    // Common spoken variations
+// Advanced Phonetic Recognition System
+// Uses phonetic-engine.js for accent-aware Spanish recognition
+let phoneticEngine = null;
+
+// Initialize the phonetic engine when the page loads
+async function initPhoneticEngine() {
+    if (typeof PhoneticEngine !== 'undefined') {
+        phoneticEngine = new PhoneticEngine();
+        await phoneticEngine.initialize();
+        console.log('Advanced phonetic engine initialized');
+    } else {
+        console.warn('Phonetic engine not loaded, using fallback');
+    }
+}
+
+// Legacy fallback maps (kept for compatibility)
+const legacyPhoneticMap = {
+    // Basic English alphabet for emergency fallback
     'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H',
     'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'o': 'O', 'p': 'P',
     'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U', 'v': 'V', 'w': 'W', 'x': 'X',
-    'y': 'Y', 'z': 'Z',
-    // Single letter pronunciations (common speech recognition outputs)
-    'bi': 'B', 'ci': 'C', 'di': 'D', 'ei': 'A', 'ef': 'F', 'gi': 'G', 'eich': 'H', 
-    'ai': 'I', 'jei': 'J', 'kei': 'K', 'el': 'L', 'em': 'M', 'en': 'N', 'ou': 'O',
-    'pi': 'P', 'kyu': 'Q', 'ar': 'R', 'es': 'S', 'ti': 'T', 'iu': 'U', 'vi': 'V',
-    'dabliu': 'W', 'ex': 'X', 'uai': 'Y', 'zi': 'Z',
-    // More variations
-    'bee': 'B', 'see': 'C', 'dee': 'D', 'gee': 'G', 'pee': 'P', 'tea': 'T', 'you': 'U', 'why': 'Y',
-    // Common mispronunciations
-    'for': 'F', 'are': 'R', 'eye': 'I', 'oh': 'O', 'queue': 'Q', 'you': 'U', 'double you': 'W', 'double u': 'W'
+    'y': 'Y', 'z': 'Z'
 };
 
-const spanishPhoneticMap = {
-    // Authoritative Spanish alphabet pronunciations (from linguistic sources)
+const legacySpanishMap = {
+    // Basic Spanish alphabet for emergency fallback
     'a': 'A', 'be': 'B', 'ce': 'C', 'de': 'D', 'e': 'E', 'efe': 'F', 'ge': 'G', 'hache': 'H',
     'i': 'I', 'jota': 'J', 'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'o': 'O',
-    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'doble ve': 'W',
-    'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
-    
-    // Spanish letter variations (regional and common alternatives)
-    'be larga': 'B', 'be corta': 'B', 'be de burro': 'B', 've de vaca': 'V',
-    'erre': 'R', 'i griega': 'Y', 'doble uve': 'W', 'doble u': 'W',
-    
-    // Single letters (most common way Spanish speakers actually say letters)
-    'a': 'A', 'b': 'B', 'c': 'C', 'd': 'D', 'e': 'E', 'f': 'F', 'g': 'G', 'h': 'H',
-    'i': 'I', 'j': 'J', 'k': 'K', 'l': 'L', 'm': 'M', 'n': 'N', 'ñ': 'Ñ', 'o': 'O',
-    'p': 'P', 'q': 'Q', 'r': 'R', 's': 'S', 't': 'T', 'u': 'U', 'v': 'V', 'w': 'W',
-    'x': 'X', 'y': 'Y', 'z': 'Z',
-    
-    // Spanish letters with accents
-    'á': 'Á', 'é': 'É', 'í': 'Í', 'ó': 'Ó', 'ú': 'Ú', 'ü': 'Ü', 'ñ': 'Ñ',
-    
-    // Spanish vowel sounds (the way they're actually pronounced)
-    'ah': 'A', 'eh': 'E', 'ee': 'I', 'oh': 'O', 'oo': 'U',
-    
-    // Common Spanish speech recognition outputs
-    'be': 'B', 'ce': 'C', 'de': 'D', 'efe': 'F', 'ge': 'G', 'ache': 'H', 'hache': 'H',
-    'ka': 'K', 'ele': 'L', 'eme': 'M', 'ene': 'N', 'eñe': 'Ñ', 'pe': 'P', 'cu': 'Q',
-    'ere': 'R', 'ese': 'S', 'te': 'T', 'uve': 'V', 'equis': 'X', 'ye': 'Y', 'zeta': 'Z',
-    
-    // English phonetic alphabet (for Spanish speakers who know it)
-    'alfa': 'A', 'bravo': 'B', 'charlie': 'C', 'delta': 'D', 'eco': 'E', 'foxtrot': 'F',
-    'golf': 'G', 'hotel': 'H', 'india': 'I', 'juliet': 'J', 'kilo': 'K', 'lima': 'L',
-    'mike': 'M', 'noviembre': 'N', 'oscar': 'O', 'papa': 'P', 'quebec': 'Q', 'romeo': 'R',
-    'sierra': 'S', 'tango': 'T', 'uniform': 'U', 'victor': 'V', 'whiskey': 'W', 'x-ray': 'X',
-    'yanqui': 'Y', 'zulu': 'Z',
-    
-    // Common mispronunciations and variations
-    'bi': 'B', 'ci': 'C', 'di': 'D', 'gi': 'G', 'li': 'L', 'mi': 'M', 'ni': 'N',
-    'pi': 'P', 'qui': 'Q', 'ri': 'R', 'si': 'S', 'ti': 'T', 'vi': 'V', 'wi': 'W',
-    'xi': 'X', 'yi': 'Y', 'zi': 'Z'
+    'pe': 'P', 'cu': 'Q', 'ere': 'R', 'ese': 'S', 'te': 'T', 'u': 'U', 'uve': 'V', 'equis': 'X', 
+    'ye': 'Y', 'zeta': 'Z'
 };
 
 // Load FreeDict Spanish-English dictionary (large vocabulary)
@@ -1675,6 +1642,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         window.flagEmojiSupported = detectFlagEmojiSupport();
         console.log('Flag emoji support detected:', window.flagEmojiSupported);
         
+        // Initialize advanced phonetic engine
+        initPhoneticEngine();
+        
         // Load comprehensive dictionary with both English and Spanish
         loadComprehensiveDictionary();
         
@@ -2583,37 +2553,46 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
             let mapped = null;
             
-            // Try English phonetic map first
-            if (phoneticMap[transcriptRaw]) {
-                mapped = phoneticMap[transcriptRaw];
-                console.log(`Found in English phonetic map: ${transcriptRaw} -> ${mapped}`);
-            }
-            // Try Spanish phonetic map for Spanish or as fallback
-            else if (spanishPhoneticMap[transcriptRaw]) {
-                mapped = spanishPhoneticMap[transcriptRaw];
-                console.log(`Found in Spanish phonetic map: ${transcriptRaw} -> ${mapped}`);
-            }
-            // Handle single character input
-            else if (transcriptRaw.length === 1) {
-                mapped = transcriptRaw.toUpperCase();
-                console.log(`Single character: ${transcriptRaw} -> ${mapped}`);
-            }
-
-            // For Spanish recognition, be more forgiving with character extraction
-            if (!mapped && currentRecShort === 'es') {
-                // Extract first Spanish character
-                const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
-                if (spanishCharMatch) {
-                    mapped = spanishCharMatch[0].toUpperCase();
-                    console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
+            // Use advanced phonetic engine if available
+            if (phoneticEngine && (currentRecShort === 'es' || currentRecShort === 'en')) {
+                mapped = phoneticEngine.recognizeLetter(transcriptRaw);
+                if (mapped) {
+                    console.log(`Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
                 }
             }
-            // For other non-English languages, try basic character extraction
-            else if (!mapped && currentRecShort !== 'en') {
-                const firstChar = transcriptRaw[0];
-                if (firstChar && /[a-záéíóúñü]/i.test(firstChar)) {
-                    mapped = firstChar.toUpperCase();
-                    console.log(`Extracted first character: ${transcriptRaw} -> ${mapped}`);
+            
+            // Fallback to legacy maps if advanced engine fails
+            if (!mapped) {
+                // Try legacy English map first
+                if (legacyPhoneticMap[transcriptRaw]) {
+                    mapped = legacyPhoneticMap[transcriptRaw];
+                    console.log(`Legacy English map: ${transcriptRaw} -> ${mapped}`);
+                }
+                // Try legacy Spanish map
+                else if (legacySpanishMap[transcriptRaw]) {
+                    mapped = legacySpanishMap[transcriptRaw];
+                    console.log(`Legacy Spanish map: ${transcriptRaw} -> ${mapped}`);
+                }
+                // Handle single character input
+                else if (transcriptRaw.length === 1) {
+                    mapped = transcriptRaw.toUpperCase();
+                    console.log(`Single character: ${transcriptRaw} -> ${mapped}`);
+                }
+                // For Spanish recognition, be more forgiving with character extraction
+                else if (currentRecShort === 'es') {
+                    const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
+                    if (spanishCharMatch) {
+                        mapped = spanishCharMatch[0].toUpperCase();
+                        console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
+                    }
+                }
+                // For other non-English languages, try basic character extraction
+                else if (currentRecShort !== 'en') {
+                    const firstChar = transcriptRaw[0];
+                    if (firstChar && /[a-záéíóúñü]/i.test(firstChar)) {
+                        mapped = firstChar.toUpperCase();
+                        console.log(`Extracted first character: ${transcriptRaw} -> ${mapped}`);
+                    }
                 }
             }
 
@@ -2644,7 +2623,20 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     };
 
     function suggestLetter(interimTranscript) {
-        const suggestion = phoneticMap[interimTranscript] || spanishPhoneticMap[interimTranscript] || null;
+        let suggestion = null;
+        
+        // Use advanced phonetic engine for suggestions
+        if (phoneticEngine) {
+            const result = phoneticEngine.getSuggestion(interimTranscript);
+            if (result && result.confidence > 0.5) {
+                suggestion = result.letter;
+            }
+        }
+        
+        // Fallback to legacy maps
+        if (!suggestion) {
+            suggestion = legacyPhoneticMap[interimTranscript] || legacySpanishMap[interimTranscript] || null;
+        }
         const letterButtons = document.querySelectorAll('.letter-button');
         const resultElement = document.getElementById('result');
 
@@ -2758,33 +2750,43 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
                         
                         let mapped = null;
                         
-                        // Try English phonetic map first
-                        if (phoneticMap[transcriptRaw]) {
-                            mapped = phoneticMap[transcriptRaw];
-                            console.log(`Found in English phonetic map: ${transcriptRaw} -> ${mapped}`);
-                        }
-                        // Try Spanish phonetic map for Spanish or as fallback
-                        else if (spanishPhoneticMap[transcriptRaw]) {
-                            mapped = spanishPhoneticMap[transcriptRaw];
-                            console.log(`Found in Spanish phonetic map: ${transcriptRaw} -> ${mapped}`);
-                        }
-                        // Handle single character input
-                        else if (transcriptRaw.length === 1) {
-                            mapped = transcriptRaw.toUpperCase();
-                            console.log(`Single character: ${transcriptRaw} -> ${mapped}`);
+                        // Use advanced phonetic engine if available
+                        if (phoneticEngine && (selectedLang === 'es-ES' || selectedLang === 'es' || selectedLang === 'en-US' || selectedLang === 'en')) {
+                            mapped = phoneticEngine.recognizeLetter(transcriptRaw);
+                            if (mapped) {
+                                console.log(`iOS Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
+                            }
                         }
                         
-                        // For Spanish recognition, be more forgiving with character extraction
-                        if (!mapped && (selectedLang === 'es-ES' || selectedLang === 'es')) {
-                            const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
-                            if (spanishCharMatch) {
-                                mapped = spanishCharMatch[0].toUpperCase();
-                                console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
+                        // Fallback to legacy maps if advanced engine fails
+                        if (!mapped) {
+                            // Try legacy English map first
+                            if (legacyPhoneticMap[transcriptRaw]) {
+                                mapped = legacyPhoneticMap[transcriptRaw];
+                                console.log(`iOS Legacy English map: ${transcriptRaw} -> ${mapped}`);
+                            }
+                            // Try legacy Spanish map
+                            else if (legacySpanishMap[transcriptRaw]) {
+                                mapped = legacySpanishMap[transcriptRaw];
+                                console.log(`iOS Legacy Spanish map: ${transcriptRaw} -> ${mapped}`);
+                            }
+                            // Handle single character input
+                            else if (transcriptRaw.length === 1) {
+                                mapped = transcriptRaw.toUpperCase();
+                                console.log(`iOS Single character: ${transcriptRaw} -> ${mapped}`);
+                            }
+                            // For Spanish recognition, be more forgiving with character extraction
+                            else if (selectedLang === 'es-ES' || selectedLang === 'es') {
+                                const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
+                                if (spanishCharMatch) {
+                                    mapped = spanishCharMatch[0].toUpperCase();
+                                    console.log(`iOS Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
+                                }
                             }
                         }
                         
                         if (!mapped) {
-                            console.log(`No mapping found for: "${transcriptRaw}"`);
+                            console.log(`iOS No mapping found for: "${transcriptRaw}"`);
                             continue;
                         }
                         
@@ -3056,3 +3058,8 @@ body {
 }
 `;
 document.head.appendChild(style);
+
+// Load the new phonetic engine
+const phoneticScript = document.createElement('script');
+phoneticScript.src = 'phonetic-engine.js';
+document.head.appendChild(phoneticScript);
