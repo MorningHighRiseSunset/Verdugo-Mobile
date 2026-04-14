@@ -1,0 +1,142 @@
+[
+  {
+    "english": "work",
+    "spanish": "trabajo",
+    "english_definition": "Physical or mental effort or activity directed toward the production or accomplishment of something. It refers to employment, a job, or tasks that people do to earn money or achieve goals.",
+    "spanish_definition": "Actividad física o mental que se realiza para producir algo o para obtener un resultado",
+    "has_webster": true
+  },
+  {
+    "english": "money",
+    "spanish": "dinero",
+    "english_definition": "A legally or socially binding conceptual contract of entitlement to wealth, void of intrinsic value, payable for all debts and taxes, and regulated in supply.",
+    "spanish_definition": "Medio de cambio generalmente aceptado que se utiliza para pagar bienes y servicios",
+    "has_webster": true
+  },
+  {
+    "english": "time",
+    "spanish": "tiempo",
+    "english_definition": "The indefinite continued progress of existence and events in the past, present, and future regarded as a whole. It is measured in seconds, minutes, hours, days, and years.",
+    "spanish_definition": "Duración de las cosas o sucesión de los momentos",
+    "has_webster": true
+  },
+  {
+    "english": "family",
+    "spanish": "familia",
+    "english_definition": "A group of people who are closely related to one another (by blood, marriage or adoption); kin; for example, a set of parents and their children; an immediate family.",
+    "spanish_definition": "Grupo de personas unidas por vínculos de parentesco",
+    "has_webster": true
+  },
+  {
+    "english": "home",
+    "spanish": "hogar",
+    "english_definition": "The place where one lives permanently, especially as a member of a family or household. It provides shelter, safety, and a sense of belonging and comfort.",
+    "spanish_definition": "Lugar donde alguien vive y se siente seguro",
+    "has_webster": true
+  },
+  {
+    "english": "food",
+    "spanish": "comida",
+    "english_definition": "Any nutritious substance that people or animals eat or drink or that plants absorb in order to maintain life and growth. It provides energy and nutrients for the body.",
+    "spanish_definition": "Alimento que se prepara para ser consumido",
+    "has_webster": true
+  },
+  {
+    "english": "water",
+    "spanish": "agua",
+    "english_definition": "A substance (of molecular formula H₂O) found at room temperature and pressure as a clear liquid; it is present naturally as rain, and found in rivers, lakes and seas; its solid form is ice and its gaseous form is steam.",
+    "spanish_definition": "Sustancia líquida, transparente e incolora que es esencial para la vida",
+    "has_webster": true
+  },
+  {
+    "english": "friend",
+    "spanish": "amigo",
+    "english_definition": "A person other than a family member, spouse or lover whose company one enjoys and towards whom one feels affection.",
+    "spanish_definition": "Persona con quien se tiene una relación de amistad",
+    "has_webster": true
+  },
+  {
+    "english": "love",
+    "spanish": "amor",
+    "english_definition": "An intense feeling of deep affection and care towards someone or something. It involves strong emotional attachment, compassion, and a desire to protect and nurture.",
+    "spanish_definition": "Sentimiento intenso de afecto y cuidado hacia alguien",
+    "has_webster": true
+  },
+  {
+    "english": "life",
+    "spanish": "vida",
+    "english_definition": "The state of organisms preceding their death, characterized by biological processes such as metabolism and reproduction and distinguishing them from inanimate objects; the state of being alive and living.",
+    "spanish_definition": "Existencia de un ser vivo desde su nacimiento hasta su muerte",
+    "has_webster": true
+  },
+  {
+    "english": "school",
+    "spanish": "escuela",
+    "english_definition": "An institution for educating children or providing instruction in a particular subject. It's a place where students learn academic skills, social skills, and prepare for future careers.",
+    "spanish_definition": "Institución donde se imparte educación formal",
+    "has_webster": true
+  },
+  {
+    "english": "book",
+    "spanish": "libro",
+    "english_definition": "A collection of sheets of paper bound together to hinge at one edge, containing printed or written material, pictures, etc.",
+    "spanish_definition": "Conjunto de hojas impresas encuadernadas que forman una obra",
+    "has_webster": true
+  },
+  {
+    "english": "computer",
+    "spanish": "computadora",
+    "english_definition": "An electronic device that stores, retrieves, and processes data. It can perform calculations, run programs, connect to the internet, and help with various tasks.",
+    "spanish_definition": "Dispositivo electrónico que procesa información",
+    "has_webster": true
+  },
+  {
+    "english": "phone",
+    "spanish": "teléfono",
+    "english_definition": "A device for transmitting conversations and other sounds in real time across distances, now often a small portable unit also capable of running software etc.",
+    "spanish_definition": "Dispositivo de comunicación a distancia",
+    "has_webster": true
+  },
+  {
+    "english": "car",
+    "spanish": "carro",
+    "english_definition": "A wheeled vehicle that moves independently, with at least three wheels, powered mechanically, steered by a driver and mostly for personal transportation.",
+    "spanish_definition": "Vehículo con motor utilizado para transporte",
+    "has_webster": true
+  },
+  {
+    "english": "house",
+    "spanish": "casa",
+    "english_definition": "A building for human habitation, especially one that is lived in by a family or small group of people. It provides shelter from weather and a private living space.",
+    "spanish_definition": "Edificio destinado a vivienda",
+    "has_webster": true
+  },
+  {
+    "english": "tree",
+    "spanish": "árbol",
+    "english_definition": "A woody perennial plant with a single main stem or trunk growing to a considerable height and bearing lateral branches. Trees produce oxygen and provide wood.",
+    "spanish_definition": "Planta de tronco leñoso y ramas elevadas",
+    "has_webster": true
+  },
+  {
+    "english": "flower",
+    "spanish": "flor",
+    "english_definition": "A colorful, conspicuous structure associated with angiosperms, frequently scented and attracting various insects, and which may or may not be used for sexual reproduction.",
+    "spanish_definition": "Parte reproductiva de las plantas angiospermas",
+    "has_webster": true
+  },
+  {
+    "english": "animal",
+    "spanish": "animal",
+    "english_definition": "In scientific usage, a multicellular organism that is usually mobile, whose cells are not encased in a rigid cell wall (distinguishing it from plants and fungi) and which derives energy solely from the consumption of other organisms (distinguishing it from plants).",
+    "spanish_definition": "Ser vivo que se mueve por sí mismo y no es vegetal",
+    "has_webster": true
+  },
+  {
+    "english": "person",
+    "spanish": "persona",
+    "english_definition": "A human being regarded as an individual. Each person has unique characteristics, thoughts, feelings, and the ability to make choices.",
+    "spanish_definition": "Ser humano individual",
+    "has_webster": true
+  }
+]

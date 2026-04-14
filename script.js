@@ -706,34 +706,64 @@ console.error = function(...args) {
     originalConsoleError.apply(console, args);
 };
 
-// Load English dictionary from GitHub repositories
-async function loadEnglishDictionary() {
+// Load comprehensive dictionary with both English and Spanish words
+async function loadComprehensiveDictionary() {
     try {
-        // Try Webster's Dictionary first (has definitions)
-        const dictResponse = await fetch('https://raw.githubusercontent.com/matthewreagan/WebstersEnglishDictionary/master/dictionary.json');
-        if (dictResponse.ok) {
-            const dictData = await dictResponse.json();
-            ENGLISH_DICTIONARY = dictData;
-            console.log('Loaded Webster\'s English Dictionary:', Object.keys(dictData).length, 'entries');
+        const response = await fetch('comprehensive_webster.json');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
         }
         
-        // Load English word list for validation
-        const wordsResponse = await fetch('https://raw.githubusercontent.com/words/an-array-of-english-words/master/index.json');
-        if (wordsResponse.ok) {
-            const wordsData = await wordsResponse.json();
-            ENGLISH_WORDLIST = new Set(wordsData.map(w => w.toLowerCase()));
-            console.log('Loaded English word list:', wordsData.length, 'words');
-        }
+        const comprehensiveData = await response.json();
+        console.log('Loaded comprehensive dictionary:', comprehensiveData.length, 'entries');
+        
+        // Initialize dictionaries
+        ENGLISH_DICTIONARY = {};
+        SPANISH_DICTIONARY = {};
+        ENGLISH_WORDLIST = new Set();
+        SPANISH_WORDLIST = new Set();
+        
+        // Process each entry
+        comprehensiveData.forEach(entry => {
+            if (entry.english && entry.spanish) {
+                // English dictionary
+                ENGLISH_DICTIONARY[entry.english.toLowerCase()] = {
+                    definition: entry.english_definition || `English word: ${entry.english}`,
+                    pronunciation: `/${entry.english}/`,
+                    spanish: entry.spanish,
+                    spanish_definition: entry.spanish_definition
+                };
+                ENGLISH_WORDLIST.add(entry.english.toLowerCase());
+                
+                // Spanish dictionary  
+                SPANISH_DICTIONARY[entry.spanish.toLowerCase()] = {
+                    definition: entry.spanish_definition || `Palabra española: ${entry.spanish}`,
+                    pronunciation: `/${entry.spanish}/`,
+                    english: entry.english,
+                    english_definition: entry.english_definition
+                };
+                SPANISH_WORDLIST.add(entry.spanish.toLowerCase());
+            }
+        });
+        
+        console.log('Processed dictionaries:');
+        console.log('- English words:', ENGLISH_WORDLIST.size);
+        console.log('- Spanish words:', SPANISH_WORDLIST.size);
+        
     } catch (e) {
-        console.warn('Failed to load English dictionary, using fallback:', e);
-        // Fallback: create minimal dictionary from common words
-        const fallbackWords = ['house', 'water', 'sun', 'moon', 'tree', 'book', 'car', 'school'];
-        ENGLISH_WORDLIST = new Set(fallbackWords);
-        fallbackWords.forEach(word => {
-            ENGLISH_DICTIONARY[word] = {
-                definition: `A common English word: ${word}`,
-                pronunciation: `/${word}/`
-            };
+        console.error('Failed to load comprehensive dictionary:', e);
+        // Fallback to minimal dictionaries
+        const fallbackWords = [
+            { english: 'house', spanish: 'casa', english_def: 'A building for human habitation', spanish_def: 'Edificio para habitar' },
+            { english: 'water', spanish: 'agua', english_def: 'A clear liquid essential for life', spanish_def: 'Líquido claro esencial para la vida' },
+            { english: 'sun', spanish: 'sol', english_def: 'The star that provides light and heat', spanish_def: 'Estrella que proporciona luz y calor' }
+        ];
+        
+        fallbackWords.forEach(item => {
+            ENGLISH_DICTIONARY[item.english] = { definition: item.english_def, spanish: item.spanish, spanish_definition: item.spanish_def };
+            SPANISH_DICTIONARY[item.spanish] = { definition: item.spanish_def, english: item.english, english_definition: item.english_def };
+            ENGLISH_WORDLIST.add(item.english);
+            SPANISH_WORDLIST.add(item.spanish);
         });
     }
 }
@@ -937,23 +967,35 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             { word: 'mesa', english: 'table' }, { word: 'puerta', english: 'door' }, { word: 'gato', english: 'cat' }
         ];
 
-        // --- SPANISH: Use Spanish words directly from the GitHub wordlist ---
+        // --- SPANISH: Use comprehensive dictionary with built-in translations ---
                 if (language === 'Spanish') {
                     console.log('DEBUG: Entering Spanish word selection logic');
-                    // Wait for Spanish wordlist to load if not ready
+                    
+                    // Check if user is learning English (UI is Spanish) or learning Spanish (UI is English)
+                    const uiLangShort = (typeof selectedLang === "string" && selectedLang) ? selectedLang.split('-')[0] : 'en';
+                    
+                    if (uiLangShort === 'es') {
+                        // Spanish speaker learning English: select ENGLISH words
+                        console.log('DEBUG: Spanish speaker learning English - selecting English words');
+                        return await fetchWordObject('English');
+                    } else {
+                        // English speaker learning Spanish: select SPANISH words (continue with existing logic)
+                        console.log('DEBUG: English speaker learning Spanish - selecting Spanish words');
+                    }
+                    // Wait for Spanish dictionary to load if not ready
                     if (SPANISH_WORDLIST.size === 0) {
-                        console.log('Spanish wordlist not loaded yet, using fallback');
-                        // Use fallback words while wordlist loads
+                        console.log('Spanish dictionary not loaded yet, using fallback');
+                        // Use fallback words while dictionary loads
                         const fallback = FALLBACK_SPANISH_WORDS[Math.floor(Math.random() * FALLBACK_SPANISH_WORDS.length)];
                         return await finalizeWordObj({
                             word: fallback.word,
-                            definition: '',
+                            definition: fallback.definition || '',
                             pronunciation: '/No pronunciation available/',
                             englishEquivalent: fallback.english
                         }, 'Spanish');
                     }
 
-                    // Pick Spanish words directly from the loaded wordlist
+                    // Pick Spanish words directly from the comprehensive dictionary
                     const maxTries = 10;
                     let chosen = '';
                     let englishEquivalent = '';
@@ -970,23 +1012,30 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             const fallback = FALLBACK_SPANISH_WORDS[Math.floor(Math.random() * FALLBACK_SPANISH_WORDS.length)];
                             chosen = fallback.word;
                             englishEquivalent = fallback.english;
-                            definition = '';
+                            definition = fallback.definition || '';
                             pronunciation = '';
                             break;
                         }
 
-                        // Use the ACTUAL Spanish wordlist from GitHub (73,434 words!)
+                        // Use the comprehensive Spanish dictionary
                         if (spanishWordsArray.length > 0) {
                             chosen = spanishWordsArray[Math.floor(Math.random() * spanishWordsArray.length)];
-                            englishEquivalent = FREEDICT_SPANISH_ENGLISH[chosen.toLowerCase()] || '';
+                            const entry = SPANISH_DICTIONARY[chosen.toLowerCase()];
+                            
+                            if (entry && entry.english) {
+                                englishEquivalent = entry.english;
+                                definition = entry.definition || entry.spanish_definition || '';
+                                pronunciation = entry.pronunciation || '';
+                                break; // Found word with translation
+                            }
                             
                             // If no translation found, try a few more times to find a word with translation
                             if (!englishEquivalent && tryNum < maxTries - 1) {
                                 continue; // Try another word
                             }
                             
-                            definition = '';
-                            pronunciation = '';
+                            definition = entry ? entry.definition || entry.spanish_definition || '' : '';
+                            pronunciation = entry ? entry.pronunciation || '' : '';
                             break;
                         }
                     }
@@ -1009,10 +1058,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     }, 'Spanish');
                 }
 
-        // --- ENGLISH: Use loaded dictionary from GitHub ---
+        // --- ENGLISH: Use comprehensive dictionary with built-in translations ---
         if (language === 'English') {
             console.log(`DEBUG: ENGLISH_DICTIONARY keys length: ${Object.keys(ENGLISH_DICTIONARY).length}`);
             console.log(`DEBUG: ENGLISH_WORDLIST size: ${ENGLISH_WORDLIST.size}`);
+            
+            // Check if user is learning English (UI is Spanish) or learning Spanish (UI is English)
+            const uiLangShort = (typeof selectedLang === "string" && selectedLang) ? selectedLang.split('-')[0] : 'en';
             
             if (Object.keys(ENGLISH_DICTIONARY).length === 0) {
                 console.log('DEBUG: English dictionary not loaded yet, waiting...');
@@ -1026,7 +1078,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 // Use minimal fallback
                 const fallbackWords = ['house', 'water', 'sun', 'moon', 'tree', 'book', 'car', 'school'];
                 word = fallbackWords[Math.floor(Math.random() * fallbackWords.length)];
-                definition = `A common English word: ${word}`;
+                
+                if (uiLangShort === 'es') {
+                    // Spanish speaker learning English: show Spanish definition
+                    definition = `Una palabra común en inglés: ${word}`;
+                } else {
+                    definition = `A common English word: ${word}`;
+                }
                 pronunciation = `/${word}/`;
                 englishEquivalent = word;
             } else {
@@ -1039,19 +1097,27 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 const entry = ENGLISH_DICTIONARY[randomKey];
                 word = randomKey;
                 
-                // Handle different dictionary formats
-                if (typeof entry === 'string') {
-                    definition = entry;
-                    pronunciation = `/${word}/`;
-                } else if (entry && typeof entry === 'object') {
-                    definition = entry.definition || entry.meaning || '';
-                    pronunciation = entry.pronunciation || entry.phonetic || `/${word}/`;
+                // Use comprehensive dictionary structure
+                if (entry && typeof entry === 'object') {
+                    if (uiLangShort === 'es') {
+                        // Spanish speaker learning English: show Spanish definition
+                        definition = entry.spanish_definition || entry.definition || `Palabra en inglés: ${word}`;
+                    } else {
+                        // English speaker learning Spanish: show English definition  
+                        definition = entry.definition || entry.english_definition || `English word: ${word}`;
+                    }
+                    pronunciation = entry.pronunciation || `/${word}/`;
+                    // Use built-in Spanish translation instead of API
+                    englishEquivalent = entry.spanish || word;
                 } else {
-                    definition = `English word: ${word}`;
+                    if (uiLangShort === 'es') {
+                        definition = `Palabra en inglés: ${word}`;
+                    } else {
+                        definition = `English word: ${word}`;
+                    }
                     pronunciation = `/${word}/`;
+                    englishEquivalent = word;
                 }
-                
-                englishEquivalent = word;
             }
             return await finalizeWordObj({
                 word,
@@ -1199,15 +1265,42 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         return a === b;
     }
 
-    async function fetchPlayableWord(gameLangCode, canonicalName, maxTries = 5) {
+    // Validate that word has all required components from comprehensive dictionary
+    function validateWordObject(obj, gameLangCode) {
+        if (!obj) return false;
+        
+        const played = obj.word || '';
+        const eq = obj.englishEquivalent || '';
+        const definition = obj.definition || '';
+        
+        // Must have all three: word, translation, and definition
+        if (!played || !eq || !definition) {
+            console.log(`Word validation failed: missing components - word: "${played}", translation: "${eq}", definition: "${definition}"`);
+            return false;
+        }
+        
+        // Avoid trivial same-word translations (unless learning English)
+        if (isTriviallySameCrossLang(played, eq, gameLangCode)) {
+            console.log(`Word validation failed: trivial translation - "${played}" = "${eq}"`);
+            return false;
+        }
+        
+        // For comprehensive dictionary, if we have all components, it's valid
+        // No need to test translation APIs since translations are built-in
+        console.log(`Word validation passed: "${played}" -> "${eq}" with definition`);
+        return true;
+    }
+
+    async function fetchPlayableWord(gameLangCode, canonicalName, maxTries = 10) {
         let lastObj = null;
         for (let i = 0; i < maxTries; i++) {
             const obj = await fetchWordObject(canonicalName);
             if (!obj) continue;
             lastObj = obj;
-            const played = obj.word || '';
-            const eq = obj.englishEquivalent || '';
-            if (!isTriviallySameCrossLang(played, eq, gameLangCode)) {
+            
+            // Validate word has all required components from comprehensive dictionary
+            const isValid = validateWordObject(obj, gameLangCode);
+            if (isValid) {
                 obj.gameLangCode = gameLangCode;
                 obj.gameLangName = canonicalName;
                 return obj;
@@ -1582,10 +1675,8 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         window.flagEmojiSupported = detectFlagEmojiSupport();
         console.log('Flag emoji support detected:', window.flagEmojiSupported);
         
-        // Load dictionaries
-        loadEnglishDictionary();
-        loadFreeDictSpanishEnglish();
-        loadSpanishWordList();
+        // Load comprehensive dictionary with both English and Spanish
+        loadComprehensiveDictionary();
         
         // Popup language selection (first language box)
         const popup = document.getElementById('lang-select-popup');
@@ -1922,6 +2013,31 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 return equivalentWord || playedWord;
             }
 
+            // Try to get translation directly from comprehensive dictionary first
+            const getDirectTranslation = () => {
+                if (learningLangShort === 'en' && uiLangShort === 'es') {
+                    // English to Spanish: find Spanish word in dictionary
+                    const entry = ENGLISH_DICTIONARY[playedWord.toLowerCase()];
+                    if (entry && entry.spanish) {
+                        console.log(`Direct translation found: "${playedWord}" -> "${entry.spanish}"`);
+                        return entry.spanish;
+                    }
+                } else if (learningLangShort === 'es' && uiLangShort === 'en') {
+                    // Spanish to English: find English word in dictionary  
+                    const entry = SPANISH_DICTIONARY[playedWord.toLowerCase()];
+                    if (entry && entry.english) {
+                        console.log(`Direct translation found: "${playedWord}" -> "${entry.english}"`);
+                        return entry.english;
+                    }
+                }
+                return null;
+            };
+
+            const directTranslation = getDirectTranslation();
+            if (directTranslation) {
+                return directTranslation;
+            }
+
             // For non-English UI languages: ensure we have an English equivalent first
             let englishEq = equivalentWord && textLooksLikeLang(equivalentWord, 'en') ? equivalentWord : null;
             if (!englishEq) {
@@ -1946,35 +2062,26 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     const googleData = await googleRes.json();
                     if (googleData.data && googleData.data.translations && googleData.data.translations[0]) {
                         translated = googleData.data.translations[0].translatedText;
-                        console.log(`Google Translate successful: ${englishEq} → ${translated}`);
+                        console.log(`Google Translate successful: ${englishEq} -> ${translated}`);
                     }
                 } catch (e) {
                     console.error('Google Translate API error:', e);
                 }
             }
             
-            // Try LibreTranslate (free alternative)
-            if (!translated && window.LIBRETRANSLATE_URL) {
+            // Try Lingva Translate (free, no API key required)
+            if (!translated) {
                 try {
-                    console.log(`Trying LibreTranslate: "${englishEq}" from English to ${uiLangShort}`);
-                    const libreUrl = `${window.LIBRETRANSLATE_URL}/translate`;
-                    const libreRes = await fetch(libreUrl, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            q: englishEq,
-                            source: 'en',
-                            target: uiLangShort,
-                            format: 'text'
-                        }),
-                        headers: { 'Content-Type': 'application/json' }
-                    });
-                    const libreData = await libreRes.json();
-                    if (libreData.translatedText) {
-                        translated = libreData.translatedText;
-                        console.log(`LibreTranslate successful: ${englishEq} → ${translated}`);
+                    console.log(`Trying Lingva: "${englishEq}" from English to ${uiLangShort}`);
+                    const lingvaUrl = `https://lingva.ml/api/v1/en/${uiLangShort}/${encodeURIComponent(englishEq)}`;
+                    const lingvaRes = await fetch(lingvaUrl);
+                    const lingvaData = await lingvaRes.json();
+                    if (lingvaData && lingvaData.translation) {
+                        translated = lingvaData.translation;
+                        console.log(`Lingva successful: ${englishEq} -> ${translated}`);
                     }
                 } catch (e) {
-                    console.error('LibreTranslate API error:', e);
+                    console.error('Lingva API error:', e);
                 }
             }
             
