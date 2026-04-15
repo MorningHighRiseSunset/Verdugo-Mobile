@@ -1351,12 +1351,21 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             const button = document.createElement('button');
             button.innerText = letter;
             button.classList.add('letter-button');
+            button.setAttribute('data-letter', letter); // Add data attribute for easy selection
+            
+            // Check if letter is already guessed and disable if so
+            const normalizedLetter = normalizeLetter(letter);
+            if (guessedLetters.some(g => normalizeLetter(g) === normalizedLetter)) {
+                button.disabled = true;
+                button.style.backgroundColor = '#ccc';
+                button.style.color = '#666';
+                button.style.cursor = 'not-allowed';
+            }
+            
             button.onclick = () => {
-                handleGuess(letter);
-                button.classList.add('guessed');
-                setTimeout(() => {
-                    button.classList.remove('guessed');
-                }, 500);
+                if (!button.disabled) {
+                    handleGuess(letter);
+                }
             };
             letterContainer.appendChild(button);
         });
@@ -1375,6 +1384,21 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         }
     }
 
+    function updateKeyboardState() {
+        const letterButtons = document.querySelectorAll('.letter-button[data-letter]');
+        letterButtons.forEach(button => {
+            const letter = button.getAttribute('data-letter');
+            const normalizedLetter = normalizeLetter(letter);
+            
+            if (guessedLetters.some(g => normalizeLetter(g) === normalizedLetter)) {
+                button.disabled = true;
+                button.style.backgroundColor = '#ccc';
+                button.style.color = '#666';
+                button.style.cursor = 'not-allowed';
+            }
+        });
+    }
+
     function normalizeLetter(letter) {
         // Remove accents for comparison
         return letter.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
@@ -1385,20 +1409,36 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         const normalizedGuess = normalizeLetter(letter);
 
         // Check if already guessed (by normalized value)
-        if (!guessedLetters.some(l => normalizeLetter(l) === normalizedGuess)) {
-            // If any letter in selectedWord matches normalized guess, it's correct
-            if (selectedWord.split('').some(l => normalizeLetter(l) === normalizedGuess)) {
-                guessedLetters.push(letter); // Store the actual guessed letter
-            } else {
-                wrongGuesses++;
-                if (wrongGuesses === maxWrongGuesses) {
-                    animateHangman();
-                }
-            }
-            updateWordDisplay();
-            drawHangman();
-            checkGameStatus();
+        if (guessedLetters.some(l => normalizeLetter(l) === normalizedGuess)) {
+            // Show message for repeated letter
+            const currentUILang = uiLangShort || 'en';
+            const message = currentUILang === 'es' 
+                ? `Ya dijiste la letra ${letter}. Intenta con otra letra.`
+                : `You already said ${letter}. Try a different letter.`;
+            showTemporaryPopup(message, false);
+            return; // Exit early - no penalty
         }
+
+        // Add to guessed letters first to prevent duplicate processing
+        guessedLetters.push(letter);
+        
+        // Update keyboard to grey out used letters
+        updateKeyboardState();
+
+        // If any letter in selectedWord matches normalized guess, it's correct
+        if (selectedWord.split('').some(l => normalizeLetter(l) === normalizedGuess)) {
+            // Correct guess - no penalty
+        } else {
+            // Wrong guess - increment penalty
+            wrongGuesses++;
+            if (wrongGuesses === maxWrongGuesses) {
+                animateHangman();
+            }
+        }
+        
+        updateWordDisplay();
+        drawHangman();
+        checkGameStatus();
     }
 
     function logWordResult(word, definition, isCorrect) {
@@ -2614,7 +2654,10 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
         if (finalTranscript) {
             const guessedLetter = finalTranscript.toUpperCase();
+            console.log(`Voice recognition result: ${guessedLetter}`);
             handleGuess(guessedLetter);
+            // Clear result immediately for faster response
+            document.getElementById('result').innerHTML = '';
         }
 
         if (interimTranscript) {
@@ -2803,6 +2846,7 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
                             console.log(`iOS: Immediately submitting letter: ${mapped}`);
                             document.getElementById('result').innerHTML = mapped;
                             handleGuess(mapped);
+                            document.getElementById('result').innerHTML = '';
                             return; // Submit first letter and stop processing
                         }
                     }
@@ -2814,6 +2858,8 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
                         const guessedLetter = finalTranscript.toUpperCase();
                         console.log(`Non-iOS: Submitting final letter: ${guessedLetter}`);
                         handleGuess(guessedLetter);
+                        // Clear result immediately for faster response
+                        document.getElementById('result').innerHTML = '';
                     }
                 };
                 

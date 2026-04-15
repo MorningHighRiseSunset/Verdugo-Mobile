@@ -136,34 +136,33 @@ class PhoneticEngine {
         if (!transcript) return null;
         
         const normalized = transcript.toLowerCase().trim();
-        console.log(`Recognizing: "${normalized}"`);
         
-        // 1. Direct match first
+        // 1. Quick single character check (most common case)
+        if (normalized.length === 1 && /[a-zñáéíóúü]/i.test(normalized)) {
+            const result = normalized.toUpperCase();
+            console.log(`Quick single char: ${normalized} -> ${result}`);
+            return result;
+        }
+        
+        // 2. Direct match (fastest lookup)
         const directMatch = this.findDirectMatch(normalized);
         if (directMatch) {
             console.log(`Direct match: ${normalized} -> ${directMatch}`);
             return directMatch;
         }
         
-        // 2. Fuzzy phonetic matching
-        const fuzzyMatch = this.findFuzzyMatch(normalized);
-        if (fuzzyMatch) {
-            console.log(`Fuzzy match: ${normalized} -> ${fuzzyMatch}`);
-            return fuzzyMatch;
-        }
-        
-        // 3. Accent-aware matching
+        // 3. Accent-aware matching (regional variations)
         const accentMatch = this.findAccentMatch(normalized);
         if (accentMatch) {
             console.log(`Accent match: ${normalized} -> ${accentMatch}`);
             return accentMatch;
         }
         
-        // 4. Single character extraction
-        const charMatch = this.extractSingleCharacter(normalized);
-        if (charMatch) {
-            console.log(`Character match: ${normalized} -> ${charMatch}`);
-            return charMatch;
+        // 4. Fuzzy matching (slowest, use last)
+        const fuzzyMatch = this.findFuzzyMatch(normalized);
+        if (fuzzyMatch) {
+            console.log(`Fuzzy match: ${normalized} -> ${fuzzyMatch}`);
+            return fuzzyMatch;
         }
         
         console.log(`No match found for: "${normalized}"`);
