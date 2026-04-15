@@ -2594,37 +2594,24 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             let mapped = null;
             
             // Use advanced phonetic engine if available
+            console.log(`Debug: phoneticEngine=${!!phoneticEngine}, currentRecShort=${currentRecShort}, transcriptRaw="${transcriptRaw}"`);
             if (phoneticEngine && (currentRecShort === 'es' || currentRecShort === 'en')) {
                 mapped = phoneticEngine.recognizeLetter(transcriptRaw);
                 if (mapped) {
                     console.log(`Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
+                } else {
+                    console.log(`Advanced phonetic engine returned null for: ${transcriptRaw}`);
                 }
+            } else {
+                console.log(`Debug: Advanced phonetic engine not available or language not matched`);
             }
             
-            // Fallback to legacy maps if advanced engine fails
-            if (!mapped) {
-                // Try legacy English map first
-                if (legacyPhoneticMap[transcriptRaw]) {
-                    mapped = legacyPhoneticMap[transcriptRaw];
-                    console.log(`Legacy English map: ${transcriptRaw} -> ${mapped}`);
-                }
-                // Try legacy Spanish map
-                else if (legacySpanishMap[transcriptRaw]) {
-                    mapped = legacySpanishMap[transcriptRaw];
-                    console.log(`Legacy Spanish map: ${transcriptRaw} -> ${mapped}`);
-                }
-                // Handle single character input
-                else if (transcriptRaw.length === 1) {
-                    mapped = transcriptRaw.toUpperCase();
-                    console.log(`Single character: ${transcriptRaw} -> ${mapped}`);
-                }
-                // For Spanish recognition, be more forgiving with character extraction
-                else if (currentRecShort === 'es') {
-                    const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
-                    if (spanishCharMatch) {
-                        mapped = spanishCharMatch[0].toUpperCase();
-                        console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
-                    }
+            // For Spanish recognition, be more forgiving with character extraction
+            if (!mapped && currentRecShort === 'es') {
+                const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
+                if (spanishCharMatch) {
+                    mapped = spanishCharMatch[0].toUpperCase();
+                    console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
                 }
                 // For other non-English languages, try basic character extraction
                 else if (currentRecShort !== 'en') {
@@ -2794,49 +2781,11 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
                         let mapped = null;
                         
                         // Use advanced phonetic engine if available
+                        console.log(`iOS Debug: phoneticEngine=${!!phoneticEngine}, selectedLang=${selectedLang}, transcriptRaw="${transcriptRaw}"`);
                         if (phoneticEngine && (selectedLang === 'es-ES' || selectedLang === 'es' || selectedLang === 'en-US' || selectedLang === 'en')) {
                             mapped = phoneticEngine.recognizeLetter(transcriptRaw);
                             if (mapped) {
                                 console.log(`iOS Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
-                            }
-                        }
-                        
-                        // Fallback to legacy maps if advanced engine fails
-                        if (!mapped) {
-                            // Try legacy English map first
-                            if (legacyPhoneticMap[transcriptRaw]) {
-                                mapped = legacyPhoneticMap[transcriptRaw];
-                                console.log(`iOS Legacy English map: ${transcriptRaw} -> ${mapped}`);
-                            }
-                            // Try legacy Spanish map
-                            else if (legacySpanishMap[transcriptRaw]) {
-                                mapped = legacySpanishMap[transcriptRaw];
-                                console.log(`iOS Legacy Spanish map: ${transcriptRaw} -> ${mapped}`);
-                            }
-                            // Handle single character input
-                            else if (transcriptRaw.length === 1) {
-                                mapped = transcriptRaw.toUpperCase();
-                                console.log(`iOS Single character: ${transcriptRaw} -> ${mapped}`);
-                            }
-                            // For Spanish recognition, be more forgiving with character extraction
-                            else if (selectedLang === 'es-ES' || selectedLang === 'es') {
-                                const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
-                                if (spanishCharMatch) {
-                                    mapped = spanishCharMatch[0].toUpperCase();
-                                    console.log(`iOS Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
-                                }
-                            }
-                        }
-                        
-                        if (!mapped) {
-                            console.log(`iOS No mapping found for: "${transcriptRaw}"`);
-                            continue;
-                        }
-                        
-                        if (event.results[i].isFinal) {
-                            finalTranscript += mapped;
-                            console.log(`Final transcript: ${finalTranscript}`);
-                        } else {
                             interimTranscript += mapped;
                             console.log(`Interim transcript: ${interimTranscript}`);
                         }
