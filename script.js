@@ -2786,8 +2786,9 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
                             mapped = phoneticEngine.recognizeLetter(transcriptRaw);
                             if (mapped) {
                                 console.log(`iOS Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
-                            interimTranscript += mapped;
-                            console.log(`Interim transcript: ${interimTranscript}`);
+                                interimTranscript += mapped;
+                                console.log(`Interim transcript: ${interimTranscript}`);
+                            }
                         }
                         
                         // iOS FIX: Submit letters immediately for iOS since it may not mark as final
