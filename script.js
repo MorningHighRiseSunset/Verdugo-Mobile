@@ -325,7 +325,7 @@ const LANGUAGES = [{
 function getTranslatorUrl(langCode) {
     const translators = {
         "en-US": "https://english-ai-helper.netlify.app/",
-        "es-ES": "https://spanish-ai-translator.netlify.app/",
+        "es-ES": "https://spanish-flag-translation.vercel.app/",
         "zh-CN": "https://mandarin-ai-translator.netlify.app/",
         "hi-IN": "https://hindi-ai-translator.netlify.app/",
         "fr-FR": "https://french-ai-translator.netlify.app/"
