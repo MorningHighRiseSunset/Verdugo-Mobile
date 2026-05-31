@@ -26,7 +26,7 @@
     </div>
 
     <div id="hint-box" class="hint-box"></div>
-`
+
     <div class="game-container">
         <div class="game-layout">
             <!-- Left side with controls -->
@@ -37,7 +37,14 @@
                     <button id="instructions-button">Instructions</button>
                 </div>
                 <p id="status"></p>
-                <p id="result"></p>
+                <p id="result" aria-live="polite"></p>
+                <div id="ios-speech-container" class="ios-speech-fallback" style="display:none;">
+                    <label for="ios-letter-input" id="ios-letter-label">Type a letter if voice fails:</label>
+                    <div class="ios-speech-row">
+                        <input type="text" id="ios-letter-input" maxlength="8" autocomplete="off" autocapitalize="characters" inputmode="text" />
+                        <button type="button" id="ios-letter-submit">Submit</button>
+                    </div>
+                </div>
                 <div class="button-row">
                     <div id="language-box" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;">
                         <button class="lang-btn" data-value="en-US"></button><button class="lang-btn" data-value="es-ES"></button><button class="lang-btn" data-value="zh-CN"></button><button class="lang-btn" data-value="hi-IN"></button><button class="lang-btn" data-value="fr-FR"></button>
@@ -83,8 +90,7 @@
         </div>
     </div>
 
-    <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/2.6.1/annyang.min.js"></script>
-    <!-- English dictionary is optional; if you have a local `EnglishDictionary.js` add it here. -->
+    <script src="phonetic-engine.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

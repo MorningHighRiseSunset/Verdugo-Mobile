@@ -613,6 +613,48 @@ button:active, button:focus {
     flex-wrap: wrap;
 }
 
+#result {
+    min-height: 1.4em;
+    font-size: 1rem;
+    line-height: 1.4;
+    max-width: 100%;
+}
+
+.voice-heard { color: #1565c0; }
+.voice-ok { color: #2e7d32; font-weight: 600; }
+.voice-warn { color: #c62828; }
+.voice-status { color: #2e7d32; font-weight: 600; }
+
+.ios-speech-fallback {
+    margin-top: 8px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f8f8f8;
+    width: 100%;
+    max-width: 320px;
+    box-sizing: border-box;
+}
+
+.ios-speech-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+#ios-letter-input {
+    flex: 1;
+    font-size: 1.1rem;
+    padding: 8px;
+    min-width: 0;
+}
+
+#ios-letter-submit {
+    padding: 8px 12px;
+    font-size: 1rem;
+    white-space: nowrap;
+}
+
 .center-game {
     display: flex;
     flex-direction: column;

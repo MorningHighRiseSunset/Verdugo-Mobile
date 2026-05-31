@@ -1,8 +1,7 @@
-// Netlify Function: translate
-// Expects query param `q` (text) and optional `target` (language code, default 'es')
-// Uses environment variable GOOGLE_API_KEY (set via Netlify UI or `netlify env:set`).
+// Vercel Serverless Function: /api/translate
+// Query: q (text), target (language code, default 'es')
+// Uses GOOGLE_API_KEY from Vercel project environment variables.
 
-// Extract first available definition and phonetic from a DictionaryAPI entry.
 function extractFirstDefinition(entry) {
   if (!entry || typeof entry !== 'object') return { definition: '', phonetic: '' };
   let definition = '';
@@ -30,7 +29,6 @@ function extractFirstDefinition(entry) {
   return { definition, phonetic: phonetic || '' };
 }
 
-// Fetch first sentence from Wiktionary (language subdomain).
 async function fetchWiktionary(word, langShort) {
   if (!word || !langShort) return null;
   try {
@@ -56,29 +54,35 @@ async function fetchWiktionary(word, langShort) {
   }
 }
 
-exports.handler = async function(event, context) {
-  const params = event.queryStringParameters || {};
-  const q = params.q;
-  const target = params.target || 'es';
-  if (!q) return { statusCode: 400, body: JSON.stringify({ error: 'q required' }) };
+module.exports = async function handler(req, res) {
+  if (req.method !== 'GET') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  const q = req.query.q;
+  const target = req.query.target || 'es';
+  if (!q) {
+    return res.status(400).json({ error: 'q required' });
+  }
 
   const key = process.env.GOOGLE_API_KEY;
-  if (!key) return { statusCode: 500, body: JSON.stringify({ error: 'GOOGLE_API_KEY not set on server' }) };
+  if (!key) {
+    return res.status(500).json({ error: 'GOOGLE_API_KEY not set on server' });
+  }
 
   const targetLang = (target === 'zh-CN' || target === 'zh') ? 'zh' : String(target).split('-')[0] || target;
 
   let translated = '';
   try {
     const url = `https://translation.googleapis.com/language/translate/v2?key=${encodeURIComponent(key)}&q=${encodeURIComponent(q)}&target=${encodeURIComponent(target)}&format=text`;
-    const res = await fetch(url);
-    const data = await res.json();
+    const apiRes = await fetch(url);
+    const data = await apiRes.json();
     translated = data?.data?.translations?.[0]?.translatedText || '';
   } catch (e) {
     translated = '';
   }
   const wordForDef = (translated || q).trim();
 
-  // Try to fetch a definition in the target language (only when API returns 200)
   let definition = '';
   let pronunciation = '';
   try {
@@ -95,13 +99,11 @@ exports.handler = async function(event, context) {
     // ignore
   }
 
-  // Fallback: Wiktionary in target language
   if (!definition) {
     const wikDef = await fetchWiktionary(wordForDef, targetLang);
     if (wikDef) definition = wikDef;
   }
 
-  // Fallback: English definition for source word, then translate into target
   if (!definition) {
     try {
       const dictResEn = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(String(q).trim())}`);
@@ -133,15 +135,10 @@ exports.handler = async function(event, context) {
     }
   }
 
-  const body = {
+  return res.status(200).json({
     translated: translated || q,
     definition: definition || `No definition found for "${translated || q}".`,
     pronunciation: pronunciation || '/No pronunciation available/',
     englishEquivalent: q
-  };
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify(body)
-  };
+  });
 };

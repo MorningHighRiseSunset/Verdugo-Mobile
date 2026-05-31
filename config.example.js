@@ -1,19 +1,19 @@
-// Netlify deployment instructions
+// Vercel deployment instructions
 // -----------------------------------------------------
-// Recommended (secure): Use Netlify environment variables and the included
-// Netlify Function `/.netlify/functions/translate` which uses `GOOGLE_API_KEY`.
-// 
-// Set the environment variable with the Netlify CLI (in your project folder):
+// Recommended (secure): Use Vercel environment variables and the included
+// serverless function `/api/translate` which uses `GOOGLE_API_KEY`.
 //
-//   netlify login
-//   netlify link   # if not already linked to a site
-//   netlify env:set GOOGLE_API_KEY "YOUR_REAL_KEY_HERE"
+// Set the environment variable in the Vercel dashboard:
+//   Project -> Settings -> Environment Variables
+//   Name:  GOOGLE_API_KEY
+//   Value: your Google Cloud Translation API key
 //
-// Or set `GOOGLE_API_KEY` in the Netlify UI: Site settings -> Build & deploy -> Environment
-// variables.
-// After deploying, the client will call the serverless function at
-// `/.netlify/functions/translate?q=word&target=es` and the function will use the
-// server-side `GOOGLE_API_KEY` without exposing it to users.
+// Apply to Production (and Preview/Development if you use those).
+// Redeploy after adding or changing the variable.
+//
+// After deploying, the client calls:
+//   `/api/translate?q=word&target=es`
+// and the function uses the server-side key without exposing it to users.
 
 // Quick insecure option (for local testing only): create `config.js` (DO NOT commit)
 // with this line and include it in `index.html` before `script.js`:

@@ -2,6 +2,8 @@ let selectedLang = null; // No language selected by default
 let pendingGameLang = null;
 let SPANISH_DICTIONARY = window.SPANISH_DICTIONARY || {};
 
+const TRANSLATE_API = '/api/translate';
+
 // Helper: detect likely English definition text (simple heuristic)
 function isProbablyEnglishText(text) {
     if (!text || typeof text !== 'string') return false;
@@ -223,7 +225,7 @@ async function finalizeWordObj(obj, langName) {
         if (!isProbablyEnglishText(def)) return obj;
         // call serverless proxy to translate the definition text into target
         try {
-            const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(def)}&target=${encodeURIComponent(target)}`;
+            const proxyUrlDef = `${TRANSLATE_API}?q=${encodeURIComponent(def)}&target=${encodeURIComponent(target)}`;
             const presDef = await fetch(proxyUrlDef);
             if (presDef.ok) {
                 const pdataDef = await presDef.json();
@@ -652,6 +654,148 @@ const legacySpanishMap = {
     'ye': 'Y', 'zeta': 'Z'
 };
 
+let voiceFeedbackTimer = null;
+let iosUserWantsListen = false;
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function isSpanishUI() {
+    return selectedLang === 'es-ES' || selectedLang === 'es';
+}
+
+function mapTranscriptToLetter(transcriptRaw, langCode) {
+    if (!transcriptRaw) return null;
+    const normalized = transcriptRaw.trim().toLowerCase();
+    const langShort = (langCode || 'en-US').split('-')[0];
+
+    let mapped = null;
+
+    if (phoneticEngine && (langShort === 'es' || langShort === 'en')) {
+        mapped = phoneticEngine.recognizeLetter(normalized);
+    }
+    if (!mapped) {
+        mapped = legacySpanishMap[normalized] || legacyPhoneticMap[normalized] || null;
+    }
+    if (!mapped && langShort === 'es') {
+        const spanishCharMatch = normalized.match(/[a-záéíóúñü]/i);
+        if (spanishCharMatch) {
+            mapped = spanishCharMatch[0].toUpperCase();
+        }
+    }
+    if (!mapped && langShort !== 'en') {
+        const firstChar = normalized[0];
+        if (firstChar && /[a-záéíóúñü]/i.test(firstChar)) {
+            mapped = firstChar.toUpperCase();
+        }
+    }
+    if (!mapped && normalized.length === 1 && /[a-zñáéíóúü]/i.test(normalized)) {
+        mapped = normalized.toUpperCase();
+    }
+
+    return mapped;
+}
+
+function showVoiceFeedback(type, data = {}) {
+    const resultEl = document.getElementById('result');
+    const statusEl = document.getElementById('status');
+    if (!resultEl) return;
+
+    const es = isSpanishUI();
+    let html = '';
+    let statusText = '';
+
+    switch (type) {
+        case 'heard':
+            html = es
+                ? `<span class="voice-heard">🎤 Escuché: “${escapeHtml(data.heard)}”</span>`
+                : `<span class="voice-heard">🎤 Heard: “${escapeHtml(data.heard)}”</span>`;
+            break;
+        case 'hearing':
+            statusText = es ? 'Te escucho…' : 'Hearing you…';
+            break;
+        case 'correct':
+            html = es
+                ? `<span class="voice-ok">✓ Letra <strong>${escapeHtml(data.letter)}</strong> — ¡en la palabra!</span>`
+                : `<span class="voice-ok">✓ Letter <strong>${escapeHtml(data.letter)}</strong> — in the word!</span>`;
+            break;
+        case 'wrong':
+            html = es
+                ? `<span class="voice-warn">Letra <strong>${escapeHtml(data.letter)}</strong> — no está en la palabra</span>`
+                : `<span class="voice-warn">Letter <strong>${escapeHtml(data.letter)}</strong> — not in the word</span>`;
+            break;
+        case 'noMatch':
+            html = es
+                ? `<span class="voice-warn">🎤 “${escapeHtml(data.heard)}” — no es una letra. Di “a”, “be”, “ce”… o toca una letra abajo.</span>`
+                : `<span class="voice-warn">🎤 “${escapeHtml(data.heard)}” — not a letter. Say “a”, “b”, “c”… or tap a letter below.</span>`;
+            break;
+        case 'listening':
+            statusText = es ? 'Escuchando… ¡di una letra!' : 'Listening… say a letter!';
+            break;
+        case 'stopped':
+            statusText = es
+                ? 'Micrófono pausado. Toca “Start Speaking” o escribe abajo.'
+                : 'Mic paused. Tap “Start Speaking” or type a letter below.';
+            break;
+        case 'reconnecting':
+            statusText = es ? 'Sigo escuchando…' : 'Still listening…';
+            break;
+        default:
+            break;
+    }
+
+    if (html) {
+        resultEl.innerHTML = html;
+        clearTimeout(voiceFeedbackTimer);
+        const duration = type === 'noMatch' ? 4500 : 2800;
+        voiceFeedbackTimer = setTimeout(() => {
+            if (resultEl.innerHTML === html) {
+                resultEl.innerHTML = '';
+            }
+        }, duration);
+    }
+    if (statusText && statusEl) {
+        statusEl.innerHTML = `<span class="voice-status">${statusText}</span>`;
+    }
+}
+
+function initIOSSpeechFallback() {
+    const container = document.getElementById('ios-speech-container');
+    const input = document.getElementById('ios-letter-input');
+    const submit = document.getElementById('ios-letter-submit');
+    const label = document.getElementById('ios-letter-label');
+    if (!container || !input || !submit) return;
+
+    const es = isSpanishUI();
+    if (label) {
+        label.textContent = es
+            ? 'Si la voz falla, escribe una letra:'
+            : 'If voice fails, type a letter:';
+    }
+    submit.textContent = es ? 'Enviar' : 'Submit';
+
+    const doSubmit = () => {
+        const val = input.value.trim();
+        if (!val) return;
+        if (typeof window.submitIosLetterFallback === 'function') {
+            window.submitIosLetterFallback(val);
+        } else {
+            showVoiceFeedback('noMatch', { heard: val });
+        }
+        input.value = '';
+    };
+
+    submit.onclick = doSubmit;
+    input.onkeydown = (e) => {
+        if (e.key === 'Enter') doSubmit();
+    };
+}
+
 // Load FreeDict Spanish-English dictionary (large vocabulary)
 let FREEDICT_SPANISH_ENGLISH = {};
 let SPANISH_WORDLIST = new Set(); // For word validation
@@ -859,8 +1003,8 @@ function checkMobileSupport() {
         const iosContainer = document.getElementById('ios-speech-container');
         if (iosContainer) {
             iosContainer.style.display = 'block';
-            initIOSSpeechFallback();
         }
+        initIOSSpeechFallback();
         
         // Try iOS-specific recognition first
         const iosRecognition = initIOSSpeechRecognition();
@@ -1404,6 +1548,52 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         return letter.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
     }
 
+    function flashLetterButton(letter) {
+        const normalized = normalizeLetter(letter);
+        document.querySelectorAll('.letter-button[data-letter]').forEach((button) => {
+            if (normalizeLetter(button.getAttribute('data-letter')) === normalized) {
+                button.style.backgroundColor = '#90ee90';
+                button.style.transition = 'background-color 0.3s';
+                setTimeout(() => {
+                    button.style.backgroundColor = '';
+                }, 600);
+            }
+        });
+    }
+
+    function processVoiceInput(transcriptRaw) {
+        const heard = transcriptRaw.trim();
+        if (!heard) return false;
+
+        const langCode = pendingGameLang || selectedLang || (typeof recognition !== 'undefined' ? recognition.lang : 'en-US');
+        showVoiceFeedback('heard', { heard });
+
+        const letter = mapTranscriptToLetter(heard, langCode);
+        if (!letter) {
+            showVoiceFeedback('noMatch', { heard });
+            return false;
+        }
+
+        const normalizedGuess = normalizeLetter(letter);
+        if (guessedLetters.some((l) => normalizeLetter(l) === normalizedGuess)) {
+            const es = isSpanishUI();
+            const message = es
+                ? `Ya usaste la letra ${letter}.`
+                : `You already used ${letter}.`;
+            showVoiceFeedback('wrong', { letter, heard });
+            showTemporaryPopup(message, false);
+            return false;
+        }
+
+        const isCorrect = selectedWord.split('').some((l) => normalizeLetter(l) === normalizedGuess);
+        handleGuess(letter);
+        flashLetterButton(letter);
+        showVoiceFeedback(isCorrect ? 'correct' : 'wrong', { letter, heard });
+        return true;
+    }
+
+    window.submitIosLetterFallback = processVoiceInput;
+
     function handleGuess(letter) {
         // Normalize guessed letter for comparison
         const normalizedGuess = normalizeLetter(letter);
@@ -1760,8 +1950,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             btn.onclick = function() {
                 console.log(`DEBUG: Language button clicked - pendingGameLang=${btn.getAttribute('data-value')}`);
                 pendingGameLang = btn.getAttribute('data-value');
-                // Do NOT set selectedLang here!
-                
+                if (typeof recognition !== 'undefined') recognition.lang = pendingGameLang;
+                if (isIOS) initIOSSpeechFallback();
+
                 // Immediately start game with selected language
                 const langObj = LANGUAGES.find(l => l.code === pendingGameLang);
                 if (langObj && typeof fetchWordObject === "function") {
@@ -2158,7 +2349,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             // Otherwise, translate the English definition into the UI language
             // Prefer: server-side proxy translating the English definition text itself
             try {
-                const proxyUrlDef = `/.netlify/functions/translate?q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}`;
+                const proxyUrlDef = `${TRANSLATE_API}?q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}`;
                 const presDef = await fetch(proxyUrlDef);
                 if (presDef.ok) {
                     const pdataDef = await presDef.json();
@@ -2328,9 +2519,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     return;
                 }
 
-                // Try server-side translation via Netlify function first
+                // Try server-side translation via Vercel API first
                 try {
-                    const proxyUrl = `/.netlify/functions/translate?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(defLang)}`;
+                    const proxyUrl = `${TRANSLATE_API}?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(defLang)}`;
                     const pres = await fetch(proxyUrl);
                     if (pres.ok) {
                         const pdata = await pres.json();
@@ -2574,80 +2765,55 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
     recognition.onstart = function() {
         console.log('Speech recognition started');
-        document.getElementById('status').innerText = 'Listening...';
+        showVoiceFeedback('listening');
         document.getElementById('start-btn').disabled = true;
         document.getElementById('stop-btn').disabled = false;
     };
+
+    if (recognition.onspeechstart !== undefined) {
+        recognition.onspeechstart = function() {
+            showVoiceFeedback('hearing');
+        };
+    }
 
     recognition.onresult = function(event) {
         let interimTranscript = '';
         let finalTranscript = '';
 
-        const currentRecLang = (typeof recognition !== 'undefined' && recognition.lang) ? recognition.lang : 'en-US';
-        const currentRecShort = currentRecLang.split('-')[0];
-        console.log(`Recognition language: ${currentRecLang}, short: ${currentRecShort}`);
+        const currentRecLang = pendingGameLang || (typeof recognition !== 'undefined' && recognition.lang) || 'en-US';
+        console.log(`Recognition language: ${currentRecLang}`);
 
         for (let i = event.resultIndex; i < event.results.length; ++i) {
-            let transcriptRaw = event.results[i][0].transcript.trim().toLowerCase();
-            console.log(`Recognized: "${transcriptRaw}" (confidence: ${event.results[i][0].confidence})`);
+            const transcriptRaw = event.results[i][0].transcript.trim();
+            console.log(`Recognized: "${transcriptRaw}" (confidence: ${event.results[i][0].confidence}, isFinal: ${event.results[i].isFinal})`);
 
-            let mapped = null;
-            
-            // Use advanced phonetic engine if available
-            console.log(`Debug: phoneticEngine=${!!phoneticEngine}, currentRecShort=${currentRecShort}, transcriptRaw="${transcriptRaw}"`);
-            if (phoneticEngine && (currentRecShort === 'es' || currentRecShort === 'en')) {
-                mapped = phoneticEngine.recognizeLetter(transcriptRaw);
-                if (mapped) {
-                    console.log(`Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
-                } else {
-                    console.log(`Advanced phonetic engine returned null for: ${transcriptRaw}`);
-                }
-            } else {
-                console.log(`Debug: Advanced phonetic engine not available or language not matched`);
-            }
-            
-            // For Spanish recognition, be more forgiving with character extraction
-            if (!mapped && currentRecShort === 'es') {
-                const spanishCharMatch = transcriptRaw.match(/[a-záéíóúñü]/i);
-                if (spanishCharMatch) {
-                    mapped = spanishCharMatch[0].toUpperCase();
-                    console.log(`Extracted Spanish character: ${transcriptRaw} -> ${mapped}`);
-                }
-                // For other non-English languages, try basic character extraction
-                else if (currentRecShort !== 'en') {
-                    const firstChar = transcriptRaw[0];
-                    if (firstChar && /[a-záéíóúñü]/i.test(firstChar)) {
-                        mapped = firstChar.toUpperCase();
-                        console.log(`Extracted first character: ${transcriptRaw} -> ${mapped}`);
-                    }
-                }
+            if (isIOS) {
+                processVoiceInput(transcriptRaw);
+                return;
             }
 
+            const mapped = mapTranscriptToLetter(transcriptRaw, currentRecLang);
             if (!mapped) {
-                console.log(`No mapping found for: "${transcriptRaw}"`);
+                if (event.results[i].isFinal) {
+                    showVoiceFeedback('noMatch', { heard: transcriptRaw });
+                }
                 continue;
             }
 
             if (event.results[i].isFinal) {
                 finalTranscript += mapped;
-                console.log(`Final transcript: ${finalTranscript}`);
             } else {
                 interimTranscript += mapped;
-                console.log(`Interim transcript: ${interimTranscript}`);
             }
         }
 
-        document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
-
-        if (finalTranscript) {
-            const guessedLetter = finalTranscript.toUpperCase();
-            console.log(`Voice recognition result: ${guessedLetter}`);
-            handleGuess(guessedLetter);
-            // Clear result immediately for faster response
-            document.getElementById('result').innerHTML = '';
+        if (!isIOS) {
+            document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
         }
 
-        if (interimTranscript) {
+        if (finalTranscript) {
+            processVoiceInput(finalTranscript);
+        } else if (interimTranscript) {
             suggestLetter(interimTranscript);
         }
     };
@@ -2726,7 +2892,22 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
     recognition.onend = function() {
         console.log('Speech recognition ended');
-        document.getElementById('status').innerText = '';
+        if (isIOS && iosUserWantsListen) {
+            showVoiceFeedback('reconnecting');
+            setTimeout(() => {
+                if (!iosUserWantsListen || !iosRecognition) return;
+                try {
+                    iosRecognition.start();
+                } catch (e) {
+                    console.warn('iOS recognition restart failed:', e);
+                    showVoiceFeedback('stopped');
+                    document.getElementById('start-btn').disabled = false;
+                    document.getElementById('stop-btn').disabled = true;
+                }
+            }, 400);
+            return;
+        }
+        showVoiceFeedback('stopped');
         document.getElementById('start-btn').disabled = false;
         document.getElementById('stop-btn').disabled = true;
     };
@@ -2739,103 +2920,101 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
         
         // iOS-specific handling
         if (isIOS) {
-            // Get language-appropriate messages
             const getIosMessage = (key) => {
+                const es = isSpanishUI();
                 const messages = {
-                    'starting': selectedLang === 'es-ES' || selectedLang === 'es' ? 
-                        'Iniciando reconocimiento de voz en iOS...' : 'iOS speech recognition starting...',
-                    'listening': selectedLang === 'es-ES' || selectedLang === 'es' ? 
-                        'iOS escuchando... ¡Di letras!' : 'iOS listening... Speak letters!',
-                    'not_supported': selectedLang === 'es-ES' || selectedLang === 'es' ? 
-                        'Voz de iOS no compatible. Usa Chrome o escribe letras.' : 'iOS speech not supported. Use keyboard below.',
-                    'failed': selectedLang === 'es-ES' || selectedLang === 'es' ? 
-                        'Reconocimiento de voz iOS falló. Intenta escribir letras.' : 'iOS speech recognition failed. Try typing letters.'
+                    starting: es ? 'Iniciando reconocimiento de voz…' : 'Starting speech recognition…',
+                    not_supported: es
+                        ? 'Voz no compatible en este iPhone. Usa el cuadro de letra abajo.'
+                        : 'Voice not supported on this iPhone. Use the letter box below.',
+                    failed: es
+                        ? 'No se pudo iniciar la voz. Escribe una letra abajo.'
+                        : 'Could not start voice. Type a letter below.'
                 };
                 return messages[key];
             };
-            
+
+            const iosContainer = document.getElementById('ios-speech-container');
+            if (iosContainer) iosContainer.style.display = 'block';
+            initIOSSpeechFallback();
+
             statusEl.innerHTML = `<span style="color: blue;">${getIosMessage('starting')}</span>`;
-            
-            // Try iOS speech recognition
+            iosUserWantsListen = true;
+
             const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (SpeechRecognitionClass) {
-                iosRecognition = new SpeechRecognitionClass(); // Use global variable
+                iosRecognition = new SpeechRecognitionClass();
                 iosRecognition.continuous = true;
                 iosRecognition.interimResults = true;
-                iosRecognition.lang = selectedLang || 'en-US';
-                
+                iosRecognition.lang = pendingGameLang || selectedLang || 'en-US';
+
                 iosRecognition.onstart = function() {
-                    statusEl.innerHTML = `<span style="color: green;">${getIosMessage('listening')}</span>`;
+                    showVoiceFeedback('listening');
                     document.getElementById('start-btn').disabled = true;
                     document.getElementById('stop-btn').disabled = false;
                 };
-                
+
+                if (iosRecognition.onspeechstart !== undefined) {
+                    iosRecognition.onspeechstart = function() {
+                        showVoiceFeedback('hearing');
+                    };
+                }
+
                 iosRecognition.onresult = function(event) {
-                    let interimTranscript = '';
-                    let finalTranscript = '';
-                    
                     for (let i = event.resultIndex; i < event.results.length; ++i) {
-                        let transcriptRaw = event.results[i][0].transcript.trim().toLowerCase();
-                        console.log(`iOS Recognized: "${transcriptRaw}" (confidence: ${event.results[i][0].confidence}, isFinal: ${event.results[i].isFinal})`);
-                        
-                        let mapped = null;
-                        
-                        // Use advanced phonetic engine if available
-                        console.log(`iOS Debug: phoneticEngine=${!!phoneticEngine}, selectedLang=${selectedLang}, transcriptRaw="${transcriptRaw}"`);
-                        if (phoneticEngine && (selectedLang === 'es-ES' || selectedLang === 'es' || selectedLang === 'en-US' || selectedLang === 'en')) {
-                            mapped = phoneticEngine.recognizeLetter(transcriptRaw);
-                            if (mapped) {
-                                console.log(`iOS Advanced phonetic recognition: ${transcriptRaw} -> ${mapped}`);
-                                interimTranscript += mapped;
-                                console.log(`Interim transcript: ${interimTranscript}`);
-                            }
-                        }
-                        
-                        // iOS FIX: Submit letters immediately for iOS since it may not mark as final
-                        if (isIOS && mapped) {
-                            console.log(`iOS: Immediately submitting letter: ${mapped}`);
-                            document.getElementById('result').innerHTML = mapped;
-                            handleGuess(mapped);
-                            document.getElementById('result').innerHTML = '';
-                            return; // Submit first letter and stop processing
-                        }
-                    }
-                    
-                    document.getElementById('result').innerHTML = finalTranscript + '<i style="color:#999;">' + interimTranscript + '</i>';
-                    
-                    // Non-iOS: Only submit final results
-                    if (!isIOS && finalTranscript) {
-                        const guessedLetter = finalTranscript.toUpperCase();
-                        console.log(`Non-iOS: Submitting final letter: ${guessedLetter}`);
-                        handleGuess(guessedLetter);
-                        // Clear result immediately for faster response
-                        document.getElementById('result').innerHTML = '';
+                        const transcriptRaw = event.results[i][0].transcript.trim();
+                        if (!transcriptRaw) continue;
+                        console.log(`iOS Recognized: "${transcriptRaw}" (isFinal: ${event.results[i].isFinal})`);
+                        processVoiceInput(transcriptRaw);
+                        return;
                     }
                 };
-                
+
                 iosRecognition.onerror = function(event) {
                     console.error('iOS speech recognition error:', event);
+                    if (event.error === 'no-speech') {
+                        showVoiceFeedback('listening');
+                        return;
+                    }
+                    if (event.error === 'aborted') return;
                     const errorMsg = getMobileFriendlyError(event.error);
                     statusEl.innerHTML = `<span style="color: red;">${errorMsg}</span>`;
+                    iosUserWantsListen = false;
                     document.getElementById('start-btn').disabled = false;
                     document.getElementById('stop-btn').disabled = true;
                 };
-                
+
                 iosRecognition.onend = function() {
                     console.log('iOS speech recognition ended');
-                    statusEl.innerHTML = '';
-                    document.getElementById('start-btn').disabled = false;
-                    document.getElementById('stop-btn').disabled = true;
+                    if (iosUserWantsListen) {
+                        showVoiceFeedback('reconnecting');
+                        setTimeout(() => {
+                            if (!iosUserWantsListen) return;
+                            try {
+                                iosRecognition.start();
+                            } catch (e) {
+                                console.warn('iOS recognition restart failed:', e);
+                                showVoiceFeedback('stopped');
+                                document.getElementById('start-btn').disabled = false;
+                                document.getElementById('stop-btn').disabled = true;
+                            }
+                        }, 400);
+                    } else {
+                        showVoiceFeedback('stopped');
+                        document.getElementById('start-btn').disabled = false;
+                        document.getElementById('stop-btn').disabled = true;
+                    }
                 };
-                
-                // Start iOS recognition
+
                 try {
                     iosRecognition.start();
                 } catch (error) {
                     console.error('Failed to start iOS recognition:', error);
+                    iosUserWantsListen = false;
                     statusEl.innerHTML = `<span style="color: red;">${getIosMessage('failed')}</span>`;
                 }
             } else {
+                iosUserWantsListen = false;
                 statusEl.innerHTML = `<span style="color: red;">${getIosMessage('not_supported')}</span>`;
             }
             return;
@@ -2904,6 +3083,8 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
     };
 
     document.getElementById('stop-btn').onclick = function() {
+        iosUserWantsListen = false;
+
         // Stop iOS recognition if it's active
         if (iosRecognition && isIOS) {
             try {
@@ -2928,20 +3109,7 @@ let iosRecognition = null; // Make iOS recognition accessible to stop button
             audioStream = null;
         }
         
-        // Reset UI
-        const statusEl = document.getElementById('status');
-        if (statusEl) {
-            const message = selectedLang === 'es-ES' || selectedLang === 'es' ? 
-                'Reconocimiento de voz detenido.' : 'Speech recognition stopped.';
-            statusEl.innerHTML = `<span style="color: orange;">${message}</span>`;
-            
-            // Clear message after 2 seconds
-            setTimeout(() => {
-                if (statusEl.innerHTML.includes(message)) {
-                    statusEl.innerHTML = '';
-                }
-            }, 2000);
-        }
+        showVoiceFeedback('stopped');
         
         document.getElementById('start-btn').disabled = false;
         document.getElementById('stop-btn').disabled = true;
@@ -3054,8 +3222,3 @@ body {
 }
 `;
 document.head.appendChild(style);
-
-// Load the new phonetic engine
-const phoneticScript = document.createElement('script');
-phoneticScript.src = 'phonetic-engine.js';
-document.head.appendChild(phoneticScript);

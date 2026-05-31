@@ -1,2 +1,5 @@
-# Local Netlify folder
+# Local Vercel folder
+.vercel
+
+# Local Netlify folder (legacy)
 .netlify
