@@ -3,3 +3,7 @@
 
 # Local Netlify folder (legacy)
 .netlify
+
+# Environment variables
+.env
+.env.local
