@@ -554,20 +554,3 @@ class PhoneticEngine {
         return 0.3;
     }
 }
-
-// Global instance
-let phoneticEngine = null;
-
-// Initialize phonetic engine
-async function initializePhoneticEngine() {
-    if (!phoneticEngine) {
-        phoneticEngine = new PhoneticEngine();
-        await phoneticEngine.initialize();
-    }
-    return phoneticEngine;
-}
-
-// Export for use in main script
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { PhoneticEngine, initializePhoneticEngine };
-}
