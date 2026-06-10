@@ -326,11 +326,11 @@ const LANGUAGES = [{
 // Helper function to get translator URL for each language
 function getTranslatorUrl(langCode) {
     const translators = {
-        "en-US": "https://english-ai-helper.netlify.app/",
+        "en-US": "https://english-ai-helper.vercel.app/",
         "es-ES": "https://spanish-flag-translation.vercel.app/",
-        "zh-CN": "https://mandarin-ai-translator.netlify.app/",
-        "hi-IN": "https://hindi-ai-translator.netlify.app/",
-        "fr-FR": "https://french-ai-translator.netlify.app/"
+        "zh-CN": "https://mandarin-flag-translation.vercel.app/",
+        "hi-IN": "https://hindi-ai-translator.vercel.app/",
+        "fr-FR": "https://french-ai-translator.vercel.app/"
     };
     return translators[langCode] || null;
 }
