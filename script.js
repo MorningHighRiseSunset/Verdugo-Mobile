@@ -330,7 +330,7 @@ function getTranslatorUrl(langCode) {
         "es-ES": "https://spanish-flag-translation.vercel.app/",
         "zh-CN": "https://mandarin-flag-translation.vercel.app/",
         "hi-IN": "https://hindi-flag-translation-m0mevphgt.vercel.app/",
-        "fr-FR": "https://french-ai-translator.vercel.app/"
+        "fr-FR": "https://french-flag-translation-ly6kb0ol5.vercel.app/"
     };
     return translators[langCode] || null;
 }
