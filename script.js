@@ -326,7 +326,7 @@ const LANGUAGES = [{
 // Helper function to get translator URL for each language
 function getTranslatorUrl(langCode) {
     const translators = {
-        "en-US": "https://english-ai-helper.vercel.app/",
+        "en-US": "https://english-flag-translation.vercel.app/",
         "es-ES": "https://spanish-flag-translation.vercel.app/",
         "zh-CN": "https://mandarin-flag-translation.vercel.app/",
         "hi-IN": "https://hindi-flag-translation-m0mevphgt.vercel.app/",
