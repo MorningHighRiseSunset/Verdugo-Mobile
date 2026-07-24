@@ -1953,8 +1953,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 
                 // Track language button click with Vercel Analytics
                 const language = btn.getAttribute('data-language');
+                console.log('DEBUG: Language attribute:', language);
+                console.log('DEBUG: window.va available:', typeof window.va);
                 if (window.va && language) {
+                    console.log('DEBUG: Sending Vercel Analytics event:', language);
                     window.va('event', { name: language, data: { type: 'language_selection' } });
+                } else {
+                    console.log('DEBUG: Failed to send event - va:', !!window.va, 'language:', !!language);
                 }
                 
                 if (typeof recognition !== 'undefined') recognition.lang = pendingGameLang;
