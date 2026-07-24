@@ -40,32 +40,32 @@ class PhoneticEngine {
         // Fallback Spanish IPA data for common words
         const fallbackIPA = {
             'a': '/a/',
-            'b': '/be/', 'be': '/be/',
-            'c': '/ce/', 'ce': '/ce/', 
-            'd': '/de/', 'de': '/de/',
+            'b': '/be/', 'be': '/be/', 'bee': '/be/', 'bay': '/be/',
+            'c': '/ce/', 'ce': '/ce/', 'see': '/ce/', 'say': '/ce/', 'ka': '/ka/', 'ca': '/ka/',
+            'd': '/de/', 'de': '/de/', 'dee': '/de/', 'day': '/de/',
             'e': '/e/',
-            'f': '/efe/', 'efe': '/efe/',
-            'g': '/xe/', 'ge': '/xe/', 'je': '/xe/',
-            'h': '/açe/', 'hache': '/açe/',
+            'f': '/efe/', 'efe': '/efe/', 'ef': '/efe/', 'effe': '/efe/',
+            'g': '/xe/', 'ge': '/xe/', 'je': '/xe/', 'heh': '/xe/', 'kh': '/xe/',
+            'h': '/açe/', 'hache': '/açe/', 'hah': '/açe/', 'ache': '/açe/',
             'i': '/i/',
-            'j': '/xota/', 'jota': '/xota/',
-            'k': '/ka/', 'ka': '/ka/',
-            'l': '/ele/', 'ele': '/ele/',
-            'm': '/eme/', 'eme': '/eme/',
-            'n': '/ene/', 'ene': '/ene/',
-            'ñ': '/eñe/', 'eñe': '/eñe/',
+            'j': '/xota/', 'jota': '/xota/', 'hota': '/xota/', 'kh': '/xota/',
+            'k': '/ka/', 'ka': '/ka/', 'kah': '/ka/', 'cay': '/ka/',
+            'l': '/ele/', 'ele': '/ele/', 'el': '/ele/', 'ell': '/ele/',
+            'm': '/eme/', 'eme': '/eme/', 'em': '/eme/', 'emme': '/eme/',
+            'n': '/ene/', 'ene': '/ene/', 'en': '/ene/', 'enne': '/ene/',
+            'ñ': '/eñe/', 'eñe': '/eñe/', 'enye': '/eñe/', 'ny': '/eñe/',
             'o': '/o/',
-            'p': '/pe/', 'pe': '/pe/',
-            'q': '/ku/', 'cu': '/ku/',
-            'r': '/ere/', 'ere': '/ere/',
-            's': '/ese/', 'ese': '/ese/',
-            't': '/te/', 'te': '/te/',
+            'p': '/pe/', 'pe': '/pe/', 'peh': '/pe/', 'pay': '/pe/',
+            'q': '/ku/', 'cu': '/ku/', 'kuh': '/ku/', 'koo': '/ku/',
+            'r': '/ere/', 'ere': '/ere/', 'er': '/ere/', 'air': '/ere/',
+            's': '/ese/', 'ese': '/ese/', 'es': '/ese/', 'ess': '/ese/',
+            't': '/te/', 'te': '/te/', 'teh': '/te/', 'tay': '/te/',
             'u': '/u/',
-            'v': '/ube/', 'uve': '/ube/',
-            'w': '/doble be/', 'doble ve': '/doble be/',
-            'x': '/ekis/', 'equis': '/ekis/',
-            'y': '/i griega/', 'ye': '/i griega/',
-            'z': '/zeta/', 'zeta': '/zeta/'
+            'v': '/ube/', 'uve': '/ube/', 've': '/ube/', 'veh': '/ube/', 'b': '/be/',
+            'w': '/doble be/', 'doble ve': '/doble be/', 'double': '/doble be/',
+            'x': '/ekis/', 'equis': '/ekis/', 'eks': '/ekis/', 'ecks': '/ekis/',
+            'y': '/i griega/', 'ye': '/i griega/', 'yeh': '/i/', 'ee': '/i/',
+            'z': '/zeta/', 'zeta': '/zeta/', 'zeh': '/zeta/', 'seta': '/seta/', 's': '/ese/'
         };
 
         Object.entries(fallbackIPA).forEach(([word, ipa]) => {
@@ -75,37 +75,37 @@ class PhoneticEngine {
 
     buildLetterSoundMap() {
         // Enhanced Spanish letters to phonetic representations with more variations
-        this.letterSoundMap.set('A', ['a', 'ah', 'á', 'eh', 'ai']);
-        this.letterSoundMap.set('B', ['be', 'bea', 'bei', 'bi', 'be larga', 'be corta']);
-        this.letterSoundMap.set('C', ['ce', 'cea', 'cei', 'ci', 'seh', 'se', 'theh', 'the', 'si']);
-        this.letterSoundMap.set('D', ['de', 'dea', 'dei', 'di', 'deh', 'dhe']);
-        this.letterSoundMap.set('E', ['e', 'eh', 'é', 'ee', 'ei']);
-        this.letterSoundMap.set('F', ['efe', 'efea', 'efei', 'efi', 'efeh', 'ef']);
-        this.letterSoundMap.set('G', ['ge', 'gea', 'gei', 'gi', 'xe', 'je', 'jea', 'ghe']);
-        this.letterSoundMap.set('H', ['hache', 'ache', 'a-che', 'ashe', 'h']);
-        this.letterSoundMap.set('I', ['i', 'ih', 'í', 'ee', 'ei']);
-        this.letterSoundMap.set('J', ['jota', 'hota', 'xota', 'shota', 'j', 'sho']);
-        this.letterSoundMap.set('K', ['ka', 'kah', 'ca', 'qua', 'que']);
-        this.letterSoundMap.set('L', ['ele', 'ela', 'eli', 'el', 'elle']);
-        this.letterSoundMap.set('M', ['eme', 'ema', 'emi', 'em', 'emea']);
-        this.letterSoundMap.set('N', ['ene', 'ena', 'eni', 'en', 'enea']);
-        this.letterSoundMap.set('Ñ', ['eñe', 'enie', 'enye', 'enieh', 'ñe']);
-        this.letterSoundMap.set('O', ['o', 'oh', 'ó', 'ou', 'oi']);
-        this.letterSoundMap.set('P', ['pe', 'pea', 'pei', 'pi', 'peh', 'phea']);
-        this.letterSoundMap.set('Q', ['cu', 'cuu', 'ku', 'qu', 'que', 'khu']);
-        this.letterSoundMap.set('R', ['ere', 'era', 'eri', 'erre', 'ar', 'ari', 'r']);
-        this.letterSoundMap.set('S', ['ese', 'esa', 'esi', 'es', 'eseh', 'ce', 'se']);
-        this.letterSoundMap.set('T', ['te', 'tea', 'tei', 'ti', 'teh', 'the']);
-        this.letterSoundMap.set('U', ['u', 'uh', 'ú', 'ou', 'uu']);
-        this.letterSoundMap.set('V', ['uve', 'uva', 'vi', 've', 'vea', 'vei', 'bve', 'beh']);
-        this.letterSoundMap.set('W', ['doble ve', 'doble uve', 'doble be', 'doble u', 'doblebe', 'dobleuve']);
-        this.letterSoundMap.set('X', ['equis', 'ekis', 'xis', 'cs', 'xes', 'shis']);
-        this.letterSoundMap.set('Y', ['ye', 'yea', 'yei', 'i griega', 'i', 'y', 'sh']);
-        this.letterSoundMap.set('Z', ['zeta', 'zetaa', 'seta', 'theta', 'theh', 's', 'ceta']);
+        this.letterSoundMap.set('A', ['a', 'ah', 'á', 'eh', 'ai', 'ha', 'la', 'ma', 'na', 'pa', 'sa', 'ta', 'va']);
+        this.letterSoundMap.set('B', ['be', 'bea', 'bei', 'bi', 'be larga', 'be corta', 'b', 'bee', 'bay', 'beh']);
+        this.letterSoundMap.set('C', ['ce', 'cea', 'cei', 'ci', 'seh', 'se', 'theh', 'the', 'si', 'c', 'see', 'say', 'seh', 'k', 'ka', 'ki']);
+        this.letterSoundMap.set('D', ['de', 'dea', 'dei', 'di', 'deh', 'dhe', 'd', 'dee', 'day', 'deh']);
+        this.letterSoundMap.set('E', ['e', 'eh', 'é', 'ee', 'ei', 'he', 'le', 'me', 'ne', 'pe', 'se', 'te', 've']);
+        this.letterSoundMap.set('F', ['efe', 'efea', 'efei', 'efi', 'efeh', 'ef', 'f', 'ef', 'effe', 'fay']);
+        this.letterSoundMap.set('G', ['ge', 'gea', 'gei', 'gi', 'xe', 'je', 'jea', 'ghe', 'g', 'heh', 'hay', 'j', 'kh']);
+        this.letterSoundMap.set('H', ['hache', 'ache', 'a-che', 'ashe', 'h', 'hah', 'ache', 'atch']);
+        this.letterSoundMap.set('I', ['i', 'ih', 'í', 'ee', 'ei', 'hi', 'li', 'mi', 'ni', 'pi', 'si', 'ti', 'vi']);
+        this.letterSoundMap.set('J', ['jota', 'hota', 'xota', 'shota', 'j', 'sho', 'h', 'kh', 'ho', 'hota']);
+        this.letterSoundMap.set('K', ['ka', 'kah', 'ca', 'qua', 'que', 'k', 'kah', 'cay', 'kuh']);
+        this.letterSoundMap.set('L', ['ele', 'ela', 'eli', 'el', 'elle', 'l', 'el', 'ell', 'lah']);
+        this.letterSoundMap.set('M', ['eme', 'ema', 'emi', 'em', 'emea', 'm', 'em', 'emme', 'mah']);
+        this.letterSoundMap.set('N', ['ene', 'ena', 'eni', 'en', 'enea', 'n', 'en', 'enne', 'nah']);
+        this.letterSoundMap.set('Ñ', ['eñe', 'enie', 'enye', 'enieh', 'ñe', 'ny', 'enye', 'niah', 'gn']);
+        this.letterSoundMap.set('O', ['o', 'oh', 'ó', 'ou', 'oi', 'ho', 'lo', 'mo', 'no', 'po', 'so', 'to', 'vo']);
+        this.letterSoundMap.set('P', ['pe', 'pea', 'pei', 'pi', 'peh', 'phea', 'p', 'peh', 'pay', 'pee']);
+        this.letterSoundMap.set('Q', ['cu', 'cuu', 'ku', 'qu', 'que', 'khu', 'k', 'kuh', 'koo', 'cue']);
+        this.letterSoundMap.set('R', ['ere', 'era', 'eri', 'erre', 'ar', 'ari', 'r', 'er', 'air', 'are', 'arr']);
+        this.letterSoundMap.set('S', ['ese', 'esa', 'esi', 'es', 'eseh', 'ce', 'se', 's', 'es', 'ess', 'say']);
+        this.letterSoundMap.set('T', ['te', 'tea', 'tei', 'ti', 'teh', 'the', 't', 'teh', 'tay', 'tee']);
+        this.letterSoundMap.set('U', ['u', 'uh', 'ú', 'ou', 'uu', 'hu', 'lu', 'mu', 'nu', 'pu', 'su', 'tu', 'vu']);
+        this.letterSoundMap.set('V', ['uve', 'uva', 'vi', 've', 'vea', 'vei', 'bve', 'beh', 'v', 'veh', 'vay', 'vee', 'b']);
+        this.letterSoundMap.set('W', ['doble ve', 'doble uve', 'doble be', 'doble u', 'doblebe', 'dobleuve', 'w', 'doble', 'double', 'doo', 'blay']);
+        this.letterSoundMap.set('X', ['equis', 'ekis', 'xis', 'cs', 'xes', 'shis', 'x', 'ekis', 'ecks', 'ex']);
+        this.letterSoundMap.set('Y', ['ye', 'yea', 'yei', 'i griega', 'i', 'y', 'sh', 'yeh', 'yay', 'ee', 'j']);
+        this.letterSoundMap.set('Z', ['zeta', 'zetaa', 'seta', 'theta', 'theh', 's', 'ceta', 'z', 'zeh', 'zay', 'zee', 'th', 's']);
         
         // Add common variations and mispronunciations
-        this.letterSoundMap.set('LL', ['elle', 'elleh', 'ye', 'sh', 'lli', 'zhi']);
-        this.letterSoundMap.set('CH', ['che', 'cheh', 'tche', 'sh', 'tsh']);
+        this.letterSoundMap.set('LL', ['elle', 'elleh', 'ye', 'sh', 'lli', 'zhi', 'ly', 'y', 'jah']);
+        this.letterSoundMap.set('CH', ['che', 'cheh', 'tche', 'sh', 'tsh', 'ch', 'cheh', 'chay']);
     }
 
     buildAccentVariations() {
@@ -265,11 +265,50 @@ class PhoneticEngine {
         });
     }
 
-    // Main recognition function
-    recognizeLetter(transcript) {
+    // Preprocess transcript to remove noise and filler words
+    preprocessTranscript(transcript) {
+        if (!transcript) return '';
+        
+        let cleaned = transcript.toLowerCase().trim();
+        
+        // Remove common filler words (Spanish and English)
+        const fillerWords = [
+            // Spanish fillers
+            'eh', 'um', 'ah', 'oh', 'este', 'o sea', 'es decir', 'bueno', 'pues',
+            'entonces', 'vale', 'ok', 'okay', 'sí', 'no', 'claro', 'exacto',
+            'la letra', 'el letra', 'una letra', 'un letra', 'letra',
+            'es', 'son', 'una', 'un', 'el', 'la', 'los', 'las', 'de', 'en', 'por', 'para',
+            // English fillers
+            'uh', 'um', 'like', 'you know', 'I mean', 'so', 'well', 'actually',
+            'the letter', 'a letter', 'letter', 'is', 'are', 'a', 'an', 'the', 'of', 'in', 'by', 'for'
+        ];
+        
+        // Remove filler words
+        fillerWords.forEach(filler => {
+            const regex = new RegExp(`\\b${filler}\\b`, 'gi');
+            cleaned = cleaned.replace(regex, ' ');
+        });
+        
+        // Remove extra spaces and trim
+        cleaned = cleaned.replace(/\s+/g, ' ').trim();
+        
+        // Remove common noise patterns
+        cleaned = cleaned.replace(/[^\w\sáéíóúñü]/g, '');
+        
+        return cleaned;
+    }
+
+    // Main recognition function with context awareness
+    recognizeLetter(transcript, context = {}) {
         if (!transcript) return null;
         
-        const normalized = transcript.toLowerCase().trim();
+        // Preprocess to remove noise and fillers
+        const cleaned = this.preprocessTranscript(transcript);
+        console.log(`Preprocessed: "${transcript}" -> "${cleaned}"`);
+        
+        const normalized = cleaned;
+        const availableLetters = context.availableLetters || [];
+        const guessedLetters = context.guessedLetters || [];
         
         // 1. Quick single character check (most common case)
         if (normalized.length === 1 && /[a-zñáéíóúü]/i.test(normalized)) {
@@ -278,12 +317,15 @@ class PhoneticEngine {
             return result;
         }
         
+        // Collect all potential matches with their confidence scores
+        const candidates = [];
+        
         // 2. Direct match with confidence (fastest lookup)
         const directResult = this.findDirectMatch(normalized);
         if (directResult) {
             const confidence = this.calculateConfidence(normalized, directResult);
             console.log(`Direct match: ${normalized} -> ${directResult} (confidence: ${confidence})`);
-            if (confidence >= 0.7) return directResult;
+            candidates.push({ letter: directResult, confidence, method: 'direct' });
         }
         
         // 3. Accent-aware matching with confidence (regional variations)
@@ -291,7 +333,7 @@ class PhoneticEngine {
         if (accentResult) {
             const confidence = this.calculateConfidence(normalized, accentResult);
             console.log(`Accent match: ${normalized} -> ${accentResult} (confidence: ${confidence})`);
-            if (confidence >= 0.6) return accentResult;
+            candidates.push({ letter: accentResult, confidence, method: 'accent' });
         }
         
         // 4. Fuzzy matching with confidence (slowest, use last)
@@ -299,37 +341,84 @@ class PhoneticEngine {
         if (fuzzyResult) {
             const confidence = this.calculateConfidence(normalized, fuzzyResult);
             console.log(`Fuzzy match: ${normalized} -> ${fuzzyResult} (confidence: ${confidence})`);
-            if (confidence >= 0.5) return fuzzyResult;
+            candidates.push({ letter: fuzzyResult, confidence, method: 'fuzzy' });
         }
         
-        console.log(`No match found for: "${normalized}"`);
+        if (candidates.length === 0) {
+            console.log(`No match found for: "${normalized}"`);
+            return null;
+        }
+        
+        // Apply context-aware scoring
+        const scoredCandidates = candidates.map(candidate => {
+            let adjustedConfidence = candidate.confidence;
+            
+            // Boost confidence if letter is available in game
+            if (availableLetters.length > 0) {
+                const isAvailable = availableLetters.includes(candidate.letter);
+                if (isAvailable) {
+                    adjustedConfidence += 0.15; // Boost available letters
+                } else {
+                    adjustedConfidence -= 0.2; // Penalize unavailable letters
+                }
+            }
+            
+            // Penalize already guessed letters
+            if (guessedLetters.length > 0) {
+                const isGuessed = guessedLetters.some(g => g.toUpperCase() === candidate.letter);
+                if (isGuessed) {
+                    adjustedConfidence -= 0.3; // Heavy penalty for already guessed
+                }
+            }
+            
+            return { ...candidate, adjustedConfidence };
+        });
+        
+        // Sort by adjusted confidence
+        scoredCandidates.sort((a, b) => b.adjustedConfidence - a.adjustedConfidence);
+        
+        const bestCandidate = scoredCandidates[0];
+        console.log(`Best candidate: ${bestCandidate.letter} (adjusted confidence: ${bestCandidate.adjustedConfidence.toFixed(2)}, method: ${bestCandidate.method})`);
+        
+        // Return best candidate if it meets minimum threshold
+        if (bestCandidate.adjustedConfidence >= 0.4) {
+            return bestCandidate.letter;
+        }
+        
+        console.log(`No candidate met threshold after context adjustment`);
         return null;
     }
     
-    // Enhanced confidence calculation
+    // Enhanced confidence calculation with adaptive thresholds
     calculateConfidence(transcript, letter) {
         const sounds = this.letterSoundMap.get(letter) || [];
         
         // Direct match = highest confidence
-        if (sounds.includes(transcript)) return 0.95;
+        if (sounds.includes(transcript)) return 0.98;
         
-        // Check for partial matches
+        // Check for partial matches with better scoring
+        let bestPartialScore = 0;
         for (const sound of sounds) {
             if (sound.includes(transcript) || transcript.includes(sound)) {
                 const similarity = Math.min(transcript.length, sound.length) / Math.max(transcript.length, sound.length);
-                return 0.7 + (similarity * 0.2);
+                const score = 0.75 + (similarity * 0.23);
+                bestPartialScore = Math.max(bestPartialScore, score);
             }
         }
+        if (bestPartialScore > 0) return bestPartialScore;
         
-        // Fuzzy match confidence based on distance
+        // Fuzzy match confidence based on distance with adaptive scoring
         const minDistance = Math.min(...sounds.map(sound => 
             this.levenshteinDistance(transcript, sound)
         ));
         
-        if (minDistance === 0) return 0.95;
-        if (minDistance === 1) return 0.8;
-        if (minDistance === 2) return 0.6;
-        if (minDistance === 3) return 0.4;
+        // Adaptive scoring based on transcript length
+        const lengthFactor = Math.min(1, transcript.length / 3);
+        
+        if (minDistance === 0) return 0.98;
+        if (minDistance === 1) return 0.85 + (lengthFactor * 0.05);
+        if (minDistance === 2) return 0.65 + (lengthFactor * 0.1);
+        if (minDistance === 3) return 0.45 + (lengthFactor * 0.1);
         
         return 0.3;
     }

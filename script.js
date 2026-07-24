@@ -677,7 +677,12 @@ function mapTranscriptToLetter(transcriptRaw, langCode) {
     let mapped = null;
 
     if (phoneticEngine && (langShort === 'es' || langShort === 'en')) {
-        mapped = phoneticEngine.recognizeLetter(normalized);
+        // Get game context for better recognition
+        const context = {
+            availableLetters: typeof letters !== 'undefined' ? letters : [],
+            guessedLetters: typeof guessedLetters !== 'undefined' ? guessedLetters : []
+        };
+        mapped = phoneticEngine.recognizeLetter(normalized, context);
     }
     if (!mapped) {
         mapped = legacySpanishMap[normalized] || legacyPhoneticMap[normalized] || null;
@@ -2847,24 +2852,32 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
     function suggestLetter(interimTranscript) {
         let suggestion = null;
+        let confidence = 0;
         
-        // Use advanced phonetic engine for suggestions
+        // Use advanced phonetic engine for suggestions with context
         if (phoneticEngine) {
-            const result = phoneticEngine.getSuggestion(interimTranscript);
-            if (result && result.confidence > 0.5) {
-                suggestion = result.letter;
+            const context = {
+                availableLetters: typeof letters !== 'undefined' ? letters : [],
+                guessedLetters: typeof guessedLetters !== 'undefined' ? guessedLetters : []
+            };
+            const result = phoneticEngine.recognizeLetter(interimTranscript, context);
+            if (result) {
+                suggestion = result;
+                confidence = phoneticEngine.calculateConfidence(interimTranscript, result);
             }
         }
         
         // Fallback to legacy maps
         if (!suggestion) {
             suggestion = legacyPhoneticMap[interimTranscript] || legacySpanishMap[interimTranscript] || null;
+            confidence = 0.4; // Lower confidence for fallback
         }
         const letterButtons = document.querySelectorAll('.letter-button');
         const resultElement = document.getElementById('result');
 
-        if (suggestion) {
-            resultElement.innerHTML = `Did you mean: <span style="color: lightgreen;">${suggestion}</span>? <button id="yes-btn">Yes</button> <button id="no-btn">No</button>`;
+        if (suggestion && confidence > 0.4) {
+            const confidenceColor = confidence > 0.7 ? 'lightgreen' : confidence > 0.5 ? 'yellow' : 'orange';
+            resultElement.innerHTML = `Did you mean: <span style="color: ${confidenceColor};">${suggestion}</span>? <button id="yes-btn">Yes</button> <button id="no-btn">No</button>`;
 
             document.getElementById('yes-btn').onclick = () => {
                 letterButtons.forEach(button => {
