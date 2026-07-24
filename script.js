@@ -1950,6 +1950,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             btn.onclick = function() {
                 console.log(`DEBUG: Language button clicked - pendingGameLang=${btn.getAttribute('data-value')}`);
                 pendingGameLang = btn.getAttribute('data-value');
+                
+                // Track language button click with Vercel Analytics
+                const language = btn.getAttribute('data-language');
+                if (window.va && language) {
+                    window.va('event', { name: language, data: { type: 'language_selection' } });
+                }
+                
                 if (typeof recognition !== 'undefined') recognition.lang = pendingGameLang;
                 if (isIOS) initIOSSpeechFallback();
 
