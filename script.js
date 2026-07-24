@@ -1920,6 +1920,21 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             btn.style.overflow = 'hidden';
             btn.style.textOverflow = 'ellipsis';
             btn.onclick = function() {
+                // Track language selection with Vercel Analytics
+                const languageMap = {
+                    'en-US': 'english',
+                    'es-ES': 'spanish',
+                    'zh-CN': 'mandarin',
+                    'hi-IN': 'hindi',
+                    'fr-FR': 'french'
+                };
+                const language = languageMap[lang.code] || lang.code;
+                console.log('DEBUG: Language selection popup clicked - language:', language);
+                if (window.va) {
+                    console.log('DEBUG: Sending Vercel Analytics event:', language);
+                    window.va('event', { name: language, data: { type: 'language_selection' } });
+                }
+                
                 // Set UI language only; actual game (word selection) will start
                 // when the user picks a learning language from the main language
                 // buttons below the microphone controls.
