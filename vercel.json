@@ -1,4 +1,5 @@
 {
+  "name": "verdugo-mobile",
   "rewrites": [
     {
       "source": "/api/:path*",
