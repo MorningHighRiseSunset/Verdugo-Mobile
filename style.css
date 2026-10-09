@@ -233,6 +233,24 @@ body {
     text-align: left;
 }
 
+.lang-btn .flag-image {
+    width: 24px;
+    height: 18px;
+    object-fit: cover;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 6px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.lang-btn a {
+    display: inline-block;
+    text-decoration: none;
+}
+
+
+
 .flag-emoji {
     font-size: 1.5em;
     margin-right: 6px;
@@ -247,6 +265,17 @@ body {
     -webkit-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
     font-variant-emoji: emoji;
+}
+
+.flag-image {
+    width: 24px;
+    height: 18px;
+    object-fit: cover;
+    border-radius: 2px;
+    vertical-align: middle;
+    margin-right: 6px;
+    border: 1px solid rgba(0,0,0,0.1);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 /* Fallback for systems that don't support flag emojis */
@@ -296,11 +325,16 @@ button:active, button:focus {
 }
 
 #instructions-button {
-    width: 100px;
+    min-width: 120px;
+    max-width: 150px;
+    padding: 8px 16px;
     font-weight: bold;
     border-radius: 8px;
     background: #e0e7ef;
     border: 1.5px solid #60a5fa;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
 }
 
 .hide {
@@ -384,7 +418,8 @@ button:active, button:focus {
     border: 1px solid #ccc;
     padding: 10px;
     margin-top: 20px;
-    width: 100%;
+    width: auto;
+    max-width: 600px;
     /* Let the height follow content, but cap it so it doesn't
        take over the whole screen. */
     max-height: 40vh;
@@ -394,8 +429,8 @@ button:active, button:focus {
     box-sizing: border-box;
     font-size: 15px;
     border-radius: 0 0 10px 10px;
-    margin-left: 0;
-    margin-right: 0;
+    margin-left: auto;
+    margin-right: auto;
     display: none; /* Hidden by default */
 }
 #log-container div {
@@ -420,10 +455,9 @@ button:active, button:focus {
     font-size: 0.85em !important; /* slightly smaller text */
 }
 
-/* Hide scrollbar but allow scrolling */
+/* Remove scrollbars */
 #log-container::-webkit-scrollbar, #word-info-def::-webkit-scrollbar, #word-info-pron::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+    display: none;
 }
 #log-container, #word-info-def, #word-info-pron {
     -ms-overflow-style: none;
@@ -545,7 +579,20 @@ button:active, button:focus {
     display: inline-block;
     line-height: 1;
 }
-#lang-select-buttons button:hover .flag-emoji {
+
+#lang-select-buttons button .flag-image {
+    width: 32px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-right: 10px;
+    border: 1px solid rgba(0,0,0,0.15);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    transition: transform 0.2s;
+}
+
+#lang-select-buttons button:hover .flag-emoji,
+#lang-select-buttons button:hover .flag-image {
     transform: scale(1.15) rotate(-6deg);
 }
 #lang-select-popup h2 {
@@ -694,12 +741,13 @@ button:active, button:focus {
         margin-top: 10px;
     }
     #log-container {
-        width: 100%;
+        width: auto;
+        max-width: 90%;
         height: 90px;
         font-size: 0.9em;
         border-radius: 0 0 10px 10px;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: auto;
+        margin-right: auto;
         order: 3;
     }
     button {
@@ -728,11 +776,15 @@ button:active, button:focus {
     }
     /* Definition / TTS container on mobile: readable but compact */
     #log-container {
+        width: auto;
+        max-width: 90%;
         font-size: 0.9em;
         line-height: 1.4em;
         max-height: 45vh;
         overflow-y: auto;
         border: 1px solid #ccc;
+        margin-left: auto;
+        margin-right: auto;
     }
     .lang-btn {
         flex: none;
@@ -827,12 +879,13 @@ button:active, button:focus {
         width: 90px;
     }
     #log-container {
-        width: 100%;
+        width: auto;
+        max-width: 85%;
         height: 120px; /* or 100px/80px as needed */
         font-size: 14px;
         border-radius: 0 0 10px 10px;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: auto;
+        margin-right: auto;
     }
     /* Keep definition text small on very small screens as well */
     #word-info-def, #word-info-pron {
@@ -856,12 +909,13 @@ button:active, button:focus {
         font-size: 10px;
     }
     #log-container {
-        width: 100%;
+        width: auto;
+        max-width: 85%;
         height: 120px; /* or 100px/80px as needed */
         font-size: 14px;
         border-radius: 0 0 10px 10px;
-        margin-left: 0;
-        margin-right: 0;
+        margin-left: auto;
+        margin-right: auto;
     }
     .lang-btn {
         flex: none;

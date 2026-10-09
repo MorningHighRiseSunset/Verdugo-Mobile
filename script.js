@@ -326,11 +326,11 @@ const LANGUAGES = [{
 // Helper function to get translator URL for each language
 function getTranslatorUrl(langCode) {
     const translators = {
-        "en-US": "https://english-flag-translation.vercel.app/",
-        "es-ES": "https://spanish-flag-translation.vercel.app/",
-        "zh-CN": "https://mandarin-flag-translation.vercel.app/",
-        "hi-IN": "https://hindi-flag-translation-m0mevphgt.vercel.app/",
-        "fr-FR": "https://french-flag-translation-ly6kb0ol5.vercel.app/"
+        "en-US": "https://englishflagtranslation.vercel.app/",
+        "es-ES": "https://spanishflagtranslation.vercel.app/",
+        "zh-CN": "https://mandarinflagtranslation.vercel.app/",
+        "hi-IN": "https://hindiflagtranslation.vercel.app/",
+        "fr-FR": "https://frenchflagtranslation.vercel.app/"
     };
     return translators[langCode] || null;
 }
@@ -344,6 +344,13 @@ const BANNED_WORDS = [
 ];
 
 const TRANSLATIONS = {
+    "click": {
+        "en-US": "Click",
+        "es-ES": "Haz clic",
+        "fr-FR": "Cliquez",
+        "zh-CN": "点击",
+        "hi-IN": "क्लिक करें"
+    },
     "pick_alternate_language": {
         "en-US": "Pick alternate language:",
         "es-ES": "Elige idioma alternativo:",
@@ -514,60 +521,31 @@ const TRANSLATIONS = {
     // Add more keys as needed for your UI!
 };
 
-// Function to detect if flag emojis are supported
-function detectFlagEmojiSupport() {
-    try {
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 20;
-        canvas.height = 20;
-        
-        // Test with a flag emoji
-        ctx.font = '16px Arial';
-        ctx.fillText('🇺🇸', 0, 16);
-        
-        const imageData = ctx.getImageData(0, 0, 20, 20);
-        const data = imageData.data;
-        
-        // Check if the emoji was rendered (not just a placeholder)
-        let hasColor = false;
-        for (let i = 0; i < data.length; i += 4) {
-            if (data[i] !== 0 || data[i + 1] !== 0 || data[i + 2] !== 0) {
-                hasColor = true;
-                break;
-            }
-        }
-        
-        return hasColor;
-    } catch (e) {
-        // If canvas detection fails, try a simpler approach
-        return navigator.userAgent.includes('Windows') ? false : true;
-    }
+// Function to get flag image URL for a language code
+function getFlagImageUrl(langCode) {
+    const flagMap = {
+        'en-US': 'https://flagcdn.com/w40/us.png',
+        'es-ES': 'https://flagcdn.com/w40/es.png',
+        'zh-CN': 'https://flagcdn.com/w40/cn.png',
+        'hi-IN': 'https://flagcdn.com/w40/in.png',
+        'fr-FR': 'https://flagcdn.com/w40/fr.png'
+    };
+    return flagMap[langCode] || '';
 }
 
-// Run detection once so other code can rely on the result
-window.flagEmojiSupported = detectFlagEmojiSupport();
-
-// Function to get flag display (emoji or fallback)
+// Function to get flag display (always use images for Windows compatibility)
 function getFlagDisplay(langCode) {
     const lang = LANGUAGES.find(l => l.code === langCode);
     if (!lang) return '';
     
-    // If flag emojis are supported, use them
-    if (window.flagEmojiSupported !== false) {
-        return lang.flag;
+    // Always use images for better Windows 11 compatibility
+    const imageUrl = getFlagImageUrl(langCode);
+    if (imageUrl) {
+        return `<img src="${imageUrl}" alt="${lang.canonicalName} flag" class="flag-image" style="width: 24px; height: 18px; object-fit: cover; border-radius: 2px; vertical-align: middle; margin-right: 6px;">`;
     }
     
-    // Fallback to country codes or symbols
-    const fallbacks = {
-        'en-US': '🇺🇸',
-        'es-ES': '🇪🇸', 
-        'zh-CN': '🇨🇳',
-        'hi-IN': '🇮🇳',
-        'fr-FR': '🇫🇷'
-    };
-    
-    return fallbacks[langCode] || lang.flag;
+    // Fallback to emoji if image fails
+    return lang.flag;
 }
 
 function setUILanguage(langCode) {
@@ -580,18 +558,32 @@ function setUILanguage(langCode) {
         const langName = lang.names[langCode] || lang.canonicalName;
         const pickAlt = TRANSLATIONS.pick_alternate_language[langCode] || "Pick alternate language:";
         const flagDisplay = getFlagDisplay(lang.code);
-        // Build button content using DOM methods (avoid innerHTML to prevent accidental anchors)
+        
+        // Build button content using DOM methods
         btn.innerHTML = '';
-        const flagSpan = document.createElement('span');
-        flagSpan.className = 'flag-emoji';
-        flagSpan.textContent = flagDisplay;
+        
+        // Just show the flag image, not clickable (only popup flags should be clickable)
+        if (flagDisplay.includes('<img')) {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = flagDisplay;
+            const img = tempDiv.querySelector('img');
+            if (img) {
+                btn.appendChild(img);
+            }
+        } else {
+            // Fallback to emoji span
+            const flagSpan = document.createElement('span');
+            flagSpan.className = 'flag-emoji';
+            flagSpan.textContent = lang.flag;
+            btn.appendChild(flagSpan);
+        }
+        
         const nameSpan = document.createElement('span');
         nameSpan.textContent = ' ' + langName;
         const br = document.createElement('br');
         const small = document.createElement('small');
         small.className = 'pick-alt-label';
         small.textContent = pickAlt;
-        btn.appendChild(flagSpan);
         btn.appendChild(nameSpan);
         btn.appendChild(br);
         btn.appendChild(small);
@@ -601,10 +593,8 @@ function setUILanguage(langCode) {
         // Show each language with its correct flag and localized "choose language" text
         chooseLangTitle.innerHTML = LANGUAGES.map(l => {
             const flag = getFlagDisplay(l.code) || '';
-            const translatorUrl = getTranslatorUrl(l.code);
-            const flagHtml = translatorUrl
-                ? `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flag}</span></a>`
-                : `<span class="flag-emoji">${flag}</span>`;
+            // Just show the flag, not clickable
+            const flagHtml = flag;
             // Prefer the translation for that language code, fall back to canonical/case
             const text = TRANSLATIONS.choose_language[l.code] || l.names[selectedLang] || l.canonicalName;
             return `<div class="choose-lang-line">${flagHtml} <span>${text}</span></div>`;
@@ -822,6 +812,98 @@ console.error = function(...args) {
     originalConsoleError.apply(console, args);
 };
 
+// Load bilingual Spanish-English dictionary
+let ES_EN_DICTIONARY = new Map();
+let ES_EN_WORDLIST = new Set();
+
+async function loadESEnDictionary() {
+    try {
+        const response = await fetch('es-en-dictionary.json');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Loaded Spanish-English dictionary:', data.length, 'entries');
+        
+        // Process each entry
+        data.forEach(entry => {
+            if (entry.word && entry.definitions && entry.definitions.length > 0) {
+                // Only include clean single words
+                const cleanWord = entry.word.replace(/[.,\/\-\s]/g, '').trim();
+                if (/^[a-zA-ZáéíóúñüÁÉÍÓÚÑÜ]+$/.test(cleanWord) && cleanWord.length > 1) {
+                    // Clean up definitions - remove type codes in braces like {f}, {m}, {n}
+                    const cleanDefinitions = entry.definitions.map(def => 
+                        def.replace(/\s*\{[^}]*\}\s*/g, '').trim()
+                    ).filter(def => def.length > 0);
+                    
+                    if (cleanDefinitions.length > 0) {
+                        ES_EN_DICTIONARY.set(cleanWord.toLowerCase(), {
+                            word: cleanWord,
+                            definitions: cleanDefinitions,
+                            types: entry.types || []
+                        });
+                        ES_EN_WORDLIST.add(cleanWord.toLowerCase());
+                    }
+                }
+            }
+        });
+        
+        console.log('Processed Spanish-English dictionary:', ES_EN_WORDLIST.size, 'Spanish words with English definitions');
+        
+    } catch (e) {
+        console.error('Failed to load Spanish-English dictionary:', e);
+        ES_EN_DICTIONARY = new Map();
+        ES_EN_WORDLIST = new Set();
+    }
+}
+
+// Load bilingual English-Spanish dictionary
+let EN_ES_DICTIONARY = new Map();
+let EN_ES_WORDLIST = new Set();
+
+async function loadEnEsDictionary() {
+    try {
+        const response = await fetch('en-es-dictionary.json');
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        console.log('Loaded English-Spanish dictionary:', data.length, 'entries');
+        
+        // Process each entry
+        data.forEach(entry => {
+            if (entry.word && entry.definitions && entry.definitions.length > 0) {
+                // Only include clean single words
+                const cleanWord = entry.word.replace(/[.,\/\-\s]/g, '').trim();
+                if (/^[a-zA-Z]+$/.test(cleanWord) && cleanWord.length > 1) {
+                    // Clean up definitions - remove type codes in braces like {f}, {m}, {n}
+                    const cleanDefinitions = entry.definitions.map(def => 
+                        def.replace(/\s*\{[^}]*\}\s*/g, '').trim()
+                    ).filter(def => def.length > 0);
+                    
+                    if (cleanDefinitions.length > 0) {
+                        EN_ES_DICTIONARY.set(cleanWord.toLowerCase(), {
+                            word: cleanWord,
+                            definitions: cleanDefinitions,
+                            types: entry.types || []
+                        });
+                        EN_ES_WORDLIST.add(cleanWord.toLowerCase());
+                    }
+                }
+            }
+        });
+        
+        console.log('Processed English-Spanish dictionary:', EN_ES_WORDLIST.size, 'English words with Spanish definitions');
+        
+    } catch (e) {
+        console.error('Failed to load English-Spanish dictionary:', e);
+        EN_ES_DICTIONARY = new Map();
+        EN_ES_WORDLIST = new Set();
+    }
+}
+
 // Load comprehensive dictionary with both English and Spanish words
 async function loadComprehensiveDictionary() {
     try {
@@ -845,7 +927,7 @@ async function loadComprehensiveDictionary() {
                 // English dictionary
                 ENGLISH_DICTIONARY[entry.english.toLowerCase()] = {
                     definition: entry.english_definition || `English word: ${entry.english}`,
-                    pronunciation: `/${entry.english}/`,
+                    pronunciation: '', // Don't fake pronunciation
                     spanish: entry.spanish,
                     spanish_definition: entry.spanish_definition
                 };
@@ -854,7 +936,7 @@ async function loadComprehensiveDictionary() {
                 // Spanish dictionary  
                 SPANISH_DICTIONARY[entry.spanish.toLowerCase()] = {
                     definition: entry.spanish_definition || `Palabra española: ${entry.spanish}`,
-                    pronunciation: `/${entry.spanish}/`,
+                    pronunciation: '', // Don't fake pronunciation
                     english: entry.english,
                     english_definition: entry.english_definition
                 };
@@ -868,19 +950,64 @@ async function loadComprehensiveDictionary() {
         
     } catch (e) {
         console.error('Failed to load comprehensive dictionary:', e);
-        // Fallback to minimal dictionaries
-        const fallbackWords = [
-            { english: 'house', spanish: 'casa', english_def: 'A building for human habitation', spanish_def: 'Edificio para habitar' },
-            { english: 'water', spanish: 'agua', english_def: 'A clear liquid essential for life', spanish_def: 'Líquido claro esencial para la vida' },
-            { english: 'sun', spanish: 'sol', english_def: 'The star that provides light and heat', spanish_def: 'Estrella que proporciona luz y calor' }
-        ];
+        // Initialize empty dictionaries - we'll use API instead
+        ENGLISH_DICTIONARY = {};
+        SPANISH_DICTIONARY = {};
+        ENGLISH_WORDLIST = new Set();
+        SPANISH_WORDLIST = new Set();
+    }
+}
+
+// Cache for API-fetched definitions
+const DEFINITION_CACHE = new Map();
+
+// Fetch definition from DictionaryAPI.dev
+async function fetchDefinitionFromAPI(word, lang = 'en') {
+    const cacheKey = `${lang}:${word.toLowerCase()}`;
+    if (DEFINITION_CACHE.has(cacheKey)) {
+        return DEFINITION_CACHE.get(cacheKey);
+    }
+
+    try {
+        const cleanWord = word.split("(")[0].trim();
+        const langCode = lang === 'es' ? 'es' : 'en';
         
-        fallbackWords.forEach(item => {
-            ENGLISH_DICTIONARY[item.english] = { definition: item.english_def, spanish: item.spanish, spanish_definition: item.spanish_def };
-            SPANISH_DICTIONARY[item.spanish] = { definition: item.spanish_def, english: item.english, english_definition: item.english_def };
-            ENGLISH_WORDLIST.add(item.english);
-            SPANISH_WORDLIST.add(item.spanish);
-        });
+        const response = await fetch(
+            `https://api.dictionaryapi.dev/api/v2/entries/${langCode}/${cleanWord.toLowerCase()}`
+        );
+        
+        if (!response.ok) {
+            DEFINITION_CACHE.set(cacheKey, null);
+            return null;
+        }
+        
+        const data = await response.json();
+        
+        // Extract the first definition
+        if (data && data[0] && data[0].meanings && data[0].meanings[0]) {
+            const firstMeaning = data[0].meanings[0];
+            const firstDef = firstMeaning.definitions && firstMeaning.definitions[0];
+            const definition = firstDef ? firstDef.definition : null;
+            
+            // Get pronunciation if available
+            const phonetic = data[0].phonetic || 
+                           (data[0].phonetics && data[0].phonetics[0] && data[0].phonetics[0].text) || '';
+            
+            const result = {
+                definition: definition || null,
+                pronunciation: phonetic || ''
+            };
+            
+            DEFINITION_CACHE.set(cacheKey, result);
+            return result;
+        }
+        
+        DEFINITION_CACHE.set(cacheKey, null);
+        return null;
+    } catch (error) {
+        console.error(`Error fetching definition for ${word}:`, error);
+        DEFINITION_CACHE.set(cacheKey, null);
+        return null;
     }
 }
 
@@ -1076,95 +1203,152 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             return minimalFallback[Math.floor(Math.random() * minimalFallback.length)];
         }
 
-        // Known Spanish words as fallback when translation fails (never show English as "Spanish word")
-        const FALLBACK_SPANISH_WORDS = [
-            { word: 'ventana', english: 'window' }, { word: 'manzana', english: 'apple' }, { word: 'libro', english: 'book' },
-            { word: 'agua', english: 'water' }, { word: 'sol', english: 'sun' }, { word: 'casa', english: 'house' },
-            { word: 'mesa', english: 'table' }, { word: 'puerta', english: 'door' }, { word: 'gato', english: 'cat' }
-        ];
 
-        // --- SPANISH: Use comprehensive dictionary with built-in translations ---
+
+        // --- SPANISH: Use bilingual dictionaries ---
                 if (language === 'Spanish') {
-                    console.log('DEBUG: Entering Spanish word selection logic');
-                    
                     // Check if user is learning English (UI is Spanish) or learning Spanish (UI is English)
                     const uiLangShort = (typeof selectedLang === "string" && selectedLang) ? selectedLang.split('-')[0] : 'en';
                     
                     if (uiLangShort === 'es') {
-                        // Spanish speaker learning English: select ENGLISH words
-                        console.log('DEBUG: Spanish speaker learning English - selecting English words');
-                        return await fetchWordObject('English');
-                    } else {
-                        // English speaker learning Spanish: select SPANISH words (continue with existing logic)
-                        console.log('DEBUG: English speaker learning Spanish - selecting Spanish words');
-                    }
-                    // Wait for Spanish dictionary to load if not ready
-                    if (SPANISH_WORDLIST.size === 0) {
-                        console.log('Spanish dictionary not loaded yet, using fallback');
-                        // Use fallback words while dictionary loads
-                        const fallback = FALLBACK_SPANISH_WORDS[Math.floor(Math.random() * FALLBACK_SPANISH_WORDS.length)];
+                        // Spanish speaker learning English: select ENGLISH words with Spanish definitions
+                        // Wait for English-Spanish dictionary to load if not ready
+                        if (EN_ES_WORDLIST.size === 0) {
+                            console.log('English-Spanish dictionary not loaded yet, waiting...');
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                        }
+
+                        // Pick English words - use bilingual dictionary for translation, then fetch real definition
+                        const maxTries = 20;
+                        let chosen = '';
+                        let englishEquivalent = '';
+                        let definition = '';
+                        let pronunciation = '';
+
+                        // Convert wordlist to array for random selection
+                        const enEsWordsArray = Array.from(EN_ES_WORDLIST);
+                        console.log(`Selecting from ${enEsWordsArray.length} English words`);
+                        
+                        for (let tryNum = 0; tryNum < maxTries; tryNum++) {
+                            if (enEsWordsArray.length > 0) {
+                                chosen = enEsWordsArray[Math.floor(Math.random() * enEsWordsArray.length)];
+                                const entry = EN_ES_DICTIONARY.get(chosen.toLowerCase());
+                                
+                                if (entry && entry.definitions && entry.definitions.length > 0) {
+                                    // Get Spanish translation from bilingual dict
+                                    const translation = entry.definitions[0].split(',')[0].trim();
+                                    englishEquivalent = chosen; // The word itself is the English word
+                                    
+                                    // Fetch actual English definition from DictionaryAPI, then translate to Spanish
+                                    const apiDef = await fetchDefinitionFromAPI(chosen, 'en');
+                                    if (apiDef && apiDef.definition) {
+                                        // Translate English definition to Spanish
+                                        try {
+                                            const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(apiDef.definition)}&langpair=en|es`);
+                                            const transData = await transRes.json();
+                                            const translated = transData.responseData.translatedText;
+                                            if (translated && translated !== apiDef.definition) {
+                                                definition = translated;
+                                            } else {
+                                                definition = translation; // Fallback to translation
+                                            }
+                                        } catch (e) {
+                                            definition = translation; // Fallback to translation
+                                        }
+                                        pronunciation = apiDef.pronunciation || '';
+                                    } else {
+                                        // Fallback to translation if API fails
+                                        definition = translation;
+                                        pronunciation = '';
+                                    }
+                                    
+                                    console.log(`Selected: "${chosen}" -> "${englishEquivalent}"`);
+                                    break;
+                                }
+                                
+                                // If no definition, try another word
+                                if (tryNum < maxTries - 1) {
+                                    continue;
+                                }
+                            }
+                        }
+
                         return await finalizeWordObj({
-                            word: fallback.word,
-                            definition: fallback.definition || '',
-                            pronunciation: '/No pronunciation available/',
-                            englishEquivalent: fallback.english
+                            word: chosen,
+                            definition: definition,
+                            pronunciation: pronunciation,
+                            englishEquivalent: englishEquivalent
                         }, 'Spanish');
                     }
+                    
+                    // English speaker learning Spanish: select SPANISH words with English definitions
+                    // Wait for Spanish-English dictionary to load if not ready
+                    if (ES_EN_WORDLIST.size === 0) {
+                        console.log('Spanish-English dictionary not loaded yet, waiting...');
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                    }
 
-                    // Pick Spanish words directly from the comprehensive dictionary
-                    const maxTries = 10;
+                    // Pick Spanish words - use bilingual dictionary for translation, then fetch real definition
+                    const maxTries = 20;
                     let chosen = '';
                     let englishEquivalent = '';
                     let definition = '';
                     let pronunciation = '';
 
-                    // Convert wordlist Set to array for random selection
-                    const spanishWordsArray = Array.from(SPANISH_WORDLIST);
-                    console.log(`Selecting from ${spanishWordsArray.length} Spanish words`);
+                    // Convert wordlist to array for random selection
+                    const esEnWordsArray = Array.from(ES_EN_WORDLIST);
+                    console.log(`Selecting from ${esEnWordsArray.length} Spanish words`);
                     
                     for (let tryNum = 0; tryNum < maxTries; tryNum++) {
-                        // Try FALLBACK_SPANISH_WORDS first (reliable translations)
-                        if (tryNum < 3 && FALLBACK_SPANISH_WORDS.length > 0) {
-                            const fallback = FALLBACK_SPANISH_WORDS[Math.floor(Math.random() * FALLBACK_SPANISH_WORDS.length)];
-                            chosen = fallback.word;
-                            englishEquivalent = fallback.english;
-                            definition = fallback.definition || '';
-                            pronunciation = '';
-                            break;
-                        }
-
-                        // Use the comprehensive Spanish dictionary
-                        if (spanishWordsArray.length > 0) {
-                            chosen = spanishWordsArray[Math.floor(Math.random() * spanishWordsArray.length)];
-                            const entry = SPANISH_DICTIONARY[chosen.toLowerCase()];
+                        if (esEnWordsArray.length > 0) {
+                            chosen = esEnWordsArray[Math.floor(Math.random() * esEnWordsArray.length)];
+                            const entry = ES_EN_DICTIONARY.get(chosen.toLowerCase());
                             
-                            if (entry && entry.english) {
-                                englishEquivalent = entry.english;
-                                definition = entry.definition || entry.spanish_definition || '';
-                                pronunciation = entry.pronunciation || '';
-                                break; // Found word with translation
+                            console.log(`Try ${tryNum}: checking "${chosen}"`);
+                            
+                            if (entry && entry.definitions && entry.definitions.length > 0) {
+                                // Get English translation from bilingual dict
+                                const translation = entry.definitions[0].split(',')[0].trim();
+                                englishEquivalent = translation;
+                                definition = translation; // Use translation as initial definition
+                                pronunciation = '';
+                                console.log(`Using translation as initial definition: "${definition}"`);
+                                
+                                // Fetch real definition asynchronously after returning the word
+                                setTimeout(async () => {
+                                    try {
+                                        const apiDef = await fetchDefinitionFromAPI(englishEquivalent, 'en');
+                                        if (apiDef && apiDef.definition) {
+                                            // Update the definition in the log container
+                                            const defElement = document.querySelector('#word-info-def');
+                                            if (defElement) {
+                                                defElement.textContent = apiDef.definition;
+                                            }
+                                            // Also update the word object for future reference
+                                            if (currentWordObj && currentWordObj.word === chosen) {
+                                                currentWordObj.definition = apiDef.definition;
+                                            }
+                                            console.log(`Updated definition to: "${apiDef.definition}"`);
+                                        }
+                                    } catch (e) {
+                                        console.log('Could not fetch real definition, keeping translation');
+                                    }
+                                }, 100); // Small delay to not block UI
+                                
+                                console.log(`Selected: "${chosen}" -> "${englishEquivalent}"`);
+                                break;
+                            } else {
+                                console.log(`No entry or definitions for "${chosen}"`);
                             }
                             
-                            // If no translation found, try a few more times to find a word with translation
-                            if (!englishEquivalent && tryNum < maxTries - 1) {
-                                continue; // Try another word
+                            // If no definition, try another word
+                            if (tryNum < maxTries - 1) {
+                                continue;
                             }
-                            
-                            definition = entry ? entry.definition || entry.spanish_definition || '' : '';
-                            pronunciation = entry ? entry.pronunciation || '' : '';
-                            break;
                         }
                     }
 
-                    // Validate the Spanish word exists in our wordlist
-                    const isValidSpanish = SPANISH_WORDLIST.has(chosen.toLowerCase());
-                    if (!isValidSpanish) {
-                        console.log(`Selected Spanish word "${chosen}" not in wordlist, using fallback`);
-                        // Use a guaranteed valid word
-                        chosen = 'casa';
-                        englishEquivalent = 'house';
-                        pronunciation = '/No pronunciation available/';
-                    }
+                    console.log(`Final result: word="${chosen}", definition="${definition}", english="${englishEquivalent}"`);
 
                     return await finalizeWordObj({
                         word: chosen,
@@ -1174,67 +1358,53 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     }, 'Spanish');
                 }
 
-        // --- ENGLISH: Use comprehensive dictionary with built-in translations ---
+        // --- ENGLISH: Use bilingual English-Spanish dictionary ---
         if (language === 'English') {
-            console.log(`DEBUG: ENGLISH_DICTIONARY keys length: ${Object.keys(ENGLISH_DICTIONARY).length}`);
-            console.log(`DEBUG: ENGLISH_WORDLIST size: ${ENGLISH_WORDLIST.size}`);
-            
             // Check if user is learning English (UI is Spanish) or learning Spanish (UI is English)
             const uiLangShort = (typeof selectedLang === "string" && selectedLang) ? selectedLang.split('-')[0] : 'en';
             
-            if (Object.keys(ENGLISH_DICTIONARY).length === 0) {
-                console.log('DEBUG: English dictionary not loaded yet, waiting...');
-                // Wait a moment for dictionary to load
+            if (uiLangShort === 'es') {
+                // Spanish speaker learning English: show English words with Spanish UI
+                // This is correct - we want English words for them to learn
+            } else {
+                // English speaker learning Spanish: should select SPANISH words instead
+                console.log('English speaker learning Spanish - redirecting to Spanish');
+                return await fetchWordObject('Spanish');
+            }
+            
+            // Wait for English-Spanish dictionary to load if not ready
+            if (EN_ES_WORDLIST.size === 0) {
+                console.log('English-Spanish dictionary not loaded yet, waiting...');
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
             
-            const keys = Object.keys(ENGLISH_DICTIONARY);
-            if (keys.length === 0) {
-                console.log('DEBUG: Still no English dictionary, using minimal fallback');
-                // Use minimal fallback
-                const fallbackWords = ['house', 'water', 'sun', 'moon', 'tree', 'book', 'car', 'school'];
-                word = fallbackWords[Math.floor(Math.random() * fallbackWords.length)];
+            const maxTries = 20;
+            
+            for (let tryNum = 0; tryNum < maxTries; tryNum++) {
+                // Convert wordlist to array for random selection
+                const enEsWordsArray = Array.from(EN_ES_WORDLIST);
                 
-                if (uiLangShort === 'es') {
-                    // Spanish speaker learning English: show Spanish definition
-                    definition = `Una palabra común en inglés: ${word}`;
-                } else {
-                    definition = `A common English word: ${word}`;
-                }
-                pronunciation = `/${word}/`;
-                englishEquivalent = word;
-            } else {
-                let randomKey = keys[Math.floor(Math.random() * keys.length)];
-                let tries = 0;
-                while (window.usedWords && window.usedWords.has(randomKey.toUpperCase()) && tries < keys.length) {
-                    randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    tries++;
-                }
-                const entry = ENGLISH_DICTIONARY[randomKey];
-                word = randomKey;
-                
-                // Use comprehensive dictionary structure
-                if (entry && typeof entry === 'object') {
-                    if (uiLangShort === 'es') {
-                        // Spanish speaker learning English: show Spanish definition
-                        definition = entry.spanish_definition || entry.definition || `Palabra en inglés: ${word}`;
-                    } else {
-                        // English speaker learning Spanish: show English definition  
-                        definition = entry.definition || entry.english_definition || `English word: ${word}`;
+                if (enEsWordsArray.length > 0) {
+                    word = enEsWordsArray[Math.floor(Math.random() * enEsWordsArray.length)];
+                    const entry = EN_ES_DICTIONARY.get(word.toLowerCase());
+                    
+                    if (entry && entry.definitions && entry.definitions.length > 0) {
+                        // Use the first definition (it's already in Spanish!)
+                        definition = entry.definitions[0];
+                        pronunciation = '';
+                        englishEquivalent = entry.word; // The word itself is the English word
+                        
+                        console.log(`Selected: "${word}" -> "${englishEquivalent}"`);
+                        break;
                     }
-                    pronunciation = entry.pronunciation || `/${word}/`;
-                    // Use built-in Spanish translation instead of API
-                    englishEquivalent = entry.spanish || word;
-                } else {
-                    if (uiLangShort === 'es') {
-                        definition = `Palabra en inglés: ${word}`;
-                    } else {
-                        definition = `English word: ${word}`;
+                    
+                    // If no definition, try another word
+                    if (tryNum < maxTries - 1) {
+                        continue;
                     }
-                    pronunciation = `/${word}/`;
-                    englishEquivalent = word;
                 }
             }
+            
             return await finalizeWordObj({
                 word,
                 definition,
@@ -1381,7 +1551,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         return a === b;
     }
 
-    // Validate that word has all required components from comprehensive dictionary
+    // Validate that word has all required components
     function validateWordObject(obj, gameLangCode) {
         if (!obj) return false;
         
@@ -1389,21 +1559,16 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         const eq = obj.englishEquivalent || '';
         const definition = obj.definition || '';
         
-        // Must have all three: word, translation, and definition
-        if (!played || !eq || !definition) {
-            console.log(`Word validation failed: missing components - word: "${played}", translation: "${eq}", definition: "${definition}"`);
+        // Must have word and definition (translation is optional for RAE words)
+        if (!played || !definition) {
             return false;
         }
         
         // Avoid trivial same-word translations (unless learning English)
-        if (isTriviallySameCrossLang(played, eq, gameLangCode)) {
-            console.log(`Word validation failed: trivial translation - "${played}" = "${eq}"`);
+        if (eq && isTriviallySameCrossLang(played, eq, gameLangCode)) {
             return false;
         }
         
-        // For comprehensive dictionary, if we have all components, it's valid
-        // No need to test translation APIs since translations are built-in
-        console.log(`Word validation passed: "${played}" -> "${eq}" with definition`);
         return true;
     }
 
@@ -1414,7 +1579,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             if (!obj) continue;
             lastObj = obj;
             
-            // Validate word has all required components from comprehensive dictionary
+            // Validate word has all required components
             const isValid = validateWordObject(obj, gameLangCode);
             if (isValid) {
                 obj.gameLangCode = gameLangCode;
@@ -1788,8 +1953,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
             playRandomSound(loseSounds);
-            showRepeatButtons(currentWordObj);
             showWordInfo(currentWordObj);
+            // Show repeat buttons after word info
+            setTimeout(() => showRepeatButtons(currentWordObj), 100);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
                 // Auto-start new game after 5 seconds in same language
@@ -1815,8 +1981,9 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
             playRandomSound(winSounds);
-            showRepeatButtons(currentWordObj);
             showWordInfo(currentWordObj);
+            // Show repeat buttons after word info
+            setTimeout(() => showRepeatButtons(currentWordObj), 100);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
                 // Auto-start new game after 5 seconds in same language
@@ -1873,15 +2040,12 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     }
 
     document.addEventListener("DOMContentLoaded", function() {
-        // Initialize flag emoji support detection
-        window.flagEmojiSupported = detectFlagEmojiSupport();
-        console.log('Flag emoji support detected:', window.flagEmojiSupported);
-        
         // Initialize advanced phonetic engine
         initPhoneticEngine();
         
-        // Load comprehensive dictionary with both English and Spanish
-        loadComprehensiveDictionary();
+        // Load bilingual dictionaries
+        loadESEnDictionary();
+        loadEnEsDictionary();
         
         // Popup language selection (first language box)
         const popup = document.getElementById('lang-select-popup');
@@ -1897,25 +2061,85 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
             // Create the label (use the language's flag instead of a globe)
             const label = document.createElement('span');
+            
             const flagDisplay = getFlagDisplay(lang.code);
-            // Make the flag a link to the translator tool for all languages
             const translatorUrl = getTranslatorUrl(lang.code);
-            const flagHtml = translatorUrl
-                ? `<a href="${translatorUrl}" target="_blank" rel="noopener noreferrer"><span class="flag-emoji">${flagDisplay}</span></a>`
-                : `<span class="flag-emoji">${flagDisplay}</span>`;
-            label.innerHTML = `${flagHtml} ${TRANSLATIONS.choose_language[lang.code]}`;
+            
+            // Make the flag clickable to translator URL
+            if (translatorUrl && flagDisplay.includes('<img')) {
+                // If it's an image, wrap it in an anchor
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = flagDisplay;
+                const img = tempDiv.querySelector('img');
+                if (img) {
+                    const flagLink = document.createElement('a');
+                    flagLink.href = translatorUrl;
+                    flagLink.target = '_blank';
+                    flagLink.rel = 'noopener noreferrer';
+                    flagLink.style.display = 'inline-block';
+                    flagLink.style.textDecoration = 'none';
+                    flagLink.style.position = 'relative';
+                    
+                    // Add "Click" text that's slanted and close to the flag
+                    const clickText = document.createElement('span');
+                    clickText.textContent = TRANSLATIONS.click[lang.code] || 'Click';
+                    clickText.style.color = '#60a5fa';
+                    clickText.style.fontWeight = 'bold';
+                    clickText.style.fontSize = '11px';
+                    clickText.style.fontStyle = 'italic';
+                    clickText.style.transform = 'rotate(-15deg)';
+                    clickText.style.display = 'inline-block';
+                    clickText.style.position = 'absolute';
+                    clickText.style.top = '-6px';
+                    clickText.style.whiteSpace = 'nowrap';
+                    // Adjust position for Chinese and English (further right)
+                    if (lang.code === 'zh-CN') {
+                        clickText.style.left = '-20px';
+                    } else if (lang.code === 'en-US') {
+                        clickText.style.left = '-18px';
+                    } else {
+                        clickText.style.left = '-28px';
+                    }
+                    
+                    flagLink.appendChild(clickText);
+                    flagLink.appendChild(img);
+                    label.appendChild(flagLink);
+                }
+            } else {
+                // Fallback to emoji span
+                const flagSpan = document.createElement('span');
+                flagSpan.className = 'flag-emoji';
+                flagSpan.textContent = lang.flag;
+                label.appendChild(flagSpan);
+            }
+            
+            const labelText = document.createElement('span');
+            labelText.textContent = ' ' + TRANSLATIONS.choose_language[lang.code];
+            label.appendChild(labelText);
             label.style.minWidth = '180px';
             label.style.textAlign = 'right';
 
             // Create the button (always a plain button — the left label handles translator links)
             const btn = document.createElement('button');
             btn.innerHTML = '';
-            const btnFlag = document.createElement('span');
-            btnFlag.className = 'flag-emoji';
-            btnFlag.textContent = flagDisplay;
+            
+            // Add flag to button (NOT clickable - only popup flags should be clickable)
+            if (flagDisplay.includes('<img')) {
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = flagDisplay;
+                const img = tempDiv.querySelector('img');
+                if (img) {
+                    btn.appendChild(img);
+                }
+            } else {
+                const btnFlag = document.createElement('span');
+                btnFlag.className = 'flag-emoji';
+                btnFlag.textContent = lang.flag;
+                btn.appendChild(btnFlag);
+            }
+            
             const btnName = document.createElement('span');
             btnName.textContent = ' ' + (lang.names[lang.code] || lang.canonicalName);
-            btn.appendChild(btnFlag);
             btn.appendChild(btnName);
             btn.style.padding = '4px 16px 4px 10px'; // More right padding
             btn.style.fontSize = '15px';
@@ -2138,543 +2362,40 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         // Show the log-container when displaying word info
         logContainer.style.setProperty('display', 'block', 'important');
 
-        // Detect UI language code (e.g., 'zh-CN', 'es', etc.)
-        let uiLang = selectedLang || 'en-US';
-        let uiLangShort = uiLang.split('-')[0];
-        if (uiLang === 'en-US') uiLangShort = 'en';
-        if (uiLang === 'es-ES') uiLangShort = 'es';
-        if (uiLang === 'fr-FR') uiLangShort = 'fr';
-        if (uiLang === 'hi-IN') uiLangShort = 'hi';
-        // Mandarin stays 'zh-CN'
+        // Use the pre-fetched data from wordObj directly
+        const playedWord = wordObj.word;
+        const definition = wordObj.definition || 'No definition available';
+        const pronunciation = wordObj.pronunciation;
+        const englishEquivalent = wordObj.englishEquivalent || playedWord;
 
-        // Determine the learning/game language (the language of the played word).
-        // Prefer the language attached to the current word object (set when the word
-        // was fetched). Fall back to `pendingGameLang`.
-        const learningLangCode = (currentWordObj && currentWordObj.gameLangCode) ? currentWordObj.gameLangCode : (pendingGameLang || 'en-US');
-        let learningLangShort = learningLangCode.split('-')[0];
-        if (learningLangCode === 'en-US') learningLangShort = 'en';
-        if (learningLangCode === 'es-ES') learningLangShort = 'es';
-        if (learningLangCode === 'fr-FR') learningLangShort = 'fr';
-        if (learningLangCode === 'hi-IN') learningLangShort = 'hi';
+        // Create a clean display (definitions are already in the correct language from bilingual dicts)
+        const wordInfoDiv = document.createElement('div');
+        wordInfoDiv.style.marginTop = '12px';
+        wordInfoDiv.style.padding = '12px';
+        wordInfoDiv.style.backgroundColor = '#f8fafc';
+        wordInfoDiv.style.borderRadius = '8px';
+        wordInfoDiv.style.border = '1px solid #e2e8f0';
 
-        // DEBUG: Log the actual language values
-        console.log(`DEBUG: selectedLang=${selectedLang}, pendingGameLang=${pendingGameLang}`);
-        console.log(`DEBUG: uiLang=${uiLang}, uiLangShort=${uiLangShort}`);
-        console.log(`DEBUG: learningLangCode=${learningLangCode}, learningLangShort=${learningLangShort}`);
+        let html = `
+            <div style="font-size: 16px; font-weight: 600; color: #1e293b; margin-bottom: 8px;">
+                ${playedWord} <span style="font-weight: 400; color: #64748b;">(${englishEquivalent})</span>
+            </div>
+            <div style="font-size: 14px; color: #334155; margin-bottom: 6px;">
+                <strong>Definition:</strong> <span id="word-info-def">${definition}</span>
+            </div>
+        `;
 
-        // Determine played word and equivalent
-        let playedWord = wordObj.word;
-        let equivalentWord = wordObj.englishEquivalent;
-
-        // DEBUG: Log the word values after they're defined
-        console.log(`DEBUG: playedWord=${playedWord}, equivalentWord=${equivalentWord}`);
-
-        // Get the English-equivalent (or a UI-language translation of it).
-        // Behavior:
-        // - If the UI language is English, prefer a real English equivalent. If
-        //   `equivalentWord` isn't an English-looking string, try to translate the
-        //   played word from the learning language into English first.
-        // - If the UI language is non-English, first ensure we have a reliable
-        //   English equivalent (translating from the learning language when needed),
-        //   then translate that English equivalent into the UI language. This avoids
-        //   feeding raw romanizations like "phir" through en->es translation which
-        //   can produce bizarre results.
-        async function getEquivalentInUILang() {
-            // Helper: try to fetch English equivalent by translating from learning language
-            async function fetchEnglishFromPlayed() {
-                try {
-                    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(playedWord)}&langpair=${encodeURIComponent(learningLangShort)}|en`);
-                    const data = await res.json();
-                    const txt = data && data.responseData && data.responseData.translatedText;
-                    console.log(`fetchEnglishFromPlayed: translating "${playedWord}" from ${learningLangShort} to en, got: "${txt}"`);
-                    if (txt) {
-                        // Validate that the translation makes sense
-                        // If we already have an englishEquivalent that looks like English, prefer it
-                        if (equivalentWord && textLooksLikeLang(equivalentWord, 'en')) {
-                            console.log(`Using existing englishEquivalent "${equivalentWord}" over API translation "${txt}"`);
-                            return equivalentWord;
-                        }
-                        
-                        // Additional validation: check for obviously wrong translations
-                        const lowerTxt = txt.toLowerCase();
-                        const lowerPlayed = playedWord.toLowerCase();
-                        
-                        // Common Spanish words with their correct English equivalents
-                        const commonTranslations = {
-                            'libro': 'book',
-                            'casa': 'house', 
-                            'agua': 'water',
-                            'sol': 'sun',
-                            'mesa': 'table',
-                            'puerta': 'door',
-                            'gato': 'cat',
-                            'perro': 'dog',
-                            'manzana': 'apple',
-                            'ventana': 'window'
-                        };
-                        
-                        // If this is a common Spanish word and the translation looks wrong, use the known correct one
-                        if (commonTranslations[lowerPlayed] && 
-                            (lowerTxt !== commonTranslations[lowerPlayed]) && 
-                            (lowerTxt.includes('code') || lowerTxt.includes('civil') || lowerTxt.includes('legal'))) {
-                            console.log(`API returned wrong translation "${txt}" for "${playedWord}", using known correct translation "${commonTranslations[lowerPlayed]}"`);
-                            return commonTranslations[lowerPlayed];
-                        }
-                        
-                        return txt;
-                    }
-                } catch (e) {
-                    console.error('fetchEnglishFromPlayed error:', e);
-                }
-                return null;
-            }
-
-            // If UI language is English
-            if (uiLangShort === 'en') {
-                // If the existing equivalent looks like English, return it immediately
-                if (equivalentWord && textLooksLikeLang(equivalentWord, 'en')) {
-                    console.log(`Using existing englishEquivalent "${equivalentWord}" - looks like English`);
-                    return equivalentWord;
-                }
-
-                // Otherwise try to fetch a proper English equivalent from the played word
-                const fetched = await fetchEnglishFromPlayed();
-                if (fetched) return fetched;
-
-                // Fall back to whatever we have
-                console.log(`Using fallback: equivalentWord="${equivalentWord}", playedWord="${playedWord}"`);
-                return equivalentWord || playedWord;
-            }
-
-            // Try to get translation directly from comprehensive dictionary first
-            const getDirectTranslation = () => {
-                if (learningLangShort === 'en' && uiLangShort === 'es') {
-                    // English to Spanish: find Spanish word in dictionary
-                    const entry = ENGLISH_DICTIONARY[playedWord.toLowerCase()];
-                    if (entry && entry.spanish) {
-                        console.log(`Direct translation found: "${playedWord}" -> "${entry.spanish}"`);
-                        return entry.spanish;
-                    }
-                } else if (learningLangShort === 'es' && uiLangShort === 'en') {
-                    // Spanish to English: find English word in dictionary  
-                    const entry = SPANISH_DICTIONARY[playedWord.toLowerCase()];
-                    if (entry && entry.english) {
-                        console.log(`Direct translation found: "${playedWord}" -> "${entry.english}"`);
-                        return entry.english;
-                    }
-                }
-                return null;
-            };
-
-            const directTranslation = getDirectTranslation();
-            if (directTranslation) {
-                return directTranslation;
-            }
-
-            // For non-English UI languages: ensure we have an English equivalent first
-            let englishEq = equivalentWord && textLooksLikeLang(equivalentWord, 'en') ? equivalentWord : null;
-            if (!englishEq) {
-                englishEq = await fetchEnglishFromPlayed();
-            }
-            if (!englishEq) {
-                // As a last resort, use playedWord (may be non-Latin); return that raw
-                // since translating a garbage englishEquivalent will produce worse results.
-                console.log(`No English equivalent found, using playedWord "${playedWord}"`);
-                return equivalentWord || playedWord;
-            }
-
-            // Now translate the English equivalent into the UI language
-            let translated = null;
-            
-            // Try Google Translate API first (if API key is available)
-            if (window.GOOGLE_TRANSLATE_API_KEY) {
-                try {
-                    console.log(`Trying Google Translate: "${englishEq}" from English to ${uiLangShort}`);
-                    const googleUrl = `https://translation.googleapis.com/language/translate/v2?key=${window.GOOGLE_TRANSLATE_API_KEY}&q=${encodeURIComponent(englishEq)}&source=en&target=${uiLangShort}&format=text`;
-                    const googleRes = await fetch(googleUrl);
-                    const googleData = await googleRes.json();
-                    if (googleData.data && googleData.data.translations && googleData.data.translations[0]) {
-                        translated = googleData.data.translations[0].translatedText;
-                        console.log(`Google Translate successful: ${englishEq} -> ${translated}`);
-                    }
-                } catch (e) {
-                    console.error('Google Translate API error:', e);
-                }
-            }
-            
-            // Try Lingva Translate (free, no API key required)
-            if (!translated) {
-                try {
-                    console.log(`Trying Lingva: "${englishEq}" from English to ${uiLangShort}`);
-                    const lingvaUrl = `https://lingva.ml/api/v1/en/${uiLangShort}/${encodeURIComponent(englishEq)}`;
-                    const lingvaRes = await fetch(lingvaUrl);
-                    const lingvaData = await lingvaRes.json();
-                    if (lingvaData && lingvaData.translation) {
-                        translated = lingvaData.translation;
-                        console.log(`Lingva successful: ${englishEq} -> ${translated}`);
-                    }
-                } catch (e) {
-                    console.error('Lingva API error:', e);
-                }
-            }
-            
-            // Fallback to MyMemory if others fail
-            if (!translated) {
-                try {
-                    console.log(`Trying MyMemory: "${englishEq}" from English to ${uiLangShort}`);
-                    
-                    // Skip translation if source and target are the same language
-                    if (englishEq.toLowerCase() === playedWord.toLowerCase() && learningLangShort === uiLangShort) {
-                        console.log(`Skipping translation: source and target are the same (${learningLangShort}|${uiLangShort})`);
-                        return englishEq;
-                    }
-                    
-                    const res2 = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishEq)}&langpair=en|${encodeURIComponent(uiLangShort)}`);
-                    const data2 = await res2.json();
-                    console.log('MyMemory API response:', data2);
-                    const out = data2 && data2.responseData && data2.responseData.translatedText;
-                    if (out && out !== englishEq && out !== 'SELECCIONA DOS IDIOMAS DISTINTOS') {
-                        translated = out;
-                        console.log(`MyMemory successful: ${englishEq} → ${translated}`);
-                    } else {
-                        console.log('MyMemory failed or returned invalid response');
-                    }
-                } catch (e) {
-                    console.error('MyMemory API error:', e);
-                }
-            }
-            
-            // Return translation or fallback message
-            if (translated) {
-                return translated;
-            } else {
-                console.log('All translation APIs failed');
-                if (uiLangShort !== 'en') {
-                    return `${englishEq} (translation unavailable)`;
-                }
-                return englishEq || equivalentWord || playedWord;
-            }
-        }
-
-        // Get definition in UI language
-        async function getDefinitionInUILang() {
-            // Determine where to obtain the definition. Default to the UI language
-            // (the language the user speaks) so they understand the definition.
-            const targetDefLang = uiLangShort || 'en';
-
-            // Helper: return formatted missing message
-            const missingHtml = `<span style="color:orange;">No definition found.</span>`;
-
-            // Try: 1) Get a reliable English definition first (DictionaryAPI then Wiktionary)
-            let englishDef = '';
-            const dictResultEn = await fetchDefinitionFromDictionaryApi('en', equivalentWord);
-            if (dictResultEn) englishDef = dictResultEn.definition;
-            if (!englishDef) {
-                const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                if (wik) englishDef = wik;
-            }
-            if (!englishDef) return missingHtml;
-
-            // If UI language is English, return English definition directly
-            if (targetDefLang === 'en') return englishDef;
-
-            // Otherwise, translate the English definition into the UI language
-            // Prefer: server-side proxy translating the English definition text itself
-            try {
-                const proxyUrlDef = `${TRANSLATE_API}?q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}`;
-                const presDef = await fetch(proxyUrlDef);
-                if (presDef.ok) {
-                    const pdataDef = await presDef.json();
-                    if (pdataDef.definition && !/No definition found/i.test(pdataDef.definition)) return pdataDef.definition;
-                    if (pdataDef.translated && pdataDef.translated !== '') return pdataDef.translated;
-                }
-            } catch (e) {
-                // ignore
-            }
-
-            // Fallback: client-side MyMemory translation of the English definition
-            try {
-                const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${targetDefLang}`);
-                const transDefData = await transDefRes.json();
-                if (transDefData && transDefData.responseData && transDefData.responseData.translatedText) {
-                    return transDefData.responseData.translatedText;
-                }
-            } catch (e) {
-                // ignore
-            }
-
-            // Last resort: use client-side Google Translate if the user provided a key (insecure)
-            try {
-                if (window.GOOGLE_API_KEY) {
-                    const key = encodeURIComponent(window.GOOGLE_API_KEY);
-                    const defUrl = `https://translation.googleapis.com/language/translate/v2?key=${key}&q=${encodeURIComponent(englishDef)}&target=${encodeURIComponent(targetDefLang)}&format=text`;
-                    const defRes = await fetch(defUrl);
-                    const defData = await defRes.json();
-                    const translatedDef = defData?.data?.translations?.[0]?.translatedText || '';
-                    if (translatedDef) return translatedDef;
-                }
-            } catch (e) {
-                // ignore
-            }
-
-            // Give up: return English definition as a last resort (should be rare now)
-            return englishDef;
-        }
-
-        // Fallback: If all translation methods fail, use the appropriate word based on user's learning language
-        // This prevents the "PLEASE SELECT TWO DISTINCT LANGUAGES" error when APIs are down
-        const getFallbackEquivalent = () => {
-            // If user is learning English, show English word
-            if (learningLangShort === 'en' && uiLangShort === 'es') {
-                return `${playedWord} (translation service unavailable)`; // Spanish speaker learning English
-            }
-            // If user is learning Spanish, show Spanish word
-            if (learningLangShort === 'es' && uiLangShort === 'en') {
-                return `${playedWord} (translation service unavailable)`; // English speaker learning Spanish
-            }
-            return `${equivalentWord || playedWord} (translation service unavailable)`; // Fallback to whatever we have
-        };
-
-        // Get label for "Word" and the other-side word in UI language
-        let playedLabel = (TRANSLATIONS.word && TRANSLATIONS.word[uiLang]) || "Word";
-        let eqLabel;
-        
-        // Simple direct display - show both words without complex translation
-        // This avoids API failures and gives users what they actually want
-        if (learningLangShort === 'es' && uiLangShort === 'en') {
-            // Spanish speaker learning English: show both words
-            playedLabel = "Spanish word";
-            eqLabel = "English equivalent";
-        } else if (learningLangShort === 'en' && uiLangShort === 'es') {
-            // English speaker learning Spanish: show both words  
-            playedLabel = "English word";
-            eqLabel = "Spanish equivalente";
-        } else {
-            const eqLabels = {
-                'en': 'English equivalent',
-                'es': 'Spanish equivalente',
-                'fr': 'French equivalent',
-                'zh-CN': 'Mandarin equivalent',
-                'hi': 'Hindi equivalent'
-            };
-            eqLabel = eqLabels[uiLangShort] || 'Equivalent';
-        }
-
-        // Async update UI
-        (async () => {
-            const eqWord = await getEquivalentInUILang();
-            // If translation failed, use fallback
-            const finalEqWord = eqWord || getFallbackEquivalent();
-            // Prefer the definition stored with this word object so it always matches the played word
-            const storedDef = (wordObj.definition || '').toString().trim();
-            const isPlaceholder = !storedDef || /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(storedDef);
-            let def = (!isPlaceholder && storedDef) ? storedDef : await getDefinitionInUILang();
-
-            // If the played word uses non-Latin script (e.g., Devanagari) and the
-            // UI language uses Latin characters, show a transliteration instead of
-            // raw symbols so users see readable Latin letters.
-            let displayedPlayedWord = playedWord;
-            const containsNonLatin = /[^\x00-\x7F]/.test(playedWord || '');
-            const uiUsesLatin = ['en', 'es', 'fr'].includes(uiLangShort);
-            if (containsNonLatin && uiUsesLatin) {
-                const t = transliterate(playedWord, learningLangShort || 'hi');
-                // prefer transliteration if it produced ascii letters
-                if (t && /[A-Za-z]/.test(t)) displayedPlayedWord = t;
-            }
-
-            logContainer.innerHTML = `
-                <div style="margin:0;padding:0;">
-                    <strong>${playedLabel}:</strong> <span id="word-info-word">${displayedPlayedWord}</span>
-                    &nbsp;|&nbsp;
-                    <strong>${eqLabel}:</strong> <span id="word-info-equivalent">${finalEqWord}</span>
-                </div>
-                <div style="margin:0;padding:0;">
-                    <strong>Definition:</strong> <span id="word-info-def">${def}</span>
-                    <br>
-                    <button id="show-def-in-btn" style="margin-top:6px;margin-left:0;"><span class="flag-emoji">${getFlagDisplay(uiLang)}</span> ${TRANSLATIONS.show_definition && TRANSLATIONS.show_definition[uiLang] ? TRANSLATIONS.show_definition[uiLang] : 'Show definition in...'}</button>
-                    <select id="def-lang-dropdown" style="margin-left:5px;margin-top:6px;">
-                        <option value="es">Spanish</option>
-                        <option value="en">English</option>
-                        <option value="fr">French</option>
-                        <option value="hi">Hindi</option>
-                        <option value="zh-CN">Mandarin</option>
-                    </select>
-                    <br>
-                    <strong>Pronunciation:</strong> <span id="word-info-pron">${wordObj.pronunciation ?? '<span style="color:orange;">No pronunciation available.</span>'}</span>
-                    <button id="tts-btn" style="margin-left:10px;">🔊</button>
-                    <br>
-                    <div style="margin-top:10px;">
-                        <select id="show-in-lang">
-                            <option value="">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show word in..."}</option>
-                            <option value="es">Spanish</option>
-                            <option value="zh-CN">Mandarin</option>
-                            <option value="hi">Hindi</option>
-                            <option value="fr">French</option>
-                        </select>
-                        <button id="show-in-btn">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show"}</button>
-                    </div>
+        // Only show pronunciation if we have real data
+        if (pronunciation && pronunciation !== '' && !pronunciation.includes('No pronunciation')) {
+            html += `
+                <div style="font-size: 14px; color: #334155;">
+                    <strong>Pronunciation:</strong> ${pronunciation}
                 </div>
             `;
-            document.getElementById('tts-btn').onclick = () => {
-                // Speak the displayed word in the game's language (learning language) so pronunciation
-                // matches the word's language rather than the UI language.
-                const gameLangCode = (typeof pendingGameLang === 'string' && pendingGameLang) ? pendingGameLang : currentLang || 'en-US';
-                // Map codes like 'es-ES' or 'en-US' directly; fallback to 'en-US'.
-                speakText(playedWord, gameLangCode);
-            };
+        }
 
-            // Handler for "Show definition in..." button
-            document.getElementById('show-def-in-btn').onclick = async () => {
-                const defLang = document.getElementById('def-lang-dropdown').value;
-                // We want a real English definition to translate, not a placeholder message.
-                let englishDef = '';
-                const defText = (wordObj.definition || '').toString();
-                const isPlaceholder = /no definition|fallback|not found|No hay diccionario|No dictionary/i.test(defText);
-                if (defText && !isPlaceholder) englishDef = defText;
-
-                if (!englishDef) {
-                    const dictResultEn = await fetchDefinitionFromDictionaryApi('en', equivalentWord);
-                    if (dictResultEn) englishDef = dictResultEn.definition;
-                    if (!englishDef) {
-                        const wikEn = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                        if (wikEn) englishDef = wikEn;
-                    }
-                }
-
-                    if (!englishDef) {
-                        document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">No English definition found to translate.</span>`;
-                        return;
-                    }
-
-                if (defLang === 'en') {
-                    document.getElementById('word-info-def').innerText = englishDef;
-                    return;
-                }
-
-                // Try server-side translation via Vercel API first
-                try {
-                    const proxyUrl = `${TRANSLATE_API}?q=${encodeURIComponent(equivalentWord)}&target=${encodeURIComponent(defLang)}`;
-                    const pres = await fetch(proxyUrl);
-                    if (pres.ok) {
-                        const pdata = await pres.json();
-                        if (pdata.definition && !/No definition found/i.test(pdata.definition)) {
-                            document.getElementById('word-info-def').innerText = pdata.definition;
-                            return;
-                        }
-                        if (pdata.translated && pdata.translated !== '') {
-                            document.getElementById('word-info-def').innerText = pdata.translated;
-                            return;
-                        }
-                    }
-                } catch (e) {
-                    // proxy failed, fall back
-                }
-
-                // Fallback to client-side translation of the English definition
-                try {
-                    const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${defLang}`);
-                    const transDefData = await transDefRes.json();
-                    const translatedDef = transDefData.responseData.translatedText;
-                    document.getElementById('word-info-def').innerText = translatedDef;
-                } catch (e) {
-                    document.getElementById('word-info-def').innerHTML = `<span style="color:orange;">Could not translate definition.</span>`;
-                }
-            };
-
-            // Handler for "Show word in..." button
-            document.getElementById('show-in-btn').onclick = async () => {
-                const lang = document.getElementById('show-in-lang').value;
-                if (!lang) return;
-                // Translate the English equivalent to the selected language
-                let translated = '';
-                try {
-                    const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(equivalentWord)}&langpair=en|${lang}`);
-                    const data = await res.json();
-                    translated = data.responseData.translatedText;
-                } catch {
-                    translated = equivalentWord;
-                }
-                // Try DictionaryAPI.dev for definition/pronunciation in target language
-                let def = '', pron = '';
-                const dictResult = await fetchDefinitionFromDictionaryApi(lang, translated);
-                if (dictResult) {
-                    def = dictResult.definition;
-                    pron = dictResult.phonetic || '';
-                }
-                if (!def) {
-                    const wikTarget = await fetchWiktionaryDefinition(translated, (lang === 'zh-CN' || lang === 'zh') ? 'zh' : lang);
-                    if (wikTarget) def = wikTarget;
-                }
-                // If still not found, get English definition and translate it
-                if (!def) {
-                    let englishDef = '';
-                    const dictResultEn = await fetchDefinitionFromDictionaryApi('en', equivalentWord);
-                    if (dictResultEn) {
-                        englishDef = dictResultEn.definition;
-                        pron = dictResultEn.phonetic || '';
-                    }
-                    if (!englishDef) {
-                        const wik = await fetchWiktionaryDefinition(equivalentWord, 'en');
-                        if (wik) englishDef = wik;
-                    }
-                    if (englishDef) {
-                        try {
-                            const transDefRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(englishDef)}&langpair=en|${lang}`);
-                            const transDefData = await transDefRes.json();
-                            def = transDefData.responseData.translatedText;
-                        } catch (e) {
-                            def = englishDef;
-                        }
-                    }
-                }
-                if (!def) def = `<span style="color:orange;">No definition found for "${translated}" in this language.</span>`;
-                if (!pron) pron = '<span style="color:orange;">No pronunciation available.</span>';
-                // Update UI with translated word/definition
-                logContainer.innerHTML = `
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
-                        <div>
-                            <strong>${playedLabel}:</strong> <span id="word-info-word">${translated}</span>
-                        </div>
-                        <div>
-                            <strong>${eqLabel}:</strong>
-                            <span id="word-info-equivalent">${equivalentWord}</span>
-                        </div>
-                    </div>
-                    <strong>Definition:</strong> <span id="word-info-def">${def}</span>
-                    <button id="show-def-in-btn" style="margin-left:10px;"><span class="flag-emoji">${getFlagDisplay(uiLang)}</span> ${TRANSLATIONS.show_definition && TRANSLATIONS.show_definition[uiLang] ? TRANSLATIONS.show_definition[uiLang] : 'Show definition in...'}</button>
-                    <select id="def-lang-dropdown" style="margin-left:5px;">
-                        <option value="es">Spanish</option>
-                        <option value="en">English</option>
-                        <option value="fr">French</option>
-                        <option value="hi">Hindi</option>
-                        <option value="zh-CN">Mandarin</option>
-                    </select>
-                    <br>
-                    <strong>Pronunciation:</strong> <span id="word-info-pron">${pron}</span>
-                    <button id="tts-btn" style="margin-left:10px;">🔊</button>
-                    <br>
-                    <div style="margin-top:10px;">
-                        <select id="show-in-lang">
-                            <option value="">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show word in..."}</option>
-                            <option value="es">Spanish</option>
-                            <option value="zh-CN">Mandarin</option>
-                            <option value="hi">Hindi</option>
-                            <option value="fr">French</option>
-                        </select>
-                        <button id="show-in-btn">${TRANSLATIONS.show_word && TRANSLATIONS.show_word[uiLang] ? TRANSLATIONS.show_word[uiLang] : "Show"}</button>
-                    </div>
-                `;
-                document.getElementById('tts-btn').onclick = () => {
-                    // When showing a translated word, speak it using the target language code `lang`.
-                    // If the shown word is the English equivalent, prefer an English voice.
-                    const speakLang = (lang && typeof lang === 'string') ? lang : (pendingGameLang || 'en-US');
-                    // If the translated text is actually the English equivalent, use en-US
-                    const isEnglishEquivalent = (translated && translated.toLowerCase() === equivalentWord.toLowerCase());
-                    speakText(translated, isEnglishEquivalent ? 'en-US' : speakLang);
-                };
-            };
-            showRepeatButtons(wordObj);
-        })();
+        wordInfoDiv.innerHTML = html;
+        logContainer.appendChild(wordInfoDiv);
     }
 
     function updateWordDisplay() {
