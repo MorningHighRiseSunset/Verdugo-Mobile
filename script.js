@@ -812,98 +812,6 @@ console.error = function(...args) {
     originalConsoleError.apply(console, args);
 };
 
-// Load bilingual Spanish-English dictionary
-let ES_EN_DICTIONARY = new Map();
-let ES_EN_WORDLIST = new Set();
-
-async function loadESEnDictionary() {
-    try {
-        const response = await fetch('es-en-dictionary.json');
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        console.log('Loaded Spanish-English dictionary:', data.length, 'entries');
-        
-        // Process each entry
-        data.forEach(entry => {
-            if (entry.word && entry.definitions && entry.definitions.length > 0) {
-                // Only include clean single words
-                const cleanWord = entry.word.replace(/[.,\/\-\s]/g, '').trim();
-                if (/^[a-zA-ZáéíóúñüÁÉÍÓÚÑÜ]+$/.test(cleanWord) && cleanWord.length > 1) {
-                    // Clean up definitions - remove type codes in braces like {f}, {m}, {n}
-                    const cleanDefinitions = entry.definitions.map(def => 
-                        def.replace(/\s*\{[^}]*\}\s*/g, '').trim()
-                    ).filter(def => def.length > 0);
-                    
-                    if (cleanDefinitions.length > 0) {
-                        ES_EN_DICTIONARY.set(cleanWord.toLowerCase(), {
-                            word: cleanWord,
-                            definitions: cleanDefinitions,
-                            types: entry.types || []
-                        });
-                        ES_EN_WORDLIST.add(cleanWord.toLowerCase());
-                    }
-                }
-            }
-        });
-        
-        console.log('Processed Spanish-English dictionary:', ES_EN_WORDLIST.size, 'Spanish words with English definitions');
-        
-    } catch (e) {
-        console.error('Failed to load Spanish-English dictionary:', e);
-        ES_EN_DICTIONARY = new Map();
-        ES_EN_WORDLIST = new Set();
-    }
-}
-
-// Load bilingual English-Spanish dictionary
-let EN_ES_DICTIONARY = new Map();
-let EN_ES_WORDLIST = new Set();
-
-async function loadEnEsDictionary() {
-    try {
-        const response = await fetch('en-es-dictionary.json');
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        console.log('Loaded English-Spanish dictionary:', data.length, 'entries');
-        
-        // Process each entry
-        data.forEach(entry => {
-            if (entry.word && entry.definitions && entry.definitions.length > 0) {
-                // Only include clean single words
-                const cleanWord = entry.word.replace(/[.,\/\-\s]/g, '').trim();
-                if (/^[a-zA-Z]+$/.test(cleanWord) && cleanWord.length > 1) {
-                    // Clean up definitions - remove type codes in braces like {f}, {m}, {n}
-                    const cleanDefinitions = entry.definitions.map(def => 
-                        def.replace(/\s*\{[^}]*\}\s*/g, '').trim()
-                    ).filter(def => def.length > 0);
-                    
-                    if (cleanDefinitions.length > 0) {
-                        EN_ES_DICTIONARY.set(cleanWord.toLowerCase(), {
-                            word: cleanWord,
-                            definitions: cleanDefinitions,
-                            types: entry.types || []
-                        });
-                        EN_ES_WORDLIST.add(cleanWord.toLowerCase());
-                    }
-                }
-            }
-        });
-        
-        console.log('Processed English-Spanish dictionary:', EN_ES_WORDLIST.size, 'English words with Spanish definitions');
-        
-    } catch (e) {
-        console.error('Failed to load English-Spanish dictionary:', e);
-        EN_ES_DICTIONARY = new Map();
-        EN_ES_WORDLIST = new Set();
-    }
-}
-
 // Load comprehensive dictionary with both English and Spanish words
 async function loadComprehensiveDictionary() {
     try {
@@ -921,26 +829,33 @@ async function loadComprehensiveDictionary() {
         ENGLISH_WORDLIST = new Set();
         SPANISH_WORDLIST = new Set();
         
-        // Process each entry
+        // Process each entry - filter out fake definitions
         comprehensiveData.forEach(entry => {
             if (entry.english && entry.spanish) {
-                // English dictionary
-                ENGLISH_DICTIONARY[entry.english.toLowerCase()] = {
-                    definition: entry.english_definition || `English word: ${entry.english}`,
-                    pronunciation: '', // Don't fake pronunciation
-                    spanish: entry.spanish,
-                    spanish_definition: entry.spanish_definition
-                };
-                ENGLISH_WORDLIST.add(entry.english.toLowerCase());
+                // Check if definitions are real (not placeholders)
+                const isFakeEnglish = /A common English word that refers to|Definición de/.test(entry.english_definition || '');
+                const isFakeSpanish = /Palabra española|Spanish word/.test(entry.spanish_definition || '');
                 
-                // Spanish dictionary  
-                SPANISH_DICTIONARY[entry.spanish.toLowerCase()] = {
-                    definition: entry.spanish_definition || `Palabra española: ${entry.spanish}`,
-                    pronunciation: '', // Don't fake pronunciation
-                    english: entry.english,
-                    english_definition: entry.english_definition
-                };
-                SPANISH_WORDLIST.add(entry.spanish.toLowerCase());
+                // Only include entries with real definitions
+                if (!isFakeEnglish && !isFakeSpanish) {
+                    // English dictionary
+                    ENGLISH_DICTIONARY[entry.english.toLowerCase()] = {
+                        definition: entry.english_definition || `English word: ${entry.english}`,
+                        pronunciation: '', // Don't fake pronunciation
+                        spanish: entry.spanish,
+                        spanish_definition: entry.spanish_definition
+                    };
+                    ENGLISH_WORDLIST.add(entry.english.toLowerCase());
+                    
+                    // Spanish dictionary  
+                    SPANISH_DICTIONARY[entry.spanish.toLowerCase()] = {
+                        definition: entry.spanish_definition || `Palabra española: ${entry.spanish}`,
+                        pronunciation: '', // Don't fake pronunciation
+                        english: entry.english,
+                        english_definition: entry.english_definition
+                    };
+                    SPANISH_WORDLIST.add(entry.spanish.toLowerCase());
+                }
             }
         });
         
@@ -1205,90 +1120,22 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
 
 
-        // --- SPANISH: Use bilingual dictionaries ---
+        // --- SPANISH: Use comprehensive dictionary ---
                 if (language === 'Spanish') {
                     // Check if user is learning English (UI is Spanish) or learning Spanish (UI is English)
                     const uiLangShort = (typeof selectedLang === "string" && selectedLang) ? selectedLang.split('-')[0] : 'en';
                     
                     if (uiLangShort === 'es') {
-                        // Spanish speaker learning English: select ENGLISH words with Spanish definitions
-                        // Wait for English-Spanish dictionary to load if not ready
-                        if (EN_ES_WORDLIST.size === 0) {
-                            console.log('English-Spanish dictionary not loaded yet, waiting...');
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                        }
-
-                        // Pick English words - use bilingual dictionary for translation, then fetch real definition
-                        const maxTries = 20;
-                        let chosen = '';
-                        let englishEquivalent = '';
-                        let definition = '';
-                        let pronunciation = '';
-
-                        // Convert wordlist to array for random selection
-                        const enEsWordsArray = Array.from(EN_ES_WORDLIST);
-                        console.log(`Selecting from ${enEsWordsArray.length} English words`);
-                        
-                        for (let tryNum = 0; tryNum < maxTries; tryNum++) {
-                            if (enEsWordsArray.length > 0) {
-                                chosen = enEsWordsArray[Math.floor(Math.random() * enEsWordsArray.length)];
-                                const entry = EN_ES_DICTIONARY.get(chosen.toLowerCase());
-                                
-                                if (entry && entry.definitions && entry.definitions.length > 0) {
-                                    // Get Spanish translation from bilingual dict
-                                    const translation = entry.definitions[0].split(',')[0].trim();
-                                    englishEquivalent = chosen; // The word itself is the English word
-                                    
-                                    // Fetch actual English definition from DictionaryAPI, then translate to Spanish
-                                    const apiDef = await fetchDefinitionFromAPI(chosen, 'en');
-                                    if (apiDef && apiDef.definition) {
-                                        // Translate English definition to Spanish
-                                        try {
-                                            const transRes = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(apiDef.definition)}&langpair=en|es`);
-                                            const transData = await transRes.json();
-                                            const translated = transData.responseData.translatedText;
-                                            if (translated && translated !== apiDef.definition) {
-                                                definition = translated;
-                                            } else {
-                                                definition = translation; // Fallback to translation
-                                            }
-                                        } catch (e) {
-                                            definition = translation; // Fallback to translation
-                                        }
-                                        pronunciation = apiDef.pronunciation || '';
-                                    } else {
-                                        // Fallback to translation if API fails
-                                        definition = translation;
-                                        pronunciation = '';
-                                    }
-                                    
-                                    console.log(`Selected: "${chosen}" -> "${englishEquivalent}"`);
-                                    break;
-                                }
-                                
-                                // If no definition, try another word
-                                if (tryNum < maxTries - 1) {
-                                    continue;
-                                }
-                            }
-                        }
-
-                        return await finalizeWordObj({
-                            word: chosen,
-                            definition: definition,
-                            pronunciation: pronunciation,
-                            englishEquivalent: englishEquivalent
-                        }, 'Spanish');
+                        // Spanish speaker learning English: select ENGLISH words
+                        return await fetchWordObject('English');
                     }
-                    
-                    // English speaker learning Spanish: select SPANISH words with English definitions
-                    // Wait for Spanish-English dictionary to load if not ready
-                    if (ES_EN_WORDLIST.size === 0) {
-                        console.log('Spanish-English dictionary not loaded yet, waiting...');
+                    // Wait for Spanish dictionary to load if not ready
+                    if (SPANISH_WORDLIST.size === 0) {
+                        console.log('Spanish dictionary not loaded yet, waiting...');
                         await new Promise(resolve => setTimeout(resolve, 1000));
                     }
 
-                    // Pick Spanish words - use bilingual dictionary for translation, then fetch real definition
+                    // Pick Spanish words from comprehensive dictionary
                     const maxTries = 20;
                     let chosen = '';
                     let englishEquivalent = '';
@@ -1296,59 +1143,43 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     let pronunciation = '';
 
                     // Convert wordlist to array for random selection
-                    const esEnWordsArray = Array.from(ES_EN_WORDLIST);
-                    console.log(`Selecting from ${esEnWordsArray.length} Spanish words`);
+                    const spanishWordsArray = Array.from(SPANISH_WORDLIST);
+                    console.log(`Selecting from ${spanishWordsArray.length} Spanish words`);
                     
                     for (let tryNum = 0; tryNum < maxTries; tryNum++) {
-                        if (esEnWordsArray.length > 0) {
-                            chosen = esEnWordsArray[Math.floor(Math.random() * esEnWordsArray.length)];
-                            const entry = ES_EN_DICTIONARY.get(chosen.toLowerCase());
+                        if (spanishWordsArray.length > 0) {
+                            chosen = spanishWordsArray[Math.floor(Math.random() * spanishWordsArray.length)];
+                            const entry = SPANISH_DICTIONARY[chosen.toLowerCase()];
                             
-                            console.log(`Try ${tryNum}: checking "${chosen}"`);
-                            
-                            if (entry && entry.definitions && entry.definitions.length > 0) {
-                                // Get English translation from bilingual dict
-                                const translation = entry.definitions[0].split(',')[0].trim();
-                                englishEquivalent = translation;
-                                definition = translation; // Use translation as initial definition
-                                pronunciation = '';
-                                console.log(`Using translation as initial definition: "${definition}"`);
+                            if (entry && entry.english) {
+                                englishEquivalent = entry.english;
+                                // For English speaker learning Spanish, check if english_definition is real
+                                const engDef = entry.english_definition || '';
+                                const isPlaceholder = /common English word|Palabra|English word/.test(engDef);
                                 
-                                // Fetch real definition asynchronously after returning the word
-                                setTimeout(async () => {
-                                    try {
-                                        const apiDef = await fetchDefinitionFromAPI(englishEquivalent, 'en');
-                                        if (apiDef && apiDef.definition) {
-                                            // Update the definition in the log container
-                                            const defElement = document.querySelector('#word-info-def');
-                                            if (defElement) {
-                                                defElement.textContent = apiDef.definition;
-                                            }
-                                            // Also update the word object for future reference
-                                            if (currentWordObj && currentWordObj.word === chosen) {
-                                                currentWordObj.definition = apiDef.definition;
-                                            }
-                                            console.log(`Updated definition to: "${apiDef.definition}"`);
-                                        }
-                                    } catch (e) {
-                                        console.log('Could not fetch real definition, keeping translation');
-                                    }
-                                }, 100); // Small delay to not block UI
-                                
-                                console.log(`Selected: "${chosen}" -> "${englishEquivalent}"`);
-                                break;
-                            } else {
-                                console.log(`No entry or definitions for "${chosen}"`);
+                                if (isPlaceholder) {
+                                    // If english_definition is a placeholder, use Spanish definition
+                                    definition = entry.spanish_definition || entry.definition || `Spanish word: ${chosen}`;
+                                    console.log(`Using Spanish definition (english_definition is placeholder)`);
+                                } else {
+                                    definition = engDef || entry.definition || `English word: ${englishEquivalent}`;
+                                    console.log(`Using English definition`);
+                                }
+                                pronunciation = entry.pronunciation || '';
+                                console.log(`Selected: "${chosen}" -> "${englishEquivalent}" with definition: "${definition}"`);
+                                break; // Found word with translation
                             }
                             
-                            // If no definition, try another word
-                            if (tryNum < maxTries - 1) {
-                                continue;
+                            // If no translation found, try a few more times
+                            if (!englishEquivalent && tryNum < maxTries - 1) {
+                                continue; // Try another word
                             }
+                            
+                            definition = entry ? entry.english_definition || entry.definition || '' : '';
+                            pronunciation = entry ? entry.pronunciation || '' : '';
+                            break;
                         }
                     }
-
-                    console.log(`Final result: word="${chosen}", definition="${definition}", english="${englishEquivalent}"`);
 
                     return await finalizeWordObj({
                         word: chosen,
@@ -1358,7 +1189,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     }, 'Spanish');
                 }
 
-        // --- ENGLISH: Use bilingual English-Spanish dictionary ---
+        // --- ENGLISH: Use comprehensive dictionary ---
         if (language === 'English') {
             // Check if user is learning English (UI is Spanish) or learning Spanish (UI is English)
             const uiLangShort = (typeof selectedLang === "string" && selectedLang) ? selectedLang.split('-')[0] : 'en';
@@ -1372,36 +1203,33 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 return await fetchWordObject('Spanish');
             }
             
-            // Wait for English-Spanish dictionary to load if not ready
-            if (EN_ES_WORDLIST.size === 0) {
-                console.log('English-Spanish dictionary not loaded yet, waiting...');
-                await new Promise(resolve => setTimeout(resolve, 1000));
-            }
+            const keys = Object.keys(ENGLISH_DICTIONARY);
+            const hasComprehensive = keys.length > 0;
             
-            const maxTries = 20;
-            
-            for (let tryNum = 0; tryNum < maxTries; tryNum++) {
-                // Convert wordlist to array for random selection
-                const enEsWordsArray = Array.from(EN_ES_WORDLIST);
+            // Try comprehensive dictionary first
+            if (hasComprehensive) {
+                let randomKey = keys[Math.floor(Math.random() * keys.length)];
+                let tries = 0;
+                while (window.usedWords && window.usedWords.has(randomKey.toUpperCase()) && tries < keys.length) {
+                    randomKey = keys[Math.floor(Math.random() * keys.length)];
+                    tries++;
+                }
+                const entry = ENGLISH_DICTIONARY[randomKey];
+                word = randomKey;
                 
-                if (enEsWordsArray.length > 0) {
-                    word = enEsWordsArray[Math.floor(Math.random() * enEsWordsArray.length)];
-                    const entry = EN_ES_DICTIONARY.get(word.toLowerCase());
-                    
-                    if (entry && entry.definitions && entry.definitions.length > 0) {
-                        // Use the first definition (it's already in Spanish!)
-                        definition = entry.definitions[0];
-                        pronunciation = '';
-                        englishEquivalent = entry.word; // The word itself is the English word
-                        
-                        console.log(`Selected: "${word}" -> "${englishEquivalent}"`);
-                        break;
+                // Use comprehensive dictionary structure
+                if (entry && typeof entry === 'object') {
+                    if (uiLangShort === 'es') {
+                        // Spanish speaker learning English: show Spanish definition
+                        definition = entry.spanish_definition || entry.definition || `Palabra en inglés: ${word}`;
+                    } else {
+                        // English speaker learning Spanish: show English definition  
+                        definition = entry.definition || entry.english_definition || `English word: ${word}`;
                     }
-                    
-                    // If no definition, try another word
-                    if (tryNum < maxTries - 1) {
-                        continue;
-                    }
+                    pronunciation = entry.pronunciation || '';
+                    // Use built-in Spanish translation
+                    englishEquivalent = entry.spanish || word;
+                    console.log(`Selected: "${word}" -> "${englishEquivalent}"`);
                 }
             }
             
@@ -1954,8 +1782,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             showTemporaryPopup('Game Over! The word was: ' + selectedWord, false);
             playRandomSound(loseSounds);
             showWordInfo(currentWordObj);
-            // Show repeat buttons after word info
-            setTimeout(() => showRepeatButtons(currentWordObj), 100);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
                 // Auto-start new game after 5 seconds in same language
@@ -1982,8 +1808,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
             playRandomSound(winSounds);
             showWordInfo(currentWordObj);
-            // Show repeat buttons after word info
-            setTimeout(() => showRepeatButtons(currentWordObj), 100);
             // Always show definition after spelling (even if missing)
             setTimeout(() => {
                 // Auto-start new game after 5 seconds in same language
@@ -2043,9 +1867,8 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         // Initialize advanced phonetic engine
         initPhoneticEngine();
         
-        // Load bilingual dictionaries
-        loadESEnDictionary();
-        loadEnEsDictionary();
+        // Load comprehensive dictionary with both English and Spanish
+        loadComprehensiveDictionary();
         
         // Popup language selection (first language box)
         const popup = document.getElementById('lang-select-popup');

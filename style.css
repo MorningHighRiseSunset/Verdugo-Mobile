@@ -367,20 +367,18 @@ button:active, button:focus {
     gap: 0.3em;
     justify-content: center;
     margin: 20px auto;
-    overflow-x: auto;
+    overflow-x: hidden;
     overflow-y: hidden;
     white-space: nowrap;
     padding-bottom: 8px;
-    scrollbar-color: #888 #eee;
-    scrollbar-width: thin;
 }
+/* Remove scrollbars */
 .letter-container::-webkit-scrollbar {
-    height: 8px;
-    background: #eee;
+    display: none;
 }
-.letter-container::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
+.letter-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
 #letter-container button {
@@ -423,7 +421,7 @@ button:active, button:focus {
     /* Let the height follow content, but cap it so it doesn't
        take over the whole screen. */
     max-height: 40vh;
-    overflow-y: auto;
+    overflow-y: hidden;
     word-wrap: break-word;
     position: static;
     box-sizing: border-box;
