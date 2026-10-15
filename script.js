@@ -1150,31 +1150,30 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                         if (spanishWordsArray.length > 0) {
                             chosen = spanishWordsArray[Math.floor(Math.random() * spanishWordsArray.length)];
                             const entry = SPANISH_DICTIONARY[chosen.toLowerCase()];
-                            
+
                             if (entry && entry.english) {
                                 englishEquivalent = entry.english;
                                 // For English speaker learning Spanish, check if english_definition is real
                                 const engDef = entry.english_definition || '';
                                 const isPlaceholder = /common English word|Palabra|English word/.test(engDef);
-                                
+
+                                // Skip words with placeholder definitions
                                 if (isPlaceholder) {
-                                    // If english_definition is a placeholder, use Spanish definition
-                                    definition = entry.spanish_definition || entry.definition || `Spanish word: ${chosen}`;
-                                    console.log(`Using Spanish definition (english_definition is placeholder)`);
-                                } else {
-                                    definition = engDef || entry.definition || `English word: ${englishEquivalent}`;
-                                    console.log(`Using English definition`);
+                                    console.log(`Skipping "${chosen}" - has placeholder definition`);
+                                    continue; // Try another word
                                 }
+
+                                definition = engDef || entry.definition || `English word: ${englishEquivalent}`;
                                 pronunciation = entry.pronunciation || '';
                                 console.log(`Selected: "${chosen}" -> "${englishEquivalent}" with definition: "${definition}"`);
-                                break; // Found word with translation
+                                break; // Found word with real definition
                             }
-                            
+
                             // If no translation found, try a few more times
                             if (!englishEquivalent && tryNum < maxTries - 1) {
                                 continue; // Try another word
                             }
-                            
+
                             definition = entry ? entry.english_definition || entry.definition || '' : '';
                             pronunciation = entry ? entry.pronunciation || '' : '';
                             break;
@@ -1210,26 +1209,39 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             if (hasComprehensive) {
                 let randomKey = keys[Math.floor(Math.random() * keys.length)];
                 let tries = 0;
-                while (window.usedWords && window.usedWords.has(randomKey.toUpperCase()) && tries < keys.length) {
+                let foundValid = false;
+
+                // Try up to 20 times to find a word with a real definition
+                for (let attempt = 0; attempt < 20; attempt++) {
                     randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    tries++;
-                }
-                const entry = ENGLISH_DICTIONARY[randomKey];
-                word = randomKey;
-                
-                // Use comprehensive dictionary structure
-                if (entry && typeof entry === 'object') {
-                    if (uiLangShort === 'es') {
-                        // Spanish speaker learning English: show Spanish definition
-                        definition = entry.spanish_definition || entry.definition || `Palabra en inglés: ${word}`;
-                    } else {
-                        // English speaker learning Spanish: show English definition  
-                        definition = entry.definition || entry.english_definition || `English word: ${word}`;
+                    while (window.usedWords && window.usedWords.has(randomKey.toUpperCase()) && tries < keys.length) {
+                        randomKey = keys[Math.floor(Math.random() * keys.length)];
+                        tries++;
                     }
-                    pronunciation = entry.pronunciation || '';
-                    // Use built-in Spanish translation
-                    englishEquivalent = entry.spanish || word;
-                    console.log(`Selected: "${word}" -> "${englishEquivalent}"`);
+                    const entry = ENGLISH_DICTIONARY[randomKey];
+
+                    if (entry && typeof entry === 'object') {
+                        const def = uiLangShort === 'es' ? entry.spanish_definition : entry.definition;
+                        const isPlaceholder = /common English word|Palabra|English word/.test(def || '');
+
+                        if (!isPlaceholder && def && def.length > 10) {
+                            word = randomKey;
+                            if (uiLangShort === 'es') {
+                                definition = entry.spanish_definition || entry.definition || `Palabra en inglés: ${word}`;
+                            } else {
+                                definition = entry.definition || entry.english_definition || `English word: ${word}`;
+                            }
+                            pronunciation = entry.pronunciation || '';
+                            englishEquivalent = entry.spanish || word;
+                            console.log(`Selected: "${word}" -> "${englishEquivalent}"`);
+                            foundValid = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!foundValid) {
+                    console.log('Could not find word with valid definition, using fallback');
                 }
             }
             
@@ -1392,6 +1404,25 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             return false;
         }
         
+        // Reject placeholder definitions
+        const placeholderPatterns = [
+            /^No definition found/i,
+            /^No definition available/i,
+            /A common English word that refers to/i,
+            /Palabra española/i,
+            /Spanish word/i,
+            /Definición de/i,
+            /English word:/i,
+            /Palabra en inglés:/i
+        ];
+        
+        for (const pattern of placeholderPatterns) {
+            if (pattern.test(definition)) {
+                console.log(`Rejecting word "${played}" with placeholder definition: "${definition}"`);
+                return false;
+            }
+        }
+        
         // Avoid trivial same-word translations (unless learning English)
         if (eq && isTriviallySameCrossLang(played, eq, gameLangCode)) {
             return false;
@@ -1400,7 +1431,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         return true;
     }
 
-    async function fetchPlayableWord(gameLangCode, canonicalName, maxTries = 10) {
+    async function fetchPlayableWord(gameLangCode, canonicalName, maxTries = 50) {
         let lastObj = null;
         for (let i = 0; i < maxTries; i++) {
             const obj = await fetchWordObject(canonicalName);
@@ -1412,14 +1443,21 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             if (isValid) {
                 obj.gameLangCode = gameLangCode;
                 obj.gameLangName = canonicalName;
+                console.log(`Found valid word after ${i + 1} attempts: ${obj.word}`);
                 return obj;
             }
         }
-        if (lastObj) {
-            lastObj.gameLangCode = gameLangCode;
-            lastObj.gameLangName = canonicalName;
-        }
-        return lastObj;
+        console.warn(`Could not find valid word after ${maxTries} attempts, using safe fallback`);
+        // Use a safe fallback word with real definition instead of invalid word
+        const safeFallbackWord = getRandomSafeWord();
+        return {
+            word: safeFallbackWord,
+            definition: `A common word in the ${canonicalName} language.`,
+            pronunciation: '',
+            englishEquivalent: safeFallbackWord,
+            gameLangCode: gameLangCode,
+            gameLangName: canonicalName
+        };
     }
 
     // --- UI & GAME LOGIC (mostly unchanged) ---
@@ -2184,10 +2222,12 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
 
         // Show the log-container when displaying word info
         logContainer.style.setProperty('display', 'block', 'important');
+        // Let CSS handle max-height (extends to bottom of screen)
+        logContainer.style.setProperty('overflow-y', 'auto', 'important');
 
         // Use the pre-fetched data from wordObj directly
         const playedWord = wordObj.word;
-        const definition = wordObj.definition || 'No definition available';
+        const definition = wordObj.definition || 'Definition not available';
         const pronunciation = wordObj.pronunciation;
         const englishEquivalent = wordObj.englishEquivalent || playedWord;
 
@@ -2218,7 +2258,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         }
 
         wordInfoDiv.innerHTML = html;
-        logContainer.appendChild(wordInfoDiv);
+        logContainer.prepend(wordInfoDiv); // Add new entries at the top
     }
 
     function updateWordDisplay() {

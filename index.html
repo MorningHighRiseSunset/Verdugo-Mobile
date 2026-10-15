@@ -21,14 +21,23 @@
     <div id="hint-box" class="hint-box"></div>
 
     <div class="game-container">
-        <div class="game-layout">
+        <!-- Instructions button at top right -->
+        <button id="instructions-button" style="position: absolute; top: 5px; right: 10px;">Instructions</button>
+
+        <!-- Start/Stop Speaking at top left -->
+        <div style="position: absolute; top: 5px; left: 10px; display: flex; gap: 10px;">
+            <button id="start-btn">Start Speaking</button>
+            <button id="stop-btn" disabled>Stop Speaking</button>
+        </div>
+
+        <!-- Language options at top middle -->
+        <div id="language-box" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap; justify-content: center; margin-bottom: 5px; position: relative; z-index: 10;">
+            <button class="lang-btn" data-value="en-US" data-language="english"></button><button class="lang-btn" data-value="es-ES" data-language="spanish"></button><button class="lang-btn" data-value="zh-CN" data-language="mandarin"></button><button class="lang-btn" data-value="hi-IN" data-language="hindi"></button><button class="lang-btn" data-value="fr-FR" data-language="french"></button>
+        </div>
+
+        <div class="game-layout" style="margin-top: -80px; position: relative; z-index: 1;">
             <!-- Left side with controls -->
             <div class="left-controls">
-                <div class="speech-controls">
-                    <button id="start-btn">Start Speaking</button>
-                    <button id="stop-btn" disabled>Stop Speaking</button>
-                    <button id="instructions-button">Instructions</button>
-                </div>
                 <p id="status"></p>
                 <p id="result" aria-live="polite"></p>
                 <div id="ios-speech-container" class="ios-speech-fallback" style="display:none;">
@@ -38,26 +47,21 @@
                         <button type="button" id="ios-letter-submit">Submit</button>
                     </div>
                 </div>
-                <div class="button-row">
-                    <div id="language-box" style="display: flex; align-items: center; gap: 8px; flex-wrap: nowrap;">
-                        <button class="lang-btn" data-value="en-US" data-language="english"></button><button class="lang-btn" data-value="es-ES" data-language="spanish"></button><button class="lang-btn" data-value="zh-CN" data-language="mandarin"></button><button class="lang-btn" data-value="hi-IN" data-language="hindi"></button><button class="lang-btn" data-value="fr-FR" data-language="french"></button>
-                    </div>
-                </div>
             </div>
-            
+
             <!-- Center game area -->
             <div class="center-game">
                 <p id="word-display" class="word-display"></p>
                 <canvas id="hangman-canvas" width="150" height="150"></canvas>
                 <div id="letter-container" class="letter-container"></div>
-                
+
                 <!-- The language/category box -->
                 <div id="options-container" class="options-container"></div>
             </div>
         </div>
-        
+
         <!-- Definition area at bottom with full width -->
-        <div id="log-container"></div>
+        <div id="log-container" style="margin-top: 10px;"></div>
 
         <div id="new-game-container" class="hide">
             <!-- This can be removed if you use the button above -->
