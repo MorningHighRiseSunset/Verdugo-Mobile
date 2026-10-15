@@ -421,7 +421,7 @@ button:active, button:focus {
     /* Let the height follow content, but cap it so it doesn't
        take over the whole screen. */
     max-height: 40vh;
-    overflow-y: hidden;
+    overflow-y: auto;
     word-wrap: break-word;
     position: static;
     box-sizing: border-box;
