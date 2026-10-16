@@ -1096,6 +1096,8 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
     let animationFrameId;
     let currentWordObj = null;
     let usedWords = new Set();
+    // Make usedWords accessible globally for word selection
+    window.usedWords = usedWords;
 
     // Fetch a random word and its data from real APIs
     async function fetchWordObject(language) {
@@ -1145,10 +1147,17 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     // Convert wordlist to array for random selection
                     const spanishWordsArray = Array.from(SPANISH_WORDLIST);
                     console.log(`Selecting from ${spanishWordsArray.length} Spanish words`);
-                    
+
                     for (let tryNum = 0; tryNum < maxTries; tryNum++) {
                         if (spanishWordsArray.length > 0) {
                             chosen = spanishWordsArray[Math.floor(Math.random() * spanishWordsArray.length)];
+
+                            // Skip if this word was already used
+                            if (window.usedWords && window.usedWords.has(chosen.toUpperCase())) {
+                                console.log(`Skipping "${chosen}" - already used`);
+                                continue;
+                            }
+
                             const entry = SPANISH_DICTIONARY[chosen.toLowerCase()];
 
                             if (entry && entry.english) {
@@ -1214,10 +1223,13 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 // Try up to 20 times to find a word with a real definition
                 for (let attempt = 0; attempt < 20; attempt++) {
                     randomKey = keys[Math.floor(Math.random() * keys.length)];
-                    while (window.usedWords && window.usedWords.has(randomKey.toUpperCase()) && tries < keys.length) {
-                        randomKey = keys[Math.floor(Math.random() * keys.length)];
-                        tries++;
+
+                    // Skip if this word was already used
+                    if (window.usedWords && window.usedWords.has(randomKey.toUpperCase())) {
+                        console.log(`Skipping "${randomKey}" - already used`);
+                        continue;
                     }
+
                     const entry = ENGLISH_DICTIONARY[randomKey];
 
                     if (entry && typeof entry === 'object') {
@@ -1831,6 +1843,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             currentWordObj = wordObj;
                             selectedWord = wordObj.word.toUpperCase();
                             usedWords.add(selectedWord);
+                            pruneUsedWords();
                             guessedLetters = [];
                             wrongGuesses = 0;
                             if (typeof updateWordDisplay === "function") updateWordDisplay();
@@ -1840,7 +1853,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     }
                 }
             }, 5000);
-            resetGame();
         } else if (selectedWord && selectedWord.split('').every(letter => guessedLetters.includes(letter))) {
             cancelAnimationFrame(animationFrameId);
             showTemporaryPopup('Congratulations! You guessed the word: ' + selectedWord, true);
@@ -1857,6 +1869,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                             currentWordObj = wordObj;
                             selectedWord = wordObj.word.toUpperCase();
                             usedWords.add(selectedWord);
+                            pruneUsedWords();
                             guessedLetters = [];
                             wrongGuesses = 0;
                             if (typeof updateWordDisplay === "function") updateWordDisplay();
@@ -1866,7 +1879,6 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                     }
                 }
             }, 5000);
-            resetGame();
         }
     }
 
@@ -2055,7 +2067,12 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
             btn.onclick = function() {
                 console.log(`DEBUG: Language button clicked - pendingGameLang=${btn.getAttribute('data-value')}`);
                 pendingGameLang = btn.getAttribute('data-value');
-                
+
+                // Clear used words when switching languages
+                usedWords.clear();
+                window.usedWords = usedWords;
+                console.log('Cleared used words for new language');
+
                 // Track language button click with Vercel Analytics
                 const language = btn.getAttribute('data-language');
                 console.log('DEBUG: Language attribute:', language);
@@ -2066,7 +2083,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                 } else {
                     console.log('DEBUG: Failed to send event - va:', !!window.va, 'language:', !!language);
                 }
-                
+
                 if (typeof recognition !== 'undefined') recognition.lang = pendingGameLang;
                 if (isIOS) initIOSSpeechFallback();
 
@@ -2078,6 +2095,7 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
                         currentWordObj = wordObj;
                         selectedWord = wordObj.word.toUpperCase();
                         usedWords.add(selectedWord);
+                        pruneUsedWords();
                         guessedLetters = [];
                         wrongGuesses = 0;
                         if (typeof updateWordDisplay === "function") updateWordDisplay();
@@ -2212,6 +2230,17 @@ if (('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) && ch
         wrongGuesses = 0;
         updateWordDisplay();
         drawHangman();
+    }
+
+    // Keep usedWords from growing indefinitely - keep last 100 words
+    function pruneUsedWords() {
+        if (usedWords.size > 100) {
+            const wordsArray = Array.from(usedWords);
+            const wordsToKeep = wordsArray.slice(-100);
+            usedWords = new Set(wordsToKeep);
+            window.usedWords = usedWords;
+            console.log(`Pruned usedWords to ${usedWords.size} entries`);
+        }
     }
 
     // --- DYNAMIC LANGUAGE OPTIONS ---
